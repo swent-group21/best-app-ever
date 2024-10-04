@@ -9,7 +9,8 @@ module.exports = {
 
   /** Here we have the theme of the app that will be used all throughout **/
   theme: {
-    extend: {},
+    extend: {
+    },
   },
 
   /** Other plugins that we could use **/

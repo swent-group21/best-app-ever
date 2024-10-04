@@ -16,4 +16,5 @@ Whether you're pushing your own boundaries or sharing in the successes of others
 **EPFL 2024 - CS-311**  
 
 Developed by **Group21**:  
+
 Eduardo Neville, Lilian Noe, Marc Jadaa, Margaux Dausque, Roman Batut & Tristan Cendan
