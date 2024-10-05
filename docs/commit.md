@@ -29,6 +29,8 @@ The scope is optional but recommended. It provides additional context about whic
 - **api**: Backend API changes.
 - **db**: Database-related changes.
 - **deps**: Dependency updates.
+- **infra**: Infrastructure changes.
+
 ### Short Description
 The short description should be concise and written in the imperative mood (e.g., "add", "fix", "update", "remove"). It should summarize the change in a way that is easy to understand at a glance.
 #### Guidelines:

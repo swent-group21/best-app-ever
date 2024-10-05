@@ -1,6 +1,9 @@
 # Expo Documentation
 
-Using expo as our simulation environment.
+Using expo locally as our simulation environment.
+
+**Note: WE WILL BE TESTING USING DOCKER AS A UNIFORM CONTAINER** 
+Check the Docker documentation for more information. [Docker Documentation](./docker.md)
 
 ## Start the Development Server
 To start the development server, run:

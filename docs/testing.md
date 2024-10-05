@@ -134,11 +134,11 @@ describe('Button Component', () => {
 ## Running the Tests
 To run your tests, simply use the following command:
 ```bash
-# Using npm
 npm test
 ```
 
 Jest will automatically find and run all test files that match the pattern `*.test.tsx`.
+
 ## Learn More
 - **Jest Documentation**: [https://jestjs.io/docs/en/getting-started](https://jestjs.io/docs/en/getting-started)
 - **React Testing Library Documentation**: [https://testing-library.com/docs/react-testing-library/intro](https://testing-library.com/docs/react-testing-library/intro)
