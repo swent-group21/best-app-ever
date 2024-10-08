@@ -1,12 +1,46 @@
-import { View, Text } from 'react-native';
+import { GoogleAuthProvider } from "../../firebase/Firebase";
+// import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../firebase/Firebase";
+import { View, Text, Button, Platform, StyleSheet } from 'react-native';
+import GoogleAuthConfig from "../../firebase/GoogleAuthConfig";
+import * as Google from "expo-auth-session/providers/google";
+import { useEffect } from "react";
 
-export default function HomeScreen() {
-  return (
-    <View className="bg-cover bg-sky-500 ">
-      <Text className="text-3xl"> 
-        HELLO THIS IS THE HOME SCREEN
-      </Text>
-    </View>
-  );
-}
+export default function SignUpScreen() { 
+    const config = Platform.select({
+    web: GoogleAuthConfig.web,
+    ios: GoogleAuthConfig.ios,
+    android: GoogleAuthConfig.android,
+  });
 
+  const [request, response, promptAsync] = Google.useAuthRequest(config);
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+    }
+  }, [response]);
+
+  return ( 
+    <View style={styles.centered}> 
+      <Text style={styles.title}>Sign up</Text> 
+      <Button title="Sign up with Google" onPress={() => promptAsync()} />
+    </View> 
+  ); 
+} 
+  
+const styles = StyleSheet.create({ 
+  centered: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
+  }, 
+  title: { 
+    fontSize: 18, 
+    marginVertical: 2, 
+  }, 
+  subtitle: { 
+    fontSize: 14, 
+    color: "#888", 
+  }, 
+});
