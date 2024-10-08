@@ -1,10 +1,9 @@
 import { GoogleAuthProvider } from "../../firebase/Firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../firebase/Firebase";
-import { StyleSheet, View, Text, Button, Platform } from 'react-native';
+// import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "../../firebase/Firebase";
+import { View, Text, Button, Platform, StyleSheet } from 'react-native';
 import GoogleAuthConfig from "../../firebase/GoogleAuthConfig";
 import * as Google from "expo-auth-session/providers/google";
 import { useEffect } from "react";
-
 
 export default function SignUpScreen() { 
     const config = Platform.select({
