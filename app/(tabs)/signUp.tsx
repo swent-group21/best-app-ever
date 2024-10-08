@@ -21,12 +21,11 @@ export default function SignUpScreen() {
       const credential = GoogleAuthProvider.credential(id_token);
     }
   }, [response]);
-  
+
   return ( 
     <View style={styles.centered}> 
       <Text style={styles.title}>Sign up</Text> 
-      <Text style={styles.subtitle}>Using Flexbox</Text> 
-      <Button title="Sign up with email" onPress={() => promptAsync()} />
+      <Button title="Sign up with Google" onPress={() => promptAsync()} />
     </View> 
   ); 
 } 
