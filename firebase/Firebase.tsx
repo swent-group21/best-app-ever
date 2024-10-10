@@ -10,8 +10,9 @@ import {
   sendPasswordResetEmail,
   createUserWithEmailAndPassword,
   initializeAuth,
-  getReactNativePersistence,
 } from "firebase/auth";
+//@ts-ignore
+import { getReactNativePersistence } from '@firebase/auth/dist/rn/index.js';
 import { getStorage } from "firebase/storage";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
