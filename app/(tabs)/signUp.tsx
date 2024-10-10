@@ -4,6 +4,10 @@ import { View, Text, Button, Platform, StyleSheet } from 'react-native';
 import GoogleAuthConfig from "../../firebase/GoogleAuthConfig";
 import * as Google from "expo-auth-session/providers/google";
 import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as WebBrowser from "expo-web-browser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function SignUpScreen() { 
     const config = Platform.select({
