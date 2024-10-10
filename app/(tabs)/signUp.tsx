@@ -4,8 +4,8 @@ import { View, Text, Button, Platform, StyleSheet } from 'react-native';
 import GoogleAuthConfig from "../../firebase/GoogleAuthConfig";
 import * as Google from "expo-auth-session/providers/google";
 import { useEffect, useState } from "react";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as WebBrowser from "expo-web-browser";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -16,7 +16,16 @@ export default function SignUpScreen() {
     android: GoogleAuthConfig.android,
   });
 
+  const [userInfo, setUserInfo] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest(config);
+
+  // async function HandleGoogleSignIn() {
+  //   const user = await AsyncStorage.getItem("@user");
+  //   if (!user) {
+  //   } else {
+  //     setUserInfo(JSON.parse(user));
+  //   }
+  // }
 
   useEffect(() => {
     if (response?.type === "success") {
@@ -28,7 +37,7 @@ export default function SignUpScreen() {
   return ( 
     <View style={styles.centered}> 
       <Text style={styles.title}>Sign up</Text> 
-      <Button title="Sign up with Google" onPress={() => promptAsync} />
+      <Button title="Sign up with Google" onPress={() => promptAsync()} />
     </View> 
   ); 
 }

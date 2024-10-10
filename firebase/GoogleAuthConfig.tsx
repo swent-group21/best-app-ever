@@ -25,4 +25,6 @@ const web: GoogleAuthConfig = {
   webClientId: process.env.WEB_CLIENT_ID_OAUTH,
 };
 
+
+
 export default { all, ios, android, web };
