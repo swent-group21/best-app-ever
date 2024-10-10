@@ -17,8 +17,9 @@
   "dependencies": {
     "@expo/ngrok": "^4.1.0",
     "@expo/vector-icons": "^14.0.2",
-    "@react-native-async-storage/async-storage": "^1.24.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^6.0.2",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     "expo": "~51.0.28",
@@ -28,6 +29,10 @@
 =======
 ||||||| parent of aba98c0 (feat(tests): updated test dependencies)
 =======
+||||||| parent of c897f9b (fix(firebase): updated dependecies)
+=======
+<<<<<<< HEAD
+>>>>>>> c897f9b (fix(firebase): updated dependecies)
     "@testing-library/react-native": "^12.7.2",
 >>>>>>> aba98c0 (feat(tests): updated test dependencies)
     "expo": "~51.0.38",
@@ -36,7 +41,18 @@
 ||||||| parent of e039983 (feat(firebase): created signUp screen)
 =======
     "expo-auth-session": "^5.5.2",
+<<<<<<< HEAD
 >>>>>>> e039983 (feat(firebase): created signUp screen)
+||||||| parent of c897f9b (fix(firebase): updated dependecies)
+=======
+||||||| parent of 547f67a (fix(firebase): updated dependecies)
+    "expo": "~51.0.28",
+    "expo-auth-session": "^5.5.2",
+=======
+    "expo": "~51.0.28",
+    "expo-auth-session": "~5.5.2",
+>>>>>>> 547f67a (fix(firebase): updated dependecies)
+>>>>>>> c897f9b (fix(firebase): updated dependecies)
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.9",
     "expo-linking": "~6.3.1",
@@ -65,8 +81,15 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "^15.7.1",
     "react-native-web": "~0.19.10",
+<<<<<<< HEAD
     "react-router-dom": "^6.27.0",
     "tailwindcss": "^3.3.2"
+||||||| parent of c897f9b (fix(firebase): updated dependecies)
+    "tailwindcss": "^3.3.2"
+=======
+    "tailwindcss": "^3.3.2",
+    "expo-crypto": "~13.0.2"
+>>>>>>> c897f9b (fix(firebase): updated dependecies)
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
