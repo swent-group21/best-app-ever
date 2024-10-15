@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image, Platform } from 'react-native';
-import { TextInput } from "react-native"
-import { Button } from "react-native"
+import { TextInput } from 'react-native'
+import { Button } from 'react-native'
 
 export default function SignUp() {
     const [name, setName] = React.useState("");
@@ -13,33 +13,38 @@ export default function SignUp() {
         <View>
         <Text>Tell us about you !</Text>
         <TextInput
-          placeholder=" Name"
+          placeholder='Name'
           onChangeText={(text) => setName(text)}
         />
 
         <TextInput
-          placeholder="Surname"
+          placeholder='Surname'
           onChangeText={(text) => setSurname(text)}
         />
 
         <TextInput
-          placeholder="Email"
+          placeholder= 'Email'
           onChangeText={(text) => setEmail(text)}
         />
 
         <TextInput
-          placeholder="Password"
+          placeholder='Password'
           onChangeText={(text) => setPassword(text)}
         />
 
         <TextInput
-          placeholder="Confirm Password"
+          placeholder= 'Confirm Password'
           onChangeText={(text) => setConfirmPassword(text)} 
           />
 
-        // To be changed when the navigation stack is implemented
         <Button title="Strive with us" onPress={() => alert("Sign Up")} />
         
+        <Text> 
+            OR
+        </Text>
+
+        <Button title="Sign Up with Google" onPress={() => alert("Sign Up with Google")} />
+        <Button title="Sign Up with Facebook" onPress={() => alert("Sign Up with Facebook")} />
         </View>
 
     );
