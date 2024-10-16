@@ -10,7 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 
-# Hide our ip 
+# Hide local ip 
 .ip
 
 # macOS
