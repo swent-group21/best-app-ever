@@ -10,6 +10,9 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# Hide our ip 
+.ip
+
 # macOS
 .DS_Store
 
