@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
 export default function WelcomeConceptScreen() {
     return (
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'blue',
+        width: Dimensions.get('window').width,
     },
     text: {
         fontSize: 20,

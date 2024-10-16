@@ -15,21 +15,10 @@ export default function WelcomeScreens() {
             style={styles.scrollView}
         >
 
-            <View style={styles.screen}>
-                <WelcomeIntroScreen />
-            </View>
-
-            <View>
-                <WelcomeConceptScreen />
-            </View>
-
-            <View style={styles.screen}>
-                <WelcomePersonalScreen />
-            </View>
-
-            <View style={styles.screen}>
-                <WelcomeFinalScreen />
-            </View>
+            <WelcomeIntroScreen />
+            <WelcomeConceptScreen />
+            <WelcomePersonalScreen />
+            <WelcomeFinalScreen />
 
         </ScrollView>
     );
@@ -37,9 +26,6 @@ export default function WelcomeScreens() {
 
 const styles = StyleSheet.create({
     scrollView: {
-        flexGrow: 1,
-    },
-    screen: {
         flex: 1,
-    },
+    }
 });
