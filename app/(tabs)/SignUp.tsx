@@ -93,10 +93,11 @@ export default function SignUp() {
           
         },
         title: {
-          fontFamily: 'Inter-Bold',
+          fontFamily: 'Title Page',
           fontSize: 38,
-          fontWeight: 700,
+          fontWeight: 'bold',
           left:0,
+          top: 30,
           letterSpacing: 0.15,
           lineHeight: 57,
           position: 'relative',
@@ -112,6 +113,13 @@ export default function SignUp() {
         color: '#1E1E1E',
         borderRadius : 10,
         backgroundColor: '#E6BC95',
+        width: 200,
+        minWidth: 240,
+        borderEndEndRadius : 10,
+        borderEndStartRadius : 10,
+        borderWidth: 0.5,
+        borderColor: '#d9d9d9',
+      
     },
   
         box : {
