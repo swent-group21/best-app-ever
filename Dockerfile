@@ -31,6 +31,8 @@ ENV PATH /opt/strive/.bin:$PATH
 USER root
 COPY package.json package-lock.json ./
 RUN npm install
+RUN npm uninstall expo-auth-session expo-random 
+RUN expo install expo-auth-session expo-random
 
 
 # copy in our source code last, as it changes the most

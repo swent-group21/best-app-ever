@@ -10,9 +10,9 @@ import {
   sendPasswordResetEmail,
   createUserWithEmailAndPassword,
   initializeAuth,
+  getReactNativePersistence
 } from "firebase/auth";
 //@ts-ignore
-import { getReactNativePersistence } from '@firebase/auth/dist/rn/index.js';
 import { getStorage } from "firebase/storage";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -34,14 +34,35 @@ import {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-console.log("Environment variables:\n- FIREBASE_API_KEY: ", process.env.FIREBASE_API_KEY, "\n- FIREBASE_AUTH_DOMAIN: ", process.env.FIREBASE_AUTH_DOMAIN, "\n- FIREBASE_PROJECT_ID: ", process.env.FIREBASE_PROJECT_ID, "\n- FIREBASE_STORAGE_BUCKET: ", process.env.FIREBASE_STORAGE_BUCKET, "\n- FIREBASE_MESSAGING_SENDER_ID: ", process.env.FIREBASE_MESSAGING_SENDER_ID, "\n- FIREBASE_WEB_APP_ID: ", process.env.FIREBASE_WEB_APP_ID);
+const apiKey= process.env.EXPO_PUBLIC_FIREBASE_API_KEY
+const authDomain= process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN
+const projectId= process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID
+const storageBucket= process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET
+const messagingSenderId= process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+const appId= process.env.EXPO_PUBLIC_FIREBASE_APP_ID
+
+console.log("Environment variables:\n- FIREBASE_API_KEY: ", 
+apiKey
+  , "\n- FIREBASE_AUTH_DOMAIN: ", 
+authDomain
+  , "\n- FIREBASE_PROJECT_ID: ", 
+projectId
+  , "\n- FIREBASE_STORAGE_BUCKET: ", 
+storageBucket
+  , "\n- FIREBASE_MESSAGING_SENDER_ID: ", 
+messagingSenderId
+  , "\n- FIREBASE_WEB_APP_ID: ", 
+appId
+);
+
+
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_WEB_APP_ID,
+  apiKey: apiKey,
+  authDomain: authDomain,
+  projectId:projectId,
+  storageBucket:storageBucket,
+  messagingSenderId:messagingSenderId,
+  appId:appId,
 };
 
 // Initialize Firebase
@@ -53,6 +74,7 @@ const auth = initializeAuth(app, {
 const storage = getStorage(app);
 
 export {
+  firebaseConfig,
   app,
   auth,
   GoogleAuthProvider,
