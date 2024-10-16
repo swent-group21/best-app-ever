@@ -52,7 +52,7 @@ export default function SignUp() {
 
             <Text style = {styles.titleinput}>Email</Text>
             <TextInput
-              style = {styles.input}
+              style = {isValidEmail(email) ? styles.input : styles.inputWrong}
               placeholder="example@your.domain"
               placeholderTextColor="#888"
               autoComplete='email'
@@ -74,7 +74,7 @@ export default function SignUp() {
           
             <Text style = {styles.titleinput}>Confirm Password</Text>
             <TextInput
-              style = {password == confirmPassword ? styles.input : styles.passwordNotConfirmed}
+              style = {password == confirmPassword ? styles.input : styles.inputWrong}
               placeholder= 'Confirm Password'
               placeholderTextColor="#888"
               secureTextEntry={true}
@@ -226,7 +226,7 @@ icon: {
   marginRight: 10, 
 },
 
-passwordNotConfirmed: {
+inputWrong: {
   
     width: '100%',
     height: height * 0.06,  
@@ -239,6 +239,27 @@ passwordNotConfirmed: {
 
   
   });
+
+
+function isValidEmail(email : string) {
+  if (email.length == 0) {
+    return true;
+  }
+  else if (!email.includes('@')) {
+      return false;
+  }
+  else if (!email.includes('.')) {
+      return false;
+  }
+  else if (email.includes(' ')) {
+      return false;
+  }
+  else {
+      return true;
+  }
+}
+
+
 
 function onClickStrive(password : string, confirmPassword : string, name : string, surname : string, email : string) {
   if (name.length == 0) {
