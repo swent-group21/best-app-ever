@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, TouchableOpacityComponent, Alert } from 'react-native';
 import { TextInput } from 'react-native'
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const {width, height} = Dimensions.get('window');
 
@@ -12,7 +12,6 @@ export default function SignUp() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-    let LinearGradient = <View style={{ position:'absolute', top:0, left:0, width: width, height:width }} />
 
 
     return (
@@ -21,17 +20,20 @@ export default function SignUp() {
         <Image
           source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
           style={styles.backroundimage}
-          {...LinearGradient }
         />
+
+       
       
       <ScrollView>
+        
+
        <View style = {styles.backround}>
           {/* Color of the backround */}
 
-        {/* The backround image */} 
+        <TouchableOpacity style={styles.goBack} onPress={() => alert('Go back')}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
 
-        
-       
         {/* Title of the screen */}
         <Text style = {styles.title}>Tell us about you !</Text>
 
@@ -44,6 +46,7 @@ export default function SignUp() {
               placeholder='Name'
               placeholderTextColor="#888"
               onChangeText={(text) => setName(text)}
+              autoComplete='name'
 
             />
             
@@ -53,6 +56,7 @@ export default function SignUp() {
               placeholder='Surname'
               placeholderTextColor="#888"
               onChangeText={(text) => setSurname(text)}
+              autoComplete='family-name'
 
             />
 
@@ -194,7 +198,6 @@ export default function SignUp() {
       top : 0,
       left : 0,
       
-
       
      }, 
 
@@ -242,6 +245,19 @@ inputWrong: {
     borderColor: 'red',
     paddingLeft: 20,
     marginBottom: height * 0.02,
+}, 
+
+goBack : {
+  position : 'absolute',
+  top : height * 0.05,
+  left : width * 0.05,
+  width : width * 0.1,
+  height : width * 0.1,
+  backgroundColor : 'black',
+  borderRadius : 90,
+  justifyContent : 'center',
+  alignItems : 'center',
+  
 }
 
   
@@ -252,13 +268,7 @@ function isValidEmail(email : string) {
   if (email.length == 0) {
     return true;
   }
-  else if (!email.includes('@')) {
-      return false;
-  }
-  else if (!email.includes('.')) {
-      return false;
-  }
-  else if (email.includes(' ')) {
+  else if (!email.includes('@') || !email.includes('.') || email.includes(' ')) { 
       return false;
   }
   else {
