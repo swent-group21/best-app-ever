@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
 export default function WelcomeIntroScreen() {
     return (
@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'yellow',
+        width: Dimensions.get('window').width,
     },
     text: {
         fontSize: 20,
