@@ -13,6 +13,7 @@ EXPOSE 19006 19001 19002
 
 # add in your own IP that was assigned by EXPO for your local machine
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 # Use ARG to get the IP during build
 ARG REACT_NATIVE_IP
@@ -22,6 +23,11 @@ ENV REACT_NATIVE_PACKAGER_HOSTNAME="192.168.0.102"
 =======
 ENV REACT_NATIVE_PACKAGER_HOSTNAME="128.179.139.151"
 >>>>>>> 3448def (fix(ci): correct node version in workflow)
+||||||| parent of be13aae (fix: removed sensitive data from Dockerfile)
+ENV REACT_NATIVE_PACKAGER_HOSTNAME="128.179.139.151"
+=======
+ENV REACT_NATIVE_PACKAGER_HOSTNAME="192.168.0.102"
+>>>>>>> be13aae (fix: removed sensitive data from Dockerfile)
 
 # install global packages
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
