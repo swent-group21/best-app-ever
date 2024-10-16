@@ -12,6 +12,8 @@ export default function SignUp() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+    const [hidePassword, setHidePassword] = React.useState(password);
+
     return (
       
       <ScrollView>
@@ -66,6 +68,7 @@ export default function SignUp() {
               placeholder='Password'
               placeholderTextColor="#888"
               onChangeText={(text) => setPassword(text)}
+              secureTextEntry={true}
             />
 
             <Text style = {styles.titleinput}>Confirm Password</Text>
@@ -73,6 +76,7 @@ export default function SignUp() {
               style = {styles.input}
               placeholder= 'Confirm Password'
               placeholderTextColor="#888"
+              secureTextEntry={true}
               onChangeText={(text) => setConfirmPassword(text)} 
               />
 
@@ -220,6 +224,4 @@ icon: {
 
   
   });
-
-
 
