@@ -28,13 +28,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
     },
     ovalShape: {
         position: 'absolute',
-        bottom: 0, // Position it at the bottom of the screen
-        left: SCREEN_WIDTH * 0.1, // Offset slightly from the left
+        top: SCREEN_HEIGHT * 0.7, // Position it higher to overlap the previous screen
+        left: -SCREEN_WIDTH * 0.1, // Slightly offset to the left
         width: SCREEN_WIDTH * 1.2, // Make the oval wider than the screen
-        height: SCREEN_HEIGHT * 0.6, // Set a height that fits the screen
+        height: SCREEN_HEIGHT * 0.7, // Make the oval tall enough to overlap
         borderRadius: SCREEN_WIDTH * 0.6, // Large borderRadius for the oval effect
         backgroundColor: '#E6BC95', // Beige color
     },
@@ -42,17 +43,19 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         paddingHorizontal: 20, // Padding for text alignment
+        paddingTop: SCREEN_HEIGHT * 0, // Adjust padding to move the text down
     },
     title: {
-        fontSize: 48,
+        fontSize: 56,
         fontWeight: '900',
         color: '#000',
-        lineHeight: 52,
+        lineHeight: 62, // Adjusted for better spacing
         marginBottom: 20,
     },
     description: {
+        paddingTop: 60, // Added some padding above the description
         fontSize: 20,
-        fontWeight: '600',
+        fontWeight: '800',
         color: '#000',
         lineHeight: 26,
     },
