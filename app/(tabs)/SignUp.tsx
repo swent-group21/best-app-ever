@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, Platform } from 'react-native';
+import { Text, View, StyleSheet, Image, Platform, ScrollView } from 'react-native';
 import { TextInput } from 'react-native'
 import { Button } from 'react-native'
 import {SafeAreaView} from 'react-native';
-import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 
 export default function SignUp() {
     const [name, setName] = React.useState("");
@@ -12,18 +11,26 @@ export default function SignUp() {
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
     return (
-      <ScrollView> 
-       
+      <ScrollView>
        <View style = {styles.backround}>
+
+        <Image
+          source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
+          style={styles.backroundimage}
+          
+        
+        />
        
         <Text style = {styles.title}>Tell us about you !</Text>
+        <Text style = {styles.titleinput}> Name</Text>
         <TextInput 
           style = {styles.input}
           placeholder='Name'
           onChangeText={(text) => setName(text)}
 
         />
-
+        
+        <Text style = {styles.titleinput}> Surname</Text>
         <TextInput
           style = {styles.input}
           placeholder='Surname'
@@ -31,18 +38,21 @@ export default function SignUp() {
 
         />
 
+        <Text style = {styles.titleinput}> Email</Text>
         <TextInput
           style = {styles.input}
           placeholder= 'Email'
           onChangeText={(text) => setEmail(text)}
         />
 
+        <Text style = {styles.titleinput}> Password</Text>
         <TextInput
           style = {styles.input}
           placeholder='Password'
           onChangeText={(text) => setPassword(text)}
         />
 
+        <Text style = {styles.titleinput}> Confirm Password</Text>
         <TextInput
           style = {styles.input}
           placeholder= 'Confirm Password'
@@ -58,6 +68,7 @@ export default function SignUp() {
         <Button title="Sign Up with Google" onPress={() => alert("Sign Up with Google")} />
         <Button title="Sign Up with Facebook" onPress={() => alert("Sign Up with Facebook")} />
         </View>
+
         </ScrollView> 
     );
    
@@ -76,6 +87,8 @@ export default function SignUp() {
           position: 'relative',
           borderColor: '#d9d9d9',
           borderWidth: 0.5, 
+          
+          left: 0
           
           
         },
@@ -122,6 +135,18 @@ export default function SignUp() {
 
      backround : {
       backgroundColor : '#FFFFFF',
+     }, 
+
+     titleinput : {
+
+      left: 20,
+
+     }, 
+
+     backroundimage : {
+      position : 'absolute',
+      top : 0,
+      left : 0,
      }
   
   });
