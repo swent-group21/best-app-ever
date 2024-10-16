@@ -12,8 +12,17 @@ export default function SignUp() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+    let LinearGradient = <View style={{ position:'absolute', top:0, left:0, width: width, height:width }} />
+
 
     return (
+
+      <View> 
+        <Image
+          source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
+          style={styles.backroundimage}
+          {...LinearGradient }
+        />
       
       <ScrollView>
        <View style = {styles.backround}>
@@ -21,10 +30,7 @@ export default function SignUp() {
 
         {/* The backround image */} 
 
-        <Image
-          source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
-          style={styles.backroundimage}
-        />
+        
        
         {/* Title of the screen */}
         <Text style = {styles.title}>Tell us about you !</Text>
@@ -117,6 +123,7 @@ export default function SignUp() {
 
         </ScrollView>
 
+        </View>
       
     );
    
@@ -167,7 +174,7 @@ export default function SignUp() {
      }, 
 
      backround : {
-      backgroundColor : 'white',
+      backgroundColor : 'transparent',
       flex : 1,
       alignItems : 'center',
       justifyContent : 'flex-start',
