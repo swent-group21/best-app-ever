@@ -32,21 +32,22 @@ export default function WelcomeScreens() {
                 <WelcomeConceptScreen />
                 <WelcomePersonalScreen />
                 <WelcomeFinalScreen />
-
             </ScrollView>
 
-            {/* Render the dots */}
-            <View style={styles.dotContainer}> 
-                {Array.from({ length: 4 }).map((_, i) => (
-                    <View
-                        key={i}
-                        style={[
-                            styles.dot,
-                            activeIndex === i ? styles.activeDot : styles.inactiveDot,
-                        ]}
-                    />
-                ))}
-            </View>
+            {/* Render the dots only if not on the last screen */}
+            {activeIndex < 3 && (
+                <View style={styles.dotContainer}>
+                    {[0, 1, 2, 4].map((i) => (
+                        <View
+                            key={i}
+                            style={[
+                                styles.dot,
+                                activeIndex === i ? styles.activeDot : styles.inactiveDot,
+                            ]}
+                        />
+                    ))}
+                </View>
+            )}
         </View>
     );
 }
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     },
     dotContainer: {
         position: 'absolute',
-        bottom: 50,
+        bottom: 60,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -69,9 +70,9 @@ const styles = StyleSheet.create({
     dot: {
         width: 18,
         height: 18,
-        borderRadius: 19,
-        marginHorizontal: 8,
-        borderWidth: 2,
+        borderRadius: 9, 
+        marginHorizontal: 6,
+        borderWidth: 1,
         borderColor: '#000',
     },
     activeDot: {
