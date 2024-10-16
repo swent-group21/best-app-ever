@@ -15,7 +15,13 @@ Before proceeding, ensure the following are installed on your local machine:
   ```
 - **React Native Application**: If you don't have one, follow [this tutorial](https://blog.expo.dev/developing-a-react-native-app-with-expo-cf6566732311) to create a basic React Native app.
 
+## Setting your IP as an argument for Docker
+
+1. First run `npm start` so as to learn your expo ip address is.
+2. Copy and paste it into your .ip file
+
 ## Dockerfile Overview
+
 The provided `Dockerfile` is designed to containerize your Expo project. Below is a breakdown of the key components:
 
 ### Key Dockerfile Sections
@@ -27,9 +33,10 @@ The provided `Dockerfile` is designed to containerize your Expo project. Below i
 2. **Environment Variables**: 
    - `NODE_ENV`: Defines the environment (development or production).
    - `PORT`: Exposes the necessary ports for Expo (19006, 19001, 19002).
-   - `REACT_NATIVE_PACKAGER_HOSTNAME`: Set this to the IP address assigned by Expo to your local machine.
+   - `REACT_NATIVE_PACKAGER_HOSTNAME`:  Exposes the IP to the container
+
    ```dockerfile
-   ENV REACT_NATIVE_PACKAGER_HOSTNAME="10.0.0.114"
+   ENV REACT_NATIVE_PACKAGER_HOSTNAME=${REACT_NATIVE_IP}
    ```
 3. **Global Packages**: Installs the latest versions of `npm` and `expo-cli`, and adds `@expo/ngrok` for tunneling.
    ```dockerfile
@@ -50,8 +57,11 @@ The provided `Dockerfile` is designed to containerize your Expo project. Below i
 ## Running the Docker Container
 ### Step 1: Build the Docker Image
 To build the Docker image, run the following command in your project directory:
+Takes in the IP as an argument
 ```bash
-docker build -t strive .
+docker build  \
+    --build-arg REACT_NATIVE_IP=$(cat .ip) \
+    -t strive .
 ```
 This command will create a Docker image named strive following the Dockerfile in the root directory
 
@@ -59,10 +69,12 @@ This command will create a Docker image named strive following the Dockerfile in
 Run the container with the necessary port mappings:
 ```bash
 docker run -it --rm --name strive_cont \
-           -p 19001:19001 \
-           -p 19002:19002 \
-           -p 19006:19006 \
-           strive
+            -p 19001:19001 \
+            -p 19002:19002 \
+            -p 19006:19006 \
+            -e REACT_NATIVE_PACKAGER_HOSTNAME=$(cat .ip) \
+            -v ./:/opt/strive:rw \ 
+            strive
 ```
 This command will create a container named strive_cont following the built image strive
 
@@ -77,7 +89,7 @@ The IP address displayed in the terminal should match the one in the `Dockerfile
 ### Step 4: Access the Container (Optional)
 If you need to access the running container, use the following command:
 ```bash
-docker exec -it my_cont_name bash
+docker exec -it strive_cont bash
 ```
 
 ## Step 5: Expo Mode
@@ -104,4 +116,4 @@ If the Expo app is not accessible:
 2. **Container Access**: Use `docker exec` to access the container and manually start the Expo app with `expo start --tunnel`.
 3. **Network Issues**: Ensure that the necessary ports (19001, 19002, 19006) are exposed and accessible.
 ## Conclusion
-By following this guide, you can successfully containerize your Expo-based React Native app and run it in a Docker environment. Using the `--tunnel` option ensures that your app is accessible from any device, regardless of network configuration.
+By following this guide, you can successfully containerize your Expo-based React Native app and run it in a Docker environment. Using the `--tunnel` option ensures that your app is accessible from any device, regardless of network configurationj

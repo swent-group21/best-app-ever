@@ -12,7 +12,10 @@ ENV PORT $PORT
 EXPOSE 19006 19001 19002
 
 # add in your own IP that was assigned by EXPO for your local machine
-ENV REACT_NATIVE_PACKAGER_HOSTNAME="192.168.0.102"
+
+# Use ARG to get the IP during build
+ARG REACT_NATIVE_IP
+ENV REACT_NATIVE_PACKAGER_HOSTNAME=${REACT_NATIVE_IP}
 
 # install global packages
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
