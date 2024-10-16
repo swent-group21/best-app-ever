@@ -32,7 +32,7 @@ export default function WelcomeScreens() {
                 <WelcomeConceptScreen />
                 <WelcomePersonalScreen />
                 <WelcomeFinalScreen />
-                
+
             </ScrollView>
 
             {/* Render the dots */}
@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     dot: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
+        width: 18,
+        height: 18,
+        borderRadius: 19,
         marginHorizontal: 8,
         borderWidth: 2,
         borderColor: '#000',
