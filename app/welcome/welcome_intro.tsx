@@ -1,17 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 
-// Get screen width to ensure the layout matches the device's width
+// Get the screen dimensions
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export default function WelcomeIntroScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.topHalfCircle}>
-                <Text style={styles.title}>So what is{'\n'}Strive about?</Text>
+                <Text style={styles.title}>So what is{'\n'}Strive{'\n'}about?</Text>
             </View>
             <View style={styles.bottomContainer}>
-                {/* Placeholder for the image, can be replaced with actual source */}
+                {/* Placeholder for the image */}
                 <Image
                     style={styles.image}
                     source={{ uri: 'https://via.placeholder.com/100' }}
@@ -25,35 +26,32 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        width: SCREEN_WIDTH,
     },
     topHalfCircle: {
-        width: SCREEN_WIDTH * 2,
-        height: SCREEN_WIDTH * 2,
-        borderRadius: SCREEN_WIDTH,
-        backgroundColor: '#D2A679', 
-        position: 'absolute',
-        top: -SCREEN_WIDTH,
-        left: -SCREEN_WIDTH / 2,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT * 0.5, // 40% of the screen height
+        borderBottomLeftRadius: SCREEN_WIDTH * 0.4,
+        borderBottomRightRadius: SCREEN_WIDTH * 0.6,
+        backgroundColor: '#E6BC95', // Beige color similar to the screenshot
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        paddingLeft: 25,
+        paddingBottom: 0,
     },
     title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: '#000',
-        textAlign: 'center',
-        marginTop: SCREEN_WIDTH / 2, 
+        fontSize: 56, // Large font size for bold effect
+        fontWeight: '900',
+        color: '#000', // Black color
     },
     bottomContainer: {
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
-        paddingBottom: 60, 
+        paddingBottom: 30,
         paddingLeft: 20,
     },
     image: {
-        width: 60,
-        height: 60,
+        width: 80,
+        height: 80,
     },
 });
