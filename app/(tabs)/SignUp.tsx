@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native'
-import { Button } from 'react-native'
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -12,7 +12,6 @@ export default function SignUp() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-    const [hidePassword, setHidePassword] = React.useState(password);
 
     return (
       
@@ -21,6 +20,7 @@ export default function SignUp() {
           {/* Color of the backround */}
 
         {/* The backround image */} 
+
         <Image
           source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
           style={styles.backroundimage}
@@ -63,7 +63,7 @@ export default function SignUp() {
             />
 
             <Text style = {styles.titleinput}>Password</Text>
-            <TextInput
+           <TextInput
               style = {styles.input}
               placeholder='Password'
               placeholderTextColor="#888"
@@ -71,16 +71,17 @@ export default function SignUp() {
               secureTextEntry={true}
             />
 
+          
             <Text style = {styles.titleinput}>Confirm Password</Text>
             <TextInput
-              style = {styles.input}
+              style = {password == confirmPassword ? styles.input : styles.passwordNotConfirmed}
               placeholder= 'Confirm Password'
               placeholderTextColor="#888"
               secureTextEntry={true}
-              onChangeText={(text) => setConfirmPassword(text)} 
+              onChangeText={(text) => setConfirmPassword(text)}
               />
 
-<TouchableOpacity style={styles.buttonStrive} onPress={() => alert('Sign Up')}>
+<TouchableOpacity style={styles.buttonStrive} onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}>
             <Text style={styles.buttonText}>Strive with us</Text>
         </TouchableOpacity>
 
@@ -185,6 +186,9 @@ export default function SignUp() {
       position : 'absolute',
       top : 0,
       left : 0,
+      
+
+      
      }, 
 
      buttonText: {
@@ -222,6 +226,55 @@ icon: {
   marginRight: 10, 
 },
 
+passwordNotConfirmed: {
+  
+    width: '100%',
+    height: height * 0.06,  
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: 'red',
+    paddingLeft: 20,
+    marginBottom: height * 0.02,
+}
+
   
   });
 
+function onClickStrive(password : string, confirmPassword : string, name : string, surname : string, email : string) {
+  if (name.length == 0) {
+    alert('Name cannot be empty');
+}
+
+else if (surname.length == 0) {
+    alert('Surname cannot be empty');
+}
+
+else if (email.length == 0) {
+    alert('Email cannot be empty');
+}
+
+else if (!email.includes('@')) {
+    alert('Invalid email');
+}
+
+else if (!email.includes('.')) {
+    alert('Invalid email');
+}
+
+else if (email.includes(' ')) {
+    alert('Invalid email');
+}
+  
+  else if (password != confirmPassword) {
+        alert('Passwords do not match');
+    }
+    else if (password.length < 8) {
+        alert('Password must be at least 8 characters long');
+    }
+
+    else {
+        alert('Sign Up');
+    }
+
+
+}
