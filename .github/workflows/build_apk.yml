@@ -1,49 +1,53 @@
-name: Build APK
+# This workflow will do a clean installation of a working and stable APK.
 
-on:
-  push
-
+name: "Build APK"
+run-name: ${{ github.actor }} is learning build Android App using Github Actions
+on: 
+  push:
+    branches:
+      - develop-uat
+  pull_request: 
+    branches:
+      - develop-uat
 jobs:
-  build-apk:
-
+  build:
     runs-on: ubuntu-22.04
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Install Java 
+        uses: actions/setup-java@v2
         with:
-          node-version: '22.x'  
-          cache: 'npm'
+          java-version: '20'
+          distribution: "adopt"
+          cache: "gradle"
 
-      - run: npm ci
+      - name: Change wrapper permissions
+        run: chmod +x ./android/gradlew
+      
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
 
-      - name: Build Docker image for APK
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '22.x'
+
+      - name: Run Yarn Install
+        run: | 
+              npm install -g yarn
+              yarn install
+
+      - name: Build App
         run: |
-          # Get the IP of the GitHub runner
-          IP_ADDRESS=$(hostname -I | awk '{print $1}')
+              cd ./android
+              ./gradlew assembleRelease
 
-          # Build the Docker image using the Dockerfile from the project
-          docker build --build-arg REACT_NATIVE_IP=$IP_ADDRESS -t strive-apk .
-
-
-      - name: Build APK inside Docker container
-        run: |
-          # Run the Docker container and build the APK inside it
-          docker run --rm --name strive_apk_container strive-apk ./android/gradlew assembleDebug
-
-      - name: Copy APK from container
-        run: |
-          # Create a directory on the host to store the APK
-          mkdir -p build_outputs
-
-          # Copy the APK from the Docker container to the host machine
-          docker cp strive_apk_container:/opt/strive/android/app/build/outputs/apk/debug/app-debug.apk ./build_outputs/app-debug.apk
-
-
-      - name: Upload APK
+      - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: app-debug.apk
-          path: ./build_outputs/app-debug.apk
+          name: app
+          path: ./android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 3
+
