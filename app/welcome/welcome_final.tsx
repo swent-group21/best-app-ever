@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -12,7 +12,21 @@ export default function WelcomeConceptScreen() {
 
             <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
             
-            
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.buttonAccount} onPress={() => alert('Login')}>
+                    <Text style={styles.buttonText} >Login</Text>
+                </TouchableOpacity>
+                {/* Add some space between the buttons */}
+                <Text /> 
+                <TouchableOpacity style={styles.buttonAccount} onPress={() => alert('Sign up')}>
+                    <Text style={styles.buttonText} >Sign Up</Text>
+                </TouchableOpacity>
+                {/* Add some space between the buttons */}
+                <Text /> 
+                <TouchableOpacity onPress={() => alert('Anonymous')}>
+                    <Text >Continue as guest</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -49,6 +63,23 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         color: '#000',
         lineHeight: 62,
-        marginBottom: 0,
-    }
+        paddingBottom: SCREEN_HEIGHT * 0.12,
+    },
+    buttonContainer: {
+        flex: 1,
+        alignItems: 'center',
+        paddingBottom: 60,
+    },
+    buttonAccount: {
+        width: '80%',
+        height: SCREEN_HEIGHT * 0.05,  
+        backgroundColor: '#000',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontWeight: '600',
+        color: '#FFF',
+    },
 });
