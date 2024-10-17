@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
@@ -5,6 +6,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export default function WelcomeConceptScreen() {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <View style={styles.ovalShapeOne} />
@@ -13,12 +15,12 @@ export default function WelcomeConceptScreen() {
             <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
             
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => alert('Login')}>
+                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_in_screen')}>
                     <Text style={styles.buttonText} >Login</Text>
                 </TouchableOpacity>
                 {/* Add some space between the buttons */}
                 <Text /> 
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => alert('Sign up')}>
+                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_up_screen')}>
                     <Text style={styles.buttonText} >Sign Up</Text>
                 </TouchableOpacity>
                 {/* Add some space between the buttons */}
