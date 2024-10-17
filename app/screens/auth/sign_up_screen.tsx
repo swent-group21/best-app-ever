@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 
 const {width, height} = Dimensions.get('window');
 
@@ -181,7 +181,7 @@ else if (password.length < 8) {
     alert('Password must be at least 8 characters long');
 }
 else {
-    alert('Sign Up');
+    router.push('/screens/auth/set_username_screen');
 }
 
 
