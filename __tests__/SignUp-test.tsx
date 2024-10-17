@@ -12,7 +12,7 @@ describe('SignUp Component', () => {
     });
 
     it('renders the email input field', () => {
-        TestInputField('Email');
+        TestInputField('example@your.domain');
     });
 
     it('renders the password input field', () => {
@@ -26,13 +26,7 @@ describe('SignUp Component', () => {
     it('renders the register button', () => {
         const { getByText } = render(<SignUp />);
         
-        expect(getByText('Register')).toBeTruthy(); 
-    });
-
-    it('renders the go back button', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Go back')).toBeTruthy(); 
+        expect(getByText('Strive with us')).toBeTruthy(); 
     });
 
     it('renders the title', () => {
