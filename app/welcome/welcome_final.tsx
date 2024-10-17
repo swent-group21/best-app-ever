@@ -9,13 +9,10 @@ export default function WelcomeConceptScreen() {
         <View style={styles.container}>
             <View style={styles.ovalShapeOne} />
             <View style={styles.ovalShapeTwo} />
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>Compete{'\n'}yourself</Text>
-                <Text style={styles.description}>
-                    Become the best version of yourself{'\n'} 
-                    Interact with motivated people to reach your goals !
-                </Text>
-            </View>
+
+            <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
+            
+            
         </View>
     );
 }
@@ -45,24 +42,13 @@ const styles = StyleSheet.create({
         borderRadius: SCREEN_WIDTH * 0.7,
         backgroundColor: '#E6BC95',
     },
-    textContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        paddingBottom: 0,
-    },
     title: {
-        fontSize: 56,
+        paddingTop: SCREEN_HEIGHT * 0.3,
+        paddingLeft: SCREEN_WIDTH * 0.05,
+        fontSize: 64,
         fontWeight: '900',
         color: '#000',
         lineHeight: 62,
-        marginBottom: 20,
-    },
-    description: {
-        paddingTop: 60,
-        fontSize: 20,
-        fontWeight: '800',
-        color: '#000',
-        lineHeight: 26,
-    },
+        marginBottom: 0,
+    }
 });
