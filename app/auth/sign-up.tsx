@@ -161,18 +161,12 @@ function isValidEmail(email : string) {
  * @returns
  */
 function onClickStrive(password : string, confirmPassword : string, name : string, surname : string, email : string) {
-  if (name.length == 0) {
-    alert('Name cannot be empty');
+  if (name.length == 0 || surname.length == 0 || email.length == 0 || password.length == 0 || confirmPassword.length == 0) {
+    alert('All fields are required');
 }
-
-else if (surname.length == 0) {
-    alert('Surname cannot be empty');
+    else if (!isValidEmail(email)) {
+    alert('Invalid email');
 }
-
-else if (email.length == 0) {
-    alert('Email cannot be empty');
-}
-
 else if (password != confirmPassword) {
     alert('Passwords do not match');
 }
