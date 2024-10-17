@@ -31,16 +31,17 @@ export default function ForgotPasswordScreen() {
                     inputMode='email'
                     keyboardType='email-address'
                     autoCapitalize='none'
+                    testID='emailInput'
                 />
 
                 {/* Row Container */}
                 <View style={styles.rowContainer}>
                     {/* Back to SignIn */}
-                    <TouchableOpacity style={styles.buttonCancel} onPress={() => router.back()}>
+                    <TouchableOpacity style={styles.buttonCancel} onPress={() => router.back()} testID='cancelButton'>
                         <Text>Cancel</Text>
                     </TouchableOpacity>
                     {/* Reset Password */}
-                    <TouchableOpacity style={styles.buttonSendEmail} onPress={() => alert('Send Email')}>
+                    <TouchableOpacity style={styles.buttonSendEmail} onPress={() => alert('Send Email')} testID='resetPasswordButton'>
                         <Text style={{color: 'white'}}>Reset Password</Text>
                     </TouchableOpacity>
                 </View>
