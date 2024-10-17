@@ -28,6 +28,7 @@ export default function SignInScreen() {
             inputMode='email'
             keyboardType='email-address'
             autoCapitalize='none'
+            testID='emailInput'
         />
         
         <Text style={styles.text}>Password</Text>
@@ -36,20 +37,22 @@ export default function SignInScreen() {
             placeholder="**********"
             placeholderTextColor="#888"
             secureTextEntry={true}
+            autoComplete='password'
+            testID='passwordInput'
         />
 
         {/* SignIn Button */}
-        <TouchableOpacity style={styles.buttonSignIn} onPress={() => alert('Sign In')}>
+        <TouchableOpacity style={styles.buttonSignIn} onPress={() => alert('Sign In')} testID='signInButton'>
             <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
         {/* Forgot Password */}
-        <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => alert('Forgot Password')}>
+        <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => alert('Forgot Password')} testID='forgotPasswordButton'>
         <Text style={{ textDecorationLine: 'underline', marginBottom: height * 0.05}}>Forgot Password?</Text>
         </TouchableOpacity>
 
         {/* Continue with Google */}
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')}>
+        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')} testID='continueWithGoogleButton'>
         <View style={styles.buttonContent}>
             <Image source={require('@/assets/images/auth/SignInScreen/google.png')} style={styles.icon} />
             <Text style={styles.buttonText}>Continue with Google</Text>
@@ -57,7 +60,7 @@ export default function SignInScreen() {
         </TouchableOpacity>
 
         {/* Continue with Facebook */}
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')}>
+        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')} testID='continueWithFacebookButton'>
         <View style={styles.buttonContent}>
             <Image source={require('@/assets/images/auth/SignInScreen/facebook.png')} style={styles.icon} />
             <Text style={styles.buttonText}>Continue with Facebook</Text>
