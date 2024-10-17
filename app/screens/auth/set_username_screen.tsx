@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, StyleSheet, TextInput, Image} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const {width, height} = Dimensions.get('window');
 
 export default function SetUsername() {
     const [username, setUsername] = React.useState("");
+    const router = useRouter();
     return (
         <View style = {styles.backround}>
 
@@ -21,7 +23,7 @@ export default function SetUsername() {
             <Text style = {styles.title}>Set up your username</Text>
 
             {/* Go back button */}
-            <TouchableOpacity style={styles.goBack} onPress={() => alert('Go back')}>
+            <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
                 <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
 
@@ -36,7 +38,7 @@ export default function SetUsername() {
 
           </View>
             {/* Go further button */}
-            <TouchableOpacity style={styles.goFurther} onPress={() => alert('Go further')}>
+            <TouchableOpacity style={styles.goFurther} onPress={() => router.push('/screens/auth/profile_picture_screen')}>
                 <Ionicons name="arrow-forward" size={24} color="white" />
             </TouchableOpacity>
 
