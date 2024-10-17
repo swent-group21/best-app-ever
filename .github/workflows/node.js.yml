@@ -27,3 +27,9 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm test
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v1
+      with:
+          projectKey: strive  
+          organization: swent-group21   
+          token: ${{ secrets.SONAR_TOKEN }}
