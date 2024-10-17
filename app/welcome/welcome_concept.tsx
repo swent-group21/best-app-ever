@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
-// Get the screen dimensions
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -32,28 +31,28 @@ const styles = StyleSheet.create({
     },
     ovalShape: {
         position: 'absolute',
-        top: SCREEN_HEIGHT * 0.7, // Position it higher to overlap the previous screen
-        left: -SCREEN_WIDTH * 0.3, // Slightly offset to the left
-        width: SCREEN_WIDTH * 1.2, // Make the oval wider than the screen
-        height: SCREEN_HEIGHT * 0.7, // Make the oval tall enough to overlap
-        borderRadius: SCREEN_WIDTH * 0.6, // Large borderRadius for the oval effect
-        backgroundColor: '#E6BC95', // Beige color
+        top: SCREEN_HEIGHT * 0.7,
+        left: -SCREEN_WIDTH * 0.3,
+        width: SCREEN_WIDTH * 1.2,
+        height: SCREEN_HEIGHT * 0.7,
+        borderRadius: SCREEN_WIDTH * 0.6,
+        backgroundColor: '#E6BC95',
     },
     textContainer: {
         flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: 20, // Padding for text alignment
-        paddingBottom: 60, // Adjust padding to move the text down
+        paddingHorizontal: 20,
+        paddingBottom: 60,
     },
     title: {
         fontSize: 56,
         fontWeight: '900',
         color: '#000',
-        lineHeight: 62, // Adjusted for better spacing
+        lineHeight: 62,
         marginBottom: 20,
     },
     description: {
-        paddingTop: 60, // Added some padding above the description
+        paddingTop: 60,
         fontSize: 20,
         fontWeight: '800',
         color: '#000',
