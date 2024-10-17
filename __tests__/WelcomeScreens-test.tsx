@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import WelcomeScreens from '../app/(tabs)/welcome_screens'; 
+import WelcomeScreens from '../app/index'; 
 
 describe('WelcomeScreens Component', () => {
     it('renders the intro screen', () => {
