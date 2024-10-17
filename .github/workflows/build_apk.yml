@@ -3,12 +3,8 @@
 name: "Build APK"
 run-name: ${{ github.actor }} is learning build Android App using Github Actions
 on: 
-  push:
-    branches:
-      - develop-uat
-  pull_request: 
-    branches:
-      - develop-uat
+  push
+  
 jobs:
   build:
     runs-on: ubuntu-22.04
