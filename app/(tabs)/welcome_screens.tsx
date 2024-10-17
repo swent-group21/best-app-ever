@@ -34,7 +34,7 @@ export default function WelcomeScreens() {
                 <WelcomeFinalScreen />
             </ScrollView>
 
-            {/* Render the dots only if not on the last screen */}
+            {/* Render the dots, only if not on the last screen */}
             {activeIndex < 3 && (
                 <View style={styles.dotContainer}>
                     {[0, 1, 2, 4].map((i) => (
