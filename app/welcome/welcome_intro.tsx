@@ -14,7 +14,7 @@ export default function WelcomeIntroScreen() {
                 {/* Placeholder for the image */}
                 <Image
                     style={styles.image}
-                    source={{ uri: 'https://via.placeholder.com/100' }}
+                    source={require('../../assets/images/goat_doodle.png')}
                 />
             </View>
         </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     image: {
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
     },
 });
