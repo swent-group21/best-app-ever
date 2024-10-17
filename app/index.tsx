@@ -38,6 +38,7 @@ import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet, Dimensions } from 'react-native';
 >>>>>>> 889d1dd (refactor(app): changed default landing screen)
 
+<<<<<<< HEAD
 <<<<<<< HEAD:app/(tabs)/index.tsx
 <<<<<<< HEAD
   return (
@@ -82,6 +83,17 @@ import WelcomeConceptScreen from './welcome/welcome_concept';
 import WelcomePersonalScreen from './welcome/welcome_personal';
 import WelcomeFinalScreen from './welcome/welcome_final';
 >>>>>>> f36538d (refactor(app): deleted bottom navbar):app/index.tsx
+||||||| parent of f44d84d (refactor(app): standardized screens' name)
+import WelcomeIntroScreen from './welcome/welcome_intro';
+import WelcomeConceptScreen from './welcome/welcome_concept';
+import WelcomePersonalScreen from './welcome/welcome_personal';
+import WelcomeFinalScreen from './welcome/welcome_final';
+=======
+import WelcomeIntroScreen from './welcome/intro_screen';
+import WelcomeConceptScreen from './welcome/concept_screen';
+import WelcomePersonalScreen from './welcome/personal_screen';
+import WelcomeFinalScreen from './welcome/final_screen';
+>>>>>>> f44d84d (refactor(app): standardized screens' name)
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get('window').width;
