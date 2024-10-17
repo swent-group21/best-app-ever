@@ -52,7 +52,7 @@ export default function SignInScreen() {
         </TouchableOpacity>
 
         {/* Continue with Google */}
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')} testID='googleButton'>
+        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')} testID='continueWithGoogleButton'>
         <View style={styles.buttonContent}>
             <Image source={require('@/assets/images/auth/SignInScreen/google.png')} style={styles.icon} />
             <Text style={styles.buttonText}>Continue with Google</Text>
@@ -60,7 +60,7 @@ export default function SignInScreen() {
         </TouchableOpacity>
 
         {/* Continue with Facebook */}
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')} testID='facebookButton'>
+        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')} testID='continueWithFacebookButton'>
         <View style={styles.buttonContent}>
             <Image source={require('@/assets/images/auth/SignInScreen/facebook.png')} style={styles.icon} />
             <Text style={styles.buttonText}>Continue with Facebook</Text>
