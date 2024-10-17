@@ -1,9 +1,11 @@
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { useRouter } from 'expo-router';
 
 // Get screen width and height
 const { width, height } = Dimensions.get('window'); 
 
 export default function ForgotPasswordScreen() {
+    const router = useRouter();
     return (
         <View style = {styles.forgotPasswordScreen}>
             {/* Background Image */}
@@ -34,7 +36,7 @@ export default function ForgotPasswordScreen() {
                 {/* Row Container */}
                 <View style={styles.rowContainer}>
                     {/* Back to SignIn */}
-                    <TouchableOpacity style={styles.buttonCancel} onPress={() => alert('Back to SignIn')}>
+                    <TouchableOpacity style={styles.buttonCancel} onPress={() => router.back()}>
                         <Text>Cancel</Text>
                     </TouchableOpacity>
                     {/* Reset Password */}
