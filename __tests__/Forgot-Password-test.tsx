@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import ForgotPasswordScreen from '../app/auth/forgot-password';
+import ForgotPasswordScreen from '../app/screens/auth/forgot_password_screen';
 
 describe('ForgotPasswordScreen Component', () => {
   it('renders the "Forgot your Password?" title', () => {
