@@ -24,12 +24,12 @@ describe('SignInScreen Component', () => {
 
     it('renders the sign in with google button', () => {
         TestTextAppearsOnScreen('Continue with Google');
-        TestButtonAppearsOnScreen('googleButton');
+        TestButtonAppearsOnScreen('continueWithGoogleButton');
     });
 
     it('renders the sign in with facebook button', () => {
         TestTextAppearsOnScreen('Continue with Facebook');
-        TestButtonAppearsOnScreen('facebookButton');
+        TestButtonAppearsOnScreen('continueWithFacebookButton');
     });
 
     it('renders the forgot password button', () => {
