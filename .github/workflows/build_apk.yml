@@ -19,16 +19,31 @@ jobs:
 
       - run: npm ci
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
+      - name: Build Docker image for APK
+        run: |
+          # Get the IP of the GitHub runner
+          IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-      - name: Build APK with EAS
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  
-        run: eas build --platform android --non-interactive
-    
-      - name: Upload APK artifact
+          # Build the Docker image using the Dockerfile from the project
+          docker build --build-arg REACT_NATIVE_IP=$IP_ADDRESS -t strive-apk .
+
+
+      - name: Build APK inside Docker container
+        run: |
+          # Run the Docker container and build the APK inside it
+          docker run --rm --name strive_apk_container strive-apk ./android/gradlew assembleDebug
+
+      - name: Copy APK from container
+        run: |
+          # Create a directory on the host to store the APK
+          mkdir -p build_outputs
+
+          # Copy the APK from the Docker container to the host machine
+          docker cp strive_apk_container:/opt/strive/android/app/build/outputs/apk/debug/app-debug.apk ./build_outputs/app-debug.apk
+
+
+      - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: app-debug.apk
-          path: ./builds/android/*.apk
+          path: ./build_outputs/app-debug.apk
