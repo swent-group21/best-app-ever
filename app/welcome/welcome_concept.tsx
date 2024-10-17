@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     ovalShape: {
         position: 'absolute',
         top: SCREEN_HEIGHT * 0.7, // Position it higher to overlap the previous screen
-        left: -SCREEN_WIDTH * 0.1, // Slightly offset to the left
+        left: -SCREEN_WIDTH * 0.3, // Slightly offset to the left
         width: SCREEN_WIDTH * 1.2, // Make the oval wider than the screen
         height: SCREEN_HEIGHT * 0.7, // Make the oval tall enough to overlap
         borderRadius: SCREEN_WIDTH * 0.6, // Large borderRadius for the oval effect
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         paddingHorizontal: 20, // Padding for text alignment
-        paddingTop: SCREEN_HEIGHT * 0, // Adjust padding to move the text down
+        paddingBottom: 60, // Adjust padding to move the text down
     },
     title: {
         fontSize: 56,
