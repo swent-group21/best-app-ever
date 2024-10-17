@@ -7,7 +7,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+// TODO: INSTEAD OF TOASTS, USE THE NAVIGATION STACK 
   return (
     <Tabs
       screenOptions={{
@@ -21,6 +21,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
+
         }}
       />
       <Tabs.Screen
@@ -32,6 +33,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
     </Tabs>
   );
 }
