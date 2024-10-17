@@ -31,6 +31,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
           java-version: '17'
+    - name: Set Java 17 as default
+      run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1
       env:
