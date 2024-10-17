@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
 
 const {width, height} = Dimensions.get('window');
 
@@ -16,7 +17,7 @@ export default function SignUp() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-    
+    const router = useRouter();
 
     return (
 
@@ -34,7 +35,7 @@ export default function SignUp() {
           <View style = {styles.backround}>
 
           {/* Go back button */}
-          <TouchableOpacity style={styles.goBack} onPress={() => alert('Go back')}>
+          <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
