@@ -14,7 +14,7 @@ export default function WelcomeIntroScreen() {
                 {/* Placeholder for the image */}
                 <Image
                     style={styles.image}
-                    source={require('../../assets/images/goat_doodle.png')}
+                    source={require('../../../assets/images/goat.png')}
                 />
             </View>
         </View>
