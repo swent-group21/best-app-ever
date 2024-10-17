@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Dimensions, StyleSheet, TextInput, Image} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useRouter } from 'expo-router';
 
 const {width, height} = Dimensions.get('window');
 export default function SetProfilePicture() {
+    const router = useRouter();
     return (
         <View style = {styles.backround}>
 
@@ -19,7 +20,7 @@ export default function SetProfilePicture() {
             <Text style = {styles.title}>Set up your profile picture</Text>
 
             {/* Go back button */}
-            <TouchableOpacity style={styles.goBack} onPress={() => alert('Go back')}>
+            <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
                 <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
 
