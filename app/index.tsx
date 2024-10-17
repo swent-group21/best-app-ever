@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet, Dimensions } from 'react-native';
 
-import WelcomeIntroScreen from '../welcome/welcome_intro';
-import WelcomeConceptScreen from '../welcome/welcome_concept';
-import WelcomePersonalScreen from '../welcome/welcome_personal';
-import WelcomeFinalScreen from '../welcome/welcome_final';
+import WelcomeIntroScreen from './welcome/welcome_intro';
+import WelcomeConceptScreen from './welcome/welcome_concept';
+import WelcomePersonalScreen from './welcome/welcome_personal';
+import WelcomeFinalScreen from './welcome/welcome_final';
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get('window').width;
