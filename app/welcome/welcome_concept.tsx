@@ -11,11 +11,8 @@ export default function WelcomeConceptScreen() {
             <View style={styles.textContainer}>
                 <Text style={styles.title}>Participate{'\n'}in Weekly{'\n'}challenges</Text>
                 <Text style={styles.description}>
-                    Compete with your{'\n'}
-                    friends and people{'\n'}
-                    around you{'\n'}
-                    Become the goat and win{'\n'}
-                    prizes!
+                    Compete with your friends and people around you{'\n'}
+                    Become the goat and win prizes!
                 </Text>
             </View>
         </View>
