@@ -39,6 +39,7 @@ import { ScrollView, View, StyleSheet, Dimensions } from 'react-native';
 >>>>>>> 889d1dd (refactor(app): changed default landing screen)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:app/(tabs)/index.tsx
 <<<<<<< HEAD
   return (
@@ -94,6 +95,17 @@ import WelcomeConceptScreen from './welcome/concept_screen';
 import WelcomePersonalScreen from './welcome/personal_screen';
 import WelcomeFinalScreen from './welcome/final_screen';
 >>>>>>> f44d84d (refactor(app): standardized screens' name)
+||||||| parent of bfdc1af (refactor(app): added screen/ folder)
+import WelcomeIntroScreen from './welcome/intro_screen';
+import WelcomeConceptScreen from './welcome/concept_screen';
+import WelcomePersonalScreen from './welcome/personal_screen';
+import WelcomeFinalScreen from './welcome/final_screen';
+=======
+import WelcomeIntroScreen from './screens/welcome/intro_screen';
+import WelcomeConceptScreen from './screens/welcome/concept_screen';
+import WelcomePersonalScreen from './screens/welcome/personal_screen';
+import WelcomeFinalScreen from './screens/welcome/final_screen';
+>>>>>>> bfdc1af (refactor(app): added screen/ folder)
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get('window').width;
