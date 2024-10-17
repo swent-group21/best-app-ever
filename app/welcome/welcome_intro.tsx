@@ -8,9 +8,8 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 export default function WelcomeIntroScreen() {
     return (
         <View style={styles.container}>
-            <View style={styles.ovalShape}>
-                <Text style={styles.title}>So what is{'\n'}Strive{'\n'}about ?</Text>
-            </View>
+            <View style={styles.ovalShape} />
+            <Text style={styles.title}>So what is{'\n'}Strive{'\n'}about ?</Text>
             <View style={styles.bottomContainer}>
                 {/* Placeholder for the image */}
                 <Image
@@ -30,17 +29,18 @@ const styles = StyleSheet.create({
     },
     ovalShape: {
         position: 'absolute',
-        top: -SCREEN_HEIGHT * 0.3,
-        left: -SCREEN_WIDTH * 0.25,
-        width: SCREEN_WIDTH * 1.3,
-        height: SCREEN_HEIGHT * 0.8,
-        borderRadius: SCREEN_WIDTH * 0.75,
+        top: -SCREEN_HEIGHT * 0.95,
+        left: -SCREEN_WIDTH * 0.8,
+        width: SCREEN_WIDTH * 1.8,
+        height: SCREEN_HEIGHT * 1.5,
+        borderRadius: SCREEN_WIDTH * 0.9,
         backgroundColor: '#E6BC95',
         justifyContent: 'center',
         paddingLeft: SCREEN_WIDTH * 0.3,
     },
     title: {
-        paddingTop: SCREEN_HEIGHT * 0.4,
+        paddingTop: SCREEN_HEIGHT * 0.2,
+        paddingLeft: SCREEN_WIDTH * 0.05,
         fontSize: 70,
         fontWeight: '900',
         color: '#000',
