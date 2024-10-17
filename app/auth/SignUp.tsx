@@ -77,6 +77,7 @@ export default function SignUp() {
                 keyboardType='email-address'
                 autoCapitalize='none'
                 onChangeText={(text) => setEmail(text)}
+                maxLength={50}
               />
 
               {/* Password */}
@@ -146,7 +147,7 @@ export default function SignUp() {
  * @returns - true if the email is valid, false otherwise
  */
 function isValidEmail(email : string) {
-  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  let reg = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
   return reg.test(email);
 }
 
