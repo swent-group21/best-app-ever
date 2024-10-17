@@ -29,7 +29,10 @@ jobs:
     - run: npm test
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1
+      env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Your SonarCloud token stored as a GitHub secret
       with:
-          projectKey: strive  
-          organization: swent-group21   
-          token: ${{ secrets.SONAR_TOKEN }}
+          args: >
+            -Dsonar.projectKey=strive
+            -Dsonar.organization=swent-group21
+            -Dsonar.host.url=https://sonarcloud.io
