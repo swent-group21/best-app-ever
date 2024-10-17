@@ -20,7 +20,7 @@ export default function WelcomeConceptScreen() {
                 </TouchableOpacity>
                 {/* Add some space between the buttons */}
                 <Text /> 
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => alert('Sign up')}>
+                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_up_screen')}>
                     <Text style={styles.buttonText} >Sign Up</Text>
                 </TouchableOpacity>
                 {/* Add some space between the buttons */}
