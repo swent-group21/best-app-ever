@@ -25,7 +25,7 @@ export default function SignUp() {
 
         {/* Image in the backround out of the scroll view for immonility */}
         <Image
-          source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
+          source={require('@/assets/images/auth/SignUpScreen/Ellipse 3.png')}
           style={styles.backroundimage}
         />
        
@@ -120,7 +120,7 @@ export default function SignUp() {
                   }
                 }>
                 <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/google.png')} style={styles.icon} />
+                    <Image source={require('@/assets/images/auth/SignUpScreen/google.png')} style={styles.icon} />
                     <Text style={styles.buttonText}>Continue with Google</Text>
                 </View>
               </TouchableOpacity>
@@ -131,7 +131,7 @@ export default function SignUp() {
                     router.navigate('/screens/home/PLACEHOLDER_home_screen')
                   }}>
                 <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/facebook.png')} style={styles.icon} />
+                    <Image source={require('@/assets/images/auth/SignUpScreen/facebook.png')} style={styles.icon} />
                     <Text style={styles.buttonText}>Continue with Facebook</Text>
                 </View>
               </TouchableOpacity>
