@@ -46,3 +46,6 @@ jobs:
           path: ./app/build/outputs/apk/debug/app-debug.apk
           retention-days: 3
 
+      - name: Clean up
+        run: 
+              ./gradlew clean
