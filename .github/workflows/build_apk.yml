@@ -15,12 +15,12 @@ jobs:
       - name: Install Java 
         uses: actions/setup-java@v2
         with:
-          java-version: '20'
+          java-version: '11'
           distribution: "adopt"
           cache: "gradle"
 
       - name: Change wrapper permissions
-        run: chmod +x ./android/gradlew
+        run: chmod +x ./gradlew
       
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -36,14 +36,13 @@ jobs:
               yarn install
 
       - name: Build App
-        run: |
-              cd ./android
+        run: 
               ./gradlew assembleRelease
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: app
-          path: ./android/app/build/outputs/apk/release/app-release.apk
+          path: ./app/build/outputs/apk/release/app-release.apk
           retention-days: 3
 
