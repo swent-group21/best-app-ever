@@ -15,10 +15,11 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {
+   "android": {
+      "package": "com.strive.myapp",  // Add this with your app's actual package name
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+         "foregroundImage": "./assets/images/adaptive-icon.png",
+         "backgroundColor": "#ffffff"
       }
     },
     "web": {
