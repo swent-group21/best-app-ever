@@ -17,7 +17,6 @@ export default function WelcomeConceptScreen() {
     <View style={styles.container}>
       <View style={styles.ovalShapeOne} />
       <View style={styles.ovalShapeTwo} />
-
       <Text style={styles.title}>Ready to{"\n"}Strive?</Text>
 
       <View style={styles.buttonContainer}>
@@ -37,7 +36,12 @@ export default function WelcomeConceptScreen() {
         </TouchableOpacity>
         {/* Add some space between the buttons */}
         <Text />
-        <TouchableOpacity onPress={() => alert("Anonymous")}>
+        <TouchableOpacity
+          onPress={() => {
+            alert("Spooky user!");
+            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+          }}
+        >
           <Text>Continue as guest</Text>
         </TouchableOpacity>
       </View>
