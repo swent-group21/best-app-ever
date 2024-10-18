@@ -133,7 +133,7 @@ export default function SignUp() {
             >
               <View style={styles.buttonIcon}>
                 <Image
-                  source={require("@/assets/images/SignUpScreen/google.png")}
+                  source={require("@/assets/images/auth/SignUpScreen/google.png")}
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Continue with Google</Text>
