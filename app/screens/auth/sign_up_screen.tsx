@@ -155,7 +155,7 @@ export default function SignUp() {
                 onClickStrive(password, confirmPassword, name, surname, email)
               }
             >
-              <Text style={styles.buttonText} >Strive with us</Text>
+              <Text style={styles.buttonText}>Strive with us</Text>
             </TouchableOpacity>
 
 <<<<<<< HEAD
@@ -175,7 +175,7 @@ export default function SignUp() {
 >>>>>>> 8303281 (style: formatted app)
 
             {/* Sign Up buttons for Google */}
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.buttonContinueWith}
               testID="GoogleSign"
               onPress={() => {
