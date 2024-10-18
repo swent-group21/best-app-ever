@@ -128,7 +128,7 @@ export default function SignUp() {
               {/* Sign Up buttons for Facebook */}
               <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
                     alert('Sign In with Facebook')
-                    router.push('/screens/home/PLACEHOLDER_home_screen')
+                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
                   }}>
                 <View style={styles.buttonIcon}>
                     <Image source={require('@/assets/images/sign-up-screen/facebook.png')} style={styles.icon} />
