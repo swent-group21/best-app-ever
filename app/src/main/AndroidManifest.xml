@@ -2,12 +2,10 @@
     package="com.example.myapp">
 
     <application
-        android:label="MyApp"
-        android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="false"
+        android:label="strive"
+        android:icon="@mipmap/ic_launcher">
 
-
-        <!-- MainActivity with android:exported set to true -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -18,5 +16,4 @@
         </activity>
 
     </application>
-
 </manifest>
