@@ -17,28 +17,36 @@ export default function WelcomeConceptScreen() {
     <View style={styles.container}>
       <View style={styles.ovalShapeOne} />
       <View style={styles.ovalShapeTwo} />
-            <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
-            
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_in_screen')}>
-                    <Text style={styles.buttonText} >Login</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_up_screen')}>
-                    <Text style={styles.buttonText} >Sign Up</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity onPress={() => {
-                            alert('Spooky user!')
-                            router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                        }}>
-                    <Text >Continue as guest</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
+      <Text style={styles.title}>Ready to{"\n"}Strive?</Text>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.buttonAccount}
+          onPress={() => router.push("/screens/auth/sign_in_screen")}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        {/* Add some space between the buttons */}
+        <Text />
+        <TouchableOpacity
+          style={styles.buttonAccount}
+          onPress={() => router.push("/screens/auth/sign_up_screen")}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+        {/* Add some space between the buttons */}
+        <Text />
+        <TouchableOpacity
+          onPress={() => {
+            alert("Spooky user!");
+            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+          }}
+        >
+          <Text>Continue as guest</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

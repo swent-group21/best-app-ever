@@ -46,98 +46,119 @@ export default function SignUp() {
           <Text style={styles.title}>Tell us about you !</Text>
 
           {/* The input fields */}
-          <View style = {styles.inputColumn}>
-              
-              {/* Name */}
-              <Text style = {styles.titleinput}>Name *</Text>
-              <TextInput 
-                style = {styles.input}
-                placeholder='Name'
-                placeholderTextColor="#888"
-                onChangeText={(text) => setName(text)}
-                autoComplete='name'
+          <View style={styles.inputColumn}>
+            {/* Name */}
+            <Text style={styles.titleinput}>Name *</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              placeholderTextColor="#888"
+              onChangeText={(text) => setName(text)}
+              autoComplete="name"
+            />
 
-              />
-              
-              {/* Surname */}
-              <Text style = {styles.titleinput}>Surname *</Text>
-              <TextInput
-                style = {styles.input}
-                placeholder='Surname'
-                placeholderTextColor="#888"
-                onChangeText={(text) => setSurname(text)}
-                autoComplete='family-name'
+            {/* Surname */}
+            <Text style={styles.titleinput}>Surname *</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Surname"
+              placeholderTextColor="#888"
+              onChangeText={(text) => setSurname(text)}
+              autoComplete="family-name"
+            />
 
-              />
+            {/* Email */}
+            <Text style={styles.titleinput}>Email *</Text>
+            <TextInput
+              style={
+                isValidEmail(email) || email.length == 0
+                  ? styles.input
+                  : styles.inputWrong
+              }
+              placeholder="example@your.domain"
+              placeholderTextColor="#888"
+              autoComplete="email"
+              inputMode="email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(text) => setEmail(text)}
+              maxLength={50}
+            />
 
-              {/* Email */}
-              <Text style = {styles.titleinput}>Email *</Text>
-              <TextInput
-                style = {isValidEmail(email) || email.length == 0 ? styles.input : styles.inputWrong}
-                placeholder="example@your.domain"
-                placeholderTextColor="#888"
-                autoComplete='email'
-                inputMode='email'
-                keyboardType='email-address'
-                autoCapitalize='none'
-                onChangeText={(text) => setEmail(text)}
-                maxLength={50}
-              />
+            {/* Password */}
+            <Text style={styles.titleinput}>Password *</Text>
+            <TextInput
+              style={
+                password.length >= 8 || password.length == 0
+                  ? styles.input
+                  : styles.inputWrong
+              }
+              placeholder="Password"
+              placeholderTextColor="#888"
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
+            />
 
-              {/* Password */}
-              <Text style = {styles.titleinput}>Password *</Text>
-              <TextInput
-                style = {password.length >= 8 || password.length == 0? styles.input : styles.inputWrong}
-                placeholder='Password'
-                placeholderTextColor="#888"
-                secureTextEntry={true}
-                onChangeText={(text) => setPassword(text)}
-              />
-        
+            {/* Confirm Password */}
+            <Text style={styles.titleinput}>Confirm Password *</Text>
+            <TextInput
+              style={
+                confirmPassword.length == 0 || password == confirmPassword
+                  ? styles.input
+                  : styles.inputWrong
+              }
+              placeholder="Confirm Password"
+              placeholderTextColor="#888"
+              secureTextEntry={true}
+              onChangeText={(text) => setConfirmPassword(text)}
+            />
 
-              {/* Confirm Password */}
-              <Text style = {styles.titleinput}>Confirm Password *</Text>
-              <TextInput
-                style = {confirmPassword.length == 0 ||password == confirmPassword ? styles.input : styles.inputWrong}
-                placeholder= 'Confirm Password'
-                placeholderTextColor="#888"
-                secureTextEntry={true}
-                onChangeText={(text) => setConfirmPassword(text)}
-              />
+            {/* Register Button */}
+            <TouchableOpacity
+              style={styles.buttonStrive}
+              onPress={() =>
+                onClickStrive(password, confirmPassword, name, surname, email)
+              }
+            >
+              <Text style={styles.buttonText}>Strive with us</Text>
+            </TouchableOpacity>
 
-              {/* Register Button */}
-              <TouchableOpacity style={styles.buttonStrive} onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}>
-                <Text style={styles.buttonText}>Strive with us</Text>
-              </TouchableOpacity>
+            {/* OR */}
+            <Text style={styles.or}>OR</Text>
 
-          
-              {/* OR */}
-              <Text style = {styles.or}> 
-                  OR
-              </Text>
+            {/* Sign Up buttons for Google */}
+            <TouchableOpacity
+              style={styles.buttonContinueWith}
+              onPress={() => {
+                alert("Sign In with Google");
+                router.navigate("/screens/home/PLACEHOLDER_home_screen");
+              }}
+            >
+              <View style={styles.buttonIcon}>
+                <Image
+                  source={require("@/assets/images/sign-up-screen/google.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.buttonText}>Continue with Google</Text>
+              </View>
+            </TouchableOpacity>
 
-              {/* Sign Up buttons for Google */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                    alert('Sign In with Google')
-                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                  }
-                }>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/google.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Google</Text>
-                </View>
-              </TouchableOpacity>
-
-              {/* Sign Up buttons for Facebook */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                    alert('Sign In with Facebook')
-                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                  }}>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/facebook.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Facebook</Text>
-                </View>
-              </TouchableOpacity>
+            {/* Sign Up buttons for Facebook */}
+            <TouchableOpacity
+              style={styles.buttonContinueWith}
+              onPress={() => {
+                alert("Sign In with Facebook");
+                router.navigate("/screens/home/PLACEHOLDER_home_screen");
+              }}
+            >
+              <View style={styles.buttonIcon}>
+                <Image
+                  source={require("@/assets/images/sign-up-screen/facebook.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.buttonText}>Continue with Facebook</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
