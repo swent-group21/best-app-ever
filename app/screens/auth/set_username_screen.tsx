@@ -20,7 +20,7 @@ export default function SetUsername() {
     <View style={styles.backround}>
       {/* Image in the backround out of the scroll view for immonility */}
       <Image
-        source={require("@/assets/images/sign-up-screen/Ellipse 3.png")}
+        source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.ellipse}
       />
 
