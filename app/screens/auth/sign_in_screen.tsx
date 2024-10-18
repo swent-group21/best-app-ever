@@ -51,6 +51,7 @@ export default function SignInScreen() {
 
         {/* SignIn Button */}
 <<<<<<< HEAD
+<<<<<<< HEAD
         <TouchableOpacity style={styles.buttonSignIn} onPress={() => {
                 alert('Sign In')
                 router.navigate('/screens/home/PLACEHOLDER_home_screen')
@@ -67,6 +68,24 @@ export default function SignInScreen() {
         >
           <Text style={styles.buttonText}>Sign In</Text>
 >>>>>>> 29cdd85 (style: formatted using prettier)
+||||||| parent of 8303281 (style: formatted app)
+        <TouchableOpacity style={styles.buttonSignIn} onPress={() => {
+                alert('Sign In')
+                router.navigate('/screens/home/PLACEHOLDER_home_screen')
+            }} testID='signInButton'>
+            <Text style={styles.buttonText}>Sign In</Text>
+
+=======
+        <TouchableOpacity
+          style={styles.buttonSignIn}
+          onPress={() => {
+            alert("Sign In");
+            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+          }}
+          testID="signInButton"
+        >
+          <Text style={styles.buttonText}>Sign In</Text>
+>>>>>>> 8303281 (style: formatted app)
         </TouchableOpacity>
 
         {/* Forgot Password */}
@@ -101,6 +120,7 @@ export default function SignInScreen() {
 
         {/* Continue with Google */}
 <<<<<<< HEAD
+<<<<<<< HEAD
         <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
                 alert('Sign In with Google')
                 router.navigate('/screens/home/PLACEHOLDER_home_screen')
@@ -123,11 +143,38 @@ export default function SignInScreen() {
               style={styles.icon}
             />
 >>>>>>> 29cdd85 (style: formatted using prettier)
+||||||| parent of 8303281 (style: formatted app)
+
+        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
+                alert('Sign In with Google')
+                router.navigate('/screens/home/PLACEHOLDER_home_screen')
+            }} testID='continueWithGoogleButton'>
+        <View style={styles.buttonContent}>
+            <Image source={require('@/assets/images/auth/SignInScreen/google.png')} style={styles.icon} />
+
+=======
+
+        <TouchableOpacity
+          style={styles.buttonContinueWith}
+          onPress={() => {
+            alert("Sign In with Google");
+            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+          }}
+          testID="continueWithGoogleButton"
+        >
+          <View style={styles.buttonContent}>
+            <Image
+              source={require("@/assets/images/auth/SignInScreen/google.png")}
+              style={styles.icon}
+            />
+
+>>>>>>> 8303281 (style: formatted app)
             <Text style={styles.buttonText}>Continue with Google</Text>
           </View>
         </TouchableOpacity>
 
         {/* Continue with Facebook */}
+<<<<<<< HEAD
 <<<<<<< HEAD
         <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
                 alert('Sign In with Facebook')
@@ -151,6 +198,32 @@ export default function SignInScreen() {
               style={styles.icon}
             />
 >>>>>>> 29cdd85 (style: formatted using prettier)
+||||||| parent of 8303281 (style: formatted app)
+
+        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
+                alert('Sign In with Facebook')
+                router.navigate('/screens/home/PLACEHOLDER_home_screen')
+            }} testID='continueWithFacebookButton'>
+        <View style={styles.buttonContent}>
+            <Image source={require('@/assets/images/auth/SignInScreen/facebook.png')} style={styles.icon} />
+
+=======
+
+        <TouchableOpacity
+          style={styles.buttonContinueWith}
+          onPress={() => {
+            alert("Sign In with Facebook");
+            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+          }}
+          testID="continueWithFacebookButton"
+        >
+          <View style={styles.buttonContent}>
+            <Image
+              source={require("@/assets/images/auth/SignInScreen/facebook.png")}
+              style={styles.icon}
+            />
+
+>>>>>>> 8303281 (style: formatted app)
             <Text style={styles.buttonText}>Continue with Facebook</Text>
           </View>
         </TouchableOpacity>
