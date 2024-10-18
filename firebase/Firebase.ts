@@ -41,21 +41,6 @@ const storageBucket= process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET
 const messagingSenderId= process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 const appId= process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 
-console.log("Environment variables:\n- FIREBASE_API_KEY: ", 
-apiKey
-  , "\n- FIREBASE_AUTH_DOMAIN: ", 
-authDomain
-  , "\n- FIREBASE_PROJECT_ID: ", 
-projectId
-  , "\n- FIREBASE_STORAGE_BUCKET: ", 
-storageBucket
-  , "\n- FIREBASE_MESSAGING_SENDER_ID: ", 
-messagingSenderId
-  , "\n- FIREBASE_WEB_APP_ID: ", 
-appId
-);
-
-
 const firebaseConfig = {
   apiKey: apiKey,
   authDomain: authDomain,
