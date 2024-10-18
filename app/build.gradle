@@ -4,10 +4,10 @@ android {
     compileSdkVersion 31
 
     // Add the namespace here
-    namespace 'com.example.myapp'  // Replace with your actual package name if different
+    namespace 'com.strive.myapp'  // Replace with your actual package name if different
 
     defaultConfig {
-        applicationId "com.example.myapp"
+        applicationId "com.strive.myapp"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
