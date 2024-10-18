@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Alert } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
-
 
 /**
  * Sign Up screen
@@ -20,10 +20,11 @@ export default function SignUp() {
 
     return (
 
-      <View> 
+      <View testID='signUpScreen'> 
 
         {/* Image in the backround out of the scroll view for immonility */}
         <Image
+          testID='ellipse'
           source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
           style={styles.backroundimage}
         />
@@ -34,8 +35,8 @@ export default function SignUp() {
           <View style = {styles.backround}>
 
           {/* Go back button */}
-          <TouchableOpacity style={styles.goBack} onPress={() => alert('Go back')}>
-            <Ionicons name="arrow-back" size={24} color="white" />
+          <TouchableOpacity style={styles.goBack} onPress={() => Alert.alert('Go back')} testID='goBack'>
+            <Ionicons name="arrow-back" size={24} color="white" testID='goBackIcon' />
           </TouchableOpacity>
 
           {/* Title of the screen */}
@@ -45,7 +46,7 @@ export default function SignUp() {
           <View style = {styles.inputColumn}>
               
               {/* Name */}
-              <Text style = {styles.titleinput}>Name *</Text>
+              <Text style = {styles.titleinput} >Name *</Text>
               <TextInput 
                 style = {styles.input}
                 placeholder='Name'
@@ -102,9 +103,12 @@ export default function SignUp() {
               />
 
               {/* Register Button */}
-              <TouchableOpacity style={styles.buttonStrive} onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}>
+              <TouchableOpacity style={styles.buttonStrive} 
+                                onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}
+                                testID='striveButton'>
                 <Text style={styles.buttonText}>Strive with us</Text>
               </TouchableOpacity>
+
 
           
               {/* OR */}
@@ -113,7 +117,7 @@ export default function SignUp() {
               </Text>
 
               {/* Sign Up buttons for Google */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')}>
+              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => Alert.alert('Sign In with Google')} testID='GoogleSign'>
                 <View style={styles.buttonIcon}>
                     <Image source={require('@/assets/images/sign-up-screen/google.png')} style={styles.icon} />
                     <Text style={styles.buttonText}>Continue with Google</Text>
@@ -121,7 +125,7 @@ export default function SignUp() {
               </TouchableOpacity>
 
               {/* Sign Up buttons for Facebook */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')}>
+              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => Alert.alert('Sign In with Facebook')} testID='FacebookSign'>
                 <View style={styles.buttonIcon}>
                     <Image source={require('@/assets/images/sign-up-screen/facebook.png')} style={styles.icon} />
                     <Text style={styles.buttonText}>Continue with Facebook</Text>
@@ -139,7 +143,6 @@ export default function SignUp() {
     );
   }
 
-    
 
 /*** 
  * Function to check if the email is valid
@@ -162,19 +165,19 @@ function isValidEmail(email : string) {
  */
 function onClickStrive(password : string, confirmPassword : string, name : string, surname : string, email : string) {
   if (name.length == 0 || surname.length == 0 || email.length == 0 || password.length == 0 || confirmPassword.length == 0) {
-    alert('All fields are required');
+    Alert.alert('All fields are required');
 }
     else if (!isValidEmail(email)) {
-    alert('Invalid email');
+    Alert.alert('Invalid email');
 }
 else if (password != confirmPassword) {
-    alert('Passwords do not match');
+    Alert.alert('Passwords do not match');
 }
 else if (password.length < 8) {
-    alert('Password must be at least 8 characters long');
+    Alert.alert('Password must be at least 8 characters long');
 }
 else {
-    alert('Sign Up');
+    Alert.alert('Sign Up');
 }
 
 

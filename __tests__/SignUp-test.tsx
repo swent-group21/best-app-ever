@@ -1,8 +1,13 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { fireEvent, render} from '@testing-library/react-native';
 import SignUp from '@/app/auth/sign-up'; 
+import { Alert } from 'react-native';
+
+
 
 describe('SignUp Component', () => {
+    
+    {/* Test if the input fields are rendered */}
     it('renders the name input field', () => {
         TestInputField('Name');
     });
@@ -23,12 +28,14 @@ describe('SignUp Component', () => {
         TestInputField('Confirm Password');
     });
 
+    {/* Test if the buttons are rendered */}
     it('renders the register button', () => {
         const { getByText } = render(<SignUp />);
         
         expect(getByText('Strive with us')).toBeTruthy(); 
     });
 
+    {/* Test if the titles are rendered */}
     it('renders the title', () => {
         const { getByText } = render(<SignUp />);
         
@@ -65,9 +72,50 @@ describe('SignUp Component', () => {
         expect(getByText('Confirm Password *')).toBeTruthy(); 
     });
 
+    it ('render the OR text', () => {
+        const { getByText } = render(<SignUp />);
+        expect(getByText('OR')).toBeTruthy(); 
+    });
+
+    it ('render the sign up button for Google button with the correct text', () => {
+        const { getByText } = render(<SignUp />);        
+        expect(getByText('Continue with Google')).toBeTruthy(); 
+    }
+    );
+
+    it ('render the sign up button for Facebook button with the correct text', () => {
+        const { getByText } = render(<SignUp />);        
+        expect(getByText('Continue with Facebook')).toBeTruthy();
+
+    }
+    );
+    
+  
 });
 
+describe ('Test if the buttons are clickable', () => {
+    it('clicks the register button', () => {
+        const { getByTestId } = render(<SignUp />);
+        fireEvent.press(getByTestId('striveButton'));
+
+    });
+
+    it('clicks the Google sign in button', () => {
+        const { getByTestId } = render(<SignUp />);
+        fireEvent.press(getByTestId('GoogleSign'));
+    });
+
+    it('clicks the Facebook sign in button', () => {
+        const { getByTestId } = render(<SignUp />);
+        fireEvent.press(getByTestId('FacebookSign'));
+    });
+});
+
+        
+
+
 function TestInputField(placeholder: string) {
+
     const { getByPlaceholderText } = render(<SignUp />);
         
     expect(getByPlaceholderText(placeholder)).toBeTruthy(); 
