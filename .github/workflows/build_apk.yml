@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of a working and stable APK.
 
 name: "Build APK"
-run-name: ${{ github.actor }} is learning build Android App using Github Actions
+run-name: Building APK...
 on: 
   push
   
@@ -45,4 +45,3 @@ jobs:
           name: app
           path: ./app/build/outputs/apk/debug/app-debug.apk
           retention-days: 3
-
