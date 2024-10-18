@@ -3,7 +3,9 @@
 
     <application
         android:label="MyApp"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="false"
+        android:debuggable="false">
 
         <!-- MainActivity with android:exported set to true -->
         <activity
