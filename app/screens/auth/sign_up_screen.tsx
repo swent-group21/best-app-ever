@@ -230,7 +230,13 @@ export default function SignUp() {
             >
               <View style={styles.buttonIcon}>
                 <Image
+<<<<<<< HEAD
                   source={require("@/assets/images/sign-up-screen/google.png")}
+||||||| parent of 4e3e52d (style: formatted app)
+                  source={require("@/assets/images/SignUpScreen/google.png")}
+=======
+                  source={require("@/assets/images/auth/SignUpScreen/google.png")}
+>>>>>>> 4e3e52d (style: formatted app)
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Continue with Google</Text>
