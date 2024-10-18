@@ -136,7 +136,7 @@ export default function SignUp() {
             >
               <View style={styles.buttonIcon}>
                 <Image
-                  source={require("@/assets/images/sign-up-screen/google.png")}
+                  source={require("@/assets/images/auth/SignUpScreen/google.png")}
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Continue with Google</Text>
@@ -153,7 +153,7 @@ export default function SignUp() {
             >
               <View style={styles.buttonIcon}>
                 <Image
-                  source={require("@/assets/images/sign-up-screen/facebook.png")}
+                  source={require("@/assets/images/auth/SignUpScreen/facebook.png")}
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Continue with Facebook</Text>
