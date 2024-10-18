@@ -1,131 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import { View, Text, Platform, Button } from 'react-native';
-import { logInWithGoogle, signUpWithEmail } from "@/types/Auth";
-import GoogleAuthConfig from "@/types/GoogleAuthConfig";
-import { GoogleAuthProvider } from "@/firebase/Firebase";
-import * as Google from "expo-auth-session/providers/google";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-
-const firestoreCtrl = new FirestoreCtrl();
-
-export default function HomeScreen( { navigation }: any) {
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-
-  const [password, setPassword] = useState("");
-
-  const config = Platform.select({
-    web: GoogleAuthConfig.web,
-    ios: GoogleAuthConfig.ios,
-    android: GoogleAuthConfig.android,
-  });
-
-  const [request, response, promptAsync] = Google.useAuthRequest(config);
-
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      logInWithGoogle(credential, navigation, firestoreCtrl);
-    }
-  }, [response]);
-||||||| parent of 889d1dd (refactor(app): changed default landing screen)
-import { View, Text } from 'react-native';
-=======
-import React, { useState } from 'react';
-import { ScrollView, View, StyleSheet, Dimensions } from 'react-native';
->>>>>>> 889d1dd (refactor(app): changed default landing screen)
-||||||| parent of 29cdd85 (style: formatted using prettier)
-import React, { useState } from 'react';
-import { ScrollView, View, StyleSheet, Dimensions } from 'react-native';
-=======
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Dimensions } from "react-native";
->>>>>>> 29cdd85 (style: formatted using prettier)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:app/(tabs)/index.tsx
-<<<<<<< HEAD
-  return (
-    <View className="bg-cover bg-sky-500 ">
-      <Text className="text-3xl"> 
-        HELLO THIS IS THE HOME SCREEN
-      </Text>
-      <Text className="text-3xl"> 
-        This is another DIV
-      </Text>
-
-      <Button
-        onPress={() => promptAsync()}
-        title="Learn More"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-    </View>
-  );
-||||||| parent of 889d1dd (refactor(app): changed default landing screen)
-export default function HomeScreen() {
-  return (
-    <View className="bg-cover bg-sky-500 ">
-      <Text className="text-3xl"> 
-        HELLO THIS IS THE HOME SCREEN
-      </Text>
-    </View>
-  );
-=======
-import WelcomeIntroScreen from '../welcome/welcome_intro';
-import WelcomeConceptScreen from '../welcome/welcome_concept';
-import WelcomePersonalScreen from '../welcome/welcome_personal';
-import WelcomeFinalScreen from '../welcome/welcome_final';
-||||||| parent of f36538d (refactor(app): deleted bottom navbar):app/(tabs)/index.tsx
-import WelcomeIntroScreen from '../welcome/welcome_intro';
-import WelcomeConceptScreen from '../welcome/welcome_concept';
-import WelcomePersonalScreen from '../welcome/welcome_personal';
-import WelcomeFinalScreen from '../welcome/welcome_final';
-=======
-import WelcomeIntroScreen from './welcome/welcome_intro';
-import WelcomeConceptScreen from './welcome/welcome_concept';
-import WelcomePersonalScreen from './welcome/welcome_personal';
-import WelcomeFinalScreen from './welcome/welcome_final';
->>>>>>> f36538d (refactor(app): deleted bottom navbar):app/index.tsx
-||||||| parent of f44d84d (refactor(app): standardized screens' name)
-import WelcomeIntroScreen from './welcome/welcome_intro';
-import WelcomeConceptScreen from './welcome/welcome_concept';
-import WelcomePersonalScreen from './welcome/welcome_personal';
-import WelcomeFinalScreen from './welcome/welcome_final';
-=======
-import WelcomeIntroScreen from './welcome/intro_screen';
-import WelcomeConceptScreen from './welcome/concept_screen';
-import WelcomePersonalScreen from './welcome/personal_screen';
-import WelcomeFinalScreen from './welcome/final_screen';
->>>>>>> f44d84d (refactor(app): standardized screens' name)
-||||||| parent of bfdc1af (refactor(app): added screen/ folder)
-import WelcomeIntroScreen from './welcome/intro_screen';
-import WelcomeConceptScreen from './welcome/concept_screen';
-import WelcomePersonalScreen from './welcome/personal_screen';
-import WelcomeFinalScreen from './welcome/final_screen';
-=======
-import WelcomeIntroScreen from './screens/welcome/intro_screen';
-import WelcomeConceptScreen from './screens/welcome/concept_screen';
-import WelcomePersonalScreen from './screens/welcome/personal_screen';
-import WelcomeFinalScreen from './screens/welcome/final_screen';
->>>>>>> bfdc1af (refactor(app): added screen/ folder)
-||||||| parent of 29cdd85 (style: formatted using prettier)
-import WelcomeIntroScreen from './screens/welcome/intro_screen';
-import WelcomeConceptScreen from './screens/welcome/concept_screen';
-import WelcomePersonalScreen from './screens/welcome/personal_screen';
-import WelcomeFinalScreen from './screens/welcome/final_screen';
-=======
 import WelcomeIntroScreen from "./screens/welcome/intro_screen";
 import WelcomeConceptScreen from "./screens/welcome/concept_screen";
 import WelcomePersonalScreen from "./screens/welcome/personal_screen";
 import WelcomeFinalScreen from "./screens/welcome/final_screen";
->>>>>>> 29cdd85 (style: formatted using prettier)
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -168,21 +47,10 @@ export default function WelcomeScreens() {
             />
           ))}
         </View>
-<<<<<<< HEAD
-    );
->>>>>>> 889d1dd (refactor(app): changed default landing screen)
-||||||| parent of 29cdd85 (style: formatted using prettier)
-    );
-=======
       )}
     </View>
   );
->>>>>>> 29cdd85 (style: formatted using prettier)
 }
-<<<<<<< HEAD
-||||||| parent of 889d1dd (refactor(app): changed default landing screen)
-
-=======
 
 const styles = StyleSheet.create({
   container: {
@@ -214,4 +82,3 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
 });
->>>>>>> 889d1dd (refactor(app): changed default landing screen)

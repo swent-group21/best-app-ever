@@ -17,102 +17,6 @@ export default function WelcomeConceptScreen() {
     <View style={styles.container}>
       <View style={styles.ovalShapeOne} />
       <View style={styles.ovalShapeTwo} />
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-            <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
-            
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_in_screen')}>
-                    <Text style={styles.buttonText} >Login</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_up_screen')}>
-                    <Text style={styles.buttonText} >Sign Up</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity onPress={() => {
-                            alert('Spooky user!')
-                            router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                        }}>
-                    <Text >Continue as guest</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-||||||| parent of 29cdd85 (style: formatted using prettier)
-            <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
-            
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_in_screen')}>
-                    <Text style={styles.buttonText} >Login</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_up_screen')}>
-                    <Text style={styles.buttonText} >Sign Up</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity onPress={() => alert('Anonymous')}>
-                    <Text >Continue as guest</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-=======
-      <Text style={styles.title}>Ready to{"\n"}Strive?</Text>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.buttonAccount}
-          onPress={() => router.push("/screens/auth/sign_in_screen")}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        {/* Add some space between the buttons */}
-        <Text />
-        <TouchableOpacity
-          style={styles.buttonAccount}
-          onPress={() => router.push("/screens/auth/sign_up_screen")}
-        >
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-        {/* Add some space between the buttons */}
-        <Text />
-        <TouchableOpacity onPress={() => alert("Anonymous")}>
-          <Text>Continue as guest</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
->>>>>>> 29cdd85 (style: formatted using prettier)
-||||||| parent of 8303281 (style: formatted app)
-            <Text style={styles.title}>Ready to{'\n'}Strive?</Text>
-            
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_in_screen')}>
-                    <Text style={styles.buttonText} >Login</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity style={styles.buttonAccount} onPress={() => router.push('/screens/auth/sign_up_screen')}>
-                    <Text style={styles.buttonText} >Sign Up</Text>
-                </TouchableOpacity>
-                {/* Add some space between the buttons */}
-                <Text /> 
-                <TouchableOpacity onPress={() => {
-                            alert('Spooky user!')
-                            router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                        }}>
-                    <Text >Continue as guest</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-=======
       <Text style={styles.title}>Ready to{"\n"}Strive?</Text>
 
       <View style={styles.buttonContainer}>
@@ -143,7 +47,6 @@ export default function WelcomeConceptScreen() {
       </View>
     </View>
   );
->>>>>>> 8303281 (style: formatted app)
 }
 
 const styles = StyleSheet.create({

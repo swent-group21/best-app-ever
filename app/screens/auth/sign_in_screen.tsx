@@ -50,32 +50,6 @@ export default function SignInScreen() {
         />
 
         {/* SignIn Button */}
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <TouchableOpacity style={styles.buttonSignIn} onPress={() => {
-                alert('Sign In')
-                router.navigate('/screens/home/PLACEHOLDER_home_screen')
-            }} testID='signInButton'>
-            <Text style={styles.buttonText}>Sign In</Text>
-||||||| parent of 29cdd85 (style: formatted using prettier)
-        <TouchableOpacity style={styles.buttonSignIn} onPress={() => alert('Sign In')} testID='signInButton'>
-            <Text style={styles.buttonText}>Sign In</Text>
-=======
-        <TouchableOpacity
-          style={styles.buttonSignIn}
-          onPress={() => alert("Sign In")}
-          testID="signInButton"
-        >
-          <Text style={styles.buttonText}>Sign In</Text>
->>>>>>> 29cdd85 (style: formatted using prettier)
-||||||| parent of 8303281 (style: formatted app)
-        <TouchableOpacity style={styles.buttonSignIn} onPress={() => {
-                alert('Sign In')
-                router.navigate('/screens/home/PLACEHOLDER_home_screen')
-            }} testID='signInButton'>
-            <Text style={styles.buttonText}>Sign In</Text>
-
-=======
         <TouchableOpacity
           style={styles.buttonSignIn}
           onPress={() => {
@@ -85,23 +59,9 @@ export default function SignInScreen() {
           testID="signInButton"
         >
           <Text style={styles.buttonText}>Sign In</Text>
->>>>>>> 8303281 (style: formatted app)
         </TouchableOpacity>
 
         {/* Forgot Password */}
-<<<<<<< HEAD
-<<<<<<< HEAD:app/screens/auth/sign_in_screen.tsx
-        <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => router.push('/screens/auth/forgot_password_screen')}>
-||||||| parent of 8c4008d (feat(tests): added basic sign-inScreens tests):app/auth/sign-in.tsx
-        <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => alert('Forgot Password')}>
-=======
-        <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => alert('Forgot Password')} testID='forgotPasswordButton'>
->>>>>>> 8c4008d (feat(tests): added basic sign-inScreens tests):app/auth/sign-in.tsx
-        <Text style={{ textDecorationLine: 'underline', marginBottom: height * 0.05}}>Forgot Password?</Text>
-||||||| parent of 29cdd85 (style: formatted using prettier)
-        <TouchableOpacity style={{ alignSelf: 'flex-start' }} onPress={() => router.push('/screens/auth/forgot_password_screen')} testID='forgotPasswordButton'>
-        <Text style={{ textDecorationLine: 'underline', marginBottom: height * 0.05}}>Forgot Password?</Text>
-=======
         <TouchableOpacity
           style={{ alignSelf: "flex-start" }}
           onPress={() => router.push("/screens/auth/forgot_password_screen")}
@@ -115,44 +75,9 @@ export default function SignInScreen() {
           >
             Forgot Password?
           </Text>
->>>>>>> 29cdd85 (style: formatted using prettier)
         </TouchableOpacity>
 
         {/* Continue with Google */}
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                alert('Sign In with Google')
-                router.navigate('/screens/home/PLACEHOLDER_home_screen')
-            }} testID='continueWithGoogleButton'>
-        <View style={styles.buttonContent}>
-            <Image source={require('@/assets/images/auth/SignInScreen/google.png')} style={styles.icon} />
-||||||| parent of 29cdd85 (style: formatted using prettier)
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')} testID='continueWithGoogleButton'>
-        <View style={styles.buttonContent}>
-            <Image source={require('@/assets/images/auth/SignInScreen/google.png')} style={styles.icon} />
-=======
-        <TouchableOpacity
-          style={styles.buttonContinueWith}
-          onPress={() => alert("Sign In with Google")}
-          testID="continueWithGoogleButton"
-        >
-          <View style={styles.buttonContent}>
-            <Image
-              source={require("@/assets/images/auth/SignInScreen/google.png")}
-              style={styles.icon}
-            />
->>>>>>> 29cdd85 (style: formatted using prettier)
-||||||| parent of 8303281 (style: formatted app)
-
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                alert('Sign In with Google')
-                router.navigate('/screens/home/PLACEHOLDER_home_screen')
-            }} testID='continueWithGoogleButton'>
-        <View style={styles.buttonContent}>
-            <Image source={require('@/assets/images/auth/SignInScreen/google.png')} style={styles.icon} />
-
-=======
 
         <TouchableOpacity
           style={styles.buttonContinueWith}
@@ -168,46 +93,11 @@ export default function SignInScreen() {
               style={styles.icon}
             />
 
->>>>>>> 8303281 (style: formatted app)
             <Text style={styles.buttonText}>Continue with Google</Text>
           </View>
         </TouchableOpacity>
 
         {/* Continue with Facebook */}
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                alert('Sign In with Facebook')
-                router.navigate('/screens/home/PLACEHOLDER_home_screen')
-            }} testID='continueWithFacebookButton'>
-        <View style={styles.buttonContent}>
-            <Image source={require('@/assets/images/auth/SignInScreen/facebook.png')} style={styles.icon} />
-||||||| parent of 29cdd85 (style: formatted using prettier)
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')} testID='continueWithFacebookButton'>
-        <View style={styles.buttonContent}>
-            <Image source={require('@/assets/images/auth/SignInScreen/facebook.png')} style={styles.icon} />
-=======
-        <TouchableOpacity
-          style={styles.buttonContinueWith}
-          onPress={() => alert("Sign In with Facebook")}
-          testID="continueWithFacebookButton"
-        >
-          <View style={styles.buttonContent}>
-            <Image
-              source={require("@/assets/images/auth/SignInScreen/facebook.png")}
-              style={styles.icon}
-            />
->>>>>>> 29cdd85 (style: formatted using prettier)
-||||||| parent of 8303281 (style: formatted app)
-
-        <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                alert('Sign In with Facebook')
-                router.navigate('/screens/home/PLACEHOLDER_home_screen')
-            }} testID='continueWithFacebookButton'>
-        <View style={styles.buttonContent}>
-            <Image source={require('@/assets/images/auth/SignInScreen/facebook.png')} style={styles.icon} />
-
-=======
 
         <TouchableOpacity
           style={styles.buttonContinueWith}
@@ -223,7 +113,6 @@ export default function SignInScreen() {
               style={styles.icon}
             />
 
->>>>>>> 8303281 (style: formatted app)
             <Text style={styles.buttonText}>Continue with Facebook</Text>
           </View>
         </TouchableOpacity>

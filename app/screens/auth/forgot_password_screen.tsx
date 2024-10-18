@@ -40,39 +40,6 @@ export default function ForgotPasswordScreen() {
           testID="emailInput"
         />
 
-<<<<<<< HEAD
-                {/* Row Container */}
-                <View style={styles.rowContainer}>
-                    {/* Back to SignIn */}
-<<<<<<< HEAD:app/screens/auth/forgot_password_screen.tsx
-                    <TouchableOpacity style={styles.buttonCancel} onPress={() => router.back()}>
-||||||| parent of cc81c19 (feat(tests): added basic forgotPasswordScreen tests):app/auth/forgot-password.tsx
-                    <TouchableOpacity style={styles.buttonCancel} onPress={() => alert('Back to SignIn')}>
-=======
-                    <TouchableOpacity style={styles.buttonCancel} onPress={() => alert('Back to SignIn')} testID='cancelButton'>
->>>>>>> cc81c19 (feat(tests): added basic forgotPasswordScreen tests):app/auth/forgot-password.tsx
-                        <Text>Cancel</Text>
-                    </TouchableOpacity>
-                    {/* Reset Password */}
-                    <TouchableOpacity style={styles.buttonSendEmail} onPress={() => alert('Send Email')} testID='resetPasswordButton'>
-                        <Text style={{color: 'white'}}>Reset Password</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-||||||| parent of 29cdd85 (style: formatted using prettier)
-                {/* Row Container */}
-                <View style={styles.rowContainer}>
-                    {/* Back to SignIn */}
-                    <TouchableOpacity style={styles.buttonCancel} onPress={() => router.back()} testID='cancelButton'>
-                        <Text>Cancel</Text>
-                    </TouchableOpacity>
-                    {/* Reset Password */}
-                    <TouchableOpacity style={styles.buttonSendEmail} onPress={() => alert('Send Email')} testID='resetPasswordButton'>
-                        <Text style={{color: 'white'}}>Reset Password</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-=======
         {/* Row Container */}
         <View style={styles.rowContainer}>
           {/* Back to SignIn */}
@@ -91,7 +58,6 @@ export default function ForgotPasswordScreen() {
           >
             <Text style={{ color: "white" }}>Reset Password</Text>
           </TouchableOpacity>
->>>>>>> 29cdd85 (style: formatted using prettier)
         </View>
       </View>
     </View>

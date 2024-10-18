@@ -27,46 +27,14 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const router = useRouter();
 
-<<<<<<< HEAD
-    return (
-
-      <View> 
-
-        {/* Image in the backround out of the scroll view for immonility */}
-        <Image
-          source={require('@/assets/images/auth/SignUpScreen/Ellipse 3.png')}
-          style={styles.backroundimage}
-        />
-       
-        <ScrollView>
-        
-          {/* Color of the backround */}
-          <View style = {styles.backround}>
-||||||| parent of 29cdd85 (style: formatted using prettier)
-    return (
-
-      <View> 
-
-        {/* Image in the backround out of the scroll view for immonility */}
-        <Image
-          source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
-          style={styles.backroundimage}
-        />
-       
-        <ScrollView>
-        
-          {/* Color of the backround */}
-          <View style = {styles.backround}>
-=======
   return (
     <View>
       {/* Image in the backround out of the scroll view for immonility */}
       <Image
-        source={require("@/assets/images/sign-up-screen/Ellipse 3.png")}
+        source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.backroundimage}
         testID="ellipse"
       />
->>>>>>> 29cdd85 (style: formatted using prettier)
 
       <ScrollView>
         {/* Color of the backround */}
@@ -158,21 +126,8 @@ export default function SignUp() {
               <Text style={styles.buttonText}>Strive with us</Text>
             </TouchableOpacity>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-              {/* Register Button */}
-              <TouchableOpacity style={styles.buttonStrive} onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}>
-                <Text style={styles.buttonText}>Strive with us</Text>
-              </TouchableOpacity>
-||||||| parent of 8303281 (style: formatted app)
-              {/* Register Button */}
-              <TouchableOpacity style={styles.buttonStrive} onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}>
-                <Text style={styles.buttonText}>Strive with us</Text>
-              </TouchableOpacity>
-=======
             {/* OR */}
             <Text style={styles.or}>OR</Text>
->>>>>>> 8303281 (style: formatted app)
 
             {/* Sign Up buttons for Google */}
             <TouchableOpacity
@@ -192,120 +147,6 @@ export default function SignUp() {
               </View>
             </TouchableOpacity>
 
-<<<<<<< HEAD
-              {/* Sign Up buttons for Google */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                    alert('Sign In with Google')
-                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                  }
-                }>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/auth/SignUpScreen/google.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Google</Text>
-                </View>
-              </TouchableOpacity>
-
-              {/* Sign Up buttons for Facebook */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                    alert('Sign In with Facebook')
-                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                  }}>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/auth/SignUpScreen/facebook.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Facebook</Text>
-                </View>
-              </TouchableOpacity>
-              
-||||||| parent of 29cdd85 (style: formatted using prettier)
-              {/* Register Button */}
-              <TouchableOpacity style={styles.buttonStrive} onPress={() => onClickStrive(password, confirmPassword, name, surname, email)}>
-                <Text style={styles.buttonText}>Strive with us</Text>
-              </TouchableOpacity>
-
-          
-              {/* OR */}
-              <Text style = {styles.or}> 
-                  OR
-              </Text>
-
-              {/* Sign Up buttons for Google */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Google')}>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/google.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Google</Text>
-                </View>
-              </TouchableOpacity>
-
-              {/* Sign Up buttons for Facebook */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => alert('Sign In with Facebook')}>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/facebook.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Facebook</Text>
-                </View>
-              </TouchableOpacity>
-              
-=======
-            {/* OR */}
-            <Text style={styles.or}>OR</Text>
->>>>>>> 29cdd85 (style: formatted using prettier)
-
-            {/* Sign Up buttons for Google */}
-            <TouchableOpacity
-              style={styles.buttonContinueWith}
-              onPress={() => alert("Sign In with Google")}
-            >
-              <View style={styles.buttonIcon}>
-                <Image
-<<<<<<< HEAD
-                  source={require("@/assets/images/sign-up-screen/google.png")}
-||||||| parent of 4e3e52d (style: formatted app)
-                  source={require("@/assets/images/SignUpScreen/google.png")}
-=======
-                  source={require("@/assets/images/auth/SignUpScreen/google.png")}
->>>>>>> 4e3e52d (style: formatted app)
-                  style={styles.icon}
-                />
-                <Text style={styles.buttonText}>Continue with Google</Text>
-              </View>
-            </TouchableOpacity>
-
-            {/* Sign Up buttons for Facebook */}
-            <TouchableOpacity
-              style={styles.buttonContinueWith}
-              onPress={() => alert("Sign In with Facebook")}
-            >
-              <View style={styles.buttonIcon}>
-                <Image
-                  source={require("@/assets/images/sign-up-screen/facebook.png")}
-                  style={styles.icon}
-                />
-                <Text style={styles.buttonText}>Continue with Facebook</Text>
-              </View>
-            </TouchableOpacity>
-||||||| parent of 8303281 (style: formatted app)
-              {/* Sign Up buttons for Google */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                    alert('Sign In with Google')
-                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                  }
-                }>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/google.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Google</Text>
-                </View>
-              </TouchableOpacity>
-
-              {/* Sign Up buttons for Facebook */}
-              <TouchableOpacity style={styles.buttonContinueWith} onPress={() => {
-                    alert('Sign In with Facebook')
-                    router.navigate('/screens/home/PLACEHOLDER_home_screen')
-                  }}>
-                <View style={styles.buttonIcon}>
-                    <Image source={require('@/assets/images/sign-up-screen/facebook.png')} style={styles.icon} />
-                    <Text style={styles.buttonText}>Continue with Facebook</Text>
-                </View>
-              </TouchableOpacity>
-=======
             {/* Sign Up buttons for Facebook */}
             <TouchableOpacity
               style={styles.buttonContinueWith}
@@ -323,7 +164,6 @@ export default function SignUp() {
                 <Text style={styles.buttonText}>Continue with Facebook</Text>
               </View>
             </TouchableOpacity>
->>>>>>> 8303281 (style: formatted app)
           </View>
         </View>
       </ScrollView>

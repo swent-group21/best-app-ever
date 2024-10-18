@@ -20,37 +20,13 @@ export default function SetUsername() {
     <View style={styles.backround}>
       {/* Image in the backround out of the scroll view for immonility */}
       <Image
-        source={require("@/assets/images/sign-up-screen/Ellipse 3.png")}
+        source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.ellipse}
       />
 
-<<<<<<< HEAD
-          {/* Image in the backround out of the scroll view for immonility */}
-          <Image 
-            source={require('@/assets/images/auth/SignUpScreen/Ellipse 3.png')}
-            style={styles.ellipse}
-          />
-          
-          <View style = {styles.inputColumn}>
-            
-            {/* Title of the screen */}
-            <Text style = {styles.title}>Set up your username</Text>
-||||||| parent of 29cdd85 (style: formatted using prettier)
-          {/* Image in the backround out of the scroll view for immonility */}
-          <Image 
-            source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
-            style={styles.ellipse}
-          />
-          
-          <View style = {styles.inputColumn}>
-            
-            {/* Title of the screen */}
-            <Text style = {styles.title}>Set up your username</Text>
-=======
       <View style={styles.inputColumn}>
         {/* Title of the screen */}
         <Text style={styles.title}>Set up your username</Text>
->>>>>>> 29cdd85 (style: formatted using prettier)
 
         {/* Go back button */}
         <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>

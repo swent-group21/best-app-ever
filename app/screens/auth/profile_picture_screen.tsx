@@ -17,19 +17,9 @@ export default function SetProfilePicture() {
   return (
     <View style={styles.backround}>
       <Image
-        source={require("@/assets/images/sign-up-screen/Ellipse 3.png")}
+        source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.ellipse}
       />
-
-<<<<<<< HEAD
-          <Image 
-            source={require('@/assets/images/auth/SignUpScreen/Ellipse 3.png')}
-            style={styles.ellipse}
-||||||| parent of 29cdd85 (style: formatted using prettier)
-          <Image 
-            source={require('@/assets/images/sign-up-screen/Ellipse 3.png')}
-            style={styles.ellipse}
-=======
       <View style={styles.inputColumn}>
         {/* Title of the screen */}
         <Text style={styles.title}>Set up your profile picture</Text>
@@ -45,69 +35,9 @@ export default function SetProfilePicture() {
           onPress={() => alert("Change profile picture")}
         >
           <Image
-            source={require("@/assets/images/sign-up-screen/Profile-PNG-File.png")}
+            source={require("@/assets/images/auth/SignUpScreen/Profile-PNG-File.png")}
             style={styles.profilePicture}
->>>>>>> 29cdd85 (style: formatted using prettier)
           />
-<<<<<<< HEAD
-          
-            <View style = {styles.inputColumn}>
-            
-            {/* Title of the screen */}
-            <Text style = {styles.title}>Set up your profile picture</Text>
-
-            {/* Go back button */}
-            <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
-                <Ionicons name="arrow-back" size={24} color="white" />
-            </TouchableOpacity>
-
-            {/* The profile picture */}
-            <TouchableOpacity style={styles.imageContainer} onPress = {() => alert('Change profile picture')}>
-                <Image
-                    source={require('@/assets/images/auth/SignUpScreen/Profile-PNG-File.png')}
-                    style={styles.profilePicture}
-                    
-                />
-            </TouchableOpacity>
-          </View>
-            {/* Go further button */}
-            <TouchableOpacity style={styles.goFurther} onPress={() => alert('Go further')}>
-                <Text style = {styles.textButton}> Maybe Later </Text>
-            </TouchableOpacity> 
-
-
-        </View>
-            );
-||||||| parent of 29cdd85 (style: formatted using prettier)
-          
-            <View style = {styles.inputColumn}>
-            
-            {/* Title of the screen */}
-            <Text style = {styles.title}>Set up your profile picture</Text>
-
-            {/* Go back button */}
-            <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
-                <Ionicons name="arrow-back" size={24} color="white" />
-            </TouchableOpacity>
-
-            {/* The profile picture */}
-            <TouchableOpacity style={styles.imageContainer} onPress = {() => alert('Change profile picture')}>
-                <Image
-                    source={require('@/assets/images/sign-up-screen/Profile-PNG-File.png')}
-                    style={styles.profilePicture}
-                    
-                />
-            </TouchableOpacity>
-          </View>
-            {/* Go further button */}
-            <TouchableOpacity style={styles.goFurther} onPress={() => alert('Go further')}>
-                <Text style = {styles.textButton}> Maybe Later </Text>
-            </TouchableOpacity> 
-
-
-        </View>
-            );
-=======
         </TouchableOpacity>
       </View>
       {/* Go further button */}
@@ -119,7 +49,6 @@ export default function SetProfilePicture() {
       </TouchableOpacity>
     </View>
   );
->>>>>>> 29cdd85 (style: formatted using prettier)
 }
 
 const styles = StyleSheet.create({
