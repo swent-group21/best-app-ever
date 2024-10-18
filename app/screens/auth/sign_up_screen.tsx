@@ -11,6 +11,7 @@ import {
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -63,6 +64,7 @@ export default function SignUp() {
       <Image
         source={require("@/assets/images/sign-up-screen/Ellipse 3.png")}
         style={styles.backroundimage}
+        testID="ellipse"
       />
 >>>>>>> 29cdd85 (style: formatted using prettier)
 
@@ -148,11 +150,12 @@ export default function SignUp() {
             {/* Register Button */}
             <TouchableOpacity
               style={styles.buttonStrive}
+              testID="striveButton"
               onPress={() =>
                 onClickStrive(password, confirmPassword, name, surname, email)
               }
             >
-              <Text style={styles.buttonText}>Strive with us</Text>
+              <Text style={styles.buttonText} >Strive with us</Text>
             </TouchableOpacity>
 
 <<<<<<< HEAD
@@ -172,10 +175,11 @@ export default function SignUp() {
 >>>>>>> 8303281 (style: formatted app)
 
             {/* Sign Up buttons for Google */}
-            <TouchableOpacity
+            <TouchableOpacity 
               style={styles.buttonContinueWith}
+              testID="GoogleSign"
               onPress={() => {
-                alert("Sign In with Google");
+                Alert.alert("Sign In with Google");
                 router.navigate("/screens/home/PLACEHOLDER_home_screen");
               }}
             >
@@ -305,8 +309,9 @@ export default function SignUp() {
             {/* Sign Up buttons for Facebook */}
             <TouchableOpacity
               style={styles.buttonContinueWith}
+              testID="FacebookSign"
               onPress={() => {
-                alert("Sign In with Facebook");
+                Alert.alert("Sign In with Facebook");
                 router.navigate("/screens/home/PLACEHOLDER_home_screen");
               }}
             >
@@ -354,15 +359,15 @@ function onClickStrive(
   email: string,
 ) {
   if (name.length == 0) {
-    alert("Name cannot be empty");
+    Alert.alert("Name cannot be empty");
   } else if (surname.length == 0) {
-    alert("Surname cannot be empty");
+    Alert.alert("Surname cannot be empty");
   } else if (email.length == 0) {
-    alert("Email cannot be empty");
+    Alert.alert("Email cannot be empty");
   } else if (password != confirmPassword) {
-    alert("Passwords do not match");
+    Alert.alert("Passwords do not match");
   } else if (password.length < 8) {
-    alert("Password must be at least 8 characters long");
+    Alert.alert("Password must be at least 8 characters long");
   } else {
     router.push("/screens/auth/set_username_screen");
   }
