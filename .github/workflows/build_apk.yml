@@ -35,9 +35,12 @@ jobs:
               npm install -g yarn
               yarn install
 
-      - name: Build App
-        run: 
-              ./gradlew assembleRelease
+      - name: Build Expo APK
+        run: |
+            npm install -g expo-cli
+            expo prebuild  # Ensures native code is generated for Expo
+            expo build:android  # Builds the APK
+
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3
