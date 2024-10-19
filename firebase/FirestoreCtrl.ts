@@ -14,7 +14,7 @@ export type DBUser = {
   createdAt: Date;
 };
 
-export default class firestoreCtrl {
+export default class FirestoreCtrl {
   
   /**
    * Creates or updates a user document in Firestore.

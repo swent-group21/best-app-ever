@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   firebaseConfig
 } from "@/firebase/Firebase";
-import firestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 export function isValidEmail(email: string) {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -15,7 +15,7 @@ export function isValidEmail(email: string) {
 export const logInWithGoogle = (
   credential: any,
   navigation: any,
-  firestoreCtrl: firestoreCtrl
+  firestoreCtrl: FirestoreCtrl
 ) => {
   signInWithCredential(auth, credential).then((result) => {
     const newUser =
@@ -28,14 +28,14 @@ export const logInWithGoogle = (
       };
 
       firestoreCtrl.createUser(result.user.uid, userData).then(() => {
-        navigation.navigate("(tabs)");
+        navigation.navigate("@app/home/PLACEHOLd_home_screen");
       });
     } else {
       firestoreCtrl
         .getUser(result.user.uid)
         .then((user: any) => {
           if ( user ) {
-            navigation.navigate("(tabs)");
+            navigation.navigate("@app/home/PLACEHOLd_home_screen");
           }
         })
         .catch(() => {
@@ -47,7 +47,7 @@ export const logInWithGoogle = (
               createdAt: new Date(),
             })
             .then(() => {
-              navigation.navigate("(tabs)");
+              navigation.navigate("@app/home/PLACEHOLd_home_screen");
             });
         });
     }
@@ -57,7 +57,7 @@ export const logInWithGoogle = (
 export const logInWithEmail = async (
   email: string,
   password: string,
-  firestoreCtrl: firestoreCtrl,
+  firestoreCtrl: FirestoreCtrl,
   navigation: any,
   setError: any
 ) => {
@@ -76,11 +76,11 @@ export const logInWithEmail = async (
                 createdAt: new Date(),
               })
               .then(() => {
-                navigation.navigate("(tabs)");
+                navigation.navigate("@app/home/PLACEHOLd_home_screen");
               });
           });
         if ( user ) {
-          navigation.navigate("(tabs)");
+          navigation.navigate("@app/home/PLACEHOLd_home_screen");
         }
       } else {
         setError("Invalid credentials");
@@ -95,7 +95,7 @@ export const signUpWithEmail = async (
   userName: string,
   email: string,
   password: string,
-  firestoreCtrl: firestoreCtrl,
+  firestoreCtrl: FirestoreCtrl,
   navigation: any,
   setError: any
 ) => {
@@ -111,7 +111,7 @@ export const signUpWithEmail = async (
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
-            navigation.navigate("(tabs)");
+            navigation.navigate("@app/home/PLACEHOLd_home_screen");
           });
       })
       .catch((error) => {

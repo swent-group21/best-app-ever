@@ -3,7 +3,6 @@ import { fireEvent, render} from '@testing-library/react-native';
 import SignUp from '@/app/screens/auth/sign_up_screen'; 
 
 
-
 describe('SignUp Component', () => {
     
     {/* Test if the input fields are rendered */}

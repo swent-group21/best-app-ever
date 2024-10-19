@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
+  Platform
 } from "react-native";
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -17,8 +18,9 @@ import {
   logInWithGoogle,
   isValidEmail,
 } from "@/types/Auth";
-import firestoreCtrl from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { GoogleAuthProvider, signInWithCredential, auth } from "@/firebase/Firebase";
+import GoogleAuthConfig from "@/types/GoogleAuthConfig";
 import * as Google from 'expo-auth-session/providers/google';
 
 const { width, height } = Dimensions.get("window");
@@ -32,8 +34,16 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  const firestoreCtrl = new FirestoreCtrl();
+
+  const clientId: string | undefined = Platform.select({
+    ios: GoogleAuthConfig.ios.iosClientId,
+    android: GoogleAuthConfig.android.androidClientId,
+    default: GoogleAuthConfig.web.webClientId,
+  });
+
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: '<YOUR_CLIENT_ID>',
+    clientId: clientId,
   });
 
   React.useEffect(() => {
