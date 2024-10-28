@@ -17,13 +17,23 @@ jobs:
       - name: Set up Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: '22.x'
+          node-version: '22.x'  # Replace with your project's Node.js version
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run tests with coverage
         run: npm test -- --coverage
+
+      - name: Adjust coverage report paths
+        run: |
+          sed -i 's|SF:/github/workspace/|SF:|g' coverage/lcov.info
+
+      - name: List coverage directory contents
+        run: ls -la coverage
+
+      - name: Show lcov.info
+        run: head -n 20 coverage/lcov.info
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
@@ -40,8 +50,9 @@ jobs:
             -Dsonar.projectKey=swent-group21_strive
             -Dsonar.organization=swent-group21
             -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/__tests__/**,**/*.test.js,**/*.spec.js,**/node_modules/**
-            -Dsonar.tests=.
-            -Dsonar.test.inclusions=**/__tests__/**,**/*.test.js,**/*.spec.js
+            -Dsonar.sources=app
+            -Dsonar.tests=__tests__
+            -Dsonar.exclusions=**/*.spec.ts,**/*.spec.tsx,**/*.test.ts,**/*.test.tsx,**/*.spec.js,**/*.test.js,**/node_modules/**,**/assets/**
+            -Dsonar.test.inclusions=**/__tests__/**,**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx,**/*.test.js,**/*.spec.js
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.verbose=true
