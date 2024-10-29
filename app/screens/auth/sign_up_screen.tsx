@@ -8,20 +8,20 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
-  Platform
+  Platform,
 } from "react-native";
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import {
-  signUpWithEmail,
-  logInWithGoogle,
-  isValidEmail,
-} from "@/types/Auth";
+import { signUpWithEmail, logInWithGoogle, isValidEmail } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { GoogleAuthProvider, signInWithCredential, auth } from "@/firebase/Firebase";
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  auth,
+} from "@/firebase/Firebase";
 import GoogleAuthConfig from "@/types/GoogleAuthConfig";
-import * as Google from 'expo-auth-session/providers/google';
+import * as Google from "expo-auth-session/providers/google";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,7 +47,7 @@ export default function SignUp() {
   });
 
   React.useEffect(() => {
-    if (response?.type === 'success') {
+    if (response?.type === "success") {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
       logInWithGoogle(credential, router, firestoreCtrl);
@@ -72,7 +72,7 @@ export default function SignUp() {
         password,
         firestoreCtrl,
         router,
-        setError
+        setError,
       );
     }
   };
