@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -32,7 +32,8 @@ export default function SetProfilePicture() {
         {/* The profile picture */}
         <TouchableOpacity
           style={styles.imageContainer}
-          onPress={() => alert("Change profile picture")}
+          onPress={() => router.push("../camera")  
+        }
         >
           <Image
             source={require("@/assets/images/auth/SignUpScreen/Profile-PNG-File.png")}
