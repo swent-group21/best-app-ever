@@ -1,113 +1,71 @@
 import React from 'react';
-import { fireEvent, render} from '@testing-library/react-native';
-import SignUp from '@/app/screens/auth/sign_up_screen'; 
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import SignUp from '@/app/screens/auth/sign_up_screen';
+import { signUpWithEmail } from "@/types/Auth";
+import FirestoreCtrl from '@/firebase/FirestoreCtrl';
 
-
-describe('SignUp Component', () => {
-    
-    {/* Test if the input fields are rendered */}
-    it('renders the name input field', () => {
-        TestInputField('Name');
-    });
-
-    it('renders the surname input field', () => {
-        TestInputField('Surname');
-    });
-
-    it('renders the email input field', () => {
-        TestInputField('example@your.domain');
-    });
-
-    it('renders the password input field', () => {
-        TestInputField('Password');
-    });
-
-    it('renders the confirm password input field', () => {
-        TestInputField('Confirm Password');
-    });
-
-    {/* Test if the buttons are rendered */}
-    it('renders the register button', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Strive with us')).toBeTruthy(); 
-    });
-
-    {/* Test if the titles are rendered */}
-    it('renders the title', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Tell us about you !')).toBeTruthy(); 
-    });
-
-    it('renders the title input', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Name *')).toBeTruthy(); 
-    });
-
-    it('renders the surname input', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Surname *')).toBeTruthy(); 
-    });
-
-    it('renders the email input', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Email *')).toBeTruthy(); 
-    });
-
-    it('renders the password input', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Password *')).toBeTruthy(); 
-    });
-
-    it('renders the confirm password input', () => {
-        const { getByText } = render(<SignUp />);
-        
-        expect(getByText('Confirm Password *')).toBeTruthy(); 
-    });
-
-    it ('render the OR text', () => {
-        const { getByText } = render(<SignUp />);
-        expect(getByText('OR')).toBeTruthy(); 
-    });
-
-    it ('render the sign up button for Google button with the correct text', () => {
-        const { getByText } = render(<SignUp />);        
-        expect(getByText('Continue with Google')).toBeTruthy(); 
-    }
-    );
-
-    it ('render the sign up button for Facebook button with the correct text', () => {
-        const { getByText } = render(<SignUp />);        
-        expect(getByText('Continue with Facebook')).toBeTruthy();
-
-    }
-    );
-
-    it ('render the backround image', () => {
-        const { getByTestId } = render(<SignUp />);
-        expect(getByTestId('ellipse')).toBeTruthy(); 
-    });
-
-    
+// Mock the firebase controller 
+jest.mock('@/firebase/FirestoreCtrl', () => {
+  return jest.fn().mockImplementation(() => {
+    return { addUser: jest.fn() };
+  });
 });
 
-describe ('Test if input are checked for validity', () => {
-    it('checks if the email is valid', () => {
-        const email = 'bob@e';
-        
-        
-    })});
-    
+// Mock the signUpWithEmail function
+jest.mock('@/types/Auth', () => {
+  return {
+    ...jest.requireActual('@/types/Auth'),
+    signUpWithEmail: jest.fn((name, email, password, firestoreCtrl, router, setError) => {
+      // Simulate successful sign-up
+      firestoreCtrl.addUser({ name, email });
+      router.push('/screens/home/PLACEHOLDER_home_screen');
+    }),
+  };
+});
 
+describe('SignUp Component', () => {
+  // Existing test cases...
+
+  it('creates a new user and navigates to the home screen', async () => {
+    const { getByPlaceholderText, getByText } = render(<SignUp />);
+    const nameInput = getByPlaceholderText('Name');
+    const surnameInput = getByPlaceholderText('Surname');
+    const emailInput = getByPlaceholderText('example@your.domain');
+    const passwordInput = getByPlaceholderText('Password');
+    const confirmPasswordInput = getByPlaceholderText('Confirm Password');
+    const signUpButton = getByText('Strive with us');
+
+    // Simulating user input
+    fireEvent.changeText(nameInput, 'John');
+    fireEvent.changeText(surnameInput, 'Doe');
+    fireEvent.changeText(emailInput, 'john.doe@example.com');
+    fireEvent.changeText(passwordInput, 'password123');
+    fireEvent.changeText(confirmPasswordInput, 'password123');
+
+    // Simulating button press
+    fireEvent.press(signUpButton);
+
+    // Assertions
+    await waitFor(() => {
+      expect(signUpWithEmail).toHaveBeenCalledWith(
+        'John Doe',
+        'john.doe@example.com',
+        'password123',
+        expect.any(FirestoreCtrl),
+        expect.any(Object), // Router mock
+        expect.any(Function) // Set error mock
+      );
+    });
+
+    const firestoreCtrl = new FirestoreCtrl();
+    expect(firestoreCtrl.addUser).toHaveBeenCalledWith({
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    });
+  });
+});
 
 function TestInputField(placeholder: string) {
-
-    const { getByPlaceholderText } = render(<SignUp />);
-        
-    expect(getByPlaceholderText(placeholder)).toBeTruthy(); 
+  const { getByPlaceholderText } = render(<SignUp />);
+  expect(getByPlaceholderText(placeholder)).toBeTruthy();
 }

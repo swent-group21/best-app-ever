@@ -49,6 +49,10 @@ export default class FirestoreCtrl {
     }
   }
 
+  /**
+   * Add other create and get for challenges user info etc
+   */
+
 }
 
 
