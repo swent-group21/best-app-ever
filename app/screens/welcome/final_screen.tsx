@@ -39,7 +39,7 @@ export default function WelcomeConceptScreen() {
         <TouchableOpacity
           onPress={() => {
             alert("Spooky user!");
-            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+            router.navigate("/screens/home/home_screen");
           }}
         >
           <Text>Continue as guest</Text>

@@ -135,7 +135,7 @@ export default function SignUp() {
               testID="GoogleSign"
               onPress={() => {
                 Alert.alert("Sign In with Google");
-                router.navigate("/screens/home/PLACEHOLDER_home_screen");
+                router.navigate("/screens/home/home_screen");
               }}
             >
               <View style={styles.buttonIcon}>
@@ -153,7 +153,7 @@ export default function SignUp() {
               testID="FacebookSign"
               onPress={() => {
                 Alert.alert("Sign In with Facebook");
-                router.navigate("/screens/home/PLACEHOLDER_home_screen");
+                router.navigate("/screens/home/home_screen");
               }}
             >
               <View style={styles.buttonIcon}>
