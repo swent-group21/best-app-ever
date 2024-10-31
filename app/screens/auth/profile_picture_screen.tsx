@@ -33,7 +33,7 @@ export default function SetProfilePicture() {
         {/* The profile picture */}
         <TouchableOpacity
           style={styles.imageContainer}
-          onPress={() => router.push('../camera')}
+          onPress={() => router.push("../camera")}
         >
           <Image
             source={require("@/assets/images/auth/SignUpScreen/Profile-PNG-File.png")}
