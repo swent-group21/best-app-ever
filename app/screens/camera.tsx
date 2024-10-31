@@ -174,7 +174,7 @@ export default function CameraTest() {
 
           <TouchableOpacity
             style={styles.send}
-            onPress={() => setIsCameraEnabled(true)}
+            onPress={() => alert("Send the picture")}
           >
             <Ionicons name="send" size={30} color="white" />
           </TouchableOpacity>
