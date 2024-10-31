@@ -13,7 +13,7 @@ interface TopbarProps {
     title: string;
 }
 
-export function Topbar({ leftIcon, leftAction, rightIcon, rightAction, title }: TopbarProps) {
+export function TopBar({ leftIcon, leftAction, rightIcon, rightAction, title }: TopbarProps) {
     return (
         <View style={styles.container}>
             {leftIcon ? <ThemedIconButton iconName={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}

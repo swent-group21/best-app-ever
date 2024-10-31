@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Topbar } from "@/components/Topbar";
+import { TopBar } from "@/components/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -9,7 +9,7 @@ import { BottomBar } from "@/components/BottomBar";
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.bigContainer}>
-      <Topbar
+      <TopBar
         title="Commute by foot"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
@@ -20,8 +20,8 @@ export default function HomeScreen() {
         contentContainerStyle={styles.contentContainer}
       >
         <Challenge title="Challenge 1"></Challenge>
-        <Challenge title="Challenge 2">{/* Image */}</Challenge>
-        <Challenge title="Challenge 3">{/* Image */}</Challenge>
+        <Challenge title="Challenge 2"></Challenge>
+        <Challenge title="Challenge 3"></Challenge>
       </ThemedScrollView>
 
       <BottomBar
