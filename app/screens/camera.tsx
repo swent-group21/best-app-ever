@@ -1,11 +1,12 @@
 import { CameraView, CameraType, useCameraPermissions, CameraCapturedPicture } from 'expo-camera';
 import { router, useRouter} from 'expo-router';
-import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, ImageBackground} from 'react-native';
+import { useState, useRef, useCallback, useMemo } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, ImageBackground, Platform} from 'react-native';
 import { useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FlashMode } from 'expo-camera/build/legacy/Camera.types';
 const { width, height } = Dimensions.get('window');
+import {Gesture, GestureDetector, GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function CameraTest() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -16,8 +17,40 @@ export default function CameraTest() {
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
   const [flashMode, setFlashMode] = useState<FlashMode | string >('off');
   const [isFlashEnabled, setIsFlashEnabled] = useState(false);
- 
-  
+
+  const [zoom, setZoom] = useState(0);
+ const [lastZoom, setLastZoom] = useState(0);
+
+
+  const onPinch = useCallback(
+    (event:any) => {
+      const velocity = event.velocity / 20;
+      const outFactor = lastZoom * (Platform.OS === 'ios' ? 40 : 15);
+
+      let newZoom =
+        velocity > 0
+          ? zoom + event.scale * velocity * (Platform.OS === 'ios' ? 0.01 : 25)
+          : zoom - (event.scale * (outFactor || 1)) * Math.abs(velocity) * (Platform.OS === 'ios' ? 0.02 : 50);
+
+      if (newZoom < 0) newZoom = 0;
+      else if (newZoom > 0.7) newZoom = 0.7;
+
+      setZoom(newZoom);
+    },
+    [zoom, setZoom, lastZoom, setLastZoom]
+  );
+
+  const onPinchEnd = useCallback(
+    (event:any) => {
+      setLastZoom(zoom);
+    },
+    [zoom, setLastZoom]
+  );
+
+  const pinchGesture = useMemo(
+    () => Gesture.Pinch().onUpdate(onPinch).onEnd(onPinchEnd),
+    [onPinch, onPinchEnd]
+  );
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -46,9 +79,10 @@ export default function CameraTest() {
 
   return (
     <View style={styles.container}>
-
-     {isCameraEnabled && <CameraView style={styles.camera} facing={facing} enableTorch= {isFlashEnabled} onCameraReady={() => {}} ref={camera}> 
+     {isCameraEnabled && <GestureHandlerRootView>
+     <GestureDetector gesture={pinchGesture}>
         
+        <CameraView style={styles.camera} facing={facing} enableTorch= {isFlashEnabled} onCameraReady={() => {}} ref={camera} mirror = {true} zoom={zoom} > 
         <View style={styles.buttonPlaceHolder}>
           <TouchableOpacity style={styles.changeOrientationAndFlash} onPress={ toggleCameraFacing  }>
             <Ionicons name="camera-reverse" size={24} color="white" />
@@ -81,7 +115,10 @@ export default function CameraTest() {
         
         </View>
         
-      </CameraView> }
+      </CameraView> 
+        </GestureDetector>
+        </GestureHandlerRootView>
+      }
 
 
         {!isCameraEnabled && <View >
