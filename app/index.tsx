@@ -37,34 +37,15 @@ export default function WelcomeScreens() {
       {/* Render the dots, only if not on the last screen */}
       {activeIndex < 3 && (
         <View className="absolute w-full justify-center items-center flex-row bottom-16">
-          {[0, 1, 2, 4].map((i) => (
-            <View
-              key={i}
-              style={[
-                styles.dot,
-                activeIndex === i ? styles.activeDot : styles.inactiveDot,
-              ]}
-            />
-          ))}
+          {[0, 1, 2, 4].map((i) => {
+            const dotStyle =
+              "w-5 h-5 rounded-xl mx-2 border border-black ".concat(
+                i === activeIndex ? " bg-black" : " bg-transparent",
+              );
+            return <View key={i} className={dotStyle} />;
+          })}
         </View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  dot: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    marginHorizontal: 6,
-    borderWidth: 1,
-    borderColor: "#000",
-  },
-  activeDot: {
-    backgroundColor: "#000",
-  },
-  inactiveDot: {
-    backgroundColor: "transparent",
-  },
-});
