@@ -20,12 +20,12 @@ export default function WelcomeScreens() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex[1]">
       <ScrollView
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
+        className="flex[1]"
         onScroll={handleScroll}
       >
         <WelcomeIntroScreen />
@@ -36,7 +36,7 @@ export default function WelcomeScreens() {
 
       {/* Render the dots, only if not on the last screen */}
       {activeIndex < 3 && (
-        <View style={styles.dotContainer}>
+        <View className="absolute w-full justify-center items-center flex-row bottom-16">
           {[0, 1, 2, 4].map((i) => (
             <View
               key={i}
@@ -53,20 +53,6 @@ export default function WelcomeScreens() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  dotContainer: {
-    position: "absolute",
-    bottom: 60,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   dot: {
     width: 18,
     height: 18,
