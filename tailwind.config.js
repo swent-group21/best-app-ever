@@ -45,6 +45,11 @@ module.exports = {
         'wide': '.025em',
         'wider': '.05em',
       },
+      positioning: {
+        index: {
+          'bottom': 60
+        },
+      },
     },
   },
   plugins: [],
