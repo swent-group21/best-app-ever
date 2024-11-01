@@ -28,7 +28,7 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
             activeOpacity={0.8}>
             <ThemedView style={[styles.challenge, {height: height}]}>
                 {/* Challenge Image */}
-                {/*<Image source={require('@/assets/images/challenge1.png')} style={styles.image} />*/}
+                <Image source={require('@/assets/images/challenge2.png')} style={styles.image}/>
                 
                 {isOpen 
                 && 
