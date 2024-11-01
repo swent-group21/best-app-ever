@@ -10,15 +10,19 @@ import { useRouter } from "expo-router";
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
-    const router = useRouter();
-  
-    const userName = "Sandraa"; // derived from the name of the user
+  const router = useRouter();
+
+  const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
   return (
     <ThemedView style={styles.bigContainer}>
-      <TopBar title="Commute by foot" leftIcon="arrow-back-outline" leftAction={router.back} />
+      <TopBar
+        title="Commute by foot"
+        leftIcon="arrow-back-outline"
+        leftAction={router.back}
+      />
 
       <ThemedView style={styles.container}>
         <Image
@@ -115,9 +119,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "transparent",
   },
-    image: {
-        width: "100%",
-        height: "100%",
-        borderRadius: 15,
-    },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 15,
+  },
 });
