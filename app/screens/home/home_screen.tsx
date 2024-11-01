@@ -30,7 +30,7 @@ export default function HomeScreen() {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="logo-docker"
-        centerAction={() => router.push("../camera")} 
+        centerAction={() => router.push("../camera")}
       />
     </ThemedView>
   );
