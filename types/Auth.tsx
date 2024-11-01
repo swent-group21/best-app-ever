@@ -3,7 +3,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithCredential,
   signInWithEmailAndPassword,
-  firebaseConfig
 } from "@/firebase/Firebase";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -19,7 +18,7 @@ function isValidEmail(email : string) {
 
 export const logInWithGoogle = (
   credential: any,
-  navigation: any,
+  router: any,
   firestoreCtrl: FirestoreCtrl
 ) => {
   signInWithCredential(auth, credential).then((result) => {
@@ -33,14 +32,14 @@ export const logInWithGoogle = (
       };
 
       firestoreCtrl.createUser(result.user.uid, userData).then(() => {
-        navigation.navigate("@app/home/PLACEHOLd_home_screen");
+        router.navigate("@app/home/PLACEHOLd_home_screen");
       });
     } else {
       firestoreCtrl
         .getUser(result.user.uid)
         .then((user: any) => {
           if ( user ) {
-            navigation.navigate("@app/home/PLACEHOLd_home_screen");
+            router.navigate("@app/home/PLACEHOLd_home_screen");
           }
         })
         .catch(() => {
@@ -52,7 +51,7 @@ export const logInWithGoogle = (
               createdAt: new Date(),
             })
             .then(() => {
-              navigation.navigate("@app/home/PLACEHOLd_home_screen");
+              router.navigate("@app/home/PLACEHOLd_home_screen");
             });
         });
     }
@@ -63,8 +62,7 @@ export const logInWithEmail = async (
   email: string,
   password: string,
   firestoreCtrl: FirestoreCtrl,
-  navigation: any,
-  setError: any
+  router: any,
 ) => {
   if (email && password) {
     try {
@@ -81,17 +79,17 @@ export const logInWithEmail = async (
                 createdAt: new Date(),
               })
               .then(() => {
-                navigation.navigate("@app/home/PLACEHOLd_home_screen");
+                router.navigate("@app/home/PLACEHOLd_home_screen");
               });
           });
         if ( user ) {
-          navigation.navigate("@app/home/PLACEHOLd_home_screen");
+          router.navigate("@app/home/PLACEHOLd_home_screen");
         }
       } else {
-        setError("Invalid credentials");
+        console.log("Invalid credentials");
       }
     } catch (e) {
-      setError("Login failed. Please check your credentials.");
+      console.log("Login failed. Please check your credentials.");
     }
   }
 };
@@ -101,8 +99,7 @@ export const signUpWithEmail = async (
   email: string,
   password: string,
   firestoreCtrl: FirestoreCtrl,
-  navigation: any,
-  setError: any
+  router: any,
 ) => {
   if (userName && email && password) {
     createUserWithEmailAndPassword(auth, email, password)
@@ -116,14 +113,14 @@ export const signUpWithEmail = async (
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
-            navigation.navigate("@app/home/PLACEHOLd_home_screen");
+            router.navigate("@app/screens/home/home_screen");
           });
       })
       .catch((error) => {
-        setError("Sign Up failed. Please check your credentials.");
+        console.log("Sign Up failed. Please check your credentials.");
       });
   } else {
-    setError("Please input email and password.");
+    console.log("Please input email and password.");
   }
 };
 

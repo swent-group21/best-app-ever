@@ -8,6 +8,14 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import {
+  signUpWithEmail,
+  logInWithGoogle,
+  logInWithEmail
+} from "@/types/Auth";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+
+
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useRouter } from "expo-router";
@@ -26,6 +34,8 @@ export default function SignUp() {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const router = useRouter();
+
+  const firestoreCtrl = new FirestoreCtrl();
 
   return (
     <View>
@@ -120,7 +130,7 @@ export default function SignUp() {
               style={styles.buttonStrive}
               testID="striveButton"
               onPress={() =>
-                onClickStrive(password, confirmPassword, name, surname, email)
+                signUpWithEmail(name+surname, email, password, firestoreCtrl, router)
               }
             >
               <Text style={styles.buttonText}>Strive with us</Text>
@@ -147,23 +157,6 @@ export default function SignUp() {
               </View>
             </TouchableOpacity>
 
-            {/* Sign Up buttons for Facebook */}
-            <TouchableOpacity
-              style={styles.buttonContinueWith}
-              testID="FacebookSign"
-              onPress={() => {
-                Alert.alert("Sign In with Facebook");
-                router.navigate("../home/home_screen");
-              }}
-            >
-              <View style={styles.buttonIcon}>
-                <Image
-                  source={require("@/assets/images/auth/SignUpScreen/facebook.png")}
-                  style={styles.icon}
-                />
-                <Text style={styles.buttonText}>Continue with Facebook</Text>
-              </View>
-            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -180,37 +173,6 @@ function isValidEmail(email: string) {
   let reg =
     /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
   return reg.test(email);
-}
-
-/**
- * Function to check the validity of the input fields and alert the user if there is an error
- * @param password
- * @param confirmPassword
- * @param name
- * @param surname
- * @param email
- * @returns
- */
-function onClickStrive(
-  password: string,
-  confirmPassword: string,
-  name: string,
-  surname: string,
-  email: string,
-) {
-  if (name.length == 0) {
-    Alert.alert("Name cannot be empty");
-  } else if (surname.length == 0) {
-    Alert.alert("Surname cannot be empty");
-  } else if (email.length == 0) {
-    Alert.alert("Email cannot be empty");
-  } else if (password != confirmPassword) {
-    Alert.alert("Passwords do not match");
-  } else if (password.length < 8) {
-    Alert.alert("Password must be at least 8 characters long");
-  } else {
-    router.push("/screens/auth/set_username_screen");
-  }
 }
 
 /**
