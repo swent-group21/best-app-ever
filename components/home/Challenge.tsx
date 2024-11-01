@@ -5,11 +5,14 @@ import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
+import { useRouter } from "expo-router";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
 export function Challenge({ children, title }: PropsWithChildren & { title: string }) { //image: string
+    const router = useRouter();
+
     const [isOpen, setIsOpen] = useState(false);
     const theme = useColorScheme() ?? 'light';
 
@@ -25,8 +28,8 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
             activeOpacity={0.8}>
             <ThemedView style={[styles.challenge, {height: height}]}>
                 {/* Challenge Image */}
-                <Image source={require('@/assets/images/challenge1.png')} style={styles.image} />
-
+                {/*<Image source={require('@/assets/images/challenge1.png')} style={styles.image} />*/}
+                
                 {isOpen 
                 && 
                 <ThemedView style={styles.container}>  
@@ -38,10 +41,10 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
                                 <ThemedText lightColor='white' darkColor='white' type='small' >{"in " + userLocation + " at " + userTime}</ThemedText>
                             </ThemedView>
                         </ThemedView>
-                        <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {/* maximize button */}} size={25} style={{paddingRight: 8}} color='white'/> 
+                        <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("/screens/home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
                     </ThemedView>
                     <ThemedView style={styles.bottomBar}>
-                        <ThemedIconButton iconName="heart-outline" onPress={() => {/* like button */}} size={25} color='white'/>
+                        <ThemedIconButton iconName="heart-outline" onPress={() => {router.back()}} size={25} color='white'/>
                         <ThemedIconButton iconName="location-outline" onPress={() => {/* location button */}} size={25} color='white'/>
                     </ThemedView>
                 </ThemedView>
