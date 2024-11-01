@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import {
+  isValidEmail,
   signUpWithEmail,
   logInWithGoogle,
 } from "@/types/Auth";
@@ -160,17 +161,6 @@ export default function SignUp() {
       </ScrollView>
     </View>
   );
-}
-
-/***
- * Function to check if the email is valid
- * @param email - email to be checked
- * @returns - true if the email is valid, false otherwise
- */
-function isValidEmail(email: string) {
-  let reg =
-    /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
-  return reg.test(email);
 }
 
 /**

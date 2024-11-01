@@ -11,7 +11,7 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
  * @param email - email to be checked
  * @returns - true if the email is valid, false otherwise
  */
-function isValidEmail(email : string) {
+export function isValidEmail(email : string) {
   let reg = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
   return reg.test(email);
 }
@@ -110,10 +110,11 @@ export const signUpWithEmail = async (
           createdAt: new Date(),
         };
 
+        console.log("User INFO \n", userCredential.user.uid, userData);
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
-            router.navigate("@app/screens/home/home_screen");
+            router.navigate("../home/home_screen");
           })
           .catch((error) => {
             console.log("FirestoreCtrl failed to create user due to following error \n", error);

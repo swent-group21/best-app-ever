@@ -14,7 +14,6 @@ import {
 } from "firebase/auth";
 //@ts-ignore
 import { getStorage } from "firebase/storage";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   getFirestore,

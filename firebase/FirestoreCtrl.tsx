@@ -23,8 +23,7 @@ export default class FirestoreCtrl {
    */
   async createUser(userId: string, userData: DBUser): Promise<void> {
     try {
-      const userRef = doc(firestore, "users", userId);
-      await setDoc(userRef, userData, { merge: true });
+      await setDoc(doc(firestore, "users", userId), userData);
     } catch (error) {
       console.error("Error writing user document: ", error);
     }
