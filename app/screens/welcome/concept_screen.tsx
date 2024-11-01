@@ -6,13 +6,13 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default function WelcomeConceptScreen() {
   return (
-    <View style={styles.container}>
-      <View style={styles.ovalShape} />
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>
+    <View className="bg-white w-screen">
+      <View style={shape.oval} />
+      <View className="flex-1 justify-center pl-5 pb-16">
+        <Text className="text-6xl font-black mb-5 pt-2">
           Participate{"\n"}in Weekly{"\n"}challenges
         </Text>
-        <Text style={styles.description}>
+        <Text className="text-xl font-extrabold pt-16">
           Compete with your friends and people around you{"\n"}
           Become the goat and win prizes!
         </Text>
@@ -21,14 +21,8 @@ export default function WelcomeConceptScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-  },
-  ovalShape: {
+const shape = StyleSheet.create({
+  oval: {
     position: "absolute",
     top: SCREEN_HEIGHT * 0.7,
     left: -SCREEN_WIDTH * 0.3,
@@ -36,25 +30,5 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.7,
     borderRadius: SCREEN_WIDTH * 0.6,
     backgroundColor: "#E6BC95",
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 60,
-  },
-  title: {
-    fontSize: 56,
-    fontWeight: "900",
-    color: "#000",
-    lineHeight: 62,
-    marginBottom: 20,
-  },
-  description: {
-    paddingTop: 60,
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#000",
-    lineHeight: 26,
   },
 });
