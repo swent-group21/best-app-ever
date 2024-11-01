@@ -14,7 +14,6 @@ import {
 } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
-
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useRouter } from "expo-router";
