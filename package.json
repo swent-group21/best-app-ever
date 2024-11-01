@@ -8,18 +8,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest ./__tests__/",
+    "test": "jest",
     "lint": "expo lint"
   },
   "jest": {
-    "preset": "jest-expo",
-    "rootDir": ".",
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base))"
-    ]
+    "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/ngrok": "^4.1.0",
@@ -29,13 +22,17 @@
     "@react-native-firebase/firestore": "^21.2.0",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-navigation/native": "^6.0.2",
+    "@testing-library/react-native": "^12.7.2",
     "expo": "~51.0.38",
     "expo-auth-session": "^5.5.2",
+    "expo-camera": "^15.0.16",
     "expo-constants": "~16.0.2",
     "expo-crypto": "~13.0.2",
     "expo-dev-client": "~4.0.28",
     "expo-font": "~12.0.9",
+    "expo-image-picker": "^15.0.7",
     "expo-linking": "~6.3.1",
+    "expo-permissions": "^14.4.0",
     "expo-router": "~3.5.23",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
@@ -49,6 +46,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
+    "react-native-elements": "^3.4.3",
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-reanimated": "~3.10.1",

@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-export default function SignInScreen({ navigation } : any) {
+export default function SignInScreen() {
   const router = useRouter();
   return (
     <View style={styles.signInScreen}>
@@ -53,8 +53,7 @@ export default function SignInScreen({ navigation } : any) {
         <TouchableOpacity
           style={styles.buttonSignIn}
           onPress={() => {
-            alert("Sign In");
-            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+            router.navigate("/screens/home/home_screen");
           }}
           testID="signInButton"
         >
@@ -83,7 +82,7 @@ export default function SignInScreen({ navigation } : any) {
           style={styles.buttonContinueWith}
           onPress={() => {
             alert("Sign In with Google");
-            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+            router.navigate("/screens/home/home_screen");
           }}
           testID="continueWithGoogleButton"
         >
@@ -103,7 +102,7 @@ export default function SignInScreen({ navigation } : any) {
           style={styles.buttonContinueWith}
           onPress={() => {
             alert("Sign In with Facebook");
-            router.navigate("/screens/home/PLACEHOLDER_home_screen");
+            router.navigate("/screens/home/home_screen");
           }}
           testID="continueWithFacebookButton"
         >

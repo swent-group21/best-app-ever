@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -7,20 +7,11 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  Alert,
-  Platform,
 } from "react-native";
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { signUpWithEmail, logInWithGoogle, isValidEmail } from "@/types/Auth";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import {
-  GoogleAuthProvider,
-  signInWithCredential,
-  auth,
-} from "@/firebase/Firebase";
-import GoogleAuthConfig from "@/types/GoogleAuthConfig";
-import * as Google from "expo-auth-session/providers/google";
+import { router, useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -28,63 +19,17 @@ const { width, height } = Dimensions.get("window");
  * Sign Up screen
  * @returns - The Sign Up screen
  */
-export default function SignUp({ navigation } : any) {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
-  const firestoreCtrl = new FirestoreCtrl();
-
-  const clientId: string | undefined = Platform.select({
-    ios: GoogleAuthConfig.ios.iosClientId,
-    android: GoogleAuthConfig.android.androidClientId,
-    default: GoogleAuthConfig.web.webClientId,
-  });
-
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: clientId,
-  });
-
-  React.useEffect(() => {
-    if (response?.type === "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      logInWithGoogle(credential, navigation, firestoreCtrl);
-    }
-  }, [response]);
-
-  const handleSignUp = () => {
-    if (name.length === 0) {
-      Alert.alert("Name cannot be empty");
-    } else if (surname.length === 0) {
-      Alert.alert("Surname cannot be empty");
-    } else if (email.length === 0) {
-      Alert.alert("Email cannot be empty");
-    } else if (password !== confirmPassword) {
-      Alert.alert("Passwords do not match");
-    } else if (password.length < 8) {
-      Alert.alert("Password must be at least 8 characters long");
-    } else {
-      signUpWithEmail(
-        `${name} ${surname}`,
-        email,
-        password,
-        firestoreCtrl,
-        navigation,
-        setError,
-      );
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    promptAsync();
-  };
+export default function SignUp() {
+  const [name, setName] = React.useState("");
+  const [surname, setSurname] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const router = useRouter();
 
   return (
     <View>
+      {/* Image in the backround out of the scroll view for immonility */}
       <Image
         source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.backroundimage}
@@ -92,83 +37,106 @@ export default function SignUp({ navigation } : any) {
       />
 
       <ScrollView>
+        {/* Color of the backround */}
         <View style={styles.backround}>
-          <TouchableOpacity style={styles.goBack} onPress={() => navigation.back()}>
+          {/* Go back button */}
+          <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
-          <Text style={styles.title}>Tell us about you!</Text>
+          {/* Title of the screen */}
+          <Text style={styles.title}>Tell us about you !</Text>
 
+          {/* The input fields */}
           <View style={styles.inputColumn}>
+            {/* Name */}
             <Text style={styles.titleinput}>Name *</Text>
             <TextInput
               style={styles.input}
               placeholder="Name"
               placeholderTextColor="#888"
-              onChangeText={setName}
+              onChangeText={(text) => setName(text)}
+              autoComplete="name"
             />
 
+            {/* Surname */}
             <Text style={styles.titleinput}>Surname *</Text>
             <TextInput
               style={styles.input}
               placeholder="Surname"
               placeholderTextColor="#888"
-              onChangeText={setSurname}
+              onChangeText={(text) => setSurname(text)}
+              autoComplete="family-name"
             />
 
+            {/* Email */}
             <Text style={styles.titleinput}>Email *</Text>
             <TextInput
               style={
-                isValidEmail(email) || email.length === 0
+                isValidEmail(email) || email.length == 0
                   ? styles.input
                   : styles.inputWrong
               }
               placeholder="example@your.domain"
               placeholderTextColor="#888"
-              onChangeText={setEmail}
+              autoComplete="email"
+              inputMode="email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(text) => setEmail(text)}
+              maxLength={50}
             />
 
+            {/* Password */}
             <Text style={styles.titleinput}>Password *</Text>
             <TextInput
               style={
-                password.length >= 8 || password.length === 0
+                password.length >= 8 || password.length == 0
                   ? styles.input
                   : styles.inputWrong
               }
               placeholder="Password"
               placeholderTextColor="#888"
-              secureTextEntry
-              onChangeText={setPassword}
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
             />
 
+            {/* Confirm Password */}
             <Text style={styles.titleinput}>Confirm Password *</Text>
             <TextInput
               style={
-                confirmPassword.length === 0 || password === confirmPassword
+                confirmPassword.length == 0 || password == confirmPassword
                   ? styles.input
                   : styles.inputWrong
               }
               placeholder="Confirm Password"
               placeholderTextColor="#888"
-              secureTextEntry
-              onChangeText={setConfirmPassword}
+              secureTextEntry={true}
+              onChangeText={(text) => setConfirmPassword(text)}
             />
 
+            {/* Register Button */}
             <TouchableOpacity
               style={styles.buttonStrive}
               testID="striveButton"
-              onPress={handleSignUp}
+              onPress={() =>
+                onClickStrive(password, confirmPassword, name, surname, email)
+              }
             >
               <Text style={styles.buttonText}>Strive with us</Text>
             </TouchableOpacity>
 
+            {/* OR */}
             <Text style={styles.or}>OR</Text>
 
+            {/* Sign Up buttons for Google */}
             <TouchableOpacity
               style={styles.buttonContinueWith}
               testID="GoogleSign"
-              onPress={handleGoogleSignIn}
-              disabled={!request}
+              onPress={() => {
+                Alert.alert("Sign In with Google");
+                router.navigate("../home/home_screen");
+              }}
             >
               <View style={styles.buttonIcon}>
                 <Image
@@ -179,12 +147,13 @@ export default function SignUp({ navigation } : any) {
               </View>
             </TouchableOpacity>
 
+            {/* Sign Up buttons for Facebook */}
             <TouchableOpacity
               style={styles.buttonContinueWith}
               testID="FacebookSign"
               onPress={() => {
                 Alert.alert("Sign In with Facebook");
-                navigation.navigate("/screens/home/PLACEHOLDER_home_screen");
+                router.navigate("../home/home_screen");
               }}
             >
               <View style={styles.buttonIcon}>
@@ -200,6 +169,48 @@ export default function SignUp({ navigation } : any) {
       </ScrollView>
     </View>
   );
+}
+
+/***
+ * Function to check if the email is valid
+ * @param email - email to be checked
+ * @returns - true if the email is valid, false otherwise
+ */
+function isValidEmail(email: string) {
+  let reg =
+    /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
+  return reg.test(email);
+}
+
+/**
+ * Function to check the validity of the input fields and alert the user if there is an error
+ * @param password
+ * @param confirmPassword
+ * @param name
+ * @param surname
+ * @param email
+ * @returns
+ */
+function onClickStrive(
+  password: string,
+  confirmPassword: string,
+  name: string,
+  surname: string,
+  email: string,
+) {
+  if (name.length == 0) {
+    Alert.alert("Name cannot be empty");
+  } else if (surname.length == 0) {
+    Alert.alert("Surname cannot be empty");
+  } else if (email.length == 0) {
+    Alert.alert("Email cannot be empty");
+  } else if (password != confirmPassword) {
+    Alert.alert("Passwords do not match");
+  } else if (password.length < 8) {
+    Alert.alert("Password must be at least 8 characters long");
+  } else {
+    router.push("/screens/auth/set_username_screen");
+  }
 }
 
 /**
@@ -320,38 +331,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-
-
-/**
- * Function to check the validity of the input fields and alert the user if there is an error
- * @param password 
- * @param confirmPassword 
- * @param name 
- * @param surname 
- * @param email 
- * @returns
- */
-function onClickStrive(password : string, confirmPassword : string, name : string, surname : string, email : string) {
-  if (name.length == 0) {
-    alert('Name cannot be empty');
-  }
-
-  else if (surname.length == 0) {
-      alert('Surname cannot be empty');
-  }
-
-  else if (email.length == 0) {
-      alert('Email cannot be empty');
-  }
-
-  else if (password != confirmPassword) {
-      alert('Passwords do not match');
-  }
-  else if (password.length < 8) {
-      alert('Password must be at least 8 characters long');
-  }
-  else {
-      alert('Sign Up');
-  }
-}
