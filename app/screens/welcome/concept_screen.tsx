@@ -8,7 +8,7 @@ export default function WelcomeConceptScreen() {
   return (
     <View className="bg-white w-screen">
       <View style={shape.oval} />
-      <View className="flex-1 justify-center pl-5 pb-16">
+      <View className="flex-1 justify-center pl-3 pb-16">
         <Text className="text-6xl font-black mb-5 pt-2">
           Participate{"\n"}in Weekly{"\n"}challenges
         </Text>
