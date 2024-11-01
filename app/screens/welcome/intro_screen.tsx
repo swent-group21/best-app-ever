@@ -7,7 +7,7 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default function WelcomeIntroScreen() {
   return (
-    <View className="flex-1 bg-white w-screen">
+    <View className="h-screen w-screen">
       <View style={shape.oval} />
       <Text className="text-7xl font-black pt-20 pl-3">
         So what is{"\n"}Strive{"\n"}about ?

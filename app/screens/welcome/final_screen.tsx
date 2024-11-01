@@ -14,7 +14,7 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 export default function WelcomeConceptScreen() {
   const router = useRouter();
   return (
-    <View style={styles.container}>
+    <View className="h-screen w-screen">
       <View style={styles.ovalShapeOne} />
       <View style={styles.ovalShapeTwo} />
       <Text style={styles.title}>Ready to{"\n"}Strive?</Text>
@@ -50,12 +50,6 @@ export default function WelcomeConceptScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-  },
   ovalShapeOne: {
     position: "absolute",
     top: SCREEN_HEIGHT * 0.8,

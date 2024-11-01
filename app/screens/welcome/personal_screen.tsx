@@ -6,7 +6,7 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default function WelcomeConceptScreen() {
   return (
-    <View className="flex-1 w-screen">
+    <View className="h-screen w-screen">
       <View style={shape.oval} />
       <View className="flex-1 justify-center pl-3">
         <Text className="text-6xl font-black mb-5 pt-2">

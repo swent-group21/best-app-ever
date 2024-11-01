@@ -6,7 +6,7 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default function WelcomeConceptScreen() {
   return (
-    <View className="bg-white w-screen">
+    <View className="h-screen w-screen">
       <View style={shape.oval} />
       <View className="flex-1 justify-center pl-3 pb-16">
         <Text className="text-6xl font-black mb-5 pt-2">
@@ -24,7 +24,7 @@ export default function WelcomeConceptScreen() {
 const shape = StyleSheet.create({
   oval: {
     position: "absolute",
-    top: SCREEN_HEIGHT * 0.7,
+    top: SCREEN_HEIGHT * 0.75,
     left: -SCREEN_WIDTH * 0.3,
     width: SCREEN_WIDTH * 1.2,
     height: SCREEN_HEIGHT * 0.7,
