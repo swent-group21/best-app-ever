@@ -11,7 +11,6 @@ import {
 import {
   signUpWithEmail,
   logInWithGoogle,
-  logInWithEmail
 } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 

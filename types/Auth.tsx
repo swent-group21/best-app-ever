@@ -114,10 +114,13 @@ export const signUpWithEmail = async (
           .createUser(userCredential.user.uid, userData)
           .then(() => {
             router.navigate("@app/screens/home/home_screen");
+          })
+          .catch((error) => {
+            console.log("FirestoreCtrl failed to create user due to following error \n", error);
           });
       })
       .catch((error) => {
-        console.log("Sign Up failed. Please check your credentials.");
+        console.log("Sign Up failed. Please check your credentials.", error);
       });
   } else {
     console.log("Please input email and password.");

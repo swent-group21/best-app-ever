@@ -17,6 +17,9 @@ package-lock.json
 # Hide the .env file
 .env
 
+.gradle
+.idea
+
 # macOS
 .DS_Store
 
