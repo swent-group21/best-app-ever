@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation } : any) {
   const router = useRouter();
   return (
     <View style={styles.signInScreen}>

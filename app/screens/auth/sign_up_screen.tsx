@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
 import { signUpWithEmail, logInWithGoogle, isValidEmail } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import {
@@ -25,14 +24,13 @@ import * as Google from "expo-auth-session/providers/google";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SignUp() {
+export default function SignUp({ navigation } : any) {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   const firestoreCtrl = new FirestoreCtrl();
 
@@ -50,7 +48,7 @@ export default function SignUp() {
     if (response?.type === "success") {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
-      logInWithGoogle(credential, router, firestoreCtrl);
+      logInWithGoogle(credential, navigation, firestoreCtrl);
     }
   }, [response]);
 
@@ -71,7 +69,7 @@ export default function SignUp() {
         email,
         password,
         firestoreCtrl,
-        router,
+        navigation,
         setError,
       );
     }
@@ -91,7 +89,7 @@ export default function SignUp() {
 
       <ScrollView>
         <View style={styles.backround}>
-          <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.goBack} onPress={() => navigation.back()}>
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
@@ -182,7 +180,7 @@ export default function SignUp() {
               testID="FacebookSign"
               onPress={() => {
                 Alert.alert("Sign In with Facebook");
-                router.navigate("/screens/home/PLACEHOLDER_home_screen");
+                navigation.navigate("/screens/home/PLACEHOLDER_home_screen");
               }}
             >
               <View style={styles.buttonIcon}>
