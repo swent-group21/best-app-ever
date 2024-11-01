@@ -79,11 +79,11 @@ export const logInWithEmail = async (
                 createdAt: new Date(),
               })
               .then(() => {
-                router.navigate("@app/home/PLACEHOLd_home_screen");
+                router.navigate("../home/home_screen");
               });
           });
         if ( user ) {
-          router.navigate("@app/home/PLACEHOLd_home_screen");
+          router.navigate("../home/home_screen");
         }
       } else {
         console.log("Invalid credentials");
