@@ -32,8 +32,18 @@ export default function SetUsername() {
 
       <View style={styles.inputColumn}>
         {/* Title of the screen */}
-        <Text style={styles.title}>Choose your username</Text>
+        <Text style={styles.title}>Setup your profile</Text>
 
+        {/* The profile picture */}
+        <TouchableOpacity
+          style={styles.imageContainer}
+          onPress={() => router.push("../camera")}
+        >
+          <Image
+            source={require("@/assets/images/auth/SignUpScreen/Profile-PNG-File.png")}
+            style={styles.profilePicture}
+          />
+        </TouchableOpacity>
         {/* The input field for username */}
         <TextInput
           style={styles.input}
@@ -48,13 +58,13 @@ export default function SetUsername() {
         style={styles.goFurther}
         onPress={() => router.push("/screens/auth/profile_picture_screen")}
       >
-        <Ionicons name="arrow-forward" size={24} color="white" />
+        <Text style = {styles.buttonText}> Let's start </Text>
       </TouchableOpacity>
 
-      <Image
+      {/* <Image
         source={require("@/assets/images/goat.png")}
         style={styles.backroundimage}
-      />
+      /> */}
     </View>
   );
 }
@@ -71,14 +81,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonText: {
+    fontSize: width * 0.045,
+    color: "white",
+  },
 
   title: {
-    fontSize: width * 0.11,
+    fontSize: width * 0.15,
     color: "black",
     fontWeight: "bold",
-    textAlign: "right",
-    paddingTop: height * 0.05,
-    paddingBottom: height * 0.05,
+    textAlign: "center",
+    paddingTop: height * 0.1,
+    paddingBottom: height * 0.01,
+    
   },
 
   goFurther: {
@@ -113,17 +128,17 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: "#ccc",
     paddingLeft: 5,
-    marginBottom: height * 0.02,
-    top: height * 0.13,
+    top: height * 0.01,
   },
 
   inputColumn: {
     width: "90%",
-    height: "60%",
+    height: "80%",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
     gap: height * 0.001,
+    
   },
 
   backround: {
@@ -131,5 +146,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  imageContainer: {
+    width: width * 0.5,
+    height: width * 0.5,
+    fontSize: 20,
+    paddingLeft: width * 0.05,
+    marginBottom: height * 0.1,
+    paddingBottom: height * 0.02,
+  },
+
+  profilePicture: {
+    width: width * 0.5,
+    height: width * 0.5,
+    position: "absolute",
+    top: 0,
+    left: width * 0.01,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+
   },
 });

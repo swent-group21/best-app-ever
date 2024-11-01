@@ -24,10 +24,11 @@ export default function SetProfilePicture() {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
 
+        <Text style={styles.title}>Set up your profile picture</Text>
 
       <View style={styles.inputColumn}>
         {/* Title of the screen */}
-        <Text style={styles.title}>Set up your profile picture</Text>
+        
 
         {/* The profile picture */}
         <TouchableOpacity
@@ -75,16 +76,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: width * 0.11,
+    fontSize: width * 0.15,
     color: "black",
     fontWeight: "bold",
     textAlign: "right",
-    paddingTop: height * 0.05,
-    paddingBottom: height * 0.05,
+    paddingTop: height * 0.1,
+    paddingBottom: height * 0.01,
+    
   },
   inputColumn: {
-    marginTop: height * 0.1,
+    width: "90%",
+    height: "40%",
+    flexDirection: "column",
+    justifyContent: "flex-start",
     alignItems: "center",
+    gap: height * 0.001,
+    paddingTop: height * 0.1,
+    
   },
   input: {
     width: width * 0.8,
@@ -108,21 +116,23 @@ const styles = StyleSheet.create({
   },
 
   profilePicture: {
-    width: width * 0.8,
-    height: width * 0.8,
+    width: width * 0.5,
+    height: width * 0.5,
     position: "absolute",
     top: 0,
     left: width * 0.01,
     borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   imageContainer: {
-    width: width * 0.8,
-    height: width * 0.8,
+    width: width * 0.5,
+    height: width * 0.5,
     fontSize: 20,
     paddingLeft: width * 0.05,
-    justifyContent: "center",
-    alignItems: "center",
+    marginBottom: height * 0.1,
+    paddingBottom: height * 0.02,
   },
 
   textButton: {
