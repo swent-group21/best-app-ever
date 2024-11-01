@@ -22,7 +22,7 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
     const userTime = '18:26'; // derived from the time the user posted the challenge
 
     return (
-    <ThemedView>
+    <ThemedView style = {{backgroundColor: 'transparent'}}>
         <TouchableOpacity
             onPress={() => setIsOpen(!isOpen)}
             activeOpacity={0.8}>
@@ -41,7 +41,7 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
                                 <ThemedText lightColor='white' darkColor='white' type='small' >{"in " + userLocation + " at " + userTime}</ThemedText>
                             </ThemedView>
                         </ThemedView>
-                        <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("/screens/home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
+                        <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("../home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
                     </ThemedView>
                     <ThemedView style={styles.bottomBar}>
                         <ThemedIconButton iconName="heart-outline" onPress={() => {router.back()}} size={25} color='white'/>

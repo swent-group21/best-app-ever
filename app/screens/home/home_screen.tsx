@@ -5,8 +5,10 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/BottomBar";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
+  const router = useRouter();
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -28,6 +30,7 @@ export default function HomeScreen() {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="logo-docker"
+        centerAction={() => router.push("../camera")} 
       />
     </ThemedView>
   );
