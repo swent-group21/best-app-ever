@@ -20,6 +20,12 @@ package-lock.json
 .gradle
 .idea
 
+# Hide local ip 
+.ip
+
+# Hide the .env file
+.env
+
 # macOS
 .DS_Store
 
