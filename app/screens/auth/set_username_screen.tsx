@@ -18,20 +18,21 @@ export default function SetUsername() {
   const router = useRouter();
   return (
     <View style={styles.backround}>
+
       {/* Image in the backround out of the scroll view for immonility */}
       <Image
         source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.ellipse}
       />
 
+      {/* Go back button */}
+      <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+      </TouchableOpacity>
+
       <View style={styles.inputColumn}>
         {/* Title of the screen */}
-        <Text style={styles.title}>Set up your username</Text>
-
-        {/* Go back button */}
-        <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
+        <Text style={styles.title}>Choose your username</Text>
 
         {/* The input field for username */}
         <TextInput
@@ -61,8 +62,8 @@ export default function SetUsername() {
 const styles = StyleSheet.create({
   goBack: {
     position: "absolute",
-    top: height * 0.07,
-    left: width * 0.01,
+    top: height * 0.05,
+    left: width * 0.05,
     width: width * 0.1,
     height: width * 0.1,
     backgroundColor: "black",
@@ -72,11 +73,11 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: width * 0.14,
+    fontSize: width * 0.11,
     color: "black",
     fontWeight: "bold",
     textAlign: "right",
-    paddingTop: height * 0.12,
+    paddingTop: height * 0.05,
     paddingBottom: height * 0.05,
   },
 
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     borderColor: "#ccc",
-    paddingLeft: 20,
+    paddingLeft: 5,
     marginBottom: height * 0.02,
     top: height * 0.13,
   },

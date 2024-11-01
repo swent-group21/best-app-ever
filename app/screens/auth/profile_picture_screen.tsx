@@ -5,12 +5,10 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  TextInput,
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import CameraTest from "../camera";
 
 const { width, height } = Dimensions.get("window");
 export default function SetProfilePicture() {
@@ -21,14 +19,15 @@ export default function SetProfilePicture() {
         source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.ellipse}
       />
+       {/* Go back button */}
+       <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+
+
       <View style={styles.inputColumn}>
         {/* Title of the screen */}
         <Text style={styles.title}>Set up your profile picture</Text>
-
-        {/* Go back button */}
-        <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
 
         {/* The profile picture */}
         <TouchableOpacity
@@ -76,11 +75,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: width * 0.14,
+    fontSize: width * 0.11,
     color: "black",
     fontWeight: "bold",
     textAlign: "right",
-    paddingTop: height * 0.12,
+    paddingTop: height * 0.05,
     paddingBottom: height * 0.05,
   },
   inputColumn: {
