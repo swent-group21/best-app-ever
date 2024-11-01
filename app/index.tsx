@@ -1,22 +1,10 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Dimensions } from "react-native";
 
-<<<<<<< HEAD
-import WelcomeIntroScreen from "./screens/welcome/intro_screen";
-import WelcomeConceptScreen from "./screens/welcome/concept_screen";
-import WelcomePersonalScreen from "./screens/welcome/personal_screen";
-import WelcomeFinalScreen from "./screens/welcome/final_screen";
-||||||| parent of bfdc1af (refactor(app): added screen/ folder)
-import WelcomeIntroScreen from './welcome/intro_screen';
-import WelcomeConceptScreen from './welcome/concept_screen';
-import WelcomePersonalScreen from './welcome/personal_screen';
-import WelcomeFinalScreen from './welcome/final_screen';
-=======
-import WelcomeIntroScreen from './screens/welcome/intro_screen';
-import WelcomeConceptScreen from './screens/welcome/concept_screen';
-import WelcomePersonalScreen from './screens/welcome/personal_screen';
-import WelcomeFinalScreen from './screens/welcome/final_screen';
->>>>>>> bfdc1af (refactor(app): added screen/ folder)
+import WelcomeIntroScreen from '@/app/screens/welcome/intro_screen';
+import WelcomeConceptScreen from '@/app/screens/welcome/concept_screen';
+import WelcomePersonalScreen from '@/app/screens/welcome/personal_screen';
+import WelcomeFinalScreen from '@/app/screens/welcome/final_screen';
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;

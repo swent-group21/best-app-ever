@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+package-lock.json
 
 # Hide local ip 
 .ip

@@ -7,9 +7,14 @@ import {
 } from "@/firebase/Firebase";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
-export function isValidEmail(email: string) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-  return regex.test(email);
+/*** 
+ * Function to check if the email is valid
+ * @param email - email to be checked
+ * @returns - true if the email is valid, false otherwise
+ */
+function isValidEmail(email : string) {
+  let reg = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
+  return reg.test(email);
 }
 
 export const logInWithGoogle = (
