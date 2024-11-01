@@ -7,15 +7,14 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default function WelcomeIntroScreen() {
   return (
-    <View style={styles.container}>
-      <View style={styles.ovalShape} />
-      <Text style={styles.title}>
+    <View className="flex-1 bg-white w-screen">
+      <View style={shape.oval} />
+      <Text className="text-7xl font-black pt-20 pl-4">
         So what is{"\n"}Strive{"\n"}about ?
       </Text>
-      <View style={styles.bottomContainer}>
-        {/* Placeholder for the image */}
+      <View className="flex-1 justify-end items-start">
         <Image
-          style={styles.image}
+          className="w-28 h-28"
           source={require("../../../assets/images/goat.png")}
         />
       </View>
@@ -23,13 +22,8 @@ export default function WelcomeIntroScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    width: SCREEN_WIDTH,
-  },
-  ovalShape: {
+const shape = StyleSheet.create({
+  oval: {
     position: "absolute",
     top: -SCREEN_HEIGHT * 0.95,
     left: -SCREEN_WIDTH * 0.8,
@@ -39,24 +33,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#E6BC95",
     justifyContent: "center",
     paddingLeft: SCREEN_WIDTH * 0.3,
-  },
-  title: {
-    paddingTop: SCREEN_HEIGHT * 0.2,
-    paddingLeft: SCREEN_WIDTH * 0.05,
-    fontSize: 70,
-    fontWeight: "900",
-    color: "#000",
-    lineHeight: 56,
-  },
-  bottomContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
-    paddingBottom: 30,
-    paddingLeft: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
   },
 });
