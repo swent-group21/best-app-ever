@@ -7,13 +7,23 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
+import { useState } from "react";
+import {
+  logInWithEmail
+} from "@/types/Auth";
 import { useRouter } from "expo-router";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
 export default function SignInScreen() {
   const router = useRouter();
+  const firestoreCtrl = new FirestoreCtrl();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <View style={styles.signInScreen}>
       {/* Background Image */}
@@ -37,6 +47,7 @@ export default function SignInScreen() {
           keyboardType="email-address"
           autoCapitalize="none"
           testID="emailInput"
+          onChangeText={(text) => setEmail(text)}
         />
 
         <Text style={styles.text}>Password</Text>
@@ -47,13 +58,19 @@ export default function SignInScreen() {
           secureTextEntry={true}
           autoComplete="password"
           testID="passwordInput"
+          onChangeText={(text) => setPassword(text)}
         />
 
         {/* SignIn Button */}
         <TouchableOpacity
           style={styles.buttonSignIn}
-          onPress={() => {
-            router.navigate("/screens/home/home_screen");
+          onPress={() => { 
+            logInWithEmail(
+              email,
+              password,
+              firestoreCtrl,
+              router
+            )
           }}
           testID="signInButton"
         >
@@ -77,7 +94,6 @@ export default function SignInScreen() {
         </TouchableOpacity>
 
         {/* Continue with Google */}
-
         <TouchableOpacity
           style={styles.buttonContinueWith}
           onPress={() => {
@@ -93,26 +109,6 @@ export default function SignInScreen() {
             />
 
             <Text style={styles.buttonText}>Continue with Google</Text>
-          </View>
-        </TouchableOpacity>
-
-        {/* Continue with Facebook */}
-
-        <TouchableOpacity
-          style={styles.buttonContinueWith}
-          onPress={() => {
-            alert("Sign In with Facebook");
-            router.navigate("/screens/home/home_screen");
-          }}
-          testID="continueWithFacebookButton"
-        >
-          <View style={styles.buttonContent}>
-            <Image
-              source={require("@/assets/images/auth/SignInScreen/facebook.png")}
-              style={styles.icon}
-            />
-
-            <Text style={styles.buttonText}>Continue with Facebook</Text>
           </View>
         </TouchableOpacity>
       </View>
