@@ -30,10 +30,9 @@ jobs:
         with: 
           node-version: '22.x'
 
-      - name: Run Yarn Install
+      - name: Run NPM Install
         run: | 
-              npm install -g yarn
-              yarn install
+              npm install
 
       - name: Build App
         run: 
