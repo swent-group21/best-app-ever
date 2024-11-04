@@ -34,13 +34,3 @@ jobs:
         run: | 
               npm install
 
-      - name: Build App
-        run: 
-              ./gradlew assembleRelease
-
-      - name: Upload APK to Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: app
-          path: ./app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 3
