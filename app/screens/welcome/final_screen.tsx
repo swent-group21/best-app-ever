@@ -22,7 +22,7 @@ export default function WelcomeConceptScreen() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.buttonAccount}
-          onPress={() => router.push("/screens/auth/sign_in_screen")}
+          onPress={() => router.navigate("./screens/auth/sign_in_screen")}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -30,7 +30,7 @@ export default function WelcomeConceptScreen() {
         <Text />
         <TouchableOpacity
           style={styles.buttonAccount}
-          onPress={() => router.push("/screens/auth/sign_up_screen")}
+          onPress={() => router.navigate("./screens/auth/sign_up_screen")}
         >
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
@@ -39,7 +39,7 @@ export default function WelcomeConceptScreen() {
         <TouchableOpacity
           onPress={() => {
             alert("Spooky user!");
-            router.navigate("/screens/home/home_screen");
+            router.navigate("./screens/home/home_screen");
           }}
         >
           <Text>Continue as guest</Text>
