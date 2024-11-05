@@ -3,7 +3,9 @@
 name: "Build APK"
 run-name: ${{ github.actor }} is learning build Android App using Github Actions
 on: 
-  push
+  eas-build-android:
+  push:
+  
   
 jobs:
   build:
@@ -12,25 +14,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Java 
-        uses: actions/setup-java@v2
-        with:
-          java-version: '20'
-          distribution: "adopt"
-          cache: "gradle"
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-      
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with: 
-          node-version: '22.x'
-
       - name: Run NPM Install
         run: | 
               npm install
+
+      - name : Expo build into Android
+        run: |
+              eas-build-android:production
+
 
