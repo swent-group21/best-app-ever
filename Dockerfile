@@ -32,7 +32,7 @@ RUN mkdir /opt/strive && chown root:root /opt/strive
 WORKDIR /opt/strive
 ENV PATH /opt/strive/.bin:$PATH
 USER root
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json yarn.lock ./
 RUN npm install
 RUN expo install expo-auth-session expo-random
 
