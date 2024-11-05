@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "880398904270",
+    "project_id": "strive-f0b38",
+    "storage_bucket": "strive-f0b38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880398904270:android:f08a3ccd5a36cd3f12599f",
+        "android_client_info": {
+          "package_name": "com.strive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880398904270-t66kevifl1nfrdppsf2375p7iepr08sk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdPBXZAAKppR1jkeBkz5C0OijXuMu4nFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880398904270-t66kevifl1nfrdppsf2375p7iepr08sk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "880398904270-tofe96todd2j72av2ulif4075jj7cuf4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.strive"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
