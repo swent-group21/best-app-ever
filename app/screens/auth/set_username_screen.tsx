@@ -10,110 +10,51 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { TopBar } from "@/components/TopBar";
+import { BottomBar } from "@/components/BottomBar";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
 export default function SetUsername() {
   const [username, setUsername] = React.useState("");
   const router = useRouter();
+  const uri = "@/assets/images/auth/SignUpScreen/"
   return (
-    <View style={styles.backround}>
-      {/* Image in the backround out of the scroll view for immonility */}
-      <Image
-        source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
-        style={styles.ellipse}
-      />
+    <ThemedView style={styles.bigContainer}>
+      <Image source={require(`${uri}Ellipse 3.png`)} style={styles.ellipse} />
 
-      <View style={styles.inputColumn}>
-        {/* Title of the screen */}
-        <Text style={styles.title}>Set up your username</Text>
+      <TopBar leftIcon="arrow-back" leftAction={() => router.back()} title="Set up your profile" />
 
-        {/* Go back button */}
-        <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
-
-        {/* The input field for username */}
-        <TextInput
+      <ThemedView style={styles.container}>
+        <ThemedTextInput
+          placeholder="ex : sandraa"
+          onChangeText={setUsername}
+          value={username}
           style={styles.input}
-          placeholder="how will your friends find you ?"
-          placeholderTextColor="#888"
-          onChangeText={(text) => setUsername(text)}
-          autoCorrect={false}
         />
-      </View>
-      {/* Go further button */}
-      <TouchableOpacity
-        style={styles.goFurther}
-        onPress={() => router.push("/screens/auth/profile_picture_screen")}
-      >
-        <Ionicons name="arrow-forward" size={24} color="white" />
-      </TouchableOpacity>
-
-      <Image
-        source={require("@/assets/images/goat.png")}
-        style={styles.backroundimage}
-      />
-    </View>
+      </ThemedView>
+      
+      <BottomBar rightIcon="arrow-forward" rightAction={() => router.navigate("../home/home_screen")} />
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  goBack: {
-    position: "absolute",
-    top: height * 0.07,
-    left: width * 0.01,
-    width: width * 0.1,
-    height: width * 0.1,
-    backgroundColor: "black",
-    borderRadius: 90,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   title: {
-    fontSize: width * 0.14,
-    color: "black",
+    fontSize: 25,
+    color: "white",
     fontWeight: "bold",
-    textAlign: "right",
-    paddingTop: height * 0.12,
-    paddingBottom: height * 0.05,
-  },
-
-  goFurther: {
-    position: "absolute",
-    top: height * 0.8,
-    left: width * 0.05,
-    width: width * 0.9,
-    height: width * 0.1,
-    backgroundColor: "black",
-    borderRadius: 90,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  backroundimage: {
-    position: "absolute",
-    top: height * 0.6,
-    left: width * 0.6,
+    alignSelf: "flex-start",
+    marginLeft: width * 0.05,
   },
 
   ellipse: {
     position: "absolute",
-    top: -100,
-    left: width * 0.6,
-    transform: [{ rotate: "90deg" }],
-  },
-
-  input: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "#ccc",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-    top: height * 0.13,
+    bottom: 0,
+    left: 200,
+    transform: [{ rotate: "180deg" }],
   },
 
   inputColumn: {
@@ -125,10 +66,31 @@ const styles = StyleSheet.create({
     gap: height * 0.001,
   },
 
+  input: {
+    borderRadius: 10,
+    backgroundColor: "grey",
+    borderColor: "white",
+    borderWidth: 1,
+    textAlign: "center",
+    fontSize: 20,
+    color: "black",
+  },
+
   backround: {
-    backgroundColor: "white",
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+    position: "relative",
+  },
+
+  bigContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
   },
 });

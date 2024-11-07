@@ -30,7 +30,7 @@ export default function WelcomeConceptScreen() {
         <Text />
         <TouchableOpacity
           style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/sign_up_screen")}
+          onPress={() => router.navigate("./screens/auth/set_username_screen")} //TODO CHANGE THIS
         >
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
