@@ -10,32 +10,41 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { Icon } from "react-native-elements";
 
 
+
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
   const router = useRouter();
   const [comment, setComment] = React.useState(false);
   const [commentText, setCommentText] = React.useState("");
-  const commentList : CommentType[] = [];
+  const [commentList, setCommentList] = React.useState<CommentType[]>([]);
+  
 
 
   const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
+  commentList.push({comment: "This is a comment"} as CommentType);
+  commentList.push({comment: "This is another comment"} as CommentType);
+  commentList.push({comment: "This is yet another comment"} as CommentType);
+  commentList.push({comment: "This is a comment"} as CommentType);
+  commentList.push({comment: "This is another comment"} as CommentType);
   return (
   <ThemedView style={styles.bigContainer}>
-    <ThemedScrollView
-    style={styles.scroll}
-    contentContainerStyle={styles.contentContainer}
-    automaticallyAdjustKeyboardInsets={true}
-  >
-      <TopBar
+    <TopBar
         title="Commute by foot"
         leftIcon="arrow-back-outline"
         leftAction={router.back}
       />
 
+
+    <ThemedScrollView
+    style={styles.scroll}
+    contentContainerStyle={styles.contentContainer}
+    automaticallyAdjustKeyboardInsets={true}
+
+  >
       <ThemedView style={styles.container}>
         <Image
           source={require("@/assets/images/challenge2.png")}
@@ -90,14 +99,23 @@ export default function MaximizeScreen() {
           {'Add a comment'}
       </ThemedText>
 
-      {comment
-      &&  <TextInput style={styles.commentInput} onChangeText={(text) => {setCommentText(text) ; commentList.push({comment: text} as CommentType)}} 
-      
-        />
-      }
+      <ThemedView style={styles.row}>
+        {comment
+        &&  <TextInput style={styles.commentInput} onChangeText={(text) => {setCommentText(text) ; }} 
+        
+          />}
+        {comment && <ThemedIconButton iconName="send" size={25} color="white" onPress={() => {setComment(false); commentList.push({comment: commentText} as CommentType)}}/>}
 
-      {commentList.length > 0 && commentList.map((eachComment) => <SingleComment comment={eachComment.comment} />)}
-    
+      </ThemedView>
+
+      <ThemedView style= {styles.commentColumn}>
+      {commentList.length > 0 && commentList.map( 
+        
+        (eachComment, i) =>
+      
+        <SingleComment comment={eachComment.comment} key={i}/>)}
+      </ThemedView>
+
     </ThemedScrollView>
   </ThemedView>
   );
@@ -113,6 +131,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     flex: 1,
+    
   },
   container: {
     height: "70%",
@@ -127,6 +146,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 30,
     backgroundColor: "transparent",
+    paddingBottom: 300,
   },
   text: {
     color: "white",
@@ -153,18 +173,33 @@ const styles = StyleSheet.create({
     height: height * 0.05,
     borderColor: "gray",
     borderWidth: 1,
-    width: width - 20,
+    width: width - 40,
     borderRadius: 15,
     color: "white",
     flex: 2,
   },
   scroll: {
-    height: "100%",
     width: "100%",
+    height: "100%",
     backgroundColor: "transparent",
+
   }, 
   buttonSend : {
     flex: 0.5,
     alignItems  : 'center',
+  }, 
+  row : {
+    flexDirection : 'row',
+    width : '100%',
+    padding:5,
+    backgroundColor : 'transparent',
+    minHeight: height * 0.1
+  }, 
+  commentColumn : { 
+    flexDirection : 'column',
+    width : '100%',
+    padding:5,
+    backgroundColor : 'transparent',
+    minHeight: height * 0.2,
   }
 });

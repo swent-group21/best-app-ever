@@ -23,7 +23,7 @@ export function SingleComment(comment : CommentType) {
 
 const styles = StyleSheet.create({
     container: {
-        width: width * 0.1,
+        width: width * 0.9,
         height: height * 0.08,
         flexDirection: 'row',
         alignItems: 'center',
