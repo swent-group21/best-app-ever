@@ -29,10 +29,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 10,
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         borderRadius: 15,
         borderColor: 'white',
         borderWidth: 1,
+        
     },
     textofcomment: {
         fontSize: 8,

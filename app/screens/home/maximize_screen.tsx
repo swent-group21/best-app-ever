@@ -25,12 +25,9 @@ export default function MaximizeScreen() {
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
-  commentList.push({comment: "This is a comment"} as CommentType);
-  commentList.push({comment: "This is another comment"} as CommentType);
-  commentList.push({comment: "This is yet another comment"} as CommentType);
-  commentList.push({comment: "This is a comment"} as CommentType);
-  commentList.push({comment: "This is another comment"} as CommentType);
+
   return (
+    
   <ThemedView style={styles.bigContainer}>
     <TopBar
         title="Commute by foot"
@@ -95,15 +92,17 @@ export default function MaximizeScreen() {
           color="white"
         />
       </ThemedView>
-      <ThemedText lightColor="white" darkColor="white" type="small" onPress={() => setComment(true)} >
+      <ThemedText lightColor="white" darkColor="white" type="small" onPress={() => 
+        setComment(true)} >
           {'Add a comment'}
       </ThemedText>
 
       <ThemedView style={styles.row}>
         {comment
-        &&  <TextInput style={styles.commentInput} onChangeText={(text) => {setCommentText(text) ; }} 
+        &&  <TextInput style={styles.commentInput} onChangeText={(text) => {setCommentText(text) ; console.log(commentList) }} 
         
           />}
+        
         {comment && <ThemedIconButton iconName="send" size={25} color="white" onPress={() => {setComment(false); commentList.push({comment: commentText} as CommentType)}}/>}
 
       </ThemedView>
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     
   },
   container: {
-    height: "70%",
+    height: height * 0.4,
     width: width - 20,
     backgroundColor: "transparent",
     borderRadius: 15,
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 30,
     backgroundColor: "transparent",
-    paddingBottom: 300,
+    paddingBottom: 10,
   },
   text: {
     color: "white",
@@ -165,8 +164,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     borderRadius: 15,
   },
   commentInput: {
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
     width: width - 40,
     borderRadius: 15,
     color: "white",
-    flex: 2,
+    
   },
   scroll: {
     width: "100%",
@@ -185,21 +184,28 @@ const styles = StyleSheet.create({
 
   }, 
   buttonSend : {
-    flex: 0.5,
+    width : width * 0.8,
+    height : height * 0.05,
     alignItems  : 'center',
   }, 
   row : {
     flexDirection : 'row',
     width : '100%',
-    padding:5,
+    padding:0,
     backgroundColor : 'transparent',
-    minHeight: height * 0.1
+    minHeight: height * 0.1,
+    justifyContent : 'space-between',
   }, 
   commentColumn : { 
     flexDirection : 'column',
     width : '100%',
-    padding:5,
+    padding:0,
     backgroundColor : 'transparent',
-    minHeight: height * 0.2,
+    justifyContent : 'space-between',
+    alignItems : 'center',
+    
+  }, 
+  iconButton : {
+    paddingLeft : 10,
   }
 });
