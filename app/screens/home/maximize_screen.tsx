@@ -1,23 +1,35 @@
 import React from "react";
-import { StyleSheet, Text, Dimensions, Image } from "react-native";
+import { StyleSheet, Text, Dimensions, Image, ScrollView, TextInput } from "react-native";
 import { TopBar } from "@/components/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { useRouter } from "expo-router";
+import {SingleComment, CommentType} from "@/components/posts/Comment"; 
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { Icon } from "react-native-elements";
 
-// Get screen width and height
+
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
   const router = useRouter();
+  const [comment, setComment] = React.useState(false);
+  const [commentText, setCommentText] = React.useState("");
+  const commentList : CommentType[] = [];
+
 
   const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
   return (
-    <ThemedView style={styles.bigContainer}>
+  <ThemedView style={styles.bigContainer}>
+    <ThemedScrollView
+    style={styles.scroll}
+    contentContainerStyle={styles.contentContainer}
+    automaticallyAdjustKeyboardInsets={true}
+  >
       <TopBar
         title="Commute by foot"
         leftIcon="arrow-back-outline"
@@ -74,7 +86,20 @@ export default function MaximizeScreen() {
           color="white"
         />
       </ThemedView>
-    </ThemedView>
+      <ThemedText lightColor="white" darkColor="white" type="small" onPress={() => setComment(true)} >
+          {'Add a comment'}
+      </ThemedText>
+
+      {comment
+      &&  <TextInput style={styles.commentInput} onChangeText={(text) => {setCommentText(text) ; commentList.push({comment: text} as CommentType)}} 
+      
+        />
+      }
+
+      {commentList.length > 0 && commentList.map((eachComment) => <SingleComment comment={eachComment.comment} />)}
+    
+    </ThemedScrollView>
+  </ThemedView>
   );
 }
 
@@ -124,4 +149,22 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 15,
   },
+  commentInput: {
+    height: height * 0.05,
+    borderColor: "gray",
+    borderWidth: 1,
+    width: width - 20,
+    borderRadius: 15,
+    color: "white",
+    flex: 2,
+  },
+  scroll: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "transparent",
+  }, 
+  buttonSend : {
+    flex: 0.5,
+    alignItems  : 'center',
+  }
 });
