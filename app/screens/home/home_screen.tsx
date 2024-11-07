@@ -34,3 +34,8 @@ export default function HomeScreen() {
     </ThemedView>
   );
 }
+const styles = StyleSheet.create({
+  contentContainer: {
+    gap: 30,
+  },
+});
