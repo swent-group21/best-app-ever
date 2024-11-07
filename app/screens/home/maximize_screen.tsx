@@ -17,16 +17,7 @@ export default function MaximizeScreen() {
   const router = useRouter();
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
-  const getCurrentDate=()=>{
- 
-    var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
-    var year = new Date().getFullYear();
-
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
-    return date + '-' + month + '-' + year;//format: d-m-y;
-}
+  const [isLiked, setIsLiked] = React.useState(false);
   
 
   const userNameCommenter = "Tristan"
@@ -95,12 +86,12 @@ export default function MaximizeScreen() {
 
       <ThemedView style={styles.bigContainer}>
         <ThemedIconButton
-          iconName="heart-outline"
+          iconName="heart"
           onPress={() => {
-            /* */
+            setIsLiked(!isLiked);
           }}
           size={60}
-          color="white"
+          color={isLiked ? "red" : "white"}
         />
       </ThemedView>
      

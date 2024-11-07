@@ -14,6 +14,7 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
     const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
+    const[isLiked, setIsLiked] = useState(false);
     const theme = useColorScheme() ?? 'light';
 
     const height = 279; // derived from the height of the image
@@ -44,7 +45,7 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
                         <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("../home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
                     </ThemedView>
                     <ThemedView style={styles.bottomBar}>
-                        <ThemedIconButton iconName="heart-outline" onPress={() => {router.back()}} size={25} color='white'/>
+                        <ThemedIconButton iconName="heart" onPress={() => {setIsLiked(!isLiked)}} size={25} color= {isLiked? 'red':'white'}/>
                         <ThemedIconButton iconName="location-outline" onPress={() => {/* location button */}} size={25} color='white'/>
                     </ThemedView>
                 </ThemedView>
