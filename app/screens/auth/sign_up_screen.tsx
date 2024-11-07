@@ -8,11 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import {
-  isValidEmail,
-  signUpWithEmail,
-  logInWithGoogle,
-} from "@/types/Auth";
+import { isValidEmail, signUpWithEmail, logInWithGoogle } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
 import { TextInput } from "react-native";
@@ -129,7 +125,13 @@ export default function SignUp() {
               style={styles.buttonStrive}
               testID="striveButton"
               onPress={() =>
-                signUpWithEmail(name+surname, email, password, firestoreCtrl, router)
+                signUpWithEmail(
+                  name + surname,
+                  email,
+                  password,
+                  firestoreCtrl,
+                  router,
+                )
               }
             >
               <Text style={styles.buttonText}>Strive with us</Text>
@@ -155,7 +157,6 @@ export default function SignUp() {
                 <Text style={styles.buttonText}>Continue with Google</Text>
               </View>
             </TouchableOpacity>
-
           </View>
         </View>
       </ScrollView>

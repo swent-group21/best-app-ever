@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Dimensions } from "react-native";
 
-import WelcomeIntroScreen from '@/app/screens/welcome/intro_screen';
-import WelcomeConceptScreen from '@/app/screens/welcome/concept_screen';
-import WelcomePersonalScreen from '@/app/screens/welcome/personal_screen';
-import WelcomeFinalScreen from '@/app/screens/welcome/final_screen';
+import WelcomeIntroScreen from "./screens/welcome/intro_screen";
+import WelcomeConceptScreen from "./screens/welcome/concept_screen";
+import WelcomePersonalScreen from "./screens/welcome/personal_screen";
+import WelcomeFinalScreen from "./screens/welcome/final_screen";
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -20,12 +20,12 @@ export default function WelcomeScreens() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex[1]">
       <ScrollView
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
+        className="flex[1]"
         onScroll={handleScroll}
       >
         <WelcomeIntroScreen />
@@ -36,49 +36,16 @@ export default function WelcomeScreens() {
 
       {/* Render the dots, only if not on the last screen */}
       {activeIndex < 3 && (
-        <View style={styles.dotContainer}>
-          {[0, 1, 2, 4].map((i) => (
-            <View
-              key={i}
-              style={[
-                styles.dot,
-                activeIndex === i ? styles.activeDot : styles.inactiveDot,
-              ]}
-            />
-          ))}
+        <View className="absolute w-full justify-center items-center flex-row bottom-16">
+          {[0, 1, 2, 4].map((i) => {
+            const dotStyle =
+              "w-5 h-5 rounded-xl mx-2 border border-black ".concat(
+                i === activeIndex ? " bg-black" : " bg-transparent",
+              );
+            return <View key={i} className={dotStyle} />;
+          })}
         </View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  dotContainer: {
-    position: "absolute",
-    bottom: 60,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  dot: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    marginHorizontal: 6,
-    borderWidth: 1,
-    borderColor: "#000",
-  },
-  activeDot: {
-    backgroundColor: "#000",
-  },
-  inactiveDot: {
-    backgroundColor: "transparent",
-  },
-});

@@ -8,9 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useState } from "react";
-import {
-  logInWithEmail
-} from "@/types/Auth";
+import { logInWithEmail } from "@/types/Auth";
 import { useRouter } from "expo-router";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
@@ -64,13 +62,8 @@ export default function SignInScreen() {
         {/* SignIn Button */}
         <TouchableOpacity
           style={styles.buttonSignIn}
-          onPress={() => { 
-            logInWithEmail(
-              email,
-              password,
-              firestoreCtrl,
-              router
-            )
+          onPress={() => {
+            logInWithEmail(email, password, firestoreCtrl, router);
           }}
           testID="signInButton"
         >

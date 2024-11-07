@@ -5,7 +5,6 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
   ],
-  presets: [require("nativewind/preset")],
   theme: {
     extend: {
       colors: {
@@ -45,6 +44,11 @@ module.exports = {
       letterSpacing: {
         'wide': '.025em',
         'wider': '.05em',
+      },
+      positioning: {
+        index: {
+          'bottom': 60
+        },
       },
     },
   },
