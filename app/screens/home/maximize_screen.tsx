@@ -70,3 +70,10 @@ export default function MaximizeScreen() {
     </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: width - 20,
+    height: "70%",
+  },
+});
