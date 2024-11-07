@@ -1,10 +1,4 @@
-import {
-  firestore,
-  doc,
-  getDoc,
-  setDoc,
-} from "./Firebase";
-
+import { firestore, doc, getDoc, setDoc } from "./Firebase";
 
 export type DBUser = {
   name: string;
@@ -15,7 +9,6 @@ export type DBUser = {
 };
 
 export default class FirestoreCtrl {
-  
   /**
    * Creates or updates a user document in Firestore.
    * @param userId The UID of the user.
@@ -51,7 +44,4 @@ export default class FirestoreCtrl {
   /**
    * Add other create and get for challenges user info etc
    */
-
 }
-
-

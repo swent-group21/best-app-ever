@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  TextInput,
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import CameraTest from "../camera";
 
 const { width, height } = Dimensions.get("window");
+
 export default function SetProfilePicture() {
   const router = useRouter();
+
   return (
-    <View style={styles.backround}>
+    <View className="flex-1 items-center justify-start bg-transparent">
       <Image
         source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
         style={styles.ellipse}
       />
-      <View style={styles.inputColumn}>
+      <View className="mt-10 items-center">
         {/* Title of the screen */}
-        <Text style={styles.title}>Set up your profile picture</Text>
+        <Text className="text-4xl font-bold text-black text-right pt-12 pb-5">
+          Set up your profile picture
+        </Text>
 
         {/* Go back button */}
         <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
@@ -32,7 +34,7 @@ export default function SetProfilePicture() {
 
         {/* The profile picture */}
         <TouchableOpacity
-          style={styles.imageContainer}
+          className="justify-center items-center w-4/5 h-4/5"
           onPress={() => router.push("../camera")}
         >
           <Image
@@ -41,12 +43,13 @@ export default function SetProfilePicture() {
           />
         </TouchableOpacity>
       </View>
+
       {/* Go further button */}
       <TouchableOpacity
-        style={styles.goFurther}
+        className="absolute bg-black justify-center items-center rounded-full w-11/12 h-10 top-4/5 left-2"
         onPress={() => alert("Go further")}
       >
-        <Text style={styles.textButton}> Maybe Later </Text>
+        <Text className="text-white font-bold text-base"> Maybe Later </Text>
       </TouchableOpacity>
     </View>
   );
@@ -64,71 +67,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  goFurther: {
-    position: "absolute",
-    top: height * 0.8,
-    left: width * 0.05,
-    width: width * 0.9,
-    height: width * 0.1,
-    backgroundColor: "black",
-    borderRadius: 90,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: width * 0.14,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "right",
-    paddingTop: height * 0.12,
-    paddingBottom: height * 0.05,
-  },
-  inputColumn: {
-    marginTop: height * 0.1,
-    alignItems: "center",
-  },
-  input: {
-    width: width * 0.8,
-    height: height * 0.1,
-    backgroundColor: "white",
-    borderRadius: 10,
-    fontSize: 20,
-    paddingLeft: width * 0.05,
-  },
-  backround: {
-    backgroundColor: "transparent",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
   ellipse: {
     position: "absolute",
     top: -100,
     left: width * 0.6,
     transform: [{ rotate: "90deg" }],
   },
-
   profilePicture: {
     width: width * 0.8,
     height: width * 0.8,
-    position: "absolute",
-    top: 0,
-    left: width * 0.01,
     borderRadius: 10,
-  },
-
-  imageContainer: {
-    width: width * 0.8,
-    height: width * 0.8,
-    fontSize: 20,
-    paddingLeft: width * 0.05,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  textButton: {
-    fontSize: width * 0.045,
-    color: "white",
-    fontWeight: "bold",
   },
 });

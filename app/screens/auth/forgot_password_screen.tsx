@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -9,28 +10,29 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 
-// Get screen width and height
 const { width, height } = Dimensions.get("window");
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
   return (
-    <View style={styles.forgotPasswordScreen}>
+    <View className="flex-1 justify-start items-center bg-white">
       {/* Background Image */}
       <Image
         source={require("@/assets/images/auth/ForgotPasswordScreen/bg.png")}
-        style={[styles.backgroundImage]}
+        style={styles.backgroundImage}
       />
 
       {/* Title */}
-      <Text style={styles.titleText}>Forgot your Password ?</Text>
+      <Text className="text-5xl font-bold text-black pt-24 text-justify">
+        Forgot your Password ?
+      </Text>
 
       {/* Column Container */}
-      <View style={styles.colContainer}>
+      <View className="w-5/6 h-2/5 flex flex-col justify-center items-center space-y-2.5">
         {/* Input */}
-        <Text style={styles.text}>Email</Text>
+        <Text className="w-full text-lg text-black text-left mb-2">Email</Text>
         <TextInput
-          style={styles.input}
+          className="w-full h-12 border border-gray-300 rounded-xl px-5 mb-5"
           placeholder="example@your.domain"
           placeholderTextColor="#888"
           autoComplete="email"
@@ -41,7 +43,7 @@ export default function ForgotPasswordScreen() {
         />
 
         {/* Row Container */}
-        <View style={styles.rowContainer}>
+        <View className="w-3/4 flex-row justify-between items-center">
           {/* Back to SignIn */}
           <TouchableOpacity
             style={styles.buttonCancel}
@@ -50,13 +52,14 @@ export default function ForgotPasswordScreen() {
           >
             <Text>Cancel</Text>
           </TouchableOpacity>
+
           {/* Reset Password */}
           <TouchableOpacity
             style={styles.buttonSendEmail}
             onPress={() => alert("Send Email")}
             testID="resetPasswordButton"
           >
-            <Text style={{ color: "white" }}>Reset Password</Text>
+            <Text className="text-white">Reset Password</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -65,55 +68,12 @@ export default function ForgotPasswordScreen() {
 }
 
 const styles = StyleSheet.create({
-  forgotPasswordScreen: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
   backgroundImage: {
     width: width * 0.9,
     height: height * 0.39,
     position: "absolute",
     bottom: -30,
     right: 0,
-  },
-  titleText: {
-    fontSize: width * 0.14,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "justify",
-    paddingTop: height * 0.15,
-  },
-  colContainer: {
-    width: "83%",
-    height: "40%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: height * 0.01,
-  },
-  input: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "#ccc",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-  text: {
-    fontSize: width * 0.04,
-    color: "black",
-    width: "100%",
-    textAlign: "left",
-    marginBottom: height * 0.01,
-  },
-  rowContainer: {
-    width: "75%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   buttonSendEmail: {
     width: "60%",

@@ -1,31 +1,22 @@
 import React from "react";
 import {
-  Text,
   View,
-  StyleSheet,
+  Text,
   Image,
+  TextInput,
+  TouchableOpacity,
   ScrollView,
   Dimensions,
-  TouchableOpacity,
+  StyleSheet,
 } from "react-native";
-import {
-  isValidEmail,
-  signUpWithEmail,
-  logInWithGoogle,
-} from "@/types/Auth";
+import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-
-import { TextInput } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
-/**
- * Sign Up screen
- * @returns - The Sign Up screen
- */
 export default function SignUp() {
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -33,59 +24,52 @@ export default function SignUp() {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const router = useRouter();
-
   const firestoreCtrl = new FirestoreCtrl();
 
   return (
-    <View>
-      {/* Image in the backround out of the scroll view for immonility */}
+    <View className="flex-1">
       <Image
         source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
-        style={styles.backroundimage}
+        style={styles.backgroundImage}
         testID="ellipse"
       />
 
-      <ScrollView>
-        {/* Color of the backround */}
-        <View style={styles.backround}>
-          {/* Go back button */}
+      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View className="flex-1 w-full items-center justify-start bg-transparent">
           <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
-          {/* Title of the screen */}
-          <Text style={styles.title}>Tell us about you !</Text>
+          <Text className="text-5xl font-bold text-right text-black mt-12 mb-6">
+            Tell us about you!
+          </Text>
 
-          {/* The input fields */}
-          <View style={styles.inputColumn}>
-            {/* Name */}
-            <Text style={styles.titleinput}>Name *</Text>
+          <View className="w-5/6 flex-col items-center space-y-3">
+            <Text className="w-full text-lg text-left mb-1">Name *</Text>
             <TextInput
-              style={styles.input}
+              className="w-full h-12 border border-gray-300 rounded-xl px-5 mb-2"
               placeholder="Name"
               placeholderTextColor="#888"
               onChangeText={(text) => setName(text)}
               autoComplete="name"
             />
 
-            {/* Surname */}
-            <Text style={styles.titleinput}>Surname *</Text>
+            <Text className="w-full text-lg text-left mb-1">Surname *</Text>
             <TextInput
-              style={styles.input}
+              className="w-full h-12 border border-gray-300 rounded-xl px-5 mb-2"
               placeholder="Surname"
               placeholderTextColor="#888"
               onChangeText={(text) => setSurname(text)}
               autoComplete="family-name"
             />
 
-            {/* Email */}
-            <Text style={styles.titleinput}>Email *</Text>
+            <Text className="w-full text-lg text-left mb-1">Email *</Text>
             <TextInput
-              style={
+              className={`w-full h-12 border rounded-xl px-5 mb-2 ${
                 isValidEmail(email) || email.length == 0
-                  ? styles.input
-                  : styles.inputWrong
-              }
+                  ? "border-gray-300"
+                  : "border-red-500"
+              }`}
               placeholder="example@your.domain"
               placeholderTextColor="#888"
               autoComplete="email"
@@ -96,66 +80,70 @@ export default function SignUp() {
               maxLength={50}
             />
 
-            {/* Password */}
-            <Text style={styles.titleinput}>Password *</Text>
+            <Text className="w-full text-lg text-left mb-1">Password *</Text>
             <TextInput
-              style={
+              className={`w-full h-12 border rounded-xl px-5 mb-2 ${
                 password.length >= 8 || password.length == 0
-                  ? styles.input
-                  : styles.inputWrong
-              }
+                  ? "border-gray-300"
+                  : "border-red-500"
+              }`}
               placeholder="Password"
               placeholderTextColor="#888"
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
 
-            {/* Confirm Password */}
-            <Text style={styles.titleinput}>Confirm Password *</Text>
+            <Text className="w-full text-lg text-left mb-1">
+              Confirm Password *
+            </Text>
             <TextInput
-              style={
+              className={`w-full h-12 border rounded-xl px-5 mb-2 ${
                 confirmPassword.length == 0 || password == confirmPassword
-                  ? styles.input
-                  : styles.inputWrong
-              }
+                  ? "border-gray-300"
+                  : "border-red-500"
+              }`}
               placeholder="Confirm Password"
               placeholderTextColor="#888"
               secureTextEntry={true}
               onChangeText={(text) => setConfirmPassword(text)}
             />
 
-            {/* Register Button */}
             <TouchableOpacity
-              style={styles.buttonStrive}
+              className="w-full h-12 bg-[#E6BC95] rounded-xl justify-center items-center mb-4"
               testID="striveButton"
               onPress={() =>
-                signUpWithEmail(name+surname, email, password, firestoreCtrl, router)
+                signUpWithEmail(
+                  `${name} ${surname}`,
+                  email,
+                  password,
+                  firestoreCtrl,
+                  router,
+                )
               }
             >
-              <Text style={styles.buttonText}>Strive with us</Text>
+              <Text className="text-base font-semibold">Strive with us</Text>
             </TouchableOpacity>
 
-            {/* OR */}
-            <Text style={styles.or}>OR</Text>
+            <Text className="text-center text-sm my-2">OR</Text>
 
-            {/* Sign Up buttons for Google */}
             <TouchableOpacity
-              style={styles.buttonContinueWith}
+              className="w-full h-12 bg-[#F5F5F5] rounded-xl justify-center items-center mb-4"
               testID="GoogleSign"
               onPress={() => {
                 Alert.alert("Sign In with Google");
                 router.navigate("../home/home_screen");
               }}
             >
-              <View style={styles.buttonIcon}>
+              <View className="flex-row items-center">
                 <Image
                   source={require("@/assets/images/auth/SignUpScreen/google.png")}
                   style={styles.icon}
                 />
-                <Text style={styles.buttonText}>Continue with Google</Text>
+                <Text className="text-base font-semibold">
+                  Continue with Google
+                </Text>
               </View>
             </TouchableOpacity>
-
           </View>
         </View>
       </ScrollView>
@@ -163,112 +151,12 @@ export default function SignUp() {
   );
 }
 
-/**
- * Styles for the components
- */
 const styles = StyleSheet.create({
-  input: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "#ccc",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-  title: {
-    fontSize: width * 0.14,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "right",
-    paddingTop: height * 0.12,
-    paddingBottom: height * 0.05,
-  },
-  buttonStrive: {
-    width: "100%",
-    height: height * 0.05,
-    backgroundColor: "#E6BC95",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  or: {
-    position: "relative",
-    textAlign: "center",
-    height: height * 0.04,
-    fontSize: width * 0.03,
-    textAlignVertical: "center",
-    color: "black",
-    paddingTop: height * 0.02,
-  },
-
-  backround: {
-    backgroundColor: "transparent",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-
-  titleinput: {
-    fontSize: width * 0.04,
-    color: "black",
-    width: "100%",
-    textAlign: "left",
-    marginBottom: height * 0.01,
-  },
-
-  backroundimage: {
+  backgroundImage: {
     position: "absolute",
     top: 0,
     left: 0,
   },
-
-  buttonText: {
-    fontSize: width * 0.045,
-    color: "black",
-  },
-
-  inputColumn: {
-    width: "83%",
-    height: "60%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: height * 0.001,
-  },
-
-  buttonContinueWith: {
-    width: "100%",
-    height: height * 0.05,
-    backgroundColor: "#F5F5F5",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: height * 0.02,
-  },
-
-  buttonIcon: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  icon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
-  },
-
-  inputWrong: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "red",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-
   goBack: {
     position: "absolute",
     top: height * 0.05,
@@ -279,5 +167,10 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     justifyContent: "center",
     alignItems: "center",
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
   },
 });

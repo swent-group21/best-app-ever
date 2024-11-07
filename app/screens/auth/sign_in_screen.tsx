@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,14 +8,10 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import { useState } from "react";
-import {
-  logInWithEmail
-} from "@/types/Auth";
+import { logInWithEmail } from "@/types/Auth";
 import { useRouter } from "expo-router";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
-// Get screen width and height
 const { width, height } = Dimensions.get("window");
 
 export default function SignInScreen() {
@@ -25,21 +22,23 @@ export default function SignInScreen() {
   const [password, setPassword] = useState("");
 
   return (
-    <View style={styles.signInScreen}>
+    <View className="flex-1 items-center justify-start bg-white">
       {/* Background Image */}
       <Image
         source={require("@/assets/images/auth/SignInScreen/bg.png")}
-        style={[styles.backgroundImage]}
+        style={styles.backgroundImage}
       />
 
       {/* Title */}
-      <Text style={styles.titleText}>We've missed you</Text>
+      <Text className="text-5xl font-extrabold text-black text-right pt-12 pb-5">
+        We've missed you
+      </Text>
 
-      <View style={styles.colContainer}>
+      <View className="w-10/12 h-3/5 flex-col items-center justify-center space-y-4">
         {/* Text Inputs */}
-        <Text style={styles.text}>Email</Text>
+        <Text className="text-lg text-black w-full text-left">Email</Text>
         <TextInput
-          style={styles.input}
+          className="w-full h-14 border border-gray-300 rounded-xl pl-5 mb-2"
           placeholder="example@your.domain"
           placeholderTextColor="#888"
           autoComplete="email"
@@ -50,9 +49,9 @@ export default function SignInScreen() {
           onChangeText={(text) => setEmail(text)}
         />
 
-        <Text style={styles.text}>Password</Text>
+        <Text className="text-lg text-black w-full text-left">Password</Text>
         <TextInput
-          style={styles.input}
+          className="w-full h-14 border border-gray-300 rounded-xl pl-5 mb-2"
           placeholder="**********"
           placeholderTextColor="#888"
           secureTextEntry={true}
@@ -63,52 +62,39 @@ export default function SignInScreen() {
 
         {/* SignIn Button */}
         <TouchableOpacity
-          style={styles.buttonSignIn}
-          onPress={() => { 
-            logInWithEmail(
-              email,
-              password,
-              firestoreCtrl,
-              router
-            )
+          className="w-full h-12 bg-[#E6BC95] rounded-xl justify-center items-center"
+          onPress={() => {
+            logInWithEmail(email, password, firestoreCtrl, router);
           }}
           testID="signInButton"
         >
-          <Text style={styles.buttonText}>Sign In</Text>
+          <Text className="text-lg text-black">Sign In</Text>
         </TouchableOpacity>
 
         {/* Forgot Password */}
         <TouchableOpacity
-          style={{ alignSelf: "flex-start" }}
+          className="self-start"
           onPress={() => router.push("/screens/auth/forgot_password_screen")}
           testID="forgotPasswordButton"
         >
-          <Text
-            style={{
-              textDecorationLine: "underline",
-              marginBottom: height * 0.05,
-            }}
-          >
-            Forgot Password?
-          </Text>
+          <Text className="underline mb-5">Forgot Password?</Text>
         </TouchableOpacity>
 
         {/* Continue with Google */}
         <TouchableOpacity
-          style={styles.buttonContinueWith}
+          className="w-full h-12 bg-gray-100 rounded-xl justify-center items-center mb-2"
           onPress={() => {
             alert("Sign In with Google");
             router.navigate("/screens/home/home_screen");
           }}
           testID="continueWithGoogleButton"
         >
-          <View style={styles.buttonContent}>
+          <View className="flex-row items-center">
             <Image
               source={require("@/assets/images/auth/SignInScreen/google.png")}
               style={styles.icon}
             />
-
-            <Text style={styles.buttonText}>Continue with Google</Text>
+            <Text className="text-lg text-black">Continue with Google</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -117,72 +103,10 @@ export default function SignInScreen() {
 }
 
 const styles = StyleSheet.create({
-  signInScreen: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
   backgroundImage: {
     width: "100%",
     height: height * 0.35,
     position: "absolute",
-  },
-  titleText: {
-    fontSize: width * 0.14,
-    color: "black",
-    fontWeight: "800",
-    textAlign: "right",
-    paddingTop: height * 0.12,
-    paddingBottom: height * 0.05,
-  },
-  colContainer: {
-    width: "83%",
-    height: "60%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: height * 0.01,
-  },
-  input: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "#ccc",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-  text: {
-    fontSize: width * 0.04,
-    color: "black",
-    width: "100%",
-    textAlign: "left",
-  },
-  buttonText: {
-    fontSize: width * 0.045,
-    color: "black",
-  },
-  buttonSignIn: {
-    width: "100%",
-    height: height * 0.05,
-    backgroundColor: "#E6BC95",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContinueWith: {
-    width: "100%",
-    height: height * 0.05,
-    backgroundColor: "#F5F5F5",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: height * 0.02,
-  },
-  buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   icon: {
     width: 20,
