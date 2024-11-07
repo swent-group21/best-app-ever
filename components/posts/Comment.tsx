@@ -14,7 +14,8 @@ export type CommentType = {
 export function SingleComment(comment : CommentType) {
 
     return (    
-        <View style = {{flexDirection: 'row', justifyContent: 'space-between', paddingBottom:10}}>
+        
+        <View style = {{flexDirection: 'row', justifyContent: 'space-between', paddingBottom:15, alignItems:'center'}}>
             <ThemedIconButton
             iconName="person-circle-outline"
             onPress={() => {
