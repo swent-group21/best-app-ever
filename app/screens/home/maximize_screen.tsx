@@ -15,12 +15,21 @@ const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
   const router = useRouter();
-  const [comment, setComment] = React.useState(false);
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
+  const getCurrentDate=()=>{
+ 
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+
+    //Alert.alert(date + '-' + month + '-' + year);
+    // You can turn it in to your desired format
+    return date + '-' + month + '-' + year;//format: d-m-y;
+}
   
 
-
+  const userNameCommenter = "Tristan"
   const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
@@ -42,12 +51,7 @@ export default function MaximizeScreen() {
     automaticallyAdjustKeyboardInsets={true}
 
   >
-      <ThemedView style={styles.container}>
-        <Image
-          source={require("@/assets/images/challenge2.png")}
-          style={styles.image}
-        />
-      </ThemedView>
+      
 
       <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]}>
         <ThemedView style={styles.user}>
@@ -82,6 +86,13 @@ export default function MaximizeScreen() {
         />
       </ThemedView>
 
+      <ThemedView style={styles.container}>
+        <Image
+          source={require("@/assets/images/challenge2.png")}
+          style={styles.image}
+        />
+      </ThemedView>
+
       <ThemedView style={styles.bigContainer}>
         <ThemedIconButton
           iconName="heart-outline"
@@ -92,18 +103,13 @@ export default function MaximizeScreen() {
           color="white"
         />
       </ThemedView>
-      <ThemedText lightColor="white" darkColor="white" type="small" onPress={() => 
-        setComment(true)} >
-          {'Add a comment'}
-      </ThemedText>
-
+     
       <ThemedView style={styles.row}>
-        {comment
-        &&  <TextInput style={styles.commentInput} onChangeText={(text) => {setCommentText(text) ; console.log(commentList) }} 
+         <TextInput style={styles.commentInput} value = {commentText} onChangeText={(text) => {setCommentText(text) ; }} 
         
-          />}
+          />
         
-        {comment && <ThemedIconButton iconName="send" size={25} color="white" onPress={() => {setComment(false); commentList.push({comment: commentText} as CommentType)}}/>}
+        <ThemedIconButton iconName="send" size={25} color="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: userNameCommenter, date: userTime} as CommentType]); setCommentText('')}}/>
 
       </ThemedView>
 
@@ -112,7 +118,7 @@ export default function MaximizeScreen() {
         
         (eachComment, i) =>
       
-        <SingleComment comment={eachComment.comment} key={i}/>)}
+        <SingleComment comment={eachComment.comment} user = {userNameCommenter} createdAt={new Date().toLocaleString()} key={i}/>)}
       </ThemedView>
 
     </ThemedScrollView>
@@ -146,10 +152,6 @@ const styles = StyleSheet.create({
     gap: 30,
     backgroundColor: "transparent",
     paddingBottom: 10,
-  },
-  text: {
-    color: "white",
-    fontSize: 18,
   },
   user: {
     flexDirection: "row",
@@ -187,6 +189,8 @@ const styles = StyleSheet.create({
     width : width * 0.8,
     height : height * 0.05,
     alignItems  : 'center',
+    marginBottom: 30,
+    alignSelf : 'center',
   }, 
   row : {
     flexDirection : 'row',
@@ -195,6 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor : 'transparent',
     minHeight: height * 0.1,
     justifyContent : 'space-between',
+    alignItems : 'center',
   }, 
   commentColumn : { 
     flexDirection : 'column',
