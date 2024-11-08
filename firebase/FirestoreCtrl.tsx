@@ -3,7 +3,10 @@ import {
   doc,
   getDoc,
   setDoc,
+  storage,
+  auth
 } from "./Firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 
 export type DBUser = {
@@ -51,12 +54,41 @@ export default class FirestoreCtrl {
 
 
   /**
-   * Add other create and get for challenges user info etc
+   * Upload an image to Firestore storage.
    */
 
-  
 
+async uploadImageFromUri(imageUri:string) {
+  try {
+    if (!imageUri) {
+      throw new Error("No image URI provided.");
+    }
 
+    // Convertir l'URI en Blob
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+
+    // Créer une référence Firebase Storage unique
+    const storageRef = ref(getStorage(), "images/" + Date.now()); // Utilisation de 'ref' avec le stockage
+
+    // Uploader l'image vers Firebase Storage
+    await uploadBytes(storageRef, blob);
+
+    // Récupérer l'URL de l'image uploadée
+    const downloadUrl = await getDownloadURL(storageRef);
+    return downloadUrl;
+  } catch (error) {
+    console.error("Error uploading image: ", error);
+    console.log("Error uploading image: ", error);
+    throw error;
+  }
 }
+
+async getName(id : string) {
+  const user = await this.getUser(id);
+  return user?.name;
+}
+}
+
 
 

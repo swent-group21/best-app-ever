@@ -8,6 +8,9 @@ import { useRouter } from "expo-router";
 import {SingleComment, CommentType} from "@/components/posts/Comment"; 
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { Icon } from "react-native-elements";
+import { getAuth } from "firebase/auth";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+
 
 
 
@@ -18,18 +21,25 @@ export default function MaximizeScreen() {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
-  
 
-  const userNameCommenter = "Tristan"
+
+  
   const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
+  const firestoreCtrl = new FirestoreCtrl();
+  const auth = getAuth();
+  const user = auth.currentUser?.uid;
+  const infoUser = firestoreCtrl.getUser(user ?? "");
 
+
+
+  
   return (
-    
-  <ThemedView style={styles.bigContainer}>
-    <TopBar
+
+    <ThemedView style={styles.bigContainer}>
+      <TopBar
         title="Commute by foot"
         leftIcon="arrow-back-outline"
         leftAction={router.back}
@@ -94,13 +104,13 @@ export default function MaximizeScreen() {
           color={isLiked ? "red" : "white"}
         />
       </ThemedView>
-     
+
       <ThemedView style={styles.row}>
          <TextInput style={styles.commentInput} value = {commentText} onChangeText={(text) => {setCommentText(text) ; }} 
         
           />
         
-        <ThemedIconButton iconName="send" size={25} color="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: userNameCommenter, date: userTime} as CommentType]); setCommentText('')}}/>
+        <ThemedIconButton iconName="send" size={25} color="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: "tristan", date: userTime} as CommentType]); setCommentText('')}}/>
 
       </ThemedView>
 
@@ -109,11 +119,11 @@ export default function MaximizeScreen() {
         
         (eachComment, i) =>
       
-        <SingleComment comment={eachComment.comment} user = {userNameCommenter} createdAt={new Date().toLocaleString()} key={i}/>)}
+        <SingleComment comment={eachComment.comment} user = {"tristan"} createdAt={new Date().toLocaleString()} key={i}/>)}
       </ThemedView>
 
     </ThemedScrollView>
-  </ThemedView>
+    </ThemedView>
   );
 }
 
@@ -127,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     flex: 1,
-    
+
   },
   container: {
     height: height * 0.4,
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 30,
     backgroundColor: "transparent",
-    paddingBottom: 10,
+  paddingBottom: 10,
   },
   user: {
     flexDirection: "row",
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   image: {
-    width: '100%',
+width: '100%',
     height: '100%',
     borderRadius: 15,
   },
@@ -191,8 +201,8 @@ const styles = StyleSheet.create({
     minHeight: height * 0.1,
     justifyContent : 'space-between',
     alignItems : 'center',
-  }, 
-  commentColumn : { 
+  },
+commentColumn : { 
     flexDirection : 'column',
     width : '100%',
     padding:0,
