@@ -1,6 +1,12 @@
 import {
   Image,
+  View,
   StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform
 } from "react-native";
 import { useState } from "react";
 import {
@@ -22,43 +28,48 @@ export default function SignInScreen() {
 
   const uri = "@/assets/images/auth/SignInScreen/";
   return (
-    <ThemedView style={styles.signInScreen}>
-      <Image source={require(`${uri}bg.png`)} style={[styles.backgroundImage]} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ThemedView style={styles.signInScreen}>
+          {/* Background Image */}
+          <Image
+            source={require("@/assets/images/auth/SignInScreen/bg.png")}
+            style={[styles.backgroundImage]}
+          />
+          <ThemedText style={styles.titleText}>We've missed you</ThemedText>
 
-      <ThemedText style={styles.titleText}>We've missed you</ThemedText>
+          <ThemedView style={styles.colContainer}>
+            <ThemedTextInput style={styles.input}
+              type="email"
+              onChangeText={(text) => setEmail(text)}
+              viewWidth={"100%"}
+              title="Email"
+            />
 
-      <ThemedView style={styles.colContainer}>
-        <ThemedTextInput style={styles.input}
-          type="email"
-          onChangeText={(text) => setEmail(text)}
-          viewWidth={"100%"}
-          title="Email"
-        />
+            <ThemedTextInput style={styles.input}
+              type="password"
+              onChangeText={(text) => setPassword(text)}
+              viewWidth={"100%"}
+              title="Password"
+            />
 
-        <ThemedTextInput style={styles.input}
-          type="password"
-          onChangeText={(text) => setPassword(text)}
-          viewWidth={"100%"}
-          title="Password"
-        />
+            <ThemedTextButton style={styles.buttonSignIn}
+              onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
+              text="Sign In"
+            />
 
-        <ThemedTextButton style={styles.buttonSignIn}
-          onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
-          text="Sign In"
-        />
+            <ThemedTextButton 
+              onPress={() => router.push("/screens/auth/forgot_password_screen")}
+              text="Forgot Password?"
+            />
 
-        <ThemedTextButton 
-          onPress={() => router.push("/screens/auth/forgot_password_screen")}
-          text="Forgot Password?"
-        />
-
-        <ThemedTextButton style={styles.buttonContinueWith}
-          onPress={() => { alert("Sign In with Google"); router.navigate("/screens/home/home_screen"); }}
-          text="Continue with Google"
-          textStyle={{ color: "#000" }}
-        />
-      </ThemedView>
-    </ThemedView>
+          </ThemedView>
+        </ThemedView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
