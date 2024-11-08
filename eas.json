@@ -1,9 +1,25 @@
 {
+  "cli": {
+    "version": ">= 12.6.2",
+    "appVersionSource": "remote"
+  },
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "ios": {
+        "image": "latest"
+      },
       "android": {
+        "image": "latest",
         "buildType": "apk"
       },
+      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_FIREBASE_API_KEY":"AIzaSyBkMkNI0ShOWKByQDYNh6sFxAS0xgd1wA0",
         "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN":"strive-f0b38.firebaseapp.com",
@@ -16,23 +32,6 @@
         "EXPO_PUBLIC_IOS_CLIENT_ID_OAUTH":"78136023669-fgnhdh3eee7shnn16htndvefr7ias1vb.apps.googleusercontent.com",
         "EXPO_PUBLIC_ANDROID_CLIENT_IDOAUTH":"78136023669-1c00r0e1bvmv7nt10c758m3p0gdf5gbf.apps.googleusercontent.com"
       }
-    },
-    "preview2": {
-      "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "buildType": "apk",
-      "developmentClient": true
-    },
-    "preview4": {
-      "buildType": "apk",
-      "distribution": "internal"
-    },
-    "production": {
-      "buildType": "apk"
     }
   }
 }
