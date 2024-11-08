@@ -13,9 +13,6 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
 
-      - name: 📦 Install dependencies
-        run: yarn install
-
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
@@ -27,6 +24,9 @@ jobs:
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: yarn install
 
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android
