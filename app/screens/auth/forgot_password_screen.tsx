@@ -1,135 +1,104 @@
 import {
-  View,
-  Text,
   Image,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
-
-// Get screen width and height
-const { width, height } = Dimensions.get("window");
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
+  const uri = "@/assets/images/auth/ForgotPasswordScreen/";
   return (
-    <View style={styles.forgotPasswordScreen}>
-      {/* Background Image */}
-      <Image
-        source={require("@/assets/images/auth/ForgotPasswordScreen/bg.png")}
-        style={[styles.backgroundImage]}
-      />
+    <ThemedView style={styles.screenContainer}>
+      <Image source={require(`${uri}bg.png`)} style={[styles.backgroundImage]} />
 
-      {/* Title */}
-      <Text style={styles.titleText}>Forgot your Password ?</Text>
+      <ThemedText style={styles.titleText}>Forgot your Password ?</ThemedText>
 
-      {/* Column Container */}
-      <View style={styles.colContainer}>
-        {/* Input */}
-        <Text style={styles.text}>Email</Text>
-        <TextInput
+      <ThemedView style={styles.smallContainer}>
+        <ThemedTextInput
           style={styles.input}
-          placeholder="example@your.domain"
-          placeholderTextColor="#888"
-          autoComplete="email"
-          inputMode="email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          testID="emailInput"
+          type="email"
+          title="Email"
+          viewWidth={"90%"}
         />
 
-        {/* Row Container */}
-        <View style={styles.rowContainer}>
-          {/* Back to SignIn */}
-          <TouchableOpacity
+        <ThemedView style={styles.rowContainer}>
+          <ThemedTextButton
             style={styles.buttonCancel}
             onPress={() => router.back()}
-            testID="cancelButton"
-          >
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-          {/* Reset Password */}
-          <TouchableOpacity
-            style={styles.buttonSendEmail}
+            text="Cancel"
+          />
+          <ThemedTextButton
+            style={styles.buttonResetPassword}
             onPress={() => alert("Send Email")}
-            testID="resetPasswordButton"
-          >
-            <Text style={{ color: "white" }}>Reset Password</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+            text="Reset Password"
+          />
+        </ThemedView>
+      </ThemedView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  forgotPasswordScreen: {
+  screenContainer: {
+    alignItems: "center",
+    gap: 75,
     flex: 1,
-    justifyContent: "flex-start",
+  },
+
+  smallContainer: {
+    width: "90%",
+    backgroundColor: "transparent",
     alignItems: "center",
-    backgroundColor: "white",
   },
-  backgroundImage: {
-    width: width * 0.9,
-    height: height * 0.39,
-    position: "absolute",
-    bottom: -30,
-    right: 0,
-  },
-  titleText: {
-    fontSize: width * 0.14,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "justify",
-    paddingTop: height * 0.15,
-  },
-  colContainer: {
-    width: "83%",
-    height: "40%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: height * 0.01,
-  },
-  input: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "#ccc",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-  text: {
-    fontSize: width * 0.04,
-    color: "black",
-    width: "100%",
-    textAlign: "left",
-    marginBottom: height * 0.01,
-  },
+
   rowContainer: {
     width: "75%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "transparent",
   },
-  buttonSendEmail: {
-    width: "60%",
-    height: height * 0.05,
-    backgroundColor: "black",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
+
+  backgroundImage: {
+    width: "90%",
+    height: "39%",
+    position: "absolute",
+    bottom: -30,
+    right: 0,
   },
-  buttonCancel: {
-    width: "35%",
-    height: height * 0.05,
-    borderColor: "#ccc",
+
+  titleText: {
+    fontSize: 51,
+    fontWeight: "bold",
+    textAlign: "justify",
+    paddingTop: 100,
+  },
+
+  input: {
     borderWidth: 1,
     borderRadius: 15,
-    justifyContent: "center",
+    padding: 10,
+    marginBottom: 15,
+  },
+
+  buttonResetPassword: {
     alignItems: "center",
+    borderRadius: 15,
+    padding: 8,
+    width: "60%",
+    backgroundColor: "black",
+  },
+
+  buttonCancel: {
+    alignItems: "center",
+    borderRadius: 15,
+    padding: 8,
+    borderWidth: 1,
+    width: "35%",
+    borderColor: "#ccc",
   },
 });
