@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, Dimensions, Image } from "react-native";
-import { TopBar } from "@/components/TopBar";
+import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";

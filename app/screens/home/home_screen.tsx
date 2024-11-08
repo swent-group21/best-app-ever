@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { TopBar } from "@/components/TopBar";
+import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { BottomBar } from "@/components/BottomBar";
+import { BottomBar } from "@/components/navigation/BottomBar";
 import { useRouter } from "expo-router";
 
 export default function HomeScreen() {

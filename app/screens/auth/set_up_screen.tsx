@@ -5,8 +5,8 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { TopBar } from "@/components/TopBar";
-import { BottomBar } from "@/components/BottomBar";
+import { TopBar } from "@/components/navigation/TopBar";
+import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
