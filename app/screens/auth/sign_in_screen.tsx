@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform
 } from "react-native";
 import { useState } from "react";
 import {
@@ -25,6 +29,11 @@ export default function SignInScreen() {
   const [password, setPassword] = useState("");
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.signInScreen}>
       {/* Background Image */}
       <Image
@@ -113,6 +122,8 @@ export default function SignInScreen() {
         </TouchableOpacity>
       </View>
     </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
