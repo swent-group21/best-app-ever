@@ -64,17 +64,13 @@ async uploadImageFromUri(imageUri:string) {
       throw new Error("No image URI provided.");
     }
 
-    // Convertir l'URI en Blob
     const response = await fetch(imageUri);
     const blob = await response.blob();
 
-    // Créer une référence Firebase Storage unique
-    const storageRef = ref(getStorage(), "images/" + Date.now()); // Utilisation de 'ref' avec le stockage
+    const storageRef = ref(getStorage(), "images/" + (Math.random()+1).toString(36).substring(2)); 
 
-    // Uploader l'image vers Firebase Storage
     await uploadBytes(storageRef, blob);
 
-    // Récupérer l'URL de l'image uploadée
     const downloadUrl = await getDownloadURL(storageRef);
     return downloadUrl;
   } catch (error) {
@@ -88,7 +84,21 @@ async getName(id : string) {
   const user = await this.getUser(id);
   return user?.name;
 }
+
+async getImageFromFirebase(imageUrl: string) {
+  try {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return blob;
+  } catch (error) {
+    console.error("Error fetching image: ", error);
+    throw error;
+  }
 }
+
+}
+
+
 
 
 
