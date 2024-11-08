@@ -1,96 +1,93 @@
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ThemedView } from "@/components/theme/ThemedView";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
-  View,
-  Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
 } from "react-native";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
   const router = useRouter();
   return (
-    <View style={styles.container}>
-      <View style={styles.ovalShapeOne} />
-      <View style={styles.ovalShapeTwo} />
-      <Text style={styles.title}>Ready to{"\n"}Strive?</Text>
+    <ThemedView style={styles.container}>
+      <ThemedView style={styles.ovalShapeOne} />
+      <ThemedView style={styles.ovalShapeTwo} />
+      <ThemedText style={styles.title}>Ready to{"\n"}Strive?</ThemedText>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
+      <ThemedView style={styles.buttonContainer}>
+        <ThemedTextButton
           style={styles.buttonAccount}
           onPress={() => router.navigate("./screens/auth/sign_in_screen")}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        {/* Add some space between the buttons */}
-        <Text />
-        <TouchableOpacity
+          text="Login"
+          textStyle={styles.buttonText}
+        />
+
+        <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/sign_up_screen")}
-        >
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-        {/* Add some space between the buttons */}
-        <Text />
-        <TouchableOpacity
+          onPress={() => router.navigate("./screens/auth/set_up_screen")}
+          text="Sign Up"
+          textStyle={styles.buttonText}
+        />
+
+        <ThemedTextButton
           onPress={() => {
             alert("Spooky user!");
             router.navigate("./screens/home/home_screen");
           }}
-        >
-          <Text>Continue as guest</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          text="Continue as guest"
+        />
+      </ThemedView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    width: width,
+    height: height,
   },
   ovalShapeOne: {
     position: "absolute",
-    top: SCREEN_HEIGHT * 0.8,
-    left: -SCREEN_WIDTH * 0.3,
-    width: SCREEN_WIDTH * 1.3,
-    height: SCREEN_HEIGHT * 0.7,
-    borderRadius: SCREEN_WIDTH * 0.7,
+    top: height * 0.8,
+    left: -width * 0.3,
+    width: width * 1.3,
+    height: height * 0.7,
+    borderRadius: width * 0.7,
     backgroundColor: "#E6BC95",
   },
   ovalShapeTwo: {
     position: "absolute",
-    top: -SCREEN_HEIGHT * 0.4,
-    left: SCREEN_WIDTH * 0.3,
-    width: SCREEN_WIDTH * 1.3,
-    height: SCREEN_HEIGHT * 0.7,
-    borderRadius: SCREEN_WIDTH * 0.7,
+    top: -height * 0.4,
+    left: width * 0.3,
+    width: width * 1.3,
+    height: height * 0.7,
+    borderRadius: width * 0.7,
     backgroundColor: "#E6BC95",
   },
   title: {
-    paddingTop: SCREEN_HEIGHT * 0.3,
-    paddingLeft: SCREEN_WIDTH * 0.05,
+    paddingTop: height * 0.3,
+    paddingLeft: width * 0.05,
     fontSize: 64,
     fontWeight: "900",
-    color: "#000",
     lineHeight: 62,
-    paddingBottom: SCREEN_HEIGHT * 0.12,
+    paddingBottom: height * 0.12,
   },
   buttonContainer: {
     flex: 1,
     alignItems: "center",
     paddingBottom: 60,
+    gap: 20,
+    backgroundColor: "transparent",
   },
   buttonAccount: {
     width: "80%",
-    height: SCREEN_HEIGHT * 0.05,
+    height: height * 0.05,
     backgroundColor: "#000",
     borderRadius: 15,
     justifyContent: "center",

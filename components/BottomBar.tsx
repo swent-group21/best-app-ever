@@ -33,9 +33,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 10,
         backgroundColor: 'transparent',
-        
     },
     placeholder: {
-        width: 40, // Adjust based on the size of ThemedIconButton
+        width: 30,
     },
 });
