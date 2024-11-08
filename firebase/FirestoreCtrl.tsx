@@ -67,12 +67,13 @@ async uploadImageFromUri(imageUri:string) {
     const response = await fetch(imageUri);
     const blob = await response.blob();
 
-    const storageRef = ref(getStorage(), "images/" + (Math.random()+1).toString(36).substring(2)); 
+    const id_picture = (Math.random()+1).toString(36).substring(2);
+    const storageRef = ref(getStorage(), "images/" + id_picture); 
 
     await uploadBytes(storageRef, blob);
 
     const downloadUrl = await getDownloadURL(storageRef);
-    return downloadUrl;
+    return id_picture;
   } catch (error) {
     console.error("Error uploading image: ", error);
     console.log("Error uploading image: ", error);
