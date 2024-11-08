@@ -24,11 +24,15 @@
       }
     },
     "preview3": {
+      "buildType": "apk",
       "developmentClient": true
     },
     "preview4": {
+      "buildType": "apk",
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "buildType": "apk"
+    }
   }
 }
