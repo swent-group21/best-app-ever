@@ -86,16 +86,7 @@ async getName(id : string) {
   return user?.name;
 }
 
-async getImageFromFirebase(imageUrl: string) {
-  try {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    return blob;
-  } catch (error) {
-    console.error("Error fetching image: ", error);
-    throw error;
-  }
-}
+
 
 }
 
