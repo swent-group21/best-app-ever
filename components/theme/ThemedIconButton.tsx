@@ -12,10 +12,10 @@ interface ThemedIconButtonProps {
     color?: string;
 }
 
-export function ThemedIconButton({ iconName, onPress, iconType='ionicon', size, style, color}: ThemedIconButtonProps) {
+export function ThemedIconButton({ iconName, onPress, iconType='ionicon', size, style, color, ...props}: ThemedIconButtonProps) {
     const { colors } = useTheme();
 
     return (
-        <Icon name={iconName} color={color ? color : colors.text} type={iconType} onPress={onPress} size={size} containerStyle={style} />
+        <Icon name={iconName} color={color ? color : colors.text} type={iconType} onPress={onPress} size={size} containerStyle={style} {...props}/>
     );
 };

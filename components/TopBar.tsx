@@ -10,14 +10,14 @@ interface TopbarProps {
     leftAction?: () => void;
     rightIcon?: string;
     rightAction?: () => void;
-    title: string;
+    title?: string;
 }
 
 export function TopBar({ leftIcon, leftAction, rightIcon, rightAction, title }: TopbarProps) {
     return (
         <View style={styles.container}>
             {leftIcon ? <ThemedIconButton iconName={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
-            <Text style={styles.title}>{title}</Text>
+            {title && <Text style={styles.title}>{title}</Text>}
             {rightIcon ? <ThemedIconButton iconName={rightIcon} onPress={rightAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
         </View>
     );
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         height: height * 0.08,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         padding: 10,
         backgroundColor: 'transparent',
     },
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     placeholder: {
-        width: 40, // Adjust based on the size of ThemedIconButton
+        width: 30, 
     },
 });
