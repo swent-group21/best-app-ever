@@ -1,35 +1,38 @@
-import { PropsWithChildren, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, useColorScheme, Dimensions, Image } from 'react-native';
-
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
 import { useRouter } from "expo-router";
+import FirestoreCtrl from '@/firebase/FirestoreCtrl';
+import { useFetchChallenge } from '@/types/ChallengeBuilder';
 
-// Get screen width and height
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
-export function Challenge({ children, title }: PropsWithChildren & { title: string }) { //image: string
+export function Challenge(challengeId: any) {
     const router = useRouter();
+    const firestoreCtrl = new FirestoreCtrl();
+    const challengeData = useFetchChallenge(challengeId, firestoreCtrl);
 
     const [isOpen, setIsOpen] = useState(false);
-    const[isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
     const theme = useColorScheme() ?? 'light';
 
-    const height = 279; // derived from the height of the image
-    const userName = 'Sandraa'; // derived from the name of the user
-    const userLocation = 'Plage de Vidy'; // derived from the location of the user
-    const userTime = '18:26'; // derived from the time the user posted the challenge
+    // Display loading state or handle absence of challenge data
+    if (!challengeData) {
+        return <ThemedText>Loading Challenge...</ThemedText>;
+    }
 
+    const { challengeName, description, image, userName, location, dateTime } = challengeData;
+    
     return (
-    <ThemedView style = {{backgroundColor: 'transparent'}}>
+    <ThemedView style={{backgroundColor: 'transparent'}}>
         <TouchableOpacity
             onPress={() => setIsOpen(!isOpen)}
             activeOpacity={0.8}>
-            <ThemedView style={[styles.challenge, {height: height}]}>
-                {/* Challenge Image */}
-                <Image source={require('@/assets/images/challenge2.png')} style={styles.image}/>
+            <ThemedView style={[styles.challenge, {height: 279}]}>
+                <Image source={image} style={styles.image}/>
                 
                 {isOpen 
                 && 
@@ -39,13 +42,13 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
                             <ThemedIconButton iconName="person-circle-outline" onPress={() => {/* user button */}} size={45} color='white'/>
                             <ThemedView style={styles.userInfo}>
                                 <ThemedText lightColor='white' darkColor='white' type='smallSemiBold'>{userName}</ThemedText>
-                                <ThemedText lightColor='white' darkColor='white' type='small' >{"in " + userLocation + " at " + userTime}</ThemedText>
+                                <ThemedText lightColor='white' darkColor='white' type='small'>{`in ${location || 'unknown'} at ${dateTime}`}</ThemedText>
                             </ThemedView>
                         </ThemedView>
                         <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("../home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
                     </ThemedView>
                     <ThemedView style={styles.bottomBar}>
-                        <ThemedIconButton iconName="heart" onPress={() => {setIsLiked(!isLiked)}} size={25} color= {isLiked? 'red':'white'}/>
+                        <ThemedIconButton iconName="heart" onPress={() => {setIsLiked(!isLiked)}} size={25} color={isLiked ? 'red' : 'white'}/>
                         <ThemedIconButton iconName="location-outline" onPress={() => {/* location button */}} size={25} color='white'/>
                     </ThemedView>
                 </ThemedView>
@@ -57,19 +60,9 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-    marginRight: 24,
-  },
   challenge: {
     width: width - 20,
-    height: height,
+    height: 279,
     borderRadius: 15,
     backgroundColor: Colors.light.background,
   },

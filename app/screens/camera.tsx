@@ -186,7 +186,9 @@ export default function CameraTest() {
 
           <TouchableOpacity
             style={styles.send}
-            onPress={() => {picture ? firestoreCtrl.uploadImageFromUri(picture?.uri): null; router.push("./home/home_screen");
+            onPress={() => {
+              picture ? firestoreCtrl.uploadImageFromUri(picture?.uri): null;
+              router.push("./home/home_screen");
             }}
           >
             <Ionicons name="send" size={30} color="white" />
