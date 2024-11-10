@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import { StyleSheet, Dimensions, Image } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -10,11 +10,14 @@ export default function WelcomeIntroScreen() {
   const uri = "@/assets/images/"
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.ovalShape} />
-      <ThemedText style={styles.title}>So what is{"\n"}Strive{"\n"}about ?</ThemedText>
+      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
+
+      <ThemedText style={styles.title} colorType="backgroundPrimary">So what is{"\n"}Strive{"\n"}about ?</ThemedText>
+      <ThemedText style={styles.description} colorType="white">Participating in Weekly challenges !</ThemedText>
+      <ThemedText style={styles.desc} colorType="white">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
 
       <ThemedView style={styles.imageContainer}>
-        <Image style={styles.image} source={require(`${uri}goat.png`)} />
+        <Image style={styles.image} source={require(`${uri}high.png`)} />
       </ThemedView>
     </ThemedView>
   );
@@ -31,15 +34,13 @@ const styles = StyleSheet.create({
     top: -height * 0.95,
     left: -width * 0.8,
     width: width * 1.8,
-    height: height * 1.5,
+    height: height * 1.40,
     borderRadius: width * 0.9,
-    backgroundColor: "#E6BC95",
     justifyContent: "center",
     paddingLeft: width * 0.3,
   },
 
   imageContainer: {
-    flex: 1,
     justifyContent: "flex-end",
     alignItems: "flex-start",
     paddingBottom: 30,
@@ -53,10 +54,27 @@ const styles = StyleSheet.create({
   },
   
   title: {
-    paddingTop: height * 0.2,
+    flex: 4,
+    paddingTop: 80,
     paddingLeft: width * 0.05,
     fontSize: 70,
     fontWeight: "900",
     lineHeight: 56,
   },
+
+  description: {
+    flex: 2,
+    alignSelf: "center",
+    fontSize: 36,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+
+  desc: {
+    flex: 2,
+    fontSize: 25,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+
 });

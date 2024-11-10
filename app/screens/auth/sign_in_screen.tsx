@@ -48,15 +48,11 @@ export default function SignInScreen() {
         />
 
         <ThemedTextButton 
+          style={{ alignItems: "center" }}
           onPress={() => router.push("/screens/auth/forgot_password_screen")}
           text="Forgot Password?"
         />
 
-        <ThemedTextButton style={styles.buttonContinueWith}
-          onPress={() => { alert("Sign In with Google"); router.navigate("/screens/home/home_screen"); }}
-          text="Continue with Google"
-          textStyle={{ color: "#000" }}
-        />
       </ThemedView>
     </ThemedView>
   );
@@ -103,15 +99,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#E6BC95",
     alignItems: "center",
-    padding: 8,
-  },
-
-  buttonContinueWith: {
-    width: "100%",
-    borderRadius: 15,
-    backgroundColor: "#F5F5F5",
-    alignItems: "center",
-    marginTop: 35,
     padding: 8,
   },
 });

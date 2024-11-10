@@ -13,11 +13,12 @@ const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
   const router = useRouter();
+  const uri = "@/assets/images/"
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.ovalShapeOne} />
-      <ThemedView style={styles.ovalShapeTwo} />
-      <ThemedText style={styles.title}>Ready to{"\n"}Strive?</ThemedText>
+      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
+      <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
+      <ThemedText style={styles.title} colorType="white">Ready to{"\n"}Strive?</ThemedText>
 
       <ThemedView style={styles.buttonContainer}>
         <ThemedTextButton
@@ -27,19 +28,18 @@ export default function WelcomeConceptScreen() {
           textStyle={styles.buttonText}
         />
 
-        <ThemedTextButton
-          style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/set_up_screen")}
-          text="Sign Up"
-          textStyle={styles.buttonText}
+        <ThemedTextButton 
+          style={styles.buttonAccount} 
+          onPress={() => router.navigate("./screens/auth/set_up_screen")} 
+          text="Sign Up" 
+          textStyle={styles.buttonText} 
         />
 
-        <ThemedTextButton
-          onPress={() => {
-            alert("Spooky user!");
-            router.navigate("./screens/home/home_screen");
-          }}
-          text="Continue as guest"
+        <ThemedTextButton 
+          onPress={() => {router.navigate("./screens/home/home_screen");}} 
+          text="Continue as guest" 
+          colorType="transparent"
+          textColorType="white"
         />
       </ThemedView>
     </ThemedView>
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     width: width * 1.3,
     height: height * 0.7,
     borderRadius: width * 0.7,
-    backgroundColor: "#E6BC95",
   },
   ovalShapeTwo: {
     position: "absolute",
@@ -68,7 +67,6 @@ const styles = StyleSheet.create({
     width: width * 1.3,
     height: height * 0.7,
     borderRadius: width * 0.7,
-    backgroundColor: "#E6BC95",
   },
   title: {
     paddingTop: height * 0.3,
@@ -88,13 +86,11 @@ const styles = StyleSheet.create({
   buttonAccount: {
     width: "80%",
     height: height * 0.05,
-    backgroundColor: "#000",
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
   },
   buttonText: {
     fontWeight: "600",
-    color: "#FFF",
   },
 });

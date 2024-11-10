@@ -1,19 +1,23 @@
+import { Challenge } from "@/components/home/Challenge";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { Image, StyleSheet, Dimensions } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
+  const uri = "@/assets/images/"
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.ovalShape} />
-      <ThemedView style={styles.textContainer}>
-        <ThemedText style={styles.title}>Compete{"\n"}yourself</ThemedText>
-        <ThemedText style={styles.description}>Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !</ThemedText>
+      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
+
+      <ThemedText style={styles.title} colorType="backgroundPrimary">Building up memories </ThemedText>
+      <ThemedView style={styles.challengeContainer}>
+        <Challenge title=""/>
       </ThemedView>
+      <ThemedText style={styles.description} colorType="white">Create and share your memories with your friends{"\n"}Get rewarded for your creativity</ThemedText>
     </ThemedView>
   );
 }
@@ -31,25 +35,25 @@ const styles = StyleSheet.create({
     width: width * 1.3,
     height: height * 0.7,
     borderRadius: width * 0.7,
-    backgroundColor: "#E6BC95",
   },
-  textContainer: {
-    flex: 1,
+  challengeContainer: {
     justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 0,
+    alignItems: "center",
+    paddingTop: 50,
+    paddingBottom: 20,
     backgroundColor: "transparent",
   },
   title: {
     fontSize: 56,
+    paddingTop: 40,
+    paddingHorizontal: 20,
     fontWeight: "900",
-    lineHeight: 62,
     marginBottom: 20,
   },
   description: {
-    paddingTop: 60,
-    fontSize: 20,
+    textAlign: "center",
+    paddingHorizontal: 20,
+    fontSize: 25,
     fontWeight: "800",
-    lineHeight: 26,
   },
 });
