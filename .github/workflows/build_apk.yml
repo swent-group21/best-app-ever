@@ -65,7 +65,7 @@ jobs:
         eas build --local \
           --non-interactive \
           --platform=android \
-          --profile=preview \
+          --profile=development \
           --build-logger-level=error \
           --json --non-interactive
 
