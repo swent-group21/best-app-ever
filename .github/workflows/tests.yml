@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
-          path: /coverage/lcov.info
+          path: coverage/lcov.info
 
       - name: "SonarCloud report"
         if: success() || failure()
