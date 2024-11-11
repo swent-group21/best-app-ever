@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - name: 🏗 Setup repo
       uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
     - name: 🏗 Setup Node
       uses: actions/setup-node@v3
       with:
-        node-version: '18.x'
+        node-version: '22.x'
         cache: 'npm'
 
     - name: 🏗 Setup Expo and EAS
@@ -70,7 +70,7 @@ jobs:
           --json --non-interactive
 
     - name: 📱 Upload binary
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: app-android
         path: /home/runner/work/strive/strive/build-*.apk
