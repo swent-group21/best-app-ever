@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import { firestore, doc, getDoc, setDoc } from "./Firebase";
-=======
 import {
   firestore,
   doc,
@@ -10,8 +7,6 @@ import {
   auth
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-
->>>>>>> master
 
 export type DBUser = {
   name: string;
