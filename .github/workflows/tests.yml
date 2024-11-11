@@ -33,4 +33,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: "Checks code formatting"
+        if: success() || failure()
         run: npx prettier --check ./app # It's not possible to automatically fix the code formatting
