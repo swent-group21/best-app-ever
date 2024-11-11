@@ -41,6 +41,7 @@ export const logInWithEmail = async (
               });
           });
         if (user) {
+          console.log("User logged in. INFO: \n", user);
           router.navigate("../home/home_screen");
         }
       } else {
@@ -68,7 +69,11 @@ export const signUpWithEmail = async (
           createdAt: new Date(),
         };
 
-        console.log("User INFO \n", userCredential.user.uid, userData);
+        console.log(
+          "User created. INFO: \n",
+          userCredential.user.uid,
+          userData,
+        );
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
