@@ -32,7 +32,8 @@
     "plugins": [
       "@react-native-firebase/app",
       "expo-router",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "expo-dev-launcher"
     ],
     "experiments": {
       "typedRoutes": true
