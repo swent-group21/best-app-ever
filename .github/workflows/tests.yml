@@ -1,5 +1,5 @@
 name: "Tests & Coverage report"
-run-name: "Run tests with coverage"
+run-name: "Running tests with coverage"
 
 on: push
 
@@ -24,7 +24,7 @@ jobs:
         run: npx prettier --write ./app
 
       - name: "Install dependencies"
-        run: npm i
+        run: npm i && yarn
 
       - name: "Run tests with coverage"
-        run: yarn test --coverage
+        run: yarn test --coverage --debug
