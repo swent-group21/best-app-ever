@@ -98,10 +98,13 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random()+1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture); 
+      console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       const downloadUrl = await getDownloadURL(storageRef);
+      console.log("downloadUrl:", downloadUrl);
+
       return id_picture;
 
     } catch (error) {

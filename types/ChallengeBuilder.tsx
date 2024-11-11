@@ -1,6 +1,5 @@
 import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { useState, useEffect } from 'react';
-import { ImageSourcePropType } from 'react-native';
 
 export const buildChallenge = async (
   challengeId: string,
@@ -67,7 +66,7 @@ export const createChallenge = async (
     // Prepare the challenge data for Firestore
     const uid = firestoreCtrl.getUser().uid; // Ensure this method exists
     const challenge: DBChallenge = {
-      challenge_name: challengeData.challengeName,
+      challenge_name: challengeData.challenge_name,
       description: challengeData.description || '',
       uid: uid,
       date: new Date(challengeData.dateTime).toISOString(),

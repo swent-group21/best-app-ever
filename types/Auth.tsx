@@ -131,4 +131,3 @@ export const signUpWithEmail = async (
     console.log("Please input email and password.");
   }
 };
-

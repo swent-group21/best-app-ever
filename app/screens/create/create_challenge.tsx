@@ -5,55 +5,15 @@ import * as ImagePicker from 'expo-image-picker';
 import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { createChallenge } from '@/types/ChallengeBuilder';
 
-const CreateChallengeScreen = () => {
+const CreateChallengeScreen = (image_id: any) => {
   const firestoreCtrl = new FirestoreCtrl();
 
-  const [challengeName, setChallengeName] = useState('');
+  const [challenge_name, setChallengeName] = useState('');
   const [description, setDescription] = useState('');
-  const [imageSource, setImageSource] = useState(null);
   const [location, setLocation] = useState('');
-  const [dateTime, setDateTime] = useState('');
-  const [userName, setUserName] = useState('');
+  const [date, setDateTime] = useState('');
 
-  const pickImage = async () => {
-    // Request permission to access the media library
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need media library permissions to make this work!');
-      return;
-    }
-
-    // Launch the image picker
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setImageSource({ uri: result.uri });
-    }
-  };
-
-  const handleCreateChallenge = async () => {
-    const challengeData: DBChallenge = {
-      challengeName,
-      description,
-      image: imageSource,
-      userName, // You might fetch this from the user's profile instead
-      dateTime,
-    };
-
-    const challengeId = await createChallenge(challengeData, firestoreCtrl);
-
-    if (challengeId) {
-      console.log('Challenge created with ID:', challengeId);
-      // Optionally, navigate to the challenge detail screen or clear form
-    } else {
-      console.error('Failed to create challenge');
-      // Optionally, display an error message to the user
-    }
-  };
+  
 
   return (
     <View style={styles.container}>
@@ -62,7 +22,7 @@ const CreateChallengeScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Challenge Name"
-        value={challengeName}
+        value={challenge_name}
         onChangeText={setChallengeName}
       />
 
@@ -74,14 +34,6 @@ const CreateChallengeScreen = () => {
         multiline
       />
 
-      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-        {imageSource ? (
-          <Image source={imageSource} style={styles.image} />
-        ) : (
-          <Text style={styles.imagePickerText}>Select Image</Text>
-        )}
-      </TouchableOpacity>
-
       <TextInput
         style={styles.input}
         placeholder="Location"
@@ -92,11 +44,18 @@ const CreateChallengeScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Date and Time (YYYY-MM-DD HH:MM)"
-        value={dateTime}
+        value={date}
         onChangeText={setDateTime}
       />
 
-      <Button title="Create Challenge" onPress={handleCreateChallenge} />
+      <Button 
+        title="Create Challenge" 
+        onPress={
+          createChallenge(
+
+          )
+        } 
+      />
     </View>
   );
 };
