@@ -26,6 +26,13 @@ jobs:
       - name: "Run tests with coverage"
         run: yarn test --coverage --debug
 
+      - name: "Upload coverage report"
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: /coverage/lcov.info
+
       - name: "SonarCloud report"
         if: success() || failure()
         uses: SonarSource/sonarcloud-github-action@master
@@ -34,4 +41,4 @@ jobs:
 
       - name: "Checks code formatting"
         if: success() || failure()
-        run: npx prettier --check ./app # It's not possible to automatically fix the code formatting
+        run: npx prettier --check . # It's not possible to automatically fix the code formatting
