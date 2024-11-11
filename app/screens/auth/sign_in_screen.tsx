@@ -1,5 +1,5 @@
 import {
-  Image,
+  Dimensions,
   StyleSheet,
 } from "react-native";
 import { useState } from "react";
@@ -13,6 +13,9 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
+
 export default function SignInScreen() {
   const router = useRouter();
   const firestoreCtrl = new FirestoreCtrl();
@@ -23,34 +26,37 @@ export default function SignInScreen() {
   const uri = "@/assets/images/auth/SignInScreen/";
   return (
     <ThemedView style={styles.signInScreen}>
-      <Image source={require(`${uri}bg.png`)} style={[styles.backgroundImage]} />
+      <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
-      <ThemedText style={styles.titleText}>We've missed you</ThemedText>
+      <ThemedText style={styles.titleText} colorType="white">We've missed you</ThemedText>
 
       <ThemedView style={styles.colContainer}>
         <ThemedTextInput style={styles.input}
           type="email"
           onChangeText={(text) => setEmail(text)}
-          viewWidth={"100%"}
+          viewWidth={"90%"}
           title="Email"
         />
 
         <ThemedTextInput style={styles.input}
           type="password"
           onChangeText={(text) => setPassword(text)}
-          viewWidth={"100%"}
+          viewWidth={"90%"}
           title="Password"
         />
 
         <ThemedTextButton style={styles.buttonSignIn}
           onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
           text="Sign In"
+          textStyle={{ fontWeight: "600" }}
         />
 
         <ThemedTextButton 
           style={{ alignItems: "center" }}
           onPress={() => router.push("/screens/auth/forgot_password_screen")}
           text="Forgot Password?"
+          colorType="transparent"
+          textColorType="white"
         />
 
       </ThemedView>
@@ -59,6 +65,14 @@ export default function SignInScreen() {
 }
 
 const styles = StyleSheet.create({
+  ovalShapeTwo: {
+    position: "absolute",
+    top: "-40%",
+    left: "30%",
+    width: "130%",
+    height: "70%",
+    borderRadius: width * 0.7,
+  },
   signInScreen: {
     flex: 1,
     justifyContent: "flex-start",
@@ -70,6 +84,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "transparent",
     gap: 20,
+    alignItems: "center",
   },
 
   backgroundImage: {
@@ -87,17 +102,18 @@ const styles = StyleSheet.create({
   },
   
   input: {
+    alignSelf: "center",
     width: "100%",
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 15,
-    borderColor: "#ccc",
     padding: 8,
+    color: "white",
   },
 
   buttonSignIn: {
-    width: "100%",
+    alignSelf: "center",
+    width: "80%",
     borderRadius: 15,
-    backgroundColor: "#E6BC95",
     alignItems: "center",
     padding: 8,
   },

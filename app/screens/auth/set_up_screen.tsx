@@ -57,9 +57,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 25,
+    fontSize: 42,
     color: "white",
     fontWeight: "bold",
+    textAlign: "center",
   },
 
   background: {
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 2,
+    color: "white",
   },
 });

@@ -13,7 +13,6 @@ const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
   const router = useRouter();
-  const uri = "@/assets/images/"
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />

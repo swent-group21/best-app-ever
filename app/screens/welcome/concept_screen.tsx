@@ -11,7 +11,6 @@ import {
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
-  const uri = "@/assets/images/"
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />

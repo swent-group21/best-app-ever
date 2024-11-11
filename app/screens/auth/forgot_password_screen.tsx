@@ -15,7 +15,7 @@ export default function ForgotPasswordScreen() {
     <ThemedView style={styles.screenContainer}>
       <Image source={require(`${uri}bg.png`)} style={[styles.backgroundImage]} />
 
-      <ThemedText style={styles.titleText}>Forgot your Password ?</ThemedText>
+      <ThemedText style={styles.titleText} colorType="backgroundSecondary">Forgot your Password ?</ThemedText>
 
       <ThemedView style={styles.smallContainer}>
         <ThemedTextInput
@@ -30,11 +30,13 @@ export default function ForgotPasswordScreen() {
             style={styles.buttonCancel}
             onPress={() => router.back()}
             text="Cancel"
+            textStyle={{ fontWeight: "600" }}
           />
           <ThemedTextButton
             style={styles.buttonResetPassword}
             onPress={() => alert("Send Email")}
             text="Reset Password"
+            textStyle={{ fontWeight: "600" }}
           />
         </ThemedView>
       </ThemedView>
@@ -79,10 +81,11 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 15,
     padding: 10,
     marginBottom: 15,
+    color: "white",
   },
 
   buttonResetPassword: {
@@ -97,8 +100,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 15,
     padding: 8,
-    borderWidth: 1,
     width: "35%",
-    borderColor: "#ccc",
   },
 });
