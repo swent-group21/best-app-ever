@@ -4,10 +4,8 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
 
 interface ThemedIconButtonProps extends IconProps {
-    //iconName: string;
     onPress: () => void;
     iconType?: string;
-    //style: StyleProp<ViewStyle>;
     size?: number;
     colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
     lightColor?: string;

@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
+import { Colors } from '@/constants/Colors';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { ThemedText } from '../theme/ThemedText';
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
@@ -11,14 +14,16 @@ interface TopbarProps {
     rightIcon?: string;
     rightAction?: () => void;
     title?: string;
+    colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
 }
 
-export function TopBar({ leftIcon, leftAction, rightIcon, rightAction, title }: TopbarProps) {
+export function TopBar({ leftIcon, leftAction, rightIcon, rightAction, title, colorType="white" }: TopbarProps) {
+    const color = useThemeColor({}, colorType);
     return (
         <View style={styles.container}>
-            {leftIcon ? <ThemedIconButton name={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
-            {title && <Text style={styles.title}>{title}</Text>}
-            {rightIcon ? <ThemedIconButton name={rightIcon} onPress={rightAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
+            {leftIcon ? <ThemedIconButton name={leftIcon} onPress={leftAction || (() => {})} size={30} color={color} /> : <View style={styles.placeholder} />}
+            {title && <ThemedText style={styles.title} colorType={colorType}>{title}</ThemedText>}
+            {rightIcon ? <ThemedIconButton name={rightIcon} onPress={rightAction || (() => {})} size={30} color={color} /> : <View style={styles.placeholder} />}
         </View>
     );
 };
@@ -36,7 +41,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: 'white',
     },
     placeholder: {
         width: 30, 
