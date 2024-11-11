@@ -29,14 +29,8 @@ jobs:
       - name: "Run tests with coverage"
         run: yarn test --coverage --debug
 
-  sonarcloud:
-    name: "SonarCloud report"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: SonarCloud Scan
+      - name: "SonarCloud Scan"
+        if: success() || failure()
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
