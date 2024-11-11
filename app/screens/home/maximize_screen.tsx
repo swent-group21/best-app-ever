@@ -34,7 +34,7 @@ export default function MaximizeScreen() {
       <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]}>
         <ThemedView style={styles.user}>
           <ThemedIconButton
-            iconName="person-circle-outline"
+            name="person-circle-outline"
             onPress={() => {
               /* user button */
             }}
@@ -55,7 +55,7 @@ export default function MaximizeScreen() {
           </ThemedView>
         </ThemedView>
         <ThemedIconButton
-          iconName="location-outline"
+          name="location-outline"
           onPress={() => {
             /* location button */
           }}
@@ -66,7 +66,7 @@ export default function MaximizeScreen() {
 
       <ThemedView style={styles.bigContainer}>
         <ThemedIconButton
-          iconName="heart-outline"
+          name="heart-outline"
           onPress={() => {
             /* */
           }}

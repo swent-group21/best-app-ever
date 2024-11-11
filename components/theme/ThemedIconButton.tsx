@@ -1,21 +1,21 @@
 import React from 'react';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, StyleProp, TextStyle } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
+import { Icon, IconProps } from 'react-native-elements';
 
-interface ThemedIconButtonProps {
-    iconName: string;
+interface ThemedIconButtonProps extends IconProps {
+    //iconName: string;
     onPress: () => void;
     iconType?: string;
-    style?: ViewStyle;
+    //style: StyleProp<ViewStyle>;
     size?: number;
     color?: string;
 }
 
-export function ThemedIconButton({ iconName, onPress, iconType='ionicon', size, style, color, ...props}: ThemedIconButtonProps) {
+export function ThemedIconButton({ onPress, iconType='ionicon', size, color, ...props }: ThemedIconButtonProps) {
     const { colors } = useTheme();
 
     return (
-        <Icon name={iconName} color={color ? color : colors.text} type={iconType} onPress={onPress} size={size} containerStyle={style} {...props}/>
+        <Icon color={color ? color : colors.text} type={iconType} onPress={onPress} size={size} {...props}/>
     );
 };

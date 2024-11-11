@@ -35,17 +35,17 @@ export function Challenge({ children, title }: PropsWithChildren & { title: stri
                 <ThemedView style={styles.container}>  
                     <ThemedView style={[styles.user, {justifyContent: 'space-between'}]}>
                         <ThemedView style={styles.user}>
-                            <ThemedIconButton iconName="person-circle-outline" onPress={() => {/* user button */}} size={45} color='white'/>
+                            <ThemedIconButton name="person-circle-outline" onPress={() => {/* user button */}} size={45} color='white'/>
                             <ThemedView style={styles.userInfo}>
                                 <ThemedText lightColor='white' darkColor='white' type='smallSemiBold'>{userName}</ThemedText>
                                 <ThemedText lightColor='white' darkColor='white' type='small' >{"in " + userLocation + " at " + userTime}</ThemedText>
                             </ThemedView>
                         </ThemedView>
-                        <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("../home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
+                        <ThemedIconButton name="chevron-expand-outline" onPress={() => {router.push("../home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
                     </ThemedView>
                     <ThemedView style={styles.bottomBar}>
-                        <ThemedIconButton iconName="heart-outline" onPress={() => {router.back()}} size={25} color='white'/>
-                        <ThemedIconButton iconName="location-outline" onPress={() => {/* location button */}} size={25} color='white'/>
+                        <ThemedIconButton name="heart-outline" onPress={() => {router.back()}} size={25} color='white'/>
+                        <ThemedIconButton name="location-outline" onPress={() => {/* location button */}} size={25} color='white'/>
                     </ThemedView>
                 </ThemedView>
                 }
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     width: width - 20,
     height: height,
     borderRadius: 15,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.light.transparent,
   },
   image: {
     position: 'absolute',

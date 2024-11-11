@@ -17,9 +17,9 @@ interface BottomBarProps {
 export function BottomBar({ leftIcon, leftAction, centerIcon, centerAction, rightIcon, rightAction }: BottomBarProps) {
     return (
         <View style={styles.container}>
-            {leftIcon ? <ThemedIconButton iconName={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
-            {centerIcon ? <ThemedIconButton iconName={centerIcon} onPress={centerAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
-            {rightIcon ? <ThemedIconButton iconName={rightIcon} onPress={rightAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
+            {leftIcon ? <ThemedIconButton name={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
+            {centerIcon ? <ThemedIconButton name={centerIcon} onPress={centerAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
+            {rightIcon ? <ThemedIconButton name={rightIcon} onPress={rightAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
         </View>
     );
 };

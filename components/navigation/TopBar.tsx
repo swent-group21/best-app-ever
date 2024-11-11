@@ -16,9 +16,9 @@ interface TopbarProps {
 export function TopBar({ leftIcon, leftAction, rightIcon, rightAction, title }: TopbarProps) {
     return (
         <View style={styles.container}>
-            {leftIcon ? <ThemedIconButton iconName={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
+            {leftIcon ? <ThemedIconButton name={leftIcon} onPress={leftAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
             {title && <Text style={styles.title}>{title}</Text>}
-            {rightIcon ? <ThemedIconButton iconName={rightIcon} onPress={rightAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
+            {rightIcon ? <ThemedIconButton name={rightIcon} onPress={rightAction || (() => {})} size={30} color='white' /> : <View style={styles.placeholder} />}
         </View>
     );
 };
