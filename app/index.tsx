@@ -5,11 +5,13 @@ import WelcomeIntroScreen from '@/app/screens/welcome/intro_screen';
 import WelcomeConceptScreen from '@/app/screens/welcome/concept_screen';
 import WelcomePersonalScreen from '@/app/screens/welcome/personal_screen';
 import WelcomeFinalScreen from '@/app/screens/welcome/final_screen';
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export default function WelcomeScreens() {
+  const color = useThemeColor({}, "textPrimary");
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Handle the scroll event to update the active index
@@ -41,8 +43,8 @@ export default function WelcomeScreens() {
             <View
               key={i}
               style={[
-                styles.dot,
-                activeIndex === i ? styles.activeDot : styles.inactiveDot,
+                [styles.dot, {borderColor: color}],
+                activeIndex === i ? {backgroundColor: color} : styles.inactiveDot,
               ]}
             />
           ))}
@@ -73,10 +75,6 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginHorizontal: 6,
     borderWidth: 1,
-    borderColor: "#000",
-  },
-  activeDot: {
-    backgroundColor: "#000",
   },
   inactiveDot: {
     backgroundColor: "transparent",

@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   text: {
-    color: "white",
     fontSize: 18,
   },
 });

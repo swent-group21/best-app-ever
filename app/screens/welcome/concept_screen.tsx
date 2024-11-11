@@ -16,8 +16,8 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
       
       <ThemedView style={styles.textContainer}>
-        <ThemedText style={styles.title} colorType="white">Competing{"\n"}yourself</ThemedText>
-        <ThemedText style={styles.description} colorType="white">Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !prizes!</ThemedText>
+        <ThemedText style={styles.title} colorType="textPrimary">Competing{"\n"}yourself</ThemedText>
+        <ThemedText style={styles.description} colorType="textPrimary">Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !prizes!</ThemedText>
       </ThemedView>
       
     </ThemedView>

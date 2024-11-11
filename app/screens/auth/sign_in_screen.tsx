@@ -28,7 +28,7 @@ export default function SignInScreen() {
     <ThemedView style={styles.signInScreen}>
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
-      <ThemedText style={styles.titleText} colorType="white">We've missed you</ThemedText>
+      <ThemedText style={styles.titleText} colorType="textPrimary">We've missed you</ThemedText>
 
       <ThemedView style={styles.colContainer}>
         <ThemedTextInput style={styles.input}
@@ -49,6 +49,7 @@ export default function SignInScreen() {
           onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
           text="Sign In"
           textStyle={{ fontWeight: "600" }}
+          textColorType="textOverLight"
         />
 
         <ThemedTextButton 
@@ -56,7 +57,7 @@ export default function SignInScreen() {
           onPress={() => router.push("/screens/auth/forgot_password_screen")}
           text="Forgot Password?"
           colorType="transparent"
-          textColorType="white"
+          textColorType="textPrimary"
         />
 
       </ThemedView>
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     padding: 8,
-    color: "white",
   },
 
   buttonSignIn: {

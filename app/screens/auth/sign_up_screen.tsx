@@ -13,7 +13,6 @@ import { useRouter } from "expo-router";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
@@ -43,7 +42,7 @@ export default function SignUp() {
       <TopBar title="Set up your profile" leftIcon="arrow-back" leftAction={() => router.back()} />
 
       {/* Title of the screen */}
-      <ThemedText style={styles.title} colorType="white">Tell us about you !</ThemedText>
+      <ThemedText style={styles.title} colorType="textPrimary">Tell us about you !</ThemedText>
 
       {/* The input fields */}
       <ThemedScrollView style={styles.inputColumn} automaticallyAdjustKeyboardInsets={true}>
@@ -136,7 +135,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingLeft: 20,
     marginBottom: height * 0.02,
-    color: "white",
   },
 
   inputWrong: {
@@ -147,6 +145,5 @@ const styles = StyleSheet.create({
     borderColor: "red",
     paddingLeft: 20,
     marginBottom: height * 0.02,
-    color: "white",
   },
 });

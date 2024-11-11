@@ -27,7 +27,7 @@ export default function SetUsername() {
 
       <ThemedScrollView style={styles.mainContainer} automaticallyAdjustKeyboardInsets={true}>
         <ThemedView style={styles.smallContainer}>
-          <ThemedIconButton name="person-circle-outline" size={300} color="white" onPress={() => router.push("../camera")} />
+          <ThemedIconButton name="person-circle-outline" size={300} colorType="textPrimary" onPress={() => router.push("../camera")} />
 
           <ThemedTextInput onChangeText={setUsername} value={username} style={styles.input} viewWidth="80%" placeholder="ex : sandraa" />
         </ThemedView>
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 42,
-    color: "white",
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -79,6 +78,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderRadius: 10,
     borderWidth: 2,
-    color: "white",
   },
 });

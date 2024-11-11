@@ -7,28 +7,30 @@ const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export const Colors = {
-  light: {//TODO: Change the colors to match the design
-    textPrimary: '#ECEDEE',
-    textSecondary: '#9BA1A6',
+  light: {
+    transparent: 'transparent',
     backgroundPrimary: '#E6BC95',
     backgroundSecondary: '#F7E9D3',
+    textPrimary: '#371400',
+    textSecondary: '#FBFAFA',
+    textOverLight: '#371400',
     tint: tintColorLight,
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
-    white: '#FBFAFA',
-    transparent: 'transparent',
+    white: '#371400',
   },
   dark: {
-    textPrimary: '#E6BC95',
-    textSecondary: '#EB6424',
+    transparent: 'transparent',
     backgroundPrimary: '#220901',
     backgroundSecondary: '#FFDAC6',
+    textPrimary: '#FBFAFA',
+    textSecondary: '#371400',
+    textOverLight: '#371400',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
     white: '#FBFAFA',
-    transparent: 'transparent',
   },
 };

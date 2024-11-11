@@ -1,7 +1,7 @@
 import React from 'react';
-import { ViewStyle, StyleProp, TextStyle } from 'react-native';
-import { useTheme } from '@react-navigation/native';
 import { Icon, IconProps } from 'react-native-elements';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors } from '@/constants/Colors';
 
 interface ThemedIconButtonProps extends IconProps {
     //iconName: string;
@@ -9,13 +9,15 @@ interface ThemedIconButtonProps extends IconProps {
     iconType?: string;
     //style: StyleProp<ViewStyle>;
     size?: number;
-    color?: string;
+    colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+    lightColor?: string;
+    darkColor?: string;
 }
 
-export function ThemedIconButton({ onPress, iconType='ionicon', size, color, ...props }: ThemedIconButtonProps) {
-    const { colors } = useTheme();
+export function ThemedIconButton({ lightColor, darkColor, onPress, iconType='ionicon', size, colorType, ...props }: ThemedIconButtonProps) {
+    const color = useThemeColor({ light: lightColor, dark: darkColor }, colorType ?? "backgroundPrimary");
 
     return (
-        <Icon color={color ? color : colors.text} type={iconType} onPress={onPress} size={size} {...props}/>
+        <Icon color={color} type={iconType} onPress={onPress} size={size} {...props}/>
     );
 };

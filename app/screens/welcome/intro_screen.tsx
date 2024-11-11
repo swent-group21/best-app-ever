@@ -13,8 +13,8 @@ export default function WelcomeIntroScreen() {
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
       <ThemedText style={styles.title} colorType="backgroundPrimary">So what is{"\n"}Strive{"\n"}about ?</ThemedText>
-      <ThemedText style={styles.description} colorType="white">Participating in Weekly challenges !</ThemedText>
-      <ThemedText style={styles.desc} colorType="white">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
+      <ThemedText style={styles.description} colorType="textPrimary">Participating in Weekly challenges !</ThemedText>
+      <ThemedText style={styles.desc} colorType="textPrimary">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
 
       <ThemedView style={styles.imageContainer}>
         <Image style={styles.image} source={require(`${uri}high.png`)} />

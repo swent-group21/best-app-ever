@@ -16,7 +16,7 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.challengeContainer}>
         <Challenge title=""/>
       </ThemedView>
-      <ThemedText style={styles.description} colorType="white">Create and share your memories with your friends{"\n"}Get rewarded for your creativity</ThemedText>
+      <ThemedText style={styles.description} colorType="textPrimary">Create and share your memories with your friends{"\n"}Get rewarded for your creativity</ThemedText>
     </ThemedView>
   );
 }

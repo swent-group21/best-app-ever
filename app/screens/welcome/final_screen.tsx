@@ -17,7 +17,7 @@ export default function WelcomeConceptScreen() {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
-      <ThemedText style={styles.title} colorType="white">Ready to{"\n"}Strive?</ThemedText>
+      <ThemedText style={styles.title} colorType="textPrimary">Ready to{"\n"}Strive?</ThemedText>
 
       <ThemedView style={styles.buttonContainer}>
         <ThemedTextButton
@@ -25,6 +25,7 @@ export default function WelcomeConceptScreen() {
           onPress={() => router.navigate("./screens/auth/sign_in_screen")}
           text="Login"
           textStyle={styles.buttonText}
+          textColorType="textOverLight"
         />
 
         {/* The button to navigate to the sign up screen */}
@@ -33,13 +34,14 @@ export default function WelcomeConceptScreen() {
           onPress={() => router.navigate("./screens/auth/sign_up_screen")} 
           text="Sign Up" 
           textStyle={styles.buttonText} 
+          textColorType="textOverLight"
         />
 
         <ThemedTextButton 
           onPress={() => {router.navigate("./screens/home/home_screen");}} 
           text="Continue as guest" 
           colorType="transparent"
-          textColorType="white"
+          textColorType="textPrimary"
         />
       </ThemedView>
     </ThemedView>
