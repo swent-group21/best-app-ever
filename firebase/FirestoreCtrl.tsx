@@ -10,6 +10,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 
 export type DBUser = {
+  uid: string;
   name: string;
   email: string;
   phone?: string;
@@ -52,12 +53,26 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves a user document from Firestore by UID.
+   * If no userId is provided, it checks for `auth.currentUser`.
+   * If there's no `auth.currentUser`, it uses the anonymous user account with a specific ID.
    * @param userId The UID of the user to retrieve.
    * @returns A promise that resolves to the user data or null if not found.
    */
-  async getUser(userId: string): Promise<DBUser | null> {
+  async getUser(userId?: string): Promise<DBUser | null> {
     try {
-      const userRef = doc(firestore, "users", userId);
+      let uid: string;
+      if (userId != null) {
+        uid = userId;
+      } else {
+        const currUser = auth.currentUser;
+        if (currUser != null) {
+          uid = currUser.uid;
+        } else {
+          // Use the anonymous user account ID
+          uid = 'rhf9LyQ4r1UGZWtepzFENAjJQfo2';
+        }
+      }
+      const userRef = doc(firestore, "users", uid);
       const docSnap = await getDoc(userRef);
       if (docSnap.exists()) {
         return docSnap.data() as DBUser;

@@ -26,6 +26,7 @@ export const logInWithGoogle = (
       result.user.metadata.creationTime === result.user.metadata.lastSignInTime;
     if (newUser) {
       const userData: DBUser = {
+        uid: result.user.uid || "",
         name: result.user.displayName || "",
         email: result.user.email || "",
         createdAt: new Date(),
@@ -46,6 +47,7 @@ export const logInWithGoogle = (
           // User might not exist in the database
           firestoreCtrl
             .createUser(result.user.uid, {
+              uid: result.user.uid,
               name: result.user.displayName || "",
               email: result.user.email || "",
               createdAt: new Date(),
@@ -74,6 +76,7 @@ export const logInWithEmail = async (
             // User might not exist in the database
             firestoreCtrl
               .createUser(response.user.uid, {
+                uid: response.user.uid || "",
                 name: response.user.displayName || "",
                 email: response.user.email || "",
                 createdAt: new Date(),
@@ -105,6 +108,7 @@ export const signUpWithEmail = async (
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userData: DBUser = {
+          uid: userCredential.user.uid,
           name: userName,
           email: email,
           createdAt: new Date(),

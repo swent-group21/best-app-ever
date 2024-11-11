@@ -2,20 +2,10 @@ import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { useState, useEffect } from 'react';
 import { ImageSourcePropType } from 'react-native';
 
-// Define a type for the challenge data needed by the component
-type ChallengeData = {
-  challengeName: string;
-  description?: string;
-  image: ImageSourcePropType;
-  userName: string;
-  location?: string;
-  dateTime: string;
-};
-
 export const buildChallenge = async (
   challengeId: string,
   firestoreCtrl: FirestoreCtrl
-): Promise<ChallengeData | null> => {
+): Promise<DBChallenge | null> => {
   try {
     // Fetch the challenge data from Firestore
     const challenge = await firestoreCtrl.getChallenge(challengeId);
@@ -29,12 +19,12 @@ export const buildChallenge = async (
     // Format the date and time
     const dateTime = new Date(challenge.date).toLocaleString();
 
-    const challengeData: ChallengeData = {
-      challengeName: challenge.challenge_name,
+    const challengeData: DBChallenge = {
+      challenge_name: challenge.challenge_name,
       description: challenge.description,
-      image: { uri: imageUrl },
-      userName: userName || 'Unknown User',
-      dateTime,
+      image_id: challenge.image_id,
+      uid: challenge.uid,
+      date: challenge.date,
     };
 
     return challengeData;
@@ -46,18 +36,51 @@ export const buildChallenge = async (
 
 // A function to be used in a hook to fetch challenge data
 export const useFetchChallenge = (challengeId: string, firestoreCtrl: FirestoreCtrl) => {
-  const [challengeData, setChallengeData] = useState<ChallengeData | null>(null);
+  const [challengeData, setDBChallenge] = useState<DBChallenge | null>(null);
 
   useEffect(() => {
-    const fetchChallengeData = async () => {
+    const fetchDBChallenge = async () => {
       const data = await buildChallenge(challengeId, firestoreCtrl);
-      setChallengeData(data);
+      setDBChallenge(data);
     };
 
     if (challengeId) {
-      fetchChallengeData();
+      fetchDBChallenge();
     }
   }, [challengeId, firestoreCtrl]);
 
   return challengeData;
+};
+
+
+export const createChallenge = async (
+  challengeData: DBChallenge,
+  firestoreCtrl: FirestoreCtrl
+): Promise<string | null> => {
+  try {
+    // Upload image and get image ID
+    let image_id = '';
+    if ('uri' in challengeData.image_id && challengeData.image.uri) {
+      image_id = await firestoreCtrl.uploadImageFromUri(challengeData.image.uri);
+    }
+
+    // Prepare the challenge data for Firestore
+    const uid = firestoreCtrl.getUser().uid; // Ensure this method exists
+    const challenge: DBChallenge = {
+      challenge_name: challengeData.challengeName,
+      description: challengeData.description || '',
+      uid: uid,
+      date: new Date(challengeData.dateTime).toISOString(),
+      location: challengeData.location || '',
+      image_id: image_id,
+      // Add other fields as needed
+    };
+
+    // Save the challenge to Firestore
+    const challengeId = await firestoreCtrl.createChallenge(challenge);
+    return challengeId;
+  } catch (error) {
+    console.error("Error creating challenge: ", error);
+    return null;
+  }
 };
