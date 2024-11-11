@@ -3,8 +3,9 @@ import { TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
+import { TouchableOpacityProps } from 'react-native-gesture-handler';
 
-interface ThemedTextButtonProps {
+interface ThemedTextButtonProps extends TouchableOpacityProps {
     lightColor?: string;
     darkColor?: string;
     colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;

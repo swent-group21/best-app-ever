@@ -10,7 +10,7 @@ interface ThemedTextInputProps extends TextInputProps {
     type?: "none" | "email" | "password";
 }
 
-export function ThemedTextInput({ style, title, titleStyle, viewWidth, type="none", ...props }: ThemedTextInputProps) {
+export function ThemedTextInput({ style, title, titleStyle, viewWidth = "100%", type="none", ...props }: ThemedTextInputProps) {
     const { colors } = useTheme();
     const getInputProps = (type: "none" | "email" | "password"): TextInputProps => {
         switch (type) {

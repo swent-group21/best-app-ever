@@ -1,6 +1,6 @@
 import {
-  Image,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -8,14 +8,16 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
+
 export default function ForgotPasswordScreen() {
   const router = useRouter();
-  const uri = "@/assets/images/auth/ForgotPasswordScreen/";
   return (
     <ThemedView style={styles.screenContainer}>
-      <Image source={require(`${uri}bg.png`)} style={[styles.backgroundImage]} />
+      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
-      <ThemedText style={styles.titleText} colorType="backgroundSecondary">Forgot your Password ?</ThemedText>
+      <ThemedText style={styles.titleText} colorType="white">Forgot your Password ?</ThemedText>
 
       <ThemedView style={styles.smallContainer}>
         <ThemedTextInput
@@ -45,6 +47,15 @@ export default function ForgotPasswordScreen() {
 }
 
 const styles = StyleSheet.create({
+  ovalShapeOne: {
+    position: "absolute",
+    top: height * 0.7,
+    left: -width * 0.3,
+    width: width * 1.3,
+    height: height * 0.7,
+    borderRadius: width * 0.7,
+  },
+
   screenContainer: {
     alignItems: "center",
     gap: 75,

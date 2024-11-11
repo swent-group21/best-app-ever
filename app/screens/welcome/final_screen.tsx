@@ -27,9 +27,10 @@ export default function WelcomeConceptScreen() {
           textStyle={styles.buttonText}
         />
 
+        {/* The button to navigate to the sign up screen */}
         <ThemedTextButton 
           style={styles.buttonAccount} 
-          onPress={() => router.navigate("./screens/auth/set_up_screen")} 
+          onPress={() => router.navigate("./screens/auth/sign_up_screen")} 
           text="Sign Up" 
           textStyle={styles.buttonText} 
         />

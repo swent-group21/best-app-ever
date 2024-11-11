@@ -65,6 +65,12 @@ export default function SignInScreen() {
 }
 
 const styles = StyleSheet.create({
+  signInScreen: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  
   ovalShapeTwo: {
     position: "absolute",
     top: "-40%",
@@ -72,11 +78,6 @@ const styles = StyleSheet.create({
     width: "130%",
     height: "70%",
     borderRadius: width * 0.7,
-  },
-  signInScreen: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
   },
 
   colContainer: {
