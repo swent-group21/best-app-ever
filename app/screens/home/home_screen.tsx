@@ -29,7 +29,7 @@ export default function HomeScreen() {
       <BottomBar
         leftIcon="map-outline"
         centerIcon="camera-outline"
-        rightIcon="logo-docker"
+        rightIcon="trophy-outline"
         centerAction={() => router.push("../camera")}
       />
     </ThemedView>
