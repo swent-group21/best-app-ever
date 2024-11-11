@@ -1,25 +1,76 @@
-name: EAS Build
+name: Build App
+
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
-      - main
+      - build-apk
+      - eas-build
+      - M*
+
 jobs:
   build:
-    name: Install and build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: npm
-      - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-      - name: Install dependencies
-        run: npm ci
-      - name: Build on EAS
-        run: eas build --platform android --profile development --non-interactive --no-wait
+    - name: 🏗 Setup repo
+      uses: actions/checkout@v3
+
+    - name: Create Google Services JSON File
+      env:
+        GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./google-services.json
+
+    - name: Create eas.json File
+      env:
+        EAS_JSON: ${{ secrets.EAS_JSON }}
+      run: echo $EAS_JSON | base64 -di > ./eas.json
+
+    - name: Update app.json File
+      env:
+        APP_JSON: ${{ secrets.APP_JSON }}
+      run: |
+        rm app.json && echo $APP_JSON | base64 -di > ./app.json
+
+    - name: 🏗 Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    - name: 🏗 Setup Expo and EAS
+      uses: expo/expo-github-action@v8
+      with:
+        token: ${{ secrets.EXPO_TOKEN }}
+        expo-version: latest
+        eas-version: latest
+
+    - name: 🏗 Setup EAS local builds
+      run: npm install -g eas-cli-local-build-plugin
+
+    - name: 📦 Install dependencies
+      run: npm install
+
+    - name: Setup JDK (20)
+      uses: actions/setup-java@v3
+      with:
+        java-version: 20
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: 👷 Build app (Local)
+      run: |
+        eas build --local \
+          --non-interactive \
+          --platform=android \
+          --profile=preview \
+          --build-logger-level=error \
+          --json --non-interactive
+
+    - name: 📱 Upload binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-android
+        path: /home/runner/work/strive/strive/build-*.apk
