@@ -20,17 +20,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: "Format code"
-        run: npx prettier --write ./app
-
       - name: "Install dependencies"
         run: npm i --d && yarn --verbose
 
       - name: "Run tests with coverage"
         run: yarn test --coverage --debug
 
-      - name: "SonarCloud Scan"
+      - name: "SonarCloud report"
         if: success() || failure()
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: "Checks code formatting"
+        run: npx prettier --check ./app # It's not possible to automatically fix the code formatting
