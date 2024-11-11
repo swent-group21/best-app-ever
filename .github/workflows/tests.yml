@@ -1,4 +1,5 @@
 name: "Tests & Coverage report"
+run-name: "Run tests with coverage"
 
 on: push
 
@@ -11,12 +12,12 @@ jobs:
         node-version: [22.x]
 
     steps:
-        - uses: actions/checkout@v4
-        - name: "Format code"
-            run: npx prettier --write ./app
+    - uses: actions/checkout@v4
+    - name: "Format code"
+        run: npx prettier --write ./app
 
-        - name: "Install dependencies"
-            run: npm ci
+    - name: "Install dependencies"
+        run: npm ci
 
-        - name: "Run tests with coverage"
-            run: yarn test --coverage
+    - name: "Run tests with coverage"
+        run: yarn test --coverage
