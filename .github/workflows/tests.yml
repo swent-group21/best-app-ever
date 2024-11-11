@@ -23,7 +23,7 @@ jobs:
         run: npx prettier --write ./app
 
       - name: "Install dependencies"
-        run: npm i && yarn
+        run: npm i --ddd && yarn --verbose
 
       - name: "Run tests with coverage"
         run: yarn test --coverage --debug
