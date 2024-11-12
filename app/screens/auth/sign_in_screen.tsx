@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
     height: "70%",
     borderRadius: width * 0.7,
   },
-
+  
   colContainer: {
     flex: 2,
     width: "90%",
     backgroundColor: "transparent",
-    gap: 20,
     alignItems: "center",
+    gap: height * 0.027,
   },
 
   backgroundImage: {
@@ -103,10 +103,10 @@ const styles = StyleSheet.create({
 
   titleText: {
     flex: 1,
-    fontSize: 51,
-    fontWeight: "800",
     textAlign: "right",
     textAlignVertical: "center",
+    fontSize: 51, //TODO
+    fontWeight: "800", //TODO
   },
   
   input: {
@@ -118,10 +118,10 @@ const styles = StyleSheet.create({
   },
 
   buttonSignIn: {
+    alignItems: "center",
     alignSelf: "center",
     width: "80%",
     borderRadius: 15,
-    alignItems: "center",
     padding: 8,
   },
 });

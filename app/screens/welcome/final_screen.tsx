@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     height: "70%",
     borderRadius: width * 0.7,
   },
-  //Width:  360 Height:  753
+  
   title: {
     width: "80%",
     alignSelf: "center",

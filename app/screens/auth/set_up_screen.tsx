@@ -28,9 +28,9 @@ export default function SetUsername() {
       <TopBar leftIcon="arrow-back" leftAction={() => router.back()} title="Set up your profile" />
 
       {/* Screen content */}
-      <ThemedScrollView style={styles.mainContainer} automaticallyAdjustKeyboardInsets={true}>
+      <ThemedScrollView style={styles.mainContainer} automaticallyAdjustKeyboardInsets={true} colorType="transparent">
         {/* Input fields */}
-        <ThemedView style={styles.smallContainer}>
+        <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
           <ThemedIconButton name="person-circle-outline" size={300} colorType="textPrimary" onPress={() => router.push("../camera")} />
           
@@ -50,10 +50,10 @@ export default function SetUsername() {
 const styles = StyleSheet.create({
   ovalShapeOne: {
     position: "absolute",
-    top: height * 0.79,
-    left: width * 0.2,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "79%",
+    left: "20%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
   },
 
@@ -62,27 +62,25 @@ const styles = StyleSheet.create({
   },
   
   mainContainer: {
-    width: "100%",
-    backgroundColor: "transparent",
     flex: 1,
+    width: "100%",
   },
   
   smallContainer: {
     width: "100%",
-    backgroundColor: "transparent",
     alignItems: "center",
-    paddingBottom: 70,
+    paddingBottom: height * 0.09,
   },
 
   title: {
-    fontSize: 42,
-    fontWeight: "bold",
     textAlign: "center",
+    fontSize: 42, // TODO
+    fontWeight: "bold", // TODO
   },
 
   input: {
-    padding: 10,
-    fontSize: 20,
+    fontSize: 20, // TODO
+    padding: 8,
     borderRadius: 10,
     borderWidth: 2,
   },

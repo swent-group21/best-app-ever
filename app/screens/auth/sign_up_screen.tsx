@@ -106,13 +106,11 @@ const styles = StyleSheet.create({
 
   ovalShape: {
     position: "absolute",
-    top: -height * 1.1,
-    left: -width * 1,
-    width: width * 1.8,
-    height: height * 1.40,
+    top: "-110%",
+    left: "-100%",
+    width: "180%",
+    height: "140%",
     borderRadius: width * 0.9,
-    justifyContent: "center",
-    paddingLeft: width * 0.3,
   },
 
   inputColumn: {
@@ -122,28 +120,27 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 56,
-    fontWeight: "bold",
     textAlign: "right",
     paddingHorizontal: width * 0.1,
     marginBottom: height * 0.05,
+    fontSize: 56, // TODO
+    fontWeight: "bold", // TODO
   },
 
   input: {
     height: height * 0.06,
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingLeft: 20,
     marginBottom: height * 0.02,
+    paddingLeft: width * 0.05,
+    borderWidth: 2, 
+    borderRadius: 15, 
   },
 
   inputWrong: {
-    width: "100%",
     height: height * 0.06,
+    marginBottom: height * 0.02,
+    paddingLeft: width * 0.05,
     borderWidth: 1,
     borderRadius: 15,
     borderColor: "red",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
   },
 });

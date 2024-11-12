@@ -58,17 +58,17 @@ export default function ForgotPasswordScreen() {
 const styles = StyleSheet.create({
   ovalShapeOne: {
     position: "absolute",
-    top: height * 0.7,
-    left: -width * 0.3,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "70%",
+    left: "-30%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
   },
 
   screenContainer: {
-    alignItems: "center",
-    gap: 75,
     flex: 1,
+    alignItems: "center",
+    gap: height * 0.1,
   },
 
   smallContainer: {
@@ -85,39 +85,31 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
 
-  backgroundImage: {
-    width: "90%",
-    height: "39%",
-    position: "absolute",
-    bottom: -30,
-    right: 0,
-  },
-
   titleText: {
+    textAlign: "justify",
+    paddingTop: height * 0.14,
     fontSize: 51,
     fontWeight: "bold",
-    textAlign: "justify",
-    paddingTop: 100,
   },
 
   input: {
+    marginBottom: height * 0.02,
+    padding: 8,
     borderWidth: 2,
     borderRadius: 15,
-    padding: 10,
-    marginBottom: 15,
   },
 
   buttonResetPassword: {
+    width: "60%",
     alignItems: "center",
     borderRadius: 15,
     padding: 8,
-    width: "60%",
   },
 
   buttonCancel: {
+    width: "35%",
     alignItems: "center",
     borderRadius: 15,
     padding: 8,
-    width: "35%",
   },
 });
