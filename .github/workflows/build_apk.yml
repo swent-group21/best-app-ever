@@ -3,9 +3,8 @@
 name: "Build APK"
 
 run-name: Building an APK
-on: 
-  push
-  
+on: push
+
 jobs:
   build:
     runs-on: ubuntu-22.04

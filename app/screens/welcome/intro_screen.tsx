@@ -7,11 +7,13 @@ import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeIntroScreen() {
-  const uri = "@/assets/images/"
+  const uri = "@/assets/images/";
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.ovalShape} />
-      <ThemedText style={styles.title}>So what is{"\n"}Strive{"\n"}about ?</ThemedText>
+      <ThemedText style={styles.title}>
+        So what is{"\n"}Strive{"\n"}about ?
+      </ThemedText>
 
       <ThemedView style={styles.imageContainer}>
         <Image style={styles.image} source={require(`${uri}goat.png`)} />
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
-  
+
   title: {
     paddingTop: height * 0.2,
     paddingLeft: width * 0.05,

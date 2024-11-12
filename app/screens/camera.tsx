@@ -3,7 +3,7 @@ import {
   CameraType,
   useCameraPermissions,
   CameraCapturedPicture,
-  CameraPictureOptions
+  CameraPictureOptions,
 } from "expo-camera";
 import { useState, useRef, useCallback, useMemo } from "react";
 import {
@@ -28,7 +28,6 @@ import {
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { useRouter } from "expo-router";
 
-
 export default function CameraTest() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
@@ -41,13 +40,11 @@ export default function CameraTest() {
   const [zoom, setZoom] = useState(0);
   const [lastZoom, setLastZoom] = useState(0);
 
-
   const firestoreCtrl = new FirestoreCtrl();
   const cameraPictureOptions: CameraPictureOptions = {
     base64: true,
   };
   const router = useRouter();
-
 
   const onPinch = useCallback(
     (event: any) => {
@@ -186,7 +183,9 @@ export default function CameraTest() {
 
           <TouchableOpacity
             style={styles.send}
-            onPress={() => {picture ? firestoreCtrl.uploadImageFromUri(picture?.uri): null; router.push("./home/home_screen");
+            onPress={() => {
+              picture ? firestoreCtrl.uploadImageFromUri(picture?.uri) : null;
+              router.push("./home/home_screen");
             }}
           >
             <Ionicons name="send" size={30} color="white" />
@@ -196,7 +195,6 @@ export default function CameraTest() {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
