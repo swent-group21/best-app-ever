@@ -21,7 +21,7 @@ export default function WelcomeIntroScreen() {
 
       {/* Logo */}
       <ThemedView style={styles.imageContainer}>
-        <Image style={styles.image} source={require(`${uri}high.png`)} />
+        <Image style={styles.image} source={require(`${uri}icon_trans.png`)} />
       </ThemedView>
     </ThemedView>
   );
