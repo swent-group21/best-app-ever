@@ -21,20 +21,27 @@ export default function SetUsername() {
   const uri = "@/assets/images/auth/SignUpScreen/"
   return (
     <ThemedView style={styles.screenContainer}>
+      {/* Background shape */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
+      {/* Top bar */}
       <TopBar leftIcon="arrow-back" leftAction={() => router.back()} title="Set up your profile" />
 
+      {/* Screen content */}
       <ThemedScrollView style={styles.mainContainer} automaticallyAdjustKeyboardInsets={true}>
+        {/* Input fields */}
         <ThemedView style={styles.smallContainer}>
+          {/* Profile picture */}
           <ThemedIconButton name="person-circle-outline" size={300} colorType="textPrimary" onPress={() => router.push("../camera")} />
-
+          
+          {/* Username input */}
           <ThemedTextInput onChangeText={setUsername} value={username} style={styles.input} viewWidth="80%" placeholder="ex : sandraa" />
         </ThemedView>
 
         <ThemedText style={styles.title}>What will we see of you ?</ThemedText>
       </ThemedScrollView>
       
+      {/* Bottom bar */}
       <BottomBar rightIcon="arrow-forward" rightAction={() => router.navigate("../home/home_screen")} />
     </ThemedView>
   );

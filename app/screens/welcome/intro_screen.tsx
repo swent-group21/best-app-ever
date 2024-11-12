@@ -7,15 +7,19 @@ import { StyleSheet, Dimensions, Image } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeIntroScreen() {
+  // Logo image uri
   const uri = "@/assets/images/"
   return (
     <ThemedView style={styles.container}>
+      {/* Background shape */}
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
+      {/* Screen content */}
       <ThemedText style={styles.title} colorType="backgroundPrimary">So what is{"\n"}Strive{"\n"}about ?</ThemedText>
       <ThemedText style={styles.description} colorType="textPrimary">Participating in Weekly challenges !</ThemedText>
       <ThemedText style={styles.desc} colorType="textPrimary">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
 
+      {/* Logo */}
       <ThemedView style={styles.imageContainer}>
         <Image style={styles.image} source={require(`${uri}high.png`)} />
       </ThemedView>

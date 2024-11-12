@@ -15,11 +15,16 @@ export default function WelcomeConceptScreen() {
   const router = useRouter();
   return (
     <ThemedView style={styles.container}>
+      {/* Background shapes */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
+
+      {/* Screen content */}
       <ThemedText style={styles.title} colorType="textPrimary">Ready to{"\n"}Strive?</ThemedText>
 
+      {/* Buttons */}
       <ThemedView style={styles.buttonContainer}>
+        {/* Sign in button */}
         <ThemedTextButton
           style={styles.buttonAccount}
           onPress={() => router.navigate("./screens/auth/sign_in_screen")}
@@ -28,7 +33,7 @@ export default function WelcomeConceptScreen() {
           textColorType="textOverLight"
         />
 
-        {/* The button to navigate to the sign up screen */}
+        {/* Sign up button */}
         <ThemedTextButton 
           style={styles.buttonAccount} 
           onPress={() => router.navigate("./screens/auth/sign_up_screen")} 
@@ -37,6 +42,7 @@ export default function WelcomeConceptScreen() {
           textColorType="textOverLight"
         />
 
+        {/* Continue as guest button */}
         <ThemedTextButton 
           onPress={() => {router.navigate("./screens/home/home_screen");}} 
           text="Continue as guest" 

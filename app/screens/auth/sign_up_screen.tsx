@@ -40,11 +40,11 @@ export default function SignUp() {
 
       {/* Top bar */}
       <TopBar title="Set up your profile" leftIcon="arrow-back" leftAction={() => router.back()} />
-
-      {/* Title of the screen */}
+  
+      {/* Screen content */}
       <ThemedText style={styles.title} colorType="textPrimary">Tell us about you !</ThemedText>
 
-      {/* The input fields */}
+      {/* Input fields */}
       <ThemedScrollView style={styles.inputColumn} automaticallyAdjustKeyboardInsets={true}>
         {/* Name */}
         <ThemedTextInput 
@@ -90,7 +90,7 @@ export default function SignUp() {
         />
       </ThemedScrollView>
 
-      {/* Sign up button */}
+      {/* Bottom bar */}
       <BottomBar rightIcon="arrow-forward" rightAction={() => signUpWithEmail(name+surname, email, password, firestoreCtrl, router)} />
     </ThemedView>
   );

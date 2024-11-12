@@ -13,13 +13,14 @@ const { width, height } = Dimensions.get("window");
 export default function WelcomeConceptScreen() {
   return (
     <ThemedView style={styles.container}>
+      {/* Background shape */}
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
       
+      {/* Screen content */}
       <ThemedView style={styles.textContainer}>
         <ThemedText style={styles.title} colorType="textPrimary">Competing{"\n"}yourself</ThemedText>
         <ThemedText style={styles.description} colorType="textPrimary">Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !prizes!</ThemedText>
       </ThemedView>
-      
     </ThemedView>
   );
 }

@@ -23,14 +23,17 @@ export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const uri = "@/assets/images/auth/SignInScreen/";
   return (
     <ThemedView style={styles.signInScreen}>
+      {/* Background shape */}
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
+      {/* Screen content */}
       <ThemedText style={styles.titleText} colorType="textPrimary">We've missed you</ThemedText>
 
+      {/* Input fields */}
       <ThemedView style={styles.colContainer}>
+        {/* Email input */}
         <ThemedTextInput style={styles.input}
           type="email"
           onChangeText={(text) => setEmail(text)}
@@ -38,6 +41,7 @@ export default function SignInScreen() {
           title="Email"
         />
 
+        {/* Password input */}
         <ThemedTextInput style={styles.input}
           type="password"
           onChangeText={(text) => setPassword(text)}
@@ -45,6 +49,7 @@ export default function SignInScreen() {
           title="Password"
         />
 
+        {/* Sign in button */}
         <ThemedTextButton style={styles.buttonSignIn}
           onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
           text="Sign In"
@@ -52,6 +57,7 @@ export default function SignInScreen() {
           textColorType="textOverLight"
         />
 
+        {/* Forgot password button */}
         <ThemedTextButton 
           style={{ alignItems: "center" }}
           onPress={() => router.push("/screens/auth/forgot_password_screen")}

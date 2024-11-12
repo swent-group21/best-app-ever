@@ -15,11 +15,15 @@ export default function ForgotPasswordScreen() {
   const router = useRouter();
   return (
     <ThemedView style={styles.screenContainer}>
+      {/* Background shape */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
+      {/* Screen content */}
       <ThemedText style={styles.titleText} colorType="textPrimary">Forgot your Password ?</ThemedText>
 
+      {/* Input fields */}
       <ThemedView style={styles.smallContainer}>
+        {/* Email input */}
         <ThemedTextInput
           style={styles.input}
           type="email"
@@ -27,7 +31,9 @@ export default function ForgotPasswordScreen() {
           viewWidth={"90%"}
         />
 
+        {/* Buttons */}
         <ThemedView style={styles.rowContainer}>
+          {/* Cancel button */}
           <ThemedTextButton
             style={styles.buttonCancel}
             onPress={() => router.back()}
@@ -35,6 +41,7 @@ export default function ForgotPasswordScreen() {
             textStyle={{ fontWeight: "600" }}
             textColorType="textOverLight"
           />
+          {/* Reset password button */}
           <ThemedTextButton
             style={styles.buttonResetPassword}
             onPress={() => alert("Send Email")}
