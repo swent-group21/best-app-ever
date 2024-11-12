@@ -23,7 +23,7 @@ export default function WelcomeConceptScreen() {
       <ThemedText style={styles.title} colorType="textPrimary">Ready to{"\n"}Strive?</ThemedText>
 
       {/* Buttons */}
-      <ThemedView style={styles.buttonContainer}>
+      <ThemedView style={styles.buttonContainer} colorType="transparent">
         {/* Sign in button */}
         <ThemedTextButton
           style={styles.buttonAccount}
@@ -58,47 +58,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    height: height,
   },
+
   ovalShapeOne: {
     position: "absolute",
-    top: height * 0.8,
-    left: -width * 0.3,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "80%",
+    left: "-30%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
   },
+
   ovalShapeTwo: {
     position: "absolute",
-    top: -height * 0.4,
-    left: width * 0.3,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "-40%",
+    left: "30%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
   },
+  //Width:  360 Height:  753
   title: {
+    width: "80%",
+    alignSelf: "center",
     paddingTop: height * 0.3,
-    paddingLeft: width * 0.05,
-    fontSize: 64,
-    fontWeight: "900",
-    lineHeight: 62,
     paddingBottom: height * 0.12,
+    fontSize: 64, //TODO
+    fontWeight: "900", //TODO
+    lineHeight: 62, //TODO
   },
+
   buttonContainer: {
-    flex: 1,
     alignItems: "center",
-    paddingBottom: 60,
-    gap: 20,
-    backgroundColor: "transparent",
+    gap: height * 0.027,
   },
+
   buttonAccount: {
     width: "80%",
     height: height * 0.05,
-    borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 15,
   },
+
   buttonText: {
-    fontWeight: "600",
+    fontWeight: "600", //TODO
   },
 });

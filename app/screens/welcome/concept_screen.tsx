@@ -17,7 +17,7 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
       
       {/* Screen content */}
-      <ThemedView style={styles.textContainer}>
+      <ThemedView style={styles.textContainer} colorType="transparent">
         <ThemedText style={styles.title} colorType="textPrimary">Competing{"\n"}yourself</ThemedText>
         <ThemedText style={styles.description} colorType="textPrimary">Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !prizes!</ThemedText>
       </ThemedView>
@@ -29,33 +29,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    height: height,
   },
+  
   ovalShape: {
     position: "absolute",
-    top: height * 0.7,
-    left: -width * 0.3,
-    width: width * 1.2,
-    height: height * 0.7,
+    top: "70%",
+    left: "-30%",
+    width: "120%",
+    height: "70%",
     borderRadius: width * 0.6,
   },
+
   textContainer: {
     flex: 1,
+    width: "90%",
+    alignSelf: "center",
     justifyContent: "center",
-    padding: width * 0.05,
-    paddingHorizontal: 20,
-    paddingBottom: 80,
-    backgroundColor: "transparent",
+    paddingBottom: height * 0.095,
   },
+
   title: {
-    fontSize: 56,
-    fontWeight: "900",
-    marginBottom: 20,
+    marginBottom: height * 0.05,
+    fontSize: 56, // TODO
+    fontWeight: "900", // TODO
   },
+
   description: {
     textAlign: "center",
-    paddingTop: 20,
-    fontSize: 25,
-    fontWeight: "800",
+    fontSize: 25, // TODO
+    fontWeight: "800", // TODO
   },
 });

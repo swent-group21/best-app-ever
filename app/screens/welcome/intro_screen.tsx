@@ -16,8 +16,8 @@ export default function WelcomeIntroScreen() {
 
       {/* Screen content */}
       <ThemedText style={styles.title} colorType="backgroundPrimary">So what is{"\n"}Strive{"\n"}about ?</ThemedText>
-      <ThemedText style={styles.description} colorType="textPrimary">Participating in Weekly challenges !</ThemedText>
-      <ThemedText style={styles.desc} colorType="textPrimary">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
+      <ThemedText style={styles.smallTitle} colorType="textPrimary">Participating in Weekly challenges !</ThemedText>
+      <ThemedText style={styles.description} colorType="textPrimary">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
 
       {/* Logo */}
       <ThemedView style={styles.imageContainer}>
@@ -35,23 +35,24 @@ const styles = StyleSheet.create({
 
   ovalShape: {
     position: "absolute",
-    top: -height * 0.95,
-    left: -width * 0.8,
-    width: width * 1.8,
-    height: height * 1.40,
+    top: "-95%",
+    left: "-80%",
+    width: "180%",
+    height: "140%",
     borderRadius: width * 0.9,
     justifyContent: "center",
     paddingLeft: width * 0.3,
   },
 
   imageContainer: {
+    width: "95%",
     justifyContent: "flex-end",
     alignItems: "flex-start",
-    paddingBottom: 30,
-    paddingLeft: 20,
+    alignSelf: "center",
+    paddingBottom: height * 0.04,
     backgroundColor: "transparent",
   },
-
+  
   image: {
     width: 100,
     height: 100,
@@ -59,22 +60,22 @@ const styles = StyleSheet.create({
   
   title: {
     flex: 4,
-    paddingTop: 80,
+    paddingTop: height * 0.1,
     paddingLeft: width * 0.05,
-    fontSize: 70,
-    fontWeight: "900",
-    lineHeight: 56,
+    fontSize: 70, //TODO
+    fontWeight: "900", //TODO
+    lineHeight: 60, //TODO
   },
 
-  description: {
+  smallTitle: {
     flex: 2,
     alignSelf: "center",
-    fontSize: 36,
-    fontWeight: "800",
     textAlign: "center",
+    fontSize: 36, //TODO
+    fontWeight: "800", //TODO
   },
 
-  desc: {
+  description: { //TODO
     flex: 2,
     fontSize: 25,
     fontWeight: "800",

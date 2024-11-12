@@ -15,7 +15,7 @@ export default function WelcomeConceptScreen() {
 
       {/* Screen content */}
       <ThemedText style={styles.title} colorType="backgroundPrimary">Building up memories </ThemedText>
-      <ThemedView style={styles.challengeContainer}>
+      <ThemedView style={styles.challengeContainer} colorType="transparent">
         <Challenge title=""/>
       </ThemedView>
       <ThemedText style={styles.description} colorType="textPrimary">Create and share your memories with your friends{"\n"}Get rewarded for your creativity</ThemedText>
@@ -27,34 +27,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    height: height,
   },
+
   ovalShape: {
     position: "absolute",
-    top: -height * 0.4,
-    left: -width * 0.3,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "-40%",
+    left: "-30%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
   },
+  
+  title: {
+    width: "90%",
+    alignSelf: "center",
+    paddingTop: height * 0.05,
+    fontSize: 56, //TODO
+    fontWeight: "900", //TODO
+  },
+
   challengeContainer: {
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 50,
-    paddingBottom: 20,
-    backgroundColor: "transparent",
+    alignSelf: "center",
+    paddingTop: height * 0.08,
+    paddingBottom: height * 0.025,
   },
-  title: {
-    fontSize: 56,
-    paddingTop: 40,
-    paddingHorizontal: 20,
-    fontWeight: "900",
-    marginBottom: 20,
-  },
+
   description: {
     textAlign: "center",
-    paddingHorizontal: 20,
-    fontSize: 25,
-    fontWeight: "800",
+    width: "90%",
+    alignSelf: "center",
+    fontSize: 25, //TODO
+    fontWeight: "800", //TODO
   },
 });
