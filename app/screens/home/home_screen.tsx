@@ -57,8 +57,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: height * 0.04,
   },
-
-  text: {
-    fontSize: 18, //TODO
-  },
 });

@@ -15,9 +15,9 @@ export default function WelcomeIntroScreen() {
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.title} colorType="backgroundPrimary">So what is{"\n"}Strive{"\n"}about ?</ThemedText>
-      <ThemedText style={styles.smallTitle} colorType="textPrimary">Participating in Weekly challenges !</ThemedText>
-      <ThemedText style={styles.description} colorType="textPrimary">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
+      <ThemedText style={styles.title} colorType="backgroundPrimary" type="superTitle">So what is{"\n"}Strive{"\n"}about ?</ThemedText>
+      <ThemedText style={styles.smallTitle} colorType="textPrimary" type="title">Participating in Weekly challenges !</ThemedText>
+      <ThemedText style={styles.description} colorType="textPrimary" type="description">Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
 
       {/* Logo */}
       <ThemedView style={styles.imageContainer}>
@@ -62,23 +62,17 @@ const styles = StyleSheet.create({
     flex: 4,
     paddingTop: height * 0.1,
     paddingLeft: width * 0.05,
-    fontSize: 70, //TODO
-    fontWeight: "900", //TODO
-    lineHeight: 60, //TODO
   },
 
   smallTitle: {
     flex: 2,
     alignSelf: "center",
     textAlign: "center",
-    fontSize: 36, //TODO
-    fontWeight: "800", //TODO
+    fontSize: 36, 
   },
 
-  description: { //TODO
+  description: {
     flex: 2,
-    fontSize: 25,
-    fontWeight: "800",
     textAlign: "center",
   },
 });

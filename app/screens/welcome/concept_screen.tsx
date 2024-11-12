@@ -18,8 +18,8 @@ export default function WelcomeConceptScreen() {
       
       {/* Screen content */}
       <ThemedView style={styles.textContainer} colorType="transparent">
-        <ThemedText style={styles.title} colorType="textPrimary">Competing{"\n"}yourself</ThemedText>
-        <ThemedText style={styles.description} colorType="textPrimary">Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !prizes!</ThemedText>
+        <ThemedText style={styles.title} colorType="textPrimary" type="title">Competing{"\n"}yourself</ThemedText>
+        <ThemedText style={styles.description} colorType="textPrimary" type="description">Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !prizes!</ThemedText>
       </ThemedView>
     </ThemedView>
   );
@@ -50,13 +50,9 @@ const styles = StyleSheet.create({
 
   title: {
     marginBottom: height * 0.05,
-    fontSize: 56, // TODO
-    fontWeight: "900", // TODO
   },
 
   description: {
     textAlign: "center",
-    fontSize: 25, // TODO
-    fontWeight: "800", // TODO
   },
 });

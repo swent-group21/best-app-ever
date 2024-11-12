@@ -20,7 +20,7 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.title} colorType="textPrimary">Ready to{"\n"}Strive?</ThemedText>
+      <ThemedText style={styles.title} colorType="textPrimary" type="superTitle">Ready to{"\n"}Strive?</ThemedText>
 
       {/* Buttons */}
       <ThemedView style={styles.buttonContainer} colorType="transparent">
@@ -83,9 +83,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingTop: height * 0.3,
     paddingBottom: height * 0.12,
-    fontSize: 64, //TODO
-    fontWeight: "900", //TODO
-    lineHeight: 62, //TODO
   },
 
   buttonContainer: {
@@ -102,6 +99,6 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontWeight: "600", //TODO
+    fontWeight: "bold", 
   },
 });

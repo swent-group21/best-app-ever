@@ -38,7 +38,7 @@ export default function SetUsername() {
           <ThemedTextInput onChangeText={setUsername} value={username} style={styles.input} viewWidth="80%" placeholder="ex : sandraa" />
         </ThemedView>
 
-        <ThemedText style={styles.title}>What will we see of you ?</ThemedText>
+        <ThemedText style={styles.title} type="subtitle">What will we see of you ?</ThemedText>
       </ThemedScrollView>
       
       {/* Bottom bar */}
@@ -74,12 +74,10 @@ const styles = StyleSheet.create({
 
   title: {
     textAlign: "center",
-    fontSize: 42, // TODO
-    fontWeight: "bold", // TODO
   },
 
   input: {
-    fontSize: 20, // TODO
+    fontSize: 20, 
     padding: 8,
     borderRadius: 10,
     borderWidth: 2,

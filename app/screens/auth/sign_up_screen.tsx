@@ -42,7 +42,7 @@ export default function SignUp() {
       <TopBar title="Set up your profile" leftIcon="arrow-back" leftAction={() => router.back()} />
   
       {/* Screen content */}
-      <ThemedText style={styles.title} colorType="textPrimary">Tell us about you !</ThemedText>
+      <ThemedText style={styles.title} colorType="textPrimary" type="title">Tell us about you !</ThemedText>
 
       {/* Input fields */}
       <ThemedScrollView style={styles.inputColumn} automaticallyAdjustKeyboardInsets={true}>
@@ -123,8 +123,6 @@ const styles = StyleSheet.create({
     textAlign: "right",
     paddingHorizontal: width * 0.1,
     marginBottom: height * 0.05,
-    fontSize: 56, // TODO
-    fontWeight: "bold", // TODO
   },
 
   input: {

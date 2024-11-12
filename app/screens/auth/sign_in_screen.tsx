@@ -29,7 +29,7 @@ export default function SignInScreen() {
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.titleText} colorType="textPrimary">We've missed you</ThemedText>
+      <ThemedText style={styles.titleText} colorType="textPrimary" type="title">We've missed you</ThemedText>
 
       {/* Input fields */}
       <ThemedView style={styles.colContainer}>
@@ -103,10 +103,10 @@ const styles = StyleSheet.create({
 
   titleText: {
     flex: 1,
+    width: "85%",
+    alignSelf: "center",
     textAlign: "right",
     textAlignVertical: "center",
-    fontSize: 51, //TODO
-    fontWeight: "800", //TODO
   },
   
   input: {
