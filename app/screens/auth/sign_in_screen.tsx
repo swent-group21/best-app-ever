@@ -1,11 +1,6 @@
-import {
-  Dimensions,
-  StyleSheet,
-} from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { useState } from "react";
-import {
-  logInWithEmail
-} from "@/types/Auth";
+import { logInWithEmail } from "@/types/Auth";
 import { useRouter } from "expo-router";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -29,12 +24,15 @@ export default function SignInScreen() {
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.titleText} colorType="textPrimary" type="title">We've missed you</ThemedText>
+      <ThemedText style={styles.titleText} colorType="textPrimary" type="title">
+        We've missed you
+      </ThemedText>
 
       {/* Input fields */}
       <ThemedView style={styles.colContainer}>
         {/* Email input */}
-        <ThemedTextInput style={styles.input}
+        <ThemedTextInput
+          style={styles.input}
           type="email"
           onChangeText={(text) => setEmail(text)}
           viewWidth={"90%"}
@@ -42,7 +40,8 @@ export default function SignInScreen() {
         />
 
         {/* Password input */}
-        <ThemedTextInput style={styles.input}
+        <ThemedTextInput
+          style={styles.input}
           type="password"
           onChangeText={(text) => setPassword(text)}
           viewWidth={"90%"}
@@ -50,22 +49,24 @@ export default function SignInScreen() {
         />
 
         {/* Sign in button */}
-        <ThemedTextButton style={styles.buttonSignIn}
-          onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
+        <ThemedTextButton
+          style={styles.buttonSignIn}
+          onPress={() => {
+            logInWithEmail(email, password, firestoreCtrl, router);
+          }}
           text="Sign In"
           textStyle={{ fontWeight: "600" }}
           textColorType="textOverLight"
         />
 
         {/* Forgot password button */}
-        <ThemedTextButton 
+        <ThemedTextButton
           style={{ alignItems: "center" }}
           onPress={() => router.push("/screens/auth/forgot_password_screen")}
           text="Forgot Password?"
           colorType="transparent"
           textColorType="textPrimary"
         />
-
       </ThemedView>
     </ThemedView>
   );
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
   },
-  
+
   ovalShapeTwo: {
     position: "absolute",
     top: "-40%",
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     height: "70%",
     borderRadius: width * 0.7,
   },
-  
+
   colContainer: {
     flex: 2,
     width: "90%",
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     textAlignVertical: "center",
   },
-  
+
   input: {
     alignSelf: "center",
     width: "100%",

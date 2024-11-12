@@ -1,7 +1,4 @@
-import {
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -19,7 +16,9 @@ export default function ForgotPasswordScreen() {
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.titleText} colorType="textPrimary">Forgot your Password ?</ThemedText>
+      <ThemedText style={styles.titleText} colorType="textPrimary">
+        Forgot your Password ?
+      </ThemedText>
 
       {/* Input fields */}
       <ThemedView style={styles.smallContainer}>

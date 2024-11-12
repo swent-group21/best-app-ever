@@ -2,9 +2,8 @@
 
 name: "Build APK"
 run-name: ${{ github.actor }} is learning build Android App using Github Actions
-on: 
-  push
-  
+on: push
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -12,32 +11,31 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Java 
+      - name: Install Java
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: "17"
           distribution: "adopt"
           cache: "gradle"
 
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
-      
+
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
 
       - name: Setup Node
         uses: actions/setup-node@v4
-        with: 
-          node-version: '22.x'
+        with:
+          node-version: "22.x"
 
       - name: Run Yarn Install
-        run: | 
-              npm install -g yarn
-              yarn install
+        run: |
+          npm install -g yarn
+          yarn install
 
       - name: Build App
-        run: 
-              ./gradlew assembleRelease
+        run: ./gradlew assembleRelease
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3
@@ -45,4 +43,3 @@ jobs:
           name: app
           path: ./app/build/outputs/apk/debug/app-debug.apk
           retention-days: 3
-

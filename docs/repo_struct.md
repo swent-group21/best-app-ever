@@ -68,23 +68,24 @@ screen that needs a more indepth understanding.
 
 ### App
 
-These are the screens our project will have. Here we develop the tabs, settings, and other 
+These are the screens our project will have. Here we develop the tabs, settings, and other
 screen groups that would then be defined in the stack navigation
-
 
 ### Components
 
-Here are the componentst that will be used all throughout the app, these can be 
-custome buttons we create, challenge modules etc... 
-The difference between a component and a screen is that screens are composed of 
+Here are the componentst that will be used all throughout the app, these can be
+custome buttons we create, challenge modules etc...
+The difference between a component and a screen is that screens are composed of
 components and one component isn't a screen on it's own. If it is then it's a screen.
 
-### __tests__
+### **tests**
 
-Here all our tests will be stored. When running 
-```bash 
+Here all our tests will be stored. When running
+
+```bash
 npm test
 ```
+
 All tests in this folder will run. Code coverage of our entire application on SonarCloud
 depends on these tests being able to test all lines of code in our application
 
@@ -94,10 +95,10 @@ Here we will store files such as Icons and other miscellaneous objects
 
 ### Separate Files
 
-####   package.json and package-lock.json
+####  package.json and package-lock.json
 
 Package.json controls what packages we have installed in our project under the "dependencies" key.
-What commands run what eg ```npm test``` actually runs ```jest --watchAll``` under the hood.
+What commands run what eg `npm test` actually runs `jest --watchAll` under the hood.
 
 ####  Dockerfile
 
@@ -110,8 +111,8 @@ styles will be in this file.
 
 These will be written in the theme list
 
-and affect all typescript files named in the content list 
-in our case this is 
+and affect all typescript files named in the content list
+in our case this is
 
 ```javascript
   content: [
@@ -136,4 +137,3 @@ Config file for typescript we can customize further but i doubt it will be neede
 ####  babel.config.js
 
 A common linter to help us have uniform code. eg tab size, etc...
-

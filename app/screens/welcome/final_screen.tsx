@@ -3,10 +3,7 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { useRouter } from "expo-router";
 import React from "react";
-import {
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -20,7 +17,13 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.title} colorType="textPrimary" type="superTitle">Ready to{"\n"}Strive?</ThemedText>
+      <ThemedText
+        style={styles.title}
+        colorType="textPrimary"
+        type="superTitle"
+      >
+        Ready to{"\n"}Strive?
+      </ThemedText>
 
       {/* Buttons */}
       <ThemedView style={styles.buttonContainer} colorType="transparent">
@@ -34,18 +37,20 @@ export default function WelcomeConceptScreen() {
         />
 
         {/* Sign up button */}
-        <ThemedTextButton 
-          style={styles.buttonAccount} 
-          onPress={() => router.navigate("./screens/auth/sign_up_screen")} 
-          text="Sign Up" 
-          textStyle={styles.buttonText} 
+        <ThemedTextButton
+          style={styles.buttonAccount}
+          onPress={() => router.navigate("./screens/auth/sign_up_screen")}
+          text="Sign Up"
+          textStyle={styles.buttonText}
           textColorType="textOverLight"
         />
 
         {/* Continue as guest button */}
-        <ThemedTextButton 
-          onPress={() => {router.navigate("./screens/home/home_screen");}} 
-          text="Continue as guest" 
+        <ThemedTextButton
+          onPress={() => {
+            router.navigate("./screens/home/home_screen");
+          }}
+          text="Continue as guest"
           colorType="transparent"
           textColorType="textPrimary"
         />
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     height: "70%",
     borderRadius: width * 0.7,
   },
-  
+
   title: {
     width: "80%",
     alignSelf: "center",
@@ -99,6 +104,6 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontWeight: "bold", 
+    fontWeight: "bold",
   },
 });

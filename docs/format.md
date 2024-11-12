@@ -18,7 +18,7 @@ Prettier is an opinionated code formatter that ensures consistent code style acr
    npx prettier --write ./app
    ```
 
-   *Note:* **PLEASE** do **NOT** format the entire project! There are files from dependencies that follow different formatting rules ; only format the `./app` folder.
+   _Note:_ **PLEASE** do **NOT** format the entire project! There are files from dependencies that follow different formatting rules ; only format the `./app` folder.
 
 3. **Check formatting**:
 

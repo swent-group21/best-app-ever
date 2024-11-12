@@ -14,11 +14,24 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
       {/* Screen content */}
-      <ThemedText style={styles.title} colorType="backgroundPrimary" type="title">Building up memories </ThemedText>
+      <ThemedText
+        style={styles.title}
+        colorType="backgroundPrimary"
+        type="title"
+      >
+        Building up memories{" "}
+      </ThemedText>
       <ThemedView style={styles.challengeContainer} colorType="transparent">
-        <Challenge title=""/>
+        <Challenge title="" />
       </ThemedView>
-      <ThemedText style={styles.description} colorType="textPrimary" type="description">Create and share your memories with your friends{"\n"}Get rewarded for your creativity</ThemedText>
+      <ThemedText
+        style={styles.description}
+        colorType="textPrimary"
+        type="description"
+      >
+        Create and share your memories with your friends{"\n"}Get rewarded for
+        your creativity
+      </ThemedText>
     </ThemedView>
   );
 }
@@ -37,7 +50,7 @@ const styles = StyleSheet.create({
     height: "70%",
     borderRadius: width * 0.7,
   },
-  
+
   title: {
     width: "90%",
     alignSelf: "center",

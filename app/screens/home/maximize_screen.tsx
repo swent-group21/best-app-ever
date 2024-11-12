@@ -31,7 +31,10 @@ export default function MaximizeScreen() {
         />
       </ThemedView>
 
-      <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]} colorType="transparent">
+      <ThemedView
+        style={[styles.user, { justifyContent: "space-evenly" }]}
+        colorType="transparent"
+      >
         <ThemedView style={styles.user} colorType="transparent">
           <ThemedIconButton
             name="person-circle-outline"
@@ -42,10 +45,7 @@ export default function MaximizeScreen() {
             colorType="white"
           />
           <ThemedView style={styles.userInfo} colorType="transparent">
-            <ThemedText
-              colorType="white"
-              type="smallSemiBold"
-            >
+            <ThemedText colorType="white" type="smallSemiBold">
               {userName}
             </ThemedText>
             <ThemedText colorType="white" type="small">

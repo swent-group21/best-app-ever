@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Dimensions,
-} from "react-native";
-import {
-  isValidEmail,
-  signUpWithEmail,
-} from "@/types/Auth";
+import { StyleSheet, Dimensions } from "react-native";
+import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
 import { useRouter } from "expo-router";
@@ -39,59 +33,91 @@ export default function SignUp() {
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
       {/* Top bar */}
-      <TopBar title="Set up your profile" leftIcon="arrow-back" leftAction={() => router.back()} />
-  
+      <TopBar
+        title="Set up your profile"
+        leftIcon="arrow-back"
+        leftAction={() => router.back()}
+      />
+
       {/* Screen content */}
-      <ThemedText style={styles.title} colorType="textPrimary" type="title">Tell us about you !</ThemedText>
+      <ThemedText style={styles.title} colorType="textPrimary" type="title">
+        Tell us about you !
+      </ThemedText>
 
       {/* Input fields */}
-      <ThemedScrollView style={styles.inputColumn} automaticallyAdjustKeyboardInsets={true}>
+      <ThemedScrollView
+        style={styles.inputColumn}
+        automaticallyAdjustKeyboardInsets={true}
+      >
         {/* Name */}
-        <ThemedTextInput 
-          onChangeText={setName} 
+        <ThemedTextInput
+          onChangeText={setName}
           style={styles.input}
-          placeholder="Sarah" 
+          placeholder="Sarah"
           title="Name *"
-        /> 
+        />
 
         {/* Surname */}
-        <ThemedTextInput 
-          onChangeText={setSurname} 
+        <ThemedTextInput
+          onChangeText={setSurname}
           style={styles.input}
-          placeholder="Connor" 
+          placeholder="Connor"
           title="Surname *"
         />
 
         {/* Email */}
-        <ThemedTextInput 
-          onChangeText={setEmail} 
-          type="email" 
-          style={ isValidEmail(email) || email.length == 0 ? styles.input : styles.inputWrong } 
-          placeholder="sarah.connor@gmail.com" 
+        <ThemedTextInput
+          onChangeText={setEmail}
+          type="email"
+          style={
+            isValidEmail(email) || email.length == 0
+              ? styles.input
+              : styles.inputWrong
+          }
+          placeholder="sarah.connor@gmail.com"
           title="Email *"
         />
-        
+
         {/* Password */}
-        <ThemedTextInput 
-          onChangeText={setPassword} 
-          type="password" 
-          style={ password.length >= 8 || password.length == 0 ? styles.input : styles.inputWrong }
-          placeholder="**********" 
-          title="Password *" 
+        <ThemedTextInput
+          onChangeText={setPassword}
+          type="password"
+          style={
+            password.length >= 8 || password.length == 0
+              ? styles.input
+              : styles.inputWrong
+          }
+          placeholder="**********"
+          title="Password *"
         />
 
         {/* Confirm Password */}
-        <ThemedTextInput 
-          onChangeText={setConfirmPassword} 
-          type="password" 
-          style={ confirmPassword.length == 0 || password == confirmPassword ? styles.input : styles.inputWrong } 
-          placeholder="**********" 
-          title="Confirm Password *" 
+        <ThemedTextInput
+          onChangeText={setConfirmPassword}
+          type="password"
+          style={
+            confirmPassword.length == 0 || password == confirmPassword
+              ? styles.input
+              : styles.inputWrong
+          }
+          placeholder="**********"
+          title="Confirm Password *"
         />
       </ThemedScrollView>
 
       {/* Bottom bar */}
-      <BottomBar rightIcon="arrow-forward" rightAction={() => signUpWithEmail(name+surname, email, password, firestoreCtrl, router)} />
+      <BottomBar
+        rightIcon="arrow-forward"
+        rightAction={() =>
+          signUpWithEmail(
+            name + surname,
+            email,
+            password,
+            firestoreCtrl,
+            router,
+          )
+        }
+      />
     </ThemedView>
   );
 }
@@ -129,8 +155,8 @@ const styles = StyleSheet.create({
     height: height * 0.06,
     marginBottom: height * 0.02,
     paddingLeft: width * 0.05,
-    borderWidth: 2, 
-    borderRadius: 15, 
+    borderWidth: 2,
+    borderRadius: 15,
   },
 
   inputWrong: {
