@@ -24,15 +24,15 @@ export default function MaximizeScreen() {
         leftAction={router.back}
       />
 
-      <ThemedView style={styles.container}>
+      <ThemedView style={styles.container} colorType="transparent">
         <Image
           source={require("@/assets/images/challenge2.png")}
           style={styles.image}
         />
       </ThemedView>
 
-      <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]}>
-        <ThemedView style={styles.user}>
+      <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]} colorType="transparent">
+        <ThemedView style={styles.user} colorType="transparent">
           <ThemedIconButton
             name="person-circle-outline"
             onPress={() => {
@@ -41,7 +41,7 @@ export default function MaximizeScreen() {
             size={45}
             colorType="white"
           />
-          <ThemedView style={styles.userInfo}>
+          <ThemedView style={styles.userInfo} colorType="transparent">
             <ThemedText
               colorType="white"
               type="smallSemiBold"
@@ -78,41 +78,32 @@ export default function MaximizeScreen() {
 }
 
 const styles = StyleSheet.create({
-  topbar: {
-    backgroundColor: "transparent",
-    paddingBottom: 10,
-  },
   bigContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
   },
+
   container: {
     height: "70%",
-    width: width - 20,
-    backgroundColor: "transparent",
+    width: "95%",
+    borderWidth: 2,
     borderRadius: 15,
     borderColor: "white",
-    borderWidth: 2,
   },
-  contentContainer: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 30,
-    backgroundColor: "transparent",
-  },
+
   user: {
+    width: "90%",
     flexDirection: "row",
     alignItems: "center",
-    gap: 3,
-    padding: 5,
-    backgroundColor: "transparent",
-    width: width - 40,
+    gap: width * 0.01,
+    padding: width * 0.01,
   },
+
   userInfo: {
     flexDirection: "column",
-    backgroundColor: "transparent",
   },
+
   image: {
     width: "100%",
     height: "100%",
