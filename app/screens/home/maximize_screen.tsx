@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, Dimensions, Image } from "react-native";
+import { StyleSheet, Dimensions, Image } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -39,17 +39,16 @@ export default function MaximizeScreen() {
               /* user button */
             }}
             size={45}
-            color="white"
+            colorType="white"
           />
           <ThemedView style={styles.userInfo}>
             <ThemedText
-              lightColor="white"
-              darkColor="white"
+              colorType="white"
               type="smallSemiBold"
             >
               {userName}
             </ThemedText>
-            <ThemedText lightColor="white" darkColor="white" type="small">
+            <ThemedText colorType="white" type="small">
               {"in " + userLocation + " at " + userTime}
             </ThemedText>
           </ThemedView>
@@ -60,7 +59,7 @@ export default function MaximizeScreen() {
             /* location button */
           }}
           size={25}
-          color="white"
+          colorType="white"
         />
       </ThemedView>
 
@@ -71,7 +70,7 @@ export default function MaximizeScreen() {
             /* */
           }}
           size={60}
-          color="white"
+          colorType="white"
         />
       </ThemedView>
     </ThemedView>
@@ -86,7 +85,6 @@ const styles = StyleSheet.create({
   bigContainer: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
     flex: 1,
   },
   container: {
@@ -102,10 +100,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 30,
     backgroundColor: "transparent",
-  },
-  text: {
-    color: "white",
-    fontSize: 18,
   },
   user: {
     flexDirection: "row",
