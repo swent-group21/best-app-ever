@@ -38,7 +38,7 @@ export default function ForgotPasswordScreen() {
             style={styles.buttonCancel}
             onPress={() => router.back()}
             text="Cancel"
-            textStyle={{ fontWeight: "600" }}
+            textType="defaultSemiBold"
             textColorType="textOverLight"
           />
           {/* Reset password button */}
@@ -46,7 +46,7 @@ export default function ForgotPasswordScreen() {
             style={styles.buttonResetPassword}
             onPress={() => alert("Send Email")}
             text="Reset Password"
-            textStyle={{ fontWeight: "600" }}
+            textType="defaultSemiBold"
             textColorType="textOverLight"
           />
         </ThemedView>
