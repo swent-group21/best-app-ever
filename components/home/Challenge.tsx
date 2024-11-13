@@ -85,12 +85,12 @@ export function Challenge({
               </ThemedView>
               <ThemedView style={styles.bottomBar}>
                 <ThemedIconButton
-                  name="heart-outline"
+                  name={isLiked? "heart":"heart-outline"}
                   onPress={() => {
                     setIsLiked(!isLiked)
                   }}
                   size={25}
-                  color="isLiked? 'red':'white'"
+                  color={isLiked? 'red':'white'}
                 />
                 <ThemedIconButton
                   name="location-outline"

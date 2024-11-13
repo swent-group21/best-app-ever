@@ -7,12 +7,9 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { useRouter } from "expo-router";
 import {SingleComment, CommentType} from "@/components/posts/Comment"; 
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { Icon } from "react-native-elements";
 import { getAuth } from "firebase/auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-
-
-
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,8 +19,6 @@ export default function MaximizeScreen() {
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
 
-
-  
   const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
@@ -33,11 +28,7 @@ export default function MaximizeScreen() {
   const user = auth.currentUser?.uid;
   const infoUser = firestoreCtrl.getUser(user ?? "");
 
-
-
-  
   return (
-
     <ThemedView style={styles.bigContainer}>
       <TopBar
         title="Commute by foot"
@@ -45,19 +36,12 @@ export default function MaximizeScreen() {
         leftAction={router.back}
       />
 
-      <ThemedScrollView style={styles.scroll} contentContainerStyle={styles.contentContainer} automaticallyAdjustKeyboardInsets={true} >
-        <ThemedView style={styles.container} colorType="transparent">
-          <Image
-            source={require("@/assets/images/challenge2.png")}
-            style={styles.image}
-          />
-        </ThemedView>
-
-        <ThemedView
-          style={[styles.user, { justifyContent: "space-evenly" }]}
-          colorType="transparent"
-        >
+      <ThemedScrollView style={styles.scroll} contentContainerStyle={styles.contentContainer} automaticallyAdjustKeyboardInsets={true} colorType="transparent">
+        {/* User information */}
+        <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]} colorType="transparent">
+          {/* User column */}
           <ThemedView style={styles.user} colorType="transparent">
+            {/* User icon */}
             <ThemedIconButton
               name="person-circle-outline"
               onPress={() => {
@@ -66,6 +50,8 @@ export default function MaximizeScreen() {
               size={45}
               colorType="white"
             />
+
+            {/* User name and location */}
             <ThemedView style={styles.userInfo} colorType="transparent">
               <ThemedText colorType="white" type="smallSemiBold">
                 {userName}
@@ -75,6 +61,8 @@ export default function MaximizeScreen() {
               </ThemedText>
             </ThemedView>
           </ThemedView>
+
+          {/* Location button */}
           <ThemedIconButton
             name="location-outline"
             onPress={() => {
@@ -85,34 +73,37 @@ export default function MaximizeScreen() {
           />
         </ThemedView>
 
-        <ThemedView style={styles.bigContainer}>
+        {/* Image */}
+        <ThemedView style={styles.container} colorType="transparent">
+          <Image
+            source={require("@/assets/images/challenge2.png")}
+            style={styles.image}
+          />
+        </ThemedView>
+
+        {/* Like button */}
+        <ThemedView>
           <ThemedIconButton
-            name="heart-outline"
+            name="heart"
             onPress={() => {
               setIsLiked(!isLiked);
             }}
             size={60}
-            colorType="white"
+            color={isLiked ? "red" : "white"}
           />
         </ThemedView>
 
-        <ThemedView style={styles.row}>
-          <TextInput style={styles.commentInput} value = {commentText} onChangeText={(text) => {setCommentText(text) ; }} 
-          
-            />
-          
-          <ThemedIconButton name="send" size={25} color="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: "tristan", date: userTime} as CommentType]); setCommentText('')}}/>
-
+        {/* Comment input */}
+        <ThemedView style={styles.row} colorType="transparent">
+          <ThemedTextInput style={styles.commentInput} value = {commentText} onChangeText={(text) => {setCommentText(text) ; }}/>
+          <ThemedIconButton name="send" size={25} colorType="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: "tristan", date: userTime} as CommentType]); setCommentText('')}}/>
         </ThemedView>
 
-        <ThemedView style= {styles.commentColumn}>
-        {commentList.length > 0 && commentList.map( 
-        
-          (eachComment, i) =>
-        
-          <SingleComment comment={eachComment.comment} user = {"tristan"} createdAt={new Date().toLocaleString()} key={i}/>)}
+        {/* Comment section */}
+        <ThemedView style= {styles.commentColumn} colorType="transparent">
+          {commentList.length > 0 && commentList.map( (eachComment, i) =>
+            <SingleComment comment={eachComment.comment} user = {"tristan"} createdAt={new Date().toLocaleString()} key={i}/>)}
         </ThemedView>
-
       </ThemedScrollView>
     </ThemedView>
   );
@@ -121,26 +112,28 @@ export default function MaximizeScreen() {
 const styles = StyleSheet.create({
   bigContainer: {
     flex: 1,
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
 
   container: {
-    height: "70%",
+    height: "40%",
     width: "95%",
     borderWidth: 2,
     borderRadius: 15,
     borderColor: "white",
   },
+
   contentContainer: {
     justifyContent: "space-between",
     alignItems: "center",
     gap: 30,
-    backgroundColor: "transparent",
-  paddingBottom: 10,
+    paddingBottom: 10,
   },
+
   user: {
-    width: "90%",
+    width: "95%",
     flexDirection: "row",
     alignItems: "center",
     gap: width * 0.01,
@@ -152,51 +145,34 @@ const styles = StyleSheet.create({
   },
 
   image: {
-width: '100%',
+    width: '100%',
     height: '100%',
     borderRadius: 15,
   },
-  commentInput: {
-    height: height * 0.05,
-    borderColor: "gray",
-    borderWidth: 1,
-    width: width - 40,
-    borderRadius: 15,
-    color: "white",
-    
-  },
-  scroll: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "transparent",
 
-  }, 
-  buttonSend : {
-    width : width * 0.8,
-    height : height * 0.05,
-    alignItems  : 'center',
-    marginBottom: 30,
-    alignSelf : 'center',
-  }, 
-  row : {
-    flexDirection : 'row',
-    width : '100%',
-    padding:0,
-    backgroundColor : 'transparent',
-    minHeight: height * 0.1,
-    justifyContent : 'space-between',
-    alignItems : 'center',
+  commentInput: {
+    width: "85%",
+    padding: 8,
+    borderWidth: 2,
+    borderRadius: 15,
   },
-commentColumn : { 
-    flexDirection : 'column',
-    width : '100%',
-    padding:0,
-    backgroundColor : 'transparent',
-    justifyContent : 'space-between',
-    alignItems : 'center',
-    
+
+  scroll: {
+    flex: 1,
+    width: "100%",
   }, 
-  iconButton : {
-    paddingLeft : 10,
-  }
+
+  row : {
+    width : '90%',
+    height: height,
+    flexDirection : 'row',
+    justifyContent : 'center',
+  },
+
+  commentColumn : { 
+    width : '95%',
+    alignItems : 'center',
+    flexDirection : 'column',
+    justifyContent : 'space-between',
+  }, 
 });
