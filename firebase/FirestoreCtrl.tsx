@@ -1,4 +1,13 @@
-import { firestore, doc, getDoc, setDoc } from "./Firebase";
+import {
+  firestore,
+  doc,
+  getDoc,
+  setDoc,
+  storage,
+  auth
+} from "./Firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
+
 
 export type DBUser = {
   name: string;
@@ -41,7 +50,48 @@ export default class FirestoreCtrl {
     }
   }
 
+
+
+
+
   /**
-   * Add other create and get for challenges user info etc
+   * Upload an image to Firestore storage.
    */
+
+
+async uploadImageFromUri(imageUri:string) {
+  try {
+    if (!imageUri) {
+      throw new Error("No image URI provided.");
+    }
+
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+
+    const id_picture = (Math.random()+1).toString(36).substring(2);
+    const storageRef = ref(getStorage(), "images/" + id_picture); 
+
+    await uploadBytes(storageRef, blob);
+
+    const downloadUrl = await getDownloadURL(storageRef);
+    return id_picture;
+  } catch (error) {
+    console.error("Error uploading image: ", error);
+    console.log("Error uploading image: ", error);
+    throw error;
+  }
 }
+
+async getName(id : string) {
+  const user = await this.getUser(id);
+  return user?.name;
+}
+
+
+
+}
+
+
+
+
+

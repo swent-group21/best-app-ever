@@ -13,10 +13,6 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 
 const { width, height } = Dimensions.get("window");
 
-/**
- * Sign Up screen
- * @returns - The Sign Up screen
- */
 export default function SignUp() {
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -24,7 +20,6 @@ export default function SignUp() {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const router = useRouter();
-
   const firestoreCtrl = new FirestoreCtrl();
 
   return (
@@ -122,9 +117,6 @@ export default function SignUp() {
   );
 }
 
-/**
- * Styles for the components
- */
 const styles = StyleSheet.create({
   signUpScreen: {
     flex: 1,
@@ -138,7 +130,6 @@ const styles = StyleSheet.create({
     height: "140%",
     borderRadius: width * 0.9,
   },
-
   inputColumn: {
     width: "90%",
     flexDirection: "column",
@@ -158,7 +149,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
   },
-
   inputWrong: {
     height: height * 0.06,
     marginBottom: height * 0.02,

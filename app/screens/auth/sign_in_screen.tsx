@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform} from "react-native";
 import { useState } from "react";
 import { logInWithEmail } from "@/types/Auth";
 import { useRouter } from "expo-router";
@@ -19,56 +19,60 @@ export default function SignInScreen() {
   const [password, setPassword] = useState("");
 
   return (
-    <ThemedView style={styles.signInScreen}>
-      {/* Background shape */}
-      <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ThemedView style={styles.signInScreen}>
+          {/* Background shape */}
+          <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
-      {/* Screen content */}
-      <ThemedText style={styles.titleText} colorType="textPrimary" type="title">
-        We've missed you
-      </ThemedText>
+          {/* Screen content */}
+          <ThemedText style={styles.titleText} colorType="textPrimary" type="title">
+            We've missed you
+          </ThemedText>
 
-      {/* Input fields */}
-      <ThemedView style={styles.colContainer}>
-        {/* Email input */}
-        <ThemedTextInput
-          style={styles.input}
-          type="email"
-          onChangeText={(text) => setEmail(text)}
-          viewWidth={"90%"}
-          title="Email"
-        />
+          {/* Input fields */}
+          <ThemedView style={styles.colContainer}>
+            {/* Email input */}
+            <ThemedTextInput
+              style={styles.input}
+              type="email"
+              onChangeText={(text) => setEmail(text)}
+              viewWidth={"90%"}
+              title="Email"
+            />
 
-        {/* Password input */}
-        <ThemedTextInput
-          style={styles.input}
-          type="password"
-          onChangeText={(text) => setPassword(text)}
-          viewWidth={"90%"}
-          title="Password"
-        />
+            {/* Password input */}
+            <ThemedTextInput
+              style={styles.input}
+              type="password"
+              onChangeText={(text) => setPassword(text)}
+              viewWidth={"90%"}
+              title="Password"
+            />
 
-        {/* Sign in button */}
-        <ThemedTextButton
-          style={styles.buttonSignIn}
-          onPress={() => {
-            logInWithEmail(email, password, firestoreCtrl, router);
-          }}
-          text="Sign In"
-          textStyle={{ fontWeight: "600" }}
-          textColorType="textOverLight"
-        />
+            {/* Sign in button */}
+            <ThemedTextButton
+              style={styles.buttonSignIn}
+              onPress={() => {
+                logInWithEmail(email, password, firestoreCtrl, router);
+              }}
+              text="Sign In"
+              textStyle={{ fontWeight: "600" }}
+              textColorType="textOverLight"
+            />
 
-        {/* Forgot password button */}
-        <ThemedTextButton
-          style={{ alignItems: "center" }}
-          onPress={() => router.push("/screens/auth/forgot_password_screen")}
-          text="Forgot Password?"
-          colorType="transparent"
-          textColorType="textPrimary"
-        />
-      </ThemedView>
-    </ThemedView>
+            {/* Forgot password button */}
+            <ThemedTextButton
+              style={{ alignItems: "center" }}
+              onPress={() => router.push("/screens/auth/forgot_password_screen")}
+              text="Forgot Password?"
+              colorType="transparent"
+              textColorType="textPrimary"
+            />
+          </ThemedView>
+        </ThemedView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -9,6 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+
+# Hide locks
 package-lock.json
 
 # Hide local ip 

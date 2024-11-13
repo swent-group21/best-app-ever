@@ -1,4 +1,4 @@
-{
+{ 
   "expo": {
     "name": "strive",
     "slug": "strive",
@@ -17,20 +17,31 @@
       "supportsTablet": true
     },
     "android": {
-      "googleServiceFile": "./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.strive"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["@react-native-firebase/app", "expo-router"],
+    "plugins": [
+      "@react-native-firebase/app",
+      "expo-router",
+      "@react-native-google-signin/google-signin"
+    ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cd0ac762-fdab-4f82-a803-68cf91cc1f22"
+      }
+    },
+    "owner": "strive_epfl"
   }
 }

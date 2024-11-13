@@ -3,6 +3,7 @@ import {
   CameraType,
   useCameraPermissions,
   CameraCapturedPicture,
+  CameraPictureOptions
 } from "expo-camera";
 import { useState, useRef, useCallback, useMemo } from "react";
 import {
@@ -24,6 +25,9 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import { useRouter } from "expo-router";
+
 
 export default function CameraTest() {
   const [facing, setFacing] = useState<CameraType>("back");
@@ -36,6 +40,14 @@ export default function CameraTest() {
 
   const [zoom, setZoom] = useState(0);
   const [lastZoom, setLastZoom] = useState(0);
+
+
+  const firestoreCtrl = new FirestoreCtrl();
+  const cameraPictureOptions: CameraPictureOptions = {
+    base64: true,
+  };
+  const router = useRouter();
+
 
   const onPinch = useCallback(
     (event: any) => {
@@ -124,7 +136,7 @@ export default function CameraTest() {
                 <TouchableOpacity
                   style={styles.takePicture}
                   onPress={() => {
-                    camera.current?.takePictureAsync().then(
+                    camera.current?.takePictureAsync(cameraPictureOptions).then(
                       (picture) => {
                         setPicture(picture);
                         setIsCameraEnabled(false);
@@ -174,7 +186,8 @@ export default function CameraTest() {
 
           <TouchableOpacity
             style={styles.send}
-            onPress={() => alert("Send the picture")}
+            onPress={() => {picture ? firestoreCtrl.uploadImageFromUri(picture?.uri): null; router.push("./home/home_screen");
+            }}
           >
             <Ionicons name="send" size={30} color="white" />
           </TouchableOpacity>
@@ -183,6 +196,7 @@ export default function CameraTest() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

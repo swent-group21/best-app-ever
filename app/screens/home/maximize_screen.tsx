@@ -1,22 +1,43 @@
 import React from "react";
-import { StyleSheet, Dimensions, Image } from "react-native";
+import { StyleSheet, Dimensions, Image, TextInput } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { useRouter } from "expo-router";
+import {SingleComment, CommentType} from "@/components/posts/Comment"; 
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { Icon } from "react-native-elements";
+import { getAuth } from "firebase/auth";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
-// Get screen width and height
+
+
+
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
   const router = useRouter();
+  const [commentText, setCommentText] = React.useState("");
+  const [commentList, setCommentList] = React.useState<CommentType[]>([]);
+  const [isLiked, setIsLiked] = React.useState(false);
 
+
+  
   const userName = "Sandraa"; // derived from the name of the user
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
+  const firestoreCtrl = new FirestoreCtrl();
+  const auth = getAuth();
+  const user = auth.currentUser?.uid;
+  const infoUser = firestoreCtrl.getUser(user ?? "");
+
+
+
+  
   return (
+
     <ThemedView style={styles.bigContainer}>
       <TopBar
         title="Commute by foot"
@@ -24,55 +45,75 @@ export default function MaximizeScreen() {
         leftAction={router.back}
       />
 
-      <ThemedView style={styles.container} colorType="transparent">
-        <Image
-          source={require("@/assets/images/challenge2.png")}
-          style={styles.image}
-        />
-      </ThemedView>
+      <ThemedScrollView style={styles.scroll} contentContainerStyle={styles.contentContainer} automaticallyAdjustKeyboardInsets={true} >
+        <ThemedView style={styles.container} colorType="transparent">
+          <Image
+            source={require("@/assets/images/challenge2.png")}
+            style={styles.image}
+          />
+        </ThemedView>
 
-      <ThemedView
-        style={[styles.user, { justifyContent: "space-evenly" }]}
-        colorType="transparent"
-      >
-        <ThemedView style={styles.user} colorType="transparent">
+        <ThemedView
+          style={[styles.user, { justifyContent: "space-evenly" }]}
+          colorType="transparent"
+        >
+          <ThemedView style={styles.user} colorType="transparent">
+            <ThemedIconButton
+              name="person-circle-outline"
+              onPress={() => {
+                /* user button */
+              }}
+              size={45}
+              colorType="white"
+            />
+            <ThemedView style={styles.userInfo} colorType="transparent">
+              <ThemedText colorType="white" type="smallSemiBold">
+                {userName}
+              </ThemedText>
+              <ThemedText colorType="white" type="small">
+                {"in " + userLocation + " at " + userTime}
+              </ThemedText>
+            </ThemedView>
+          </ThemedView>
           <ThemedIconButton
-            name="person-circle-outline"
+            name="location-outline"
             onPress={() => {
-              /* user button */
+              /* location button */
             }}
-            size={45}
+            size={25}
             colorType="white"
           />
-          <ThemedView style={styles.userInfo} colorType="transparent">
-            <ThemedText colorType="white" type="smallSemiBold">
-              {userName}
-            </ThemedText>
-            <ThemedText colorType="white" type="small">
-              {"in " + userLocation + " at " + userTime}
-            </ThemedText>
-          </ThemedView>
         </ThemedView>
-        <ThemedIconButton
-          name="location-outline"
-          onPress={() => {
-            /* location button */
-          }}
-          size={25}
-          colorType="white"
-        />
-      </ThemedView>
 
-      <ThemedView style={styles.bigContainer}>
-        <ThemedIconButton
-          name="heart-outline"
-          onPress={() => {
-            /* */
-          }}
-          size={60}
-          colorType="white"
-        />
-      </ThemedView>
+        <ThemedView style={styles.bigContainer}>
+          <ThemedIconButton
+            name="heart-outline"
+            onPress={() => {
+              setIsLiked(!isLiked);
+            }}
+            size={60}
+            colorType="white"
+          />
+        </ThemedView>
+
+        <ThemedView style={styles.row}>
+          <TextInput style={styles.commentInput} value = {commentText} onChangeText={(text) => {setCommentText(text) ; }} 
+          
+            />
+          
+          <ThemedIconButton name="send" size={25} color="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: "tristan", date: userTime} as CommentType]); setCommentText('')}}/>
+
+        </ThemedView>
+
+        <ThemedView style= {styles.commentColumn}>
+        {commentList.length > 0 && commentList.map( 
+        
+          (eachComment, i) =>
+        
+          <SingleComment comment={eachComment.comment} user = {"tristan"} createdAt={new Date().toLocaleString()} key={i}/>)}
+        </ThemedView>
+
+      </ThemedScrollView>
     </ThemedView>
   );
 }
@@ -91,7 +132,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: "white",
   },
-
+  contentContainer: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 30,
+    backgroundColor: "transparent",
+  paddingBottom: 10,
+  },
   user: {
     width: "90%",
     flexDirection: "row",
@@ -105,8 +152,51 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: "100%",
-    height: "100%",
+width: '100%',
+    height: '100%',
     borderRadius: 15,
   },
+  commentInput: {
+    height: height * 0.05,
+    borderColor: "gray",
+    borderWidth: 1,
+    width: width - 40,
+    borderRadius: 15,
+    color: "white",
+    
+  },
+  scroll: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "transparent",
+
+  }, 
+  buttonSend : {
+    width : width * 0.8,
+    height : height * 0.05,
+    alignItems  : 'center',
+    marginBottom: 30,
+    alignSelf : 'center',
+  }, 
+  row : {
+    flexDirection : 'row',
+    width : '100%',
+    padding:0,
+    backgroundColor : 'transparent',
+    minHeight: height * 0.1,
+    justifyContent : 'space-between',
+    alignItems : 'center',
+  },
+commentColumn : { 
+    flexDirection : 'column',
+    width : '100%',
+    padding:0,
+    backgroundColor : 'transparent',
+    justifyContent : 'space-between',
+    alignItems : 'center',
+    
+  }, 
+  iconButton : {
+    paddingLeft : 10,
+  }
 });
