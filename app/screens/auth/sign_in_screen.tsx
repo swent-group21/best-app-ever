@@ -1,4 +1,11 @@
-import { Dimensions, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform} from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from "react-native";
 import { useState } from "react";
 import { logInWithEmail } from "@/types/Auth";
 import { useRouter } from "expo-router";
@@ -19,14 +26,24 @@ export default function SignInScreen() {
   const [password, setPassword] = useState("");
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ThemedView style={styles.signInScreen}>
           {/* Background shape */}
-          <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
+          <ThemedView
+            style={styles.ovalShapeTwo}
+            colorType="backgroundSecondary"
+          />
 
           {/* Screen content */}
-          <ThemedText style={styles.titleText} colorType="textPrimary" type="title">
+          <ThemedText
+            style={styles.titleText}
+            colorType="textPrimary"
+            type="title"
+          >
             We've missed you
           </ThemedText>
 
@@ -64,7 +81,9 @@ export default function SignInScreen() {
             {/* Forgot password button */}
             <ThemedTextButton
               style={{ alignItems: "center" }}
-              onPress={() => router.push("/screens/auth/forgot_password_screen")}
+              onPress={() =>
+                router.push("/screens/auth/forgot_password_screen")
+              }
               text="Forgot Password?"
               colorType="transparent"
               textColorType="textPrimary"

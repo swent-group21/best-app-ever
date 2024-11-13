@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { useRouter } from "expo-router";
-import {SingleComment, CommentType} from "@/components/posts/Comment"; 
+import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { getAuth } from "firebase/auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
@@ -36,9 +36,17 @@ export default function MaximizeScreen() {
         leftAction={router.back}
       />
 
-      <ThemedScrollView style={styles.scroll} contentContainerStyle={styles.contentContainer} automaticallyAdjustKeyboardInsets={true} colorType="transparent">
+      <ThemedScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.contentContainer}
+        automaticallyAdjustKeyboardInsets={true}
+        colorType="transparent"
+      >
         {/* User information */}
-        <ThemedView style={[styles.user, { justifyContent: "space-evenly" }]} colorType="transparent">
+        <ThemedView
+          style={[styles.user, { justifyContent: "space-evenly" }]}
+          colorType="transparent"
+        >
           {/* User column */}
           <ThemedView style={styles.user} colorType="transparent">
             {/* User icon */}
@@ -95,14 +103,42 @@ export default function MaximizeScreen() {
 
         {/* Comment input */}
         <ThemedView style={styles.row} colorType="transparent">
-          <ThemedTextInput style={styles.commentInput} value = {commentText} onChangeText={(text) => {setCommentText(text) ; }}/>
-          <ThemedIconButton name="send" size={25} colorType="white" onPress={() => { setCommentList( [...commentList, {comment: commentText, user: "tristan", date: userTime} as CommentType]); setCommentText('')}}/>
+          <ThemedTextInput
+            style={styles.commentInput}
+            value={commentText}
+            onChangeText={(text) => {
+              setCommentText(text);
+            }}
+          />
+          <ThemedIconButton
+            name="send"
+            size={25}
+            colorType="white"
+            onPress={() => {
+              setCommentList([
+                ...commentList,
+                {
+                  comment: commentText,
+                  user: "tristan",
+                  date: userTime,
+                } as CommentType,
+              ]);
+              setCommentText("");
+            }}
+          />
         </ThemedView>
 
         {/* Comment section */}
-        <ThemedView style= {styles.commentColumn} colorType="transparent">
-          {commentList.length > 0 && commentList.map( (eachComment, i) =>
-            <SingleComment comment={eachComment.comment} user = {"tristan"} createdAt={new Date().toLocaleString()} key={i}/>)}
+        <ThemedView style={styles.commentColumn} colorType="transparent">
+          {commentList.length > 0 &&
+            commentList.map((eachComment, i) => (
+              <SingleComment
+                comment={eachComment.comment}
+                user={"tristan"}
+                createdAt={new Date().toLocaleString()}
+                key={i}
+              />
+            ))}
         </ThemedView>
       </ThemedScrollView>
     </ThemedView>
@@ -145,8 +181,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 15,
   },
 
@@ -160,19 +196,19 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     width: "100%",
-  }, 
-
-  row : {
-    width : '90%',
-    height: height,
-    flexDirection : 'row',
-    justifyContent : 'center',
   },
 
-  commentColumn : { 
-    width : '95%',
-    alignItems : 'center',
-    flexDirection : 'column',
-    justifyContent : 'space-between',
-  }, 
+  row: {
+    width: "90%",
+    height: height,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+
+  commentColumn: {
+    width: "95%",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
 });

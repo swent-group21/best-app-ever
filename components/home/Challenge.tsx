@@ -23,9 +23,9 @@ export function Challenge({
   //image: string
   const router = useRouter();
 
-    const [isOpen, setIsOpen] = useState(false);
-    const[isLiked, setIsLiked] = useState(false);
-    const theme = useColorScheme() ?? 'light';
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const theme = useColorScheme() ?? "light";
 
   const height = 279; // derived from the height of the image
   const userName = "Sandraa"; // derived from the name of the user
@@ -85,12 +85,12 @@ export function Challenge({
               </ThemedView>
               <ThemedView style={styles.bottomBar}>
                 <ThemedIconButton
-                  name={isLiked? "heart":"heart-outline"}
+                  name={isLiked ? "heart" : "heart-outline"}
                   onPress={() => {
-                    setIsLiked(!isLiked)
+                    setIsLiked(!isLiked);
                   }}
                   size={25}
-                  color={isLiked? 'red':'white'}
+                  color={isLiked ? "red" : "white"}
                 />
                 <ThemedIconButton
                   name="location-outline"
