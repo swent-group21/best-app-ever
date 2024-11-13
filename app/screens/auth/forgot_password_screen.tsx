@@ -1,7 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-} from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -13,7 +10,10 @@ export default function ForgotPasswordScreen() {
   const uri = "@/assets/images/auth/ForgotPasswordScreen/";
   return (
     <ThemedView style={styles.screenContainer}>
-      <Image source={require(`${uri}bg.png`)} style={[styles.backgroundImage]} />
+      <Image
+        source={require(`${uri}bg.png`)}
+        style={[styles.backgroundImage]}
+      />
 
       <ThemedText style={styles.titleText}>Forgot your Password ?</ThemedText>
 

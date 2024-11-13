@@ -3,9 +3,8 @@
 name: "Build APK"
 
 run-name: Building an APK
-on: 
-  push
-  
+on: push
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -17,7 +16,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22.x
-          cache: yarn
 
       - name: 🏗 Setup EAS
         uses: expo/expo-github-action@v8
@@ -28,5 +26,16 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install
 
+      - name: ☕ Install JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
       - name: 🚀 Build app
-        run: eas build --non-interactive --platform android
+        run: eas build --non-interactive --platform android --local
+
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          path: /home/runner/work/strive/strive/*.apk

@@ -6,20 +6,21 @@ import {
 } from "@/firebase/Firebase";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
-/*** 
+/***
  * Function to check if the email is valid
  * @param email - email to be checked
  * @returns - true if the email is valid, false otherwise
  */
-export function isValidEmail(email : string) {
-  let reg = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
+export function isValidEmail(email: string) {
+  let reg =
+    /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
   return reg.test(email);
 }
 
 export const logInWithGoogle = (
   credential: any,
   router: any,
-  firestoreCtrl: FirestoreCtrl
+  firestoreCtrl: FirestoreCtrl,
 ) => {
   signInWithCredential(auth, credential).then((result) => {
     const newUser =
@@ -38,7 +39,7 @@ export const logInWithGoogle = (
       firestoreCtrl
         .getUser(result.user.uid)
         .then((user: any) => {
-          if ( user ) {
+          if (user) {
             router.navigate("@app/home/PLACEHOLd_home_screen");
           }
         })
@@ -82,7 +83,7 @@ export const logInWithEmail = async (
                 router.navigate("../home/home_screen");
               });
           });
-        if ( user ) {
+        if (user) {
           router.navigate("../home/home_screen");
         }
       } else {
@@ -117,7 +118,10 @@ export const signUpWithEmail = async (
             router.navigate("../home/home_screen");
           })
           .catch((error) => {
-            console.log("FirestoreCtrl failed to create user due to following error \n", error);
+            console.log(
+              "FirestoreCtrl failed to create user due to following error \n",
+              error,
+            );
           });
       })
       .catch((error) => {
@@ -127,4 +131,3 @@ export const signUpWithEmail = async (
     console.log("Please input email and password.");
   }
 };
-

@@ -6,12 +6,10 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform
+  Platform,
 } from "react-native";
 import { useState } from "react";
-import {
-  logInWithEmail
-} from "@/types/Auth";
+import { logInWithEmail } from "@/types/Auth";
 import { useRouter } from "expo-router";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -29,7 +27,7 @@ export default function SignInScreen() {
   const uri = "@/assets/images/auth/SignInScreen/";
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -42,30 +40,36 @@ export default function SignInScreen() {
           <ThemedText style={styles.titleText}>We've missed you</ThemedText>
 
           <ThemedView style={styles.colContainer}>
-            <ThemedTextInput style={styles.input}
+            <ThemedTextInput
+              style={styles.input}
               type="email"
               onChangeText={(text) => setEmail(text)}
               viewWidth={"100%"}
               title="Email"
             />
 
-            <ThemedTextInput style={styles.input}
+            <ThemedTextInput
+              style={styles.input}
               type="password"
               onChangeText={(text) => setPassword(text)}
               viewWidth={"100%"}
               title="Password"
             />
 
-            <ThemedTextButton style={styles.buttonSignIn}
-              onPress={() => { logInWithEmail(email, password, firestoreCtrl, router) }}
+            <ThemedTextButton
+              style={styles.buttonSignIn}
+              onPress={() => {
+                logInWithEmail(email, password, firestoreCtrl, router);
+              }}
               text="Sign In"
             />
 
-            <ThemedTextButton 
-              onPress={() => router.push("/screens/auth/forgot_password_screen")}
+            <ThemedTextButton
+              onPress={() =>
+                router.push("/screens/auth/forgot_password_screen")
+              }
               text="Forgot Password?"
             />
-
           </ThemedView>
         </ThemedView>
       </TouchableWithoutFeedback>
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     textAlignVertical: "center",
   },
-  
+
   input: {
     width: "100%",
     borderWidth: 1,

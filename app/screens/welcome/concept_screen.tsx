@@ -1,10 +1,7 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
-import {
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -14,8 +11,13 @@ export default function WelcomeConceptScreen() {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.ovalShape} />
       <ThemedView style={styles.textContainer}>
-        <ThemedText style={styles.title}>Participate{"\n"}in Weekly{"\n"}challenges</ThemedText>
-        <ThemedText style={styles.description}>Compete with your friends and people around you{"\n"}Become the goat and win prizes!</ThemedText>
+        <ThemedText style={styles.title}>
+          Participate{"\n"}in Weekly{"\n"}challenges
+        </ThemedText>
+        <ThemedText style={styles.description}>
+          Compete with your friends and people around you{"\n"}Become the goat
+          and win prizes!
+        </ThemedText>
       </ThemedView>
     </ThemedView>
   );

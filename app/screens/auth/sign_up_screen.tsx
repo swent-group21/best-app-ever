@@ -32,7 +32,7 @@ export default function SignUp() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -44,7 +44,10 @@ export default function SignUp() {
           />
           <ScrollView contentContainerStyle={styles.scrollView}>
             <View style={styles.backround}>
-              <TouchableOpacity style={styles.goBack} onPress={() => router.back()}>
+              <TouchableOpacity
+                style={styles.goBack}
+                onPress={() => router.back()}
+              >
                 <Ionicons name="arrow-back" size={24} color="white" />
               </TouchableOpacity>
               <Text style={styles.title}>Tell us about you!</Text>
@@ -69,7 +72,11 @@ export default function SignUp() {
 
                 <Text style={styles.titleinput}>Email *</Text>
                 <TextInput
-                  style={isValidEmail(email) || email.length === 0 ? styles.input : styles.inputWrong}
+                  style={
+                    isValidEmail(email) || email.length === 0
+                      ? styles.input
+                      : styles.inputWrong
+                  }
                   placeholder="example@your.domain"
                   placeholderTextColor="#888"
                   autoComplete="email"
@@ -81,7 +88,11 @@ export default function SignUp() {
 
                 <Text style={styles.titleinput}>Password *</Text>
                 <TextInput
-                  style={password.length >= 8 || password.length === 0 ? styles.input : styles.inputWrong}
+                  style={
+                    password.length >= 8 || password.length === 0
+                      ? styles.input
+                      : styles.inputWrong
+                  }
                   placeholder="Password"
                   placeholderTextColor="#888"
                   secureTextEntry
@@ -90,7 +101,11 @@ export default function SignUp() {
 
                 <Text style={styles.titleinput}>Confirm Password *</Text>
                 <TextInput
-                  style={confirmPassword.length === 0 || password === confirmPassword ? styles.input : styles.inputWrong}
+                  style={
+                    confirmPassword.length === 0 || password === confirmPassword
+                      ? styles.input
+                      : styles.inputWrong
+                  }
                   placeholder="Confirm Password"
                   placeholderTextColor="#888"
                   secureTextEntry
@@ -100,7 +115,15 @@ export default function SignUp() {
                 <TouchableOpacity
                   style={styles.buttonStrive}
                   testID="striveButton"
-                  onPress={() => signUpWithEmail(name + surname, email, password, firestoreCtrl, router)}
+                  onPress={() =>
+                    signUpWithEmail(
+                      name + surname,
+                      email,
+                      password,
+                      firestoreCtrl,
+                      router,
+                    )
+                  }
                 >
                   <Text style={styles.buttonText}>Strive with us</Text>
                 </TouchableOpacity>
