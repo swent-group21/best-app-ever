@@ -12,6 +12,7 @@ web-build/
 
 # Hide locks
 package-lock.json
+yarn.lock
 
 # Hide local ip 
 .ip
@@ -36,3 +37,6 @@ package-lock.json
 
 expo-env.d.ts
 # @end expo-cli
+
+# Hide coverage report
+coverage/
