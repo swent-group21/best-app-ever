@@ -60,6 +60,7 @@ export default function SignInScreen() {
 
             {/* Password input */}
             <ThemedTextInput
+             
               style={styles.input}
               type="password"
               onChangeText={(text) => setPassword(text)}

@@ -10,39 +10,28 @@ export type CommentType = {
   createdAt?: string;
 };
 
-export function SingleComment(comment: CommentType) {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingBottom: 15,
-        alignItems: "center",
-      }}
-    >
-      <ThemedIconButton
-        name="person-circle-outline"
-        onPress={() => {
-          /* user button */
-        }}
-        size={45}
-        color="white"
-      />
-      <View style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: 10,
-          }}
-        >
-          <Text style={styles.user}> {comment.user} </Text>
-          <Text style={styles.textofcomment}> {comment.createdAt} </Text>
+export function SingleComment(comment : CommentType) {
+
+    return (    
+        
+        <View style = {{flexDirection: 'row', justifyContent: 'space-between', paddingBottom:15, alignItems:'center'}}>
+            <ThemedIconButton
+            name="person-circle-outline"
+            onPress={() => {
+              /* user button */
+            }}
+            size={45}
+            color="white"
+          />
+        <View style = {styles.container}>
+            <View style = {{flexDirection: 'row', justifyContent: 'space-between', paddingBottom:10}}>
+                <Text style = {styles.user}> {comment.user} </Text>
+                <Text style = {styles.textofcomment}> {comment.createdAt} </Text>
+            </View>
+        <Text style = {styles.textofcomment}> {comment.comment} </Text>
         </View>
-        <Text style={styles.textofcomment}> {comment.comment} </Text>
-      </View>
-    </View>
-  );
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

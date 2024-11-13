@@ -1,7 +1,6 @@
 import { ScrollView, type ScrollViewProps } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
-import { color } from "react-native-elements/dist/helpers";
 
 export type ThemedScrollViewProps = ScrollViewProps & {
   lightColor?: string;
