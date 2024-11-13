@@ -20,6 +20,7 @@ export default function HomeScreen() {
         rightIcon="person-circle-outline"
       />
 
+      {/* Challenges */}
       <ThemedScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}

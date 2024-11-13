@@ -19,11 +19,11 @@ interface BottomBarProps {
 
 export function BottomBar({
   leftIcon,
-  leftAction,
+  leftAction = () => {},
   centerIcon,
-  centerAction,
+  centerAction = () => {},
   rightIcon,
-  rightAction,
+  rightAction = () => {},
   colorType = "white",
 }: BottomBarProps) {
   const color = useThemeColor({}, colorType);
@@ -32,7 +32,7 @@ export function BottomBar({
       {leftIcon ? (
         <ThemedIconButton
           name={leftIcon}
-          onPress={leftAction || (() => {})}
+          onPress={leftAction}
           size={30}
           color={color}
         />
@@ -42,7 +42,7 @@ export function BottomBar({
       {centerIcon ? (
         <ThemedIconButton
           name={centerIcon}
-          onPress={centerAction || (() => {})}
+          onPress={centerAction}
           size={30}
           color={color}
         />
@@ -52,7 +52,7 @@ export function BottomBar({
       {rightIcon ? (
         <ThemedIconButton
           name={rightIcon}
-          onPress={rightAction || (() => {})}
+          onPress={rightAction}
           size={30}
           color={color}
         />

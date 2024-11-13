@@ -19,9 +19,9 @@ interface TopbarProps {
 
 export function TopBar({
   leftIcon,
-  leftAction,
+  leftAction = () => {},
   rightIcon,
-  rightAction,
+  rightAction = () => {},
   title,
   colorType = "white",
 }: TopbarProps) {
@@ -31,7 +31,7 @@ export function TopBar({
       {leftIcon ? (
         <ThemedIconButton
           name={leftIcon}
-          onPress={leftAction || (() => {})}
+          onPress={leftAction}
           size={30}
           color={color}
         />
@@ -46,7 +46,7 @@ export function TopBar({
       {rightIcon ? (
         <ThemedIconButton
           name={rightIcon}
-          onPress={rightAction || (() => {})}
+          onPress={rightAction}
           size={30}
           color={color}
         />
