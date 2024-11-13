@@ -33,7 +33,7 @@ export function Challenge({
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
   return (
-    <ThemedView style={{ backgroundColor: "transparent" }}>
+    <ThemedView style={{ backgroundColor: "transparent" }} testID="challengeX">
       <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
         <ThemedView style={[styles.challenge, { height: height }]}>
           {/* Challenge Image */}

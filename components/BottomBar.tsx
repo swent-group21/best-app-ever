@@ -23,13 +23,14 @@ export function BottomBar({
   rightAction,
 }: BottomBarProps) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="bottomBar">
       {leftIcon ? (
         <ThemedIconButton
           iconName={leftIcon}
           onPress={leftAction || (() => {})}
           size={30}
           color="white"
+          testID={`bottomLeftIcon-${leftIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -40,6 +41,7 @@ export function BottomBar({
           onPress={centerAction || (() => {})}
           size={30}
           color="white"
+          testID={`bottomCenterIcon-${centerIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -50,6 +52,7 @@ export function BottomBar({
           onPress={rightAction || (() => {})}
           size={30}
           color="white"
+          testID={`bottomRightIcon-${rightIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />

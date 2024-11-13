@@ -7,6 +7,7 @@ interface ThemedTextButtonProps {
   onPress: () => void;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  testID?: string;
 }
 
 export function ThemedTextButton({

@@ -10,6 +10,7 @@ interface ThemedIconButtonProps {
   style?: ViewStyle;
   size?: number;
   color?: string;
+  testID?: string;
 }
 
 export function ThemedIconButton({

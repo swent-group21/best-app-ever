@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get("window");
 export default function WelcomeConceptScreen() {
   const router = useRouter();
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} testID="welcome-final-screen">
       <ThemedView style={styles.ovalShapeOne} />
       <ThemedView style={styles.ovalShapeTwo} />
       <ThemedText style={styles.title}>Ready to{"\n"}Strive?</ThemedText>
@@ -22,6 +22,7 @@ export default function WelcomeConceptScreen() {
           onPress={() => router.navigate("./screens/auth/sign_in_screen")}
           text="Login"
           textStyle={styles.buttonText}
+          testID="login-button"
         />
 
         <ThemedTextButton

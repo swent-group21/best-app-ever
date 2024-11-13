@@ -21,13 +21,14 @@ export function TopBar({
   title,
 }: TopbarProps) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="topBar">
       {leftIcon ? (
         <ThemedIconButton
           iconName={leftIcon}
           onPress={leftAction || (() => {})}
           size={30}
           color="white"
+          testID={`topLeftIcon-${leftIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -39,6 +40,7 @@ export function TopBar({
           onPress={rightAction || (() => {})}
           size={30}
           color="white"
+          testID={`topRightIcon-${rightIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
