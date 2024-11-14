@@ -1,11 +1,15 @@
-import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
-import { useState, useEffect } from 'react';
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import cuid from 'cuid';
 
+/**
+ * Used to build an already created Challenge from Firestore DB
+ */
 export const buildChallenge = async (
   challengeId: string,
   firestoreCtrl: FirestoreCtrl
 ): Promise<DBChallenge | null> => {
   try {
+    
     // Fetch the challenge data from Firestore
     const challenge = await firestoreCtrl.getChallenge(challengeId);
 
@@ -13,15 +17,14 @@ export const buildChallenge = async (
 
     // Fetch additional required data like user's name
     const userName = await firestoreCtrl.getName(challenge.uid);
-    const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
+    //const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
 
     // Format the date and time
-    const dateTime = new Date(challenge.date).toLocaleString();
+    const dateTime = new Date(challenge.date);
 
     const challengeData: DBChallenge = {
       challenge_name: challenge.challenge_name,
       description: challenge.description,
-      image_id: challenge.image_id,
       uid: challenge.uid,
       date: challenge.date,
     };
@@ -33,53 +36,35 @@ export const buildChallenge = async (
   }
 };
 
-// A function to be used in a hook to fetch challenge data
-export const useFetchChallenge = (challengeId: string, firestoreCtrl: FirestoreCtrl) => {
-  const [challengeData, setDBChallenge] = useState<DBChallenge | null>(null);
-
-  useEffect(() => {
-    const fetchDBChallenge = async () => {
-      const data = await buildChallenge(challengeId, firestoreCtrl);
-      setDBChallenge(data);
-    };
-
-    if (challengeId) {
-      fetchDBChallenge();
-    }
-  }, [challengeId, firestoreCtrl]);
-
-  return challengeData;
-};
-
-
+/**
+ * Used to create a Challenge and store it in Firestore DB
+ */
 export const createChallenge = async (
-  challengeData: DBChallenge,
-  firestoreCtrl: FirestoreCtrl
-): Promise<string | null> => {
+  firestoreCtrl: FirestoreCtrl,
+  challenge_name: string,
+  date: Date,
+  description: string,
+  location?: Location,
+  image_id?: string,
+  comment_id?: string,
+): Promise<void> => {
   try {
-    // Upload image and get image ID
-    let image_id = '';
-    if ('uri' in challengeData.image_id && challengeData.image.uri) {
-      image_id = await firestoreCtrl.uploadImageFromUri(challengeData.image.uri);
-    }
 
     // Prepare the challenge data for Firestore
-    const uid = firestoreCtrl.getUser().uid; // Ensure this method exists
-    const challenge: DBChallenge = {
-      challenge_name: challengeData.challenge_name,
-      description: challengeData.description || '',
-      uid: uid,
-      date: new Date(challengeData.dateTime).toISOString(),
-      location: challengeData.location || '',
-      image_id: image_id,
+    const user: DBUser = await firestoreCtrl.getUser();
+    console.log("createChallenge uid", user.uid)
+    const newChallenge: DBChallenge = {
+      challenge_name: challenge_name,
+      description: description || '',
+      uid: user.uid,
+      date: date,
       // Add other fields as needed
     };
 
     // Save the challenge to Firestore
-    const challengeId = await firestoreCtrl.createChallenge(challenge);
-    return challengeId;
+    await firestoreCtrl.newChallenge(newChallenge);
+    
   } catch (error) {
     console.error("Error creating challenge: ", error);
-    return null;
   }
 };

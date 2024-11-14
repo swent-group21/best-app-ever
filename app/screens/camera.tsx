@@ -185,7 +185,7 @@ export default function CameraTest() {
             style={styles.send}
             onPress={() => {
               picture ? firestoreCtrl.uploadImageFromUri(picture?.uri) : null;
-              router.push("./home/home_screen");
+              router.push("/screens/create/create_challenge");
             }}
           >
             <Ionicons name="send" size={30} color="white" />

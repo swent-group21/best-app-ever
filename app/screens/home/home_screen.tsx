@@ -12,6 +12,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const router = useRouter();
+
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -20,7 +21,7 @@ export default function HomeScreen() {
         rightIcon="person-circle-outline"
       />
 
-      {/* Challenges */}
+      {/* Challenges       
       <ThemedScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
@@ -30,6 +31,7 @@ export default function HomeScreen() {
         <Challenge title="Challenge 2"></Challenge>
         <Challenge title="Challenge 3"></Challenge>
       </ThemedScrollView>
+      */}
 
       <BottomBar
         leftIcon="map-outline"

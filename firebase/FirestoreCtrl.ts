@@ -1,4 +1,4 @@
-import { firestore, doc, getDoc, setDoc, storage, auth } from "./Firebase";
+import { firestore, doc, addDoc, getDoc, getDocs, setDoc, storage, auth, collection } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export type DBUser = {
@@ -14,7 +14,7 @@ export type DBChallenge = {
   challenge_name: string;
   description?: string;
   uid: string;
-  image_id: string;
+  image_id?: string;
   comment_id?: string;
   date: Date;
   location?: Location;
@@ -29,6 +29,7 @@ export type DBComment = {
 };
 
 export default class FirestoreCtrl {
+
   /**
    * Creates or updates a user document in Firestore.
    * @param userId The UID of the user.
@@ -36,6 +37,7 @@ export default class FirestoreCtrl {
    */
   async createUser(userId: string, userData: DBUser): Promise<void> {
     try {
+      userData.uid = userId;
       await setDoc(doc(firestore, "users", userId), userData);
     } catch (error) {
       console.error("Error writing user document: ", error);
@@ -49,7 +51,7 @@ export default class FirestoreCtrl {
    * @param userId The UID of the user to retrieve.
    * @returns A promise that resolves to the user data or null if not found.
    */
-  async getUser(userId?: string): Promise<DBUser | null> {
+  async getUser(userId?: string): Promise<DBUser> {
     try {
       let uid: string;
       if (userId != null) {
@@ -94,10 +96,8 @@ export default class FirestoreCtrl {
       await uploadBytes(storageRef, blob);
 
       const downloadUrl = await getDownloadURL(storageRef);
-      console.log("downloadUrl:", downloadUrl);
 
-      return id_picture;
-
+      return downloadUrl;
     } catch (error) {
       console.error("Error uploading image: ", error);
       console.log("Error uploading image: ", error);
@@ -113,11 +113,13 @@ export default class FirestoreCtrl {
   /**
    * Create a challenge using the challenge_id and DBChallenge
    */
-  async createChallenge(challengeId: string, challengeData: DBChallenge): Promise<void> {
+  async newChallenge(challengeData: DBChallenge): Promise<void> {
     try {
-      await setDoc(doc(firestore, "challenges", challengeId), challengeData);
+      const docRef = await addDoc(collection(firestore, "challenges"), challengeData);
+      console.log("Challenge id: ", docRef.id)
     } catch (error) {
       console.error("Error writting challenge document: ", error);
+      throw error
     }
   }
 
@@ -131,9 +133,10 @@ export default class FirestoreCtrl {
       if (docSnap.exists()) {
         return docSnap.data() as DBChallenge;
       } else {
-        throw new Error("User not found.");
+        throw new Error("Challenge not found.");
       }
     } catch (error) {
+      console.log("Error getting Challenge: ", error);
       throw error;
     }
   }

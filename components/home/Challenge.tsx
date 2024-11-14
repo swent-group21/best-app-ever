@@ -6,14 +6,14 @@ import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
 import { useRouter } from "expo-router";
 import FirestoreCtrl from '@/firebase/FirestoreCtrl';
-import { useFetchChallenge } from '@/types/ChallengeBuilder';
+import { buildChallenge } from '@/types/ChallengeBuilder';
 
 const { width } = Dimensions.get("window");
 
-export function Challenge(challengeId: any) {
+export function Challenge(challengeId: string) {
   const router = useRouter();
   const firestoreCtrl = new FirestoreCtrl();
-  const challengeData = useFetchChallenge(challengeId, firestoreCtrl);
+  const challengeData = buildChallenge(challengeId, firestoreCtrl);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -22,85 +22,83 @@ export function Challenge(challengeId: any) {
   // Display loading state or handle absence of challenge data
   if (!challengeData) {
       return <ThemedText>Loading Challenge...</ThemedText>;
-  }
+  } else {
+    return (
+      <ThemedView style={{ backgroundColor: "transparent" }}>
+        <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
+          <ThemedView style={[styles.challenge]}>
+            {/* Challenge Image */}
+            <Image
+              source={{uri: challengeData.image_id}}
+              style={styles.image}
+            />
 
-  const { challenge_name, description, image_id, uid, location, date } = challengeData;
-
-  return (
-    <ThemedView style={{ backgroundColor: "transparent" }}>
-      <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
-        <ThemedView style={[styles.challenge]}>
-          {/* Challenge Image */}
-          <Image
-            source={require("@/assets/images/challenge2.png")}
-            style={styles.image}
-          />
-
-          {isOpen && (
-            <ThemedView style={styles.container}>
-              <ThemedView
-                style={[styles.user, { justifyContent: "space-between" }]}
-              >
-                <ThemedView style={styles.user}>
+            {isOpen && (
+              <ThemedView style={styles.container}>
+                <ThemedView
+                  style={[styles.user, { justifyContent: "space-between" }]}
+                >
+                  <ThemedView style={styles.user}>
+                    <ThemedIconButton
+                      name="person-circle-outline"
+                      onPress={() => {
+                        /* user button */
+                      }}
+                      size={45}
+                      color="white"
+                    />
+                    <ThemedView style={styles.userInfo}>
+                      <ThemedText
+                        lightColor="white"
+                        darkColor="white"
+                        type="smallSemiBold"
+                      >
+                        {uid}
+                      </ThemedText>
+                      <ThemedText
+                        lightColor="white"
+                        darkColor="white"
+                        type="small"
+                      >
+                        {"in " + userLocation + " at " + userTime}
+                      </ThemedText>
+                    </ThemedView>
+                  </ThemedView>
                   <ThemedIconButton
-                    name="person-circle-outline"
+                    name="chevron-expand-outline"
                     onPress={() => {
-                      /* user button */
+                      router.push("../home/maximize_screen");
                     }}
-                    size={45}
+                    size={25}
+                    style={{ paddingRight: 8 }}
                     color="white"
                   />
-                  <ThemedView style={styles.userInfo}>
-                    <ThemedText
-                      lightColor="white"
-                      darkColor="white"
-                      type="smallSemiBold"
-                    >
-                      {uid}
-                    </ThemedText>
-                    <ThemedText
-                      lightColor="white"
-                      darkColor="white"
-                      type="small"
-                    >
-                      {"in " + userLocation + " at " + userTime}
-                    </ThemedText>
-                  </ThemedView>
                 </ThemedView>
-                <ThemedIconButton
-                  name="chevron-expand-outline"
-                  onPress={() => {
-                    router.push("../home/maximize_screen");
-                  }}
-                  size={25}
-                  style={{ paddingRight: 8 }}
-                  color="white"
-                />
+                <ThemedView style={styles.bottomBar}>
+                  <ThemedIconButton
+                    name={isLiked ? "heart" : "heart-outline"}
+                    onPress={() => {
+                      setIsLiked(!isLiked);
+                    }}
+                    size={25}
+                    color={isLiked ? "red" : "white"}
+                  />
+                  <ThemedIconButton
+                    name="location-outline"
+                    onPress={() => {
+                      /* location button */
+                    }}
+                    size={25}
+                    color="white"
+                  />
+                </ThemedView>
               </ThemedView>
-              <ThemedView style={styles.bottomBar}>
-                <ThemedIconButton
-                  name={isLiked ? "heart" : "heart-outline"}
-                  onPress={() => {
-                    setIsLiked(!isLiked);
-                  }}
-                  size={25}
-                  color={isLiked ? "red" : "white"}
-                />
-                <ThemedIconButton
-                  name="location-outline"
-                  onPress={() => {
-                    /* location button */
-                  }}
-                  size={25}
-                  color="white"
-                />
-              </ThemedView>
-            </ThemedView>
-          )}
-        </ThemedView>
-      </TouchableOpacity>
-    </ThemedView>
-  );
+            )}
+          </ThemedView>
+        </TouchableOpacity>
+      </ThemedView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

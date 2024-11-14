@@ -1,70 +1,78 @@
-
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
+import { StyleSheet } from 'react-native';
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { createChallenge } from '@/types/ChallengeBuilder';
+import { useRouter } from 'expo-router';
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { BottomBar } from "@/components/navigation/BottomBar";
 
-const CreateChallengeScreen = (image_id: any) => {
+const CreateChallengeScreen = (image_id: string) => {
   const firestoreCtrl = new FirestoreCtrl();
 
   const [challenge_name, setChallengeName] = useState('');
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [date, setDateTime] = useState('');
 
-  
+  const router = useRouter();
+
+  async function makeChallenge(){
+    try {
+      let date = new Date();
+      await createChallenge(
+        firestoreCtrl,
+        challenge_name,
+        date,
+        description,
+      )      
+      router.navigate("../home/home_screen");
+
+    } catch (error) {
+      console.log("Unable to create challenge");
+      return error
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Create a New Challenge</Text>
+    <ThemedScrollView 
+      style={styles.container}
+      automaticallyAdjustKeyboardInsets={true}
+    >
+      <ThemedText 
+        style={styles.title}
+        colorType='textPrimary'
+        type='title'
+      >
+        Create a New Challenge
+      </ThemedText>
 
-      <TextInput
+      <ThemedTextInput
         style={styles.input}
         placeholder="Challenge Name"
-        value={challenge_name}
         onChangeText={setChallengeName}
+        title="Challenge Name"
       />
 
-      <TextInput
+      <ThemedTextInput
         style={styles.input}
         placeholder="Description"
-        value={description}
         onChangeText={setDescription}
-        multiline
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Location"
-        value={location}
-        onChangeText={setLocation}
+      <BottomBar
+        rightIcon="arrow-forward"
+        rightAction={makeChallenge}
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Date and Time (YYYY-MM-DD HH:MM)"
-        value={date}
-        onChangeText={setDateTime}
-      />
-
-      <Button 
-        title="Create Challenge" 
-        onPress={
-          createChallenge(
-
-          )
-        } 
-      />
-    </View>
+    </ThemedScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
+
   title: {
     fontSize: 24,
     marginBottom: 16,

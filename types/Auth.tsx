@@ -41,7 +41,7 @@ export const logInWithGoogle = (
         .getUser(result.user.uid)
         .then((user: any) => {
           if (user) {
-            router.navigate("@app/home/PLACEHOLd_home_screen");
+            router.navigate("@app/home/home_screen");
           }
         })
         .catch(() => {
@@ -54,7 +54,7 @@ export const logInWithGoogle = (
               createdAt: new Date(),
             })
             .then(() => {
-              router.navigate("@app/home/PLACEHOLd_home_screen");
+              router.navigate("@app/home/home_screen");
             });
         });
     }
