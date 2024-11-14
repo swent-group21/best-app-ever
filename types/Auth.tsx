@@ -25,7 +25,9 @@ export const logInWithEmail = async (
   if (email && password) {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
+      // Checks that the user exists in auth
       if (response.user) {
+        // Checks that the user's info exists in the database
         const user = await firestoreCtrl
           .getUser(response.user.uid)
           .catch(() => {
@@ -37,18 +39,19 @@ export const logInWithEmail = async (
                 createdAt: new Date(),
               })
               .then(() => {
-                router.navigate("../home/home_screen");
+                alert("User did not exist. Please set up your profile.");
+                router.navigate("../auth/set_up_screen");
               });
           });
+        // User exists in both auth and database
         if (user) {
-          console.log("User logged in. INFO: \n", user);
           router.navigate("../home/home_screen");
         }
       } else {
-        console.log("Invalid credentials");
+        alert("Failed to log in. Please check your credentials.");
       }
     } catch (e) {
-      console.log("Login failed. Please check your credentials.");
+      alert("Failed to log in: " + e);
     }
   }
 };
@@ -61,6 +64,7 @@ export const signUpWithEmail = async (
   router: any,
 ) => {
   if (userName && email && password) {
+    // Creates user in auth
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userData: DBUser = {
@@ -69,27 +73,20 @@ export const signUpWithEmail = async (
           createdAt: new Date(),
         };
 
-        console.log(
-          "User created. INFO: \n",
-          userCredential.user.uid,
-          userData,
-        );
+        // Creates user in firestore
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
             router.navigate("../auth/set_up_screen");
           })
           .catch((error) => {
-            console.log(
-              "FirestoreCtrl failed to create user due to following error \n",
-              error,
-            );
+            alert("Failed to create user: " + error);
           });
       })
       .catch((error) => {
-        console.log("Sign Up failed. Please check your credentials.", error);
+        alert("Failed to create user: " + error);
       });
   } else {
-    console.log("Please input email and password.");
+    alert("Please fill in all fields.");
   }
 };
