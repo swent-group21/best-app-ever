@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
@@ -6,12 +6,48 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { useRouter } from "expo-router";
+import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
+import { auth } from "@/firebase/Firebase"; // Import auth
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen() {
+  const [challenges, setChallenges] = useState<DBChallenge[]>([]);
+  const [uid, setUid] = useState<string | null>(null); // Add this line
   const router = useRouter();
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUid(user.uid);
+      } else {
+        setUid(null);
+      }
+    });
+
+    // Cleanup the listener on unmount
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (uid) {
+      const firestoreCtrl = new FirestoreCtrl();
+
+      const fetchChallenges = async () => {
+        try {
+          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
+          console.log("Challenges", challengesData);
+          setChallenges(challengesData);
+        } catch (error) {
+          console.error("Error fetching challenges: ", error);
+        }
+      };
+
+      fetchChallenges();
+    }
+  }, [uid]);
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -21,17 +57,20 @@ export default function HomeScreen() {
         rightIcon="person-circle-outline"
       />
 
-      {/* Challenges       
+      {/* Challenges */}
       <ThemedScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-        <Challenge title="Challenge 1"></Challenge>
-        <Challenge title="Challenge 2"></Challenge>
-        <Challenge title="Challenge 3"></Challenge>
+        {challenges.map((challenge, index) => (
+          <Challenge
+            key={index}
+            challengeDB={challenge}
+            // Include other props as needed
+          />
+        ))}
       </ThemedScrollView>
-      */}
 
       <BottomBar
         leftIcon="map-outline"

@@ -5,31 +5,28 @@ import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
 import { useRouter } from "expo-router";
-import FirestoreCtrl from '@/firebase/FirestoreCtrl';
-import { buildChallenge } from '@/types/ChallengeBuilder';
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-export function Challenge(challengeId: string) {
+export function Challenge({ challengeDB, index }: any) {
   const router = useRouter();
-  const firestoreCtrl = new FirestoreCtrl();
-  const challengeData = buildChallenge(challengeId, firestoreCtrl);
-
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const theme = useColorScheme() ?? 'light';
 
   // Display loading state or handle absence of challenge data
-  if (!challengeData) {
+  if (!challengeDB) {
       return <ThemedText>Loading Challenge...</ThemedText>;
   } else {
     return (
       <ThemedView style={{ backgroundColor: "transparent" }}>
         <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
           <ThemedView style={[styles.challenge]}>
-            {/* Challenge Image */}
-            <Image
+            {/* 
+              Challenge Image 
               source={{uri: challengeData.image_id}}
+            */}
+            <Image
+              source={require("@/assets/images/challenge2.png")}
               style={styles.image}
             />
 
@@ -53,14 +50,14 @@ export function Challenge(challengeId: string) {
                         darkColor="white"
                         type="smallSemiBold"
                       >
-                        {uid}
+                        {challengeDB.uid}
                       </ThemedText>
                       <ThemedText
                         lightColor="white"
                         darkColor="white"
                         type="small"
                       >
-                        {"in " + userLocation + " at " + userTime}
+                        {"at " + challengeDB.date}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
@@ -114,7 +111,7 @@ const styles = StyleSheet.create({
   },
   challenge: {
     width: width - 20,
-    height: 279,
+    height: height,
     borderRadius: 15,
     backgroundColor: Colors.light.transparent,
   },

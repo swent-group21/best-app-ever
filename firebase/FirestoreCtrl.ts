@@ -1,4 +1,4 @@
-import { firestore, doc, addDoc, getDoc, getDocs, setDoc, storage, auth, collection } from "./Firebase";
+import { firestore, doc, addDoc, getDoc, getDocs, setDoc, auth, collection, query, where } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export type DBUser = {
@@ -11,6 +11,7 @@ export type DBUser = {
 };
 
 export type DBChallenge = {
+  challenge_id?: string; // Add this line
   challenge_name: string;
   description?: string;
   uid: string;
@@ -126,7 +127,7 @@ export default class FirestoreCtrl {
   /**
    * Create a challenge using the challenge_id and DBChallenge
    */
-  async getChallenge(challengeId: string): Promise<DBChallenge | null> {
+  async getChallenge(challengeId: string): Promise<DBChallenge> {
     try {
       const challengeRef = doc(firestore, "challenges", challengeId);
       const docSnap = await getDoc(challengeRef);
@@ -137,6 +138,32 @@ export default class FirestoreCtrl {
       }
     } catch (error) {
       console.log("Error getting Challenge: ", error);
+      throw error;
+    }
+  }
+
+  /**
+  * Retrieves all challenges created by a specific user.
+  * @param uid The UID of the user whose challenges are to be fetched.
+  * @returns A promise that resolves to an array of challenges.
+  */
+  async getChallengesByUserId(uid: string): Promise<DBChallenge[]> {
+    try {
+      const challengesRef = collection(firestore, "challenges");
+      const q = query(challengesRef, where("uid", "==", uid));
+
+      const querySnapshot = await getDocs(q);
+      const challenges = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        console.log("Challenge data retrieved:", data);
+        return {
+          ...data,
+          challenge_id: doc.id,
+        } as DBChallenge;
+      });
+      return challenges;
+    } catch (error) {
+      console.error("Error getting challenges by user ID: ", error);
       throw error;
     }
   }

@@ -1,5 +1,4 @@
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
-import cuid from 'cuid';
 
 /**
  * Used to build an already created Challenge from Firestore DB
@@ -7,20 +6,17 @@ import cuid from 'cuid';
 export const buildChallenge = async (
   challengeId: string,
   firestoreCtrl: FirestoreCtrl
-): Promise<DBChallenge | null> => {
+): Promise<DBChallenge> => {
   try {
-    
     // Fetch the challenge data from Firestore
     const challenge = await firestoreCtrl.getChallenge(challengeId);
 
-    if (!challenge) return null;
-
+    if (!challenge) {
+      throw "Error: no challenge found when buildChallenge";
+    }
     // Fetch additional required data like user's name
-    const userName = await firestoreCtrl.getName(challenge.uid);
+    await firestoreCtrl.getName(challenge.uid);
     //const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
-
-    // Format the date and time
-    const dateTime = new Date(challenge.date);
 
     const challengeData: DBChallenge = {
       challenge_name: challenge.challenge_name,
@@ -31,8 +27,7 @@ export const buildChallenge = async (
 
     return challengeData;
   } catch (error) {
-    console.error("Error building challenge: ", error);
-    return null;
+    throw error;
   }
 };
 
@@ -68,3 +63,4 @@ export const createChallenge = async (
     console.error("Error creating challenge: ", error);
   }
 };
+
