@@ -9,8 +9,7 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import App from "@/app/App"
-
+import App from "@/app/App";
 
 const { width, height } = Dimensions.get("window");
 

@@ -5,8 +5,7 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import App from "@/app/App"
-
+import App from "@/app/App";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

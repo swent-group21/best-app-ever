@@ -26,7 +26,7 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import App from "@/app/App"
+import App from "@/app/App";
 
 export default function CameraTest() {
   const [facing, setFacing] = useState<CameraType>("back");

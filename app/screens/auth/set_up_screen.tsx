@@ -7,8 +7,7 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import App from "@/app/App"
-
+import App from "@/app/App";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

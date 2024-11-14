@@ -4,7 +4,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 //import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import App from "@/app/App"
+import App from "@/app/App";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -37,7 +37,6 @@ export default function WelcomeConceptScreen() {
           textStyle={styles.buttonText}
           textColorType="textOverLight"
         />
-
 
         {/* Sign up button */}
         <ThemedTextButton

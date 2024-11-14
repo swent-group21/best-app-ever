@@ -9,8 +9,7 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { getAuth } from "firebase/auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import App from "@/app/App"
-
+import App from "@/app/App";
 
 const { width, height } = Dimensions.get("window");
 
