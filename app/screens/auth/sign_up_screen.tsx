@@ -22,6 +22,11 @@ export default function SignUp() {
   const router = useRouter();
   const firestoreCtrl = new FirestoreCtrl();
 
+  const namePlaceholder = "Sarah";
+  const surnamePlaceholder = "Connor";
+  const emailPlaceholder = "sarah.connor@gmail.com";
+  const passwordPlaceholder = "**********";
+
   return (
     <ThemedView style={styles.signUpScreen}>
       {/* Background oval shape */}
@@ -48,7 +53,7 @@ export default function SignUp() {
         <ThemedTextInput
           onChangeText={setName}
           style={styles.input}
-          placeholder="Sarah"
+          placeholder={namePlaceholder}
           title="Name *"
         />
 
@@ -56,7 +61,7 @@ export default function SignUp() {
         <ThemedTextInput
           onChangeText={setSurname}
           style={styles.input}
-          placeholder="Connor"
+          placeholder={surnamePlaceholder}
           title="Surname *"
         />
 
@@ -69,7 +74,7 @@ export default function SignUp() {
               ? styles.input
               : styles.inputWrong
           }
-          placeholder="sarah.connor@gmail.com"
+          placeholder={emailPlaceholder}
           title="Email *"
         />
 
@@ -82,7 +87,7 @@ export default function SignUp() {
               ? styles.input
               : styles.inputWrong
           }
-          placeholder="**********"
+          placeholder={passwordPlaceholder}
           title="Password *"
         />
 
@@ -95,7 +100,7 @@ export default function SignUp() {
               ? styles.input
               : styles.inputWrong
           }
-          placeholder="**********"
+          placeholder={passwordPlaceholder}
           title="Confirm Password *"
         />
       </ThemedScrollView>

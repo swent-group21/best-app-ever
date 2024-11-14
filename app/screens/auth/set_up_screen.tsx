@@ -15,7 +15,6 @@ const { width, height } = Dimensions.get("window");
 export default function SetUsername() {
   const [username, setUsername] = React.useState("");
   const router = useRouter();
-  const uri = "@/assets/images/auth/SignUpScreen/";
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}

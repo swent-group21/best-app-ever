@@ -2,7 +2,7 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
-import { Image, StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

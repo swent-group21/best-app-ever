@@ -10,6 +10,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
   const router = useRouter();
+  const uri = "./screens/auth/"
   return (
     <ThemedView style={styles.container}>
       {/* Background shapes */}
@@ -30,7 +31,7 @@ export default function WelcomeConceptScreen() {
         {/* Sign in button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/sign_in_screen")}
+          onPress={() => router.navigate(`${uri}sign_in_screen`)}
           text="Login"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
@@ -39,7 +40,7 @@ export default function WelcomeConceptScreen() {
         {/* Sign up button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/sign_up_screen")}
+          onPress={() => router.navigate(`${uri}sign_up_screen`)}
           text="Sign Up"
           textStyle={styles.buttonText}
           textColorType="textOverLight"

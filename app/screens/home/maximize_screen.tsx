@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Dimensions, Image, TextInput } from "react-native";
+import { StyleSheet, Dimensions, Image } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
