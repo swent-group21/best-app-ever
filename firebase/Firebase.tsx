@@ -2,14 +2,11 @@
 import { initializeApp } from "firebase/app";
 // @ts-ignore
 import {
-  GoogleAuthProvider,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-  User,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  createUserWithEmailAndPassword,
   initializeAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  User,
+  sendPasswordResetEmail,
   getReactNativePersistence,
 } from "firebase/auth";
 //@ts-ignore
@@ -62,13 +59,10 @@ export {
   firebaseConfig,
   app,
   auth,
-  GoogleAuthProvider,
-  signInWithCredential,
   signInWithEmailAndPassword,
-  User,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
   createUserWithEmailAndPassword,
+  User,
+  sendPasswordResetEmail,
   firestore,
   collection,
   deleteDoc,
