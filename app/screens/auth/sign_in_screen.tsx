@@ -8,18 +8,19 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { logInWithEmail } from "@/types/Auth";
-import { useRouter } from "expo-router";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedText } from "@/components/theme/ThemedText";
+import App from "@/app/App"
+
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function SignInScreen() {
-  const router = useRouter();
+  const router = App();
   const firestoreCtrl = new FirestoreCtrl();
 
   const [email, setEmail] = useState("");

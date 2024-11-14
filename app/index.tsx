@@ -7,6 +7,8 @@ import WelcomePersonalScreen from "@/app/screens/welcome/personal_screen";
 import WelcomeFinalScreen from "@/app/screens/welcome/final_screen";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
+
+
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;
 

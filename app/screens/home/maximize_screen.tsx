@@ -4,17 +4,18 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { useRouter } from "expo-router";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { getAuth } from "firebase/auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import App from "@/app/App"
+
 
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
-  const router = useRouter();
+  const router = App();
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
