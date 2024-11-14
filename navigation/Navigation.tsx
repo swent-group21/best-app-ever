@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 const Stack = createNativeStackNavigator();
 const router = useRouter();
 
-export default function App() {
+export default function Nav() {
   return (
     router
   );

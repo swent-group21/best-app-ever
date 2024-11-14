@@ -13,7 +13,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedText } from "@/components/theme/ThemedText";
-import App from "@/app/App"
+import App from "@/navigation/Navigation"
 
 
 // Get the screen dimensions
