@@ -1,15 +1,16 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import Nav from "@/navigation/Navigation"
+
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function ForgotPasswordScreen() {
-  const router = useRouter();
+  const router = Nav();
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}

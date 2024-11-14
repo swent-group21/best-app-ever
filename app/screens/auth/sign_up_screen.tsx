@@ -3,13 +3,14 @@ import { StyleSheet, Dimensions } from "react-native";
 import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
-import { useRouter } from "expo-router";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
+import Nav from "@/navigation/Navigation"
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -19,7 +20,7 @@ export default function SignUp() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const router = useRouter();
+  const router = Nav();
   const firestoreCtrl = new FirestoreCtrl();
 
   const namePlaceholder = "Sarah";

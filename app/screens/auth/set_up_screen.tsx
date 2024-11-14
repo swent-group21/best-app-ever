@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
 import { BottomBar } from "@/components/navigation/BottomBar";
@@ -8,13 +7,15 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import Nav from "@/navigation/Navigation"
+
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function SetUsername() {
   const [username, setUsername] = React.useState("");
-  const router = useRouter();
+  const router = Nav();
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}
