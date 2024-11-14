@@ -1,23 +1,28 @@
-import { Image, StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
+
 export default function ForgotPasswordScreen() {
   const router = useRouter();
-  const uri = "@/assets/images/auth/ForgotPasswordScreen/";
   return (
     <ThemedView style={styles.screenContainer}>
-      <Image
-        source={require(`${uri}bg.png`)}
-        style={[styles.backgroundImage]}
-      />
+      {/* Background shape */}
+      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
-      <ThemedText style={styles.titleText}>Forgot your Password ?</ThemedText>
+      {/* Screen content */}
+      <ThemedText style={styles.titleText} colorType="textPrimary">
+        Forgot your Password ?
+      </ThemedText>
 
+      {/* Input fields */}
       <ThemedView style={styles.smallContainer}>
+        {/* Email input */}
         <ThemedTextInput
           style={styles.input}
           type="email"
@@ -25,16 +30,23 @@ export default function ForgotPasswordScreen() {
           viewWidth={"90%"}
         />
 
+        {/* Buttons */}
         <ThemedView style={styles.rowContainer}>
+          {/* Cancel button */}
           <ThemedTextButton
             style={styles.buttonCancel}
             onPress={() => router.back()}
             text="Cancel"
+            textType="defaultSemiBold"
+            textColorType="textOverLight"
           />
+          {/* Reset password button */}
           <ThemedTextButton
             style={styles.buttonResetPassword}
             onPress={() => alert("Send Email")}
             text="Reset Password"
+            textType="defaultSemiBold"
+            textColorType="textOverLight"
           />
         </ThemedView>
       </ThemedView>
@@ -43,10 +55,19 @@ export default function ForgotPasswordScreen() {
 }
 
 const styles = StyleSheet.create({
+  ovalShapeOne: {
+    position: "absolute",
+    top: "70%",
+    left: "-30%",
+    width: "130%",
+    height: "70%",
+    borderRadius: width * 0.7,
+  },
+
   screenContainer: {
-    alignItems: "center",
-    gap: 75,
     flex: 1,
+    alignItems: "center",
+    gap: height * 0.1,
   },
 
   smallContainer: {
@@ -63,42 +84,31 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
 
-  backgroundImage: {
-    width: "90%",
-    height: "39%",
-    position: "absolute",
-    bottom: -30,
-    right: 0,
-  },
-
   titleText: {
+    textAlign: "justify",
+    paddingTop: height * 0.14,
     fontSize: 51,
     fontWeight: "bold",
-    textAlign: "justify",
-    paddingTop: 100,
   },
 
   input: {
-    borderWidth: 1,
+    marginBottom: height * 0.02,
+    padding: 8,
+    borderWidth: 2,
     borderRadius: 15,
-    padding: 10,
-    marginBottom: 15,
   },
 
   buttonResetPassword: {
+    width: "60%",
     alignItems: "center",
     borderRadius: 15,
     padding: 8,
-    width: "60%",
-    backgroundColor: "black",
   },
 
   buttonCancel: {
+    width: "35%",
     alignItems: "center",
     borderRadius: 15,
     padding: 8,
-    borderWidth: 1,
-    width: "35%",
-    borderColor: "#ccc",
   },
 });

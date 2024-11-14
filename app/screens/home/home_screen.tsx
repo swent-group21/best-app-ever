@@ -1,11 +1,14 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { TopBar } from "@/components/TopBar";
+import { Dimensions, StyleSheet } from "react-native";
+import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { BottomBar } from "@/components/BottomBar";
+import { BottomBar } from "@/components/navigation/BottomBar";
 import { useRouter } from "expo-router";
+
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -17,9 +20,11 @@ export default function HomeScreen() {
         rightIcon="person-circle-outline"
       />
 
+      {/* Challenges */}
       <ThemedScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
+        colorType="transparent"
       >
         <Challenge title="Challenge 1"></Challenge>
         <Challenge title="Challenge 2"></Challenge>
@@ -29,7 +34,7 @@ export default function HomeScreen() {
       <BottomBar
         leftIcon="map-outline"
         centerIcon="camera-outline"
-        rightIcon="logo-docker"
+        rightIcon="trophy-outline"
         centerAction={() => router.push("../camera")}
       />
     </ThemedView>
@@ -37,29 +42,20 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  topbar: {
-    backgroundColor: "transparent",
-    paddingBottom: 10,
-  },
   bigContainer: {
     height: "100%",
-    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
+
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: "transparent",
   },
+
   contentContainer: {
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 30,
-    backgroundColor: "transparent",
-  },
-  text: {
-    color: "white",
-    fontSize: 18,
+    gap: height * 0.04,
   },
 });

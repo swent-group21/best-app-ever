@@ -1,55 +1,54 @@
 import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { Colors } from "@/constants/Colors";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedText } from "../theme/ThemedText";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-interface BottomBarProps {
+interface TopbarProps {
   leftIcon?: string;
   leftAction?: () => void;
-  centerIcon?: string;
-  centerAction?: () => void;
   rightIcon?: string;
   rightAction?: () => void;
+  title?: string;
+  colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
 }
 
-export function BottomBar({
+export function TopBar({
   leftIcon,
-  leftAction,
-  centerIcon,
-  centerAction,
+  leftAction = () => {},
   rightIcon,
-  rightAction,
-}: BottomBarProps) {
+  rightAction = () => {},
+  title,
+  colorType = "white",
+}: TopbarProps) {
+  const color = useThemeColor({}, colorType);
   return (
     <View style={styles.container}>
       {leftIcon ? (
         <ThemedIconButton
-          iconName={leftIcon}
-          onPress={leftAction || (() => {})}
+          name={leftIcon}
+          onPress={leftAction}
           size={30}
-          color="white"
+          color={color}
         />
       ) : (
         <View style={styles.placeholder} />
       )}
-      {centerIcon ? (
-        <ThemedIconButton
-          iconName={centerIcon}
-          onPress={centerAction || (() => {})}
-          size={30}
-          color="white"
-        />
-      ) : (
-        <View style={styles.placeholder} />
+      {title && (
+        <ThemedText style={styles.title} colorType={colorType}>
+          {title}
+        </ThemedText>
       )}
       {rightIcon ? (
         <ThemedIconButton
-          iconName={rightIcon}
-          onPress={rightAction || (() => {})}
+          name={rightIcon}
+          onPress={rightAction}
           size={30}
-          color="white"
+          color={color}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -67,6 +66,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 10,
     backgroundColor: "transparent",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   placeholder: {
     width: 30,
