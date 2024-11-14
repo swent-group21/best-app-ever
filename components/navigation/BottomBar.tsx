@@ -1,46 +1,55 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-interface TopbarProps {
+interface BottomBarProps {
   leftIcon?: string;
   leftAction?: () => void;
+  centerIcon?: string;
+  centerAction?: () => void;
   rightIcon?: string;
   rightAction?: () => void;
-  title?: string;
 }
 
-export function TopBar({
+export function BottomBar({
   leftIcon,
   leftAction,
+  centerIcon,
+  centerAction,
   rightIcon,
   rightAction,
-  title,
-}: TopbarProps) {
+}: BottomBarProps) {
   return (
-    <View style={styles.container} testID="topBar">
+    <View style={styles.container}>
       {leftIcon ? (
         <ThemedIconButton
           iconName={leftIcon}
           onPress={leftAction || (() => {})}
           size={30}
           color="white"
-          testID={`topLeftIcon-${leftIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
       )}
-      {title && <Text style={styles.title}>{title}</Text>}
+      {centerIcon ? (
+        <ThemedIconButton
+          iconName={centerIcon}
+          onPress={centerAction || (() => {})}
+          size={30}
+          color="white"
+        />
+      ) : (
+        <View style={styles.placeholder} />
+      )}
       {rightIcon ? (
         <ThemedIconButton
           iconName={rightIcon}
           onPress={rightAction || (() => {})}
           size={30}
           color="white"
-          testID={`topRightIcon-${rightIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -58,11 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 10,
     backgroundColor: "transparent",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
   },
   placeholder: {
     width: 30,

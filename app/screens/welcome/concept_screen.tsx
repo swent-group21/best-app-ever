@@ -9,14 +9,21 @@ const { width, height } = Dimensions.get("window");
 export default function WelcomeConceptScreen() {
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.ovalShape} />
-      <ThemedView style={styles.textContainer}>
-        <ThemedText style={styles.title}>
-          Participate{"\n"}in Weekly{"\n"}challenges
+      {/* Background shape */}
+      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
+
+      {/* Screen content */}
+      <ThemedView style={styles.textContainer} colorType="transparent">
+        <ThemedText style={styles.title} colorType="textPrimary" type="title">
+          Competing{"\n"}yourself
         </ThemedText>
-        <ThemedText style={styles.description}>
-          Compete with your friends and people around you{"\n"}Become the goat
-          and win prizes!
+        <ThemedText
+          style={styles.description}
+          colorType="textPrimary"
+          type="description"
+        >
+          Become the best version of yourself{"\n"}Interact with motivated
+          people to reach your goals !prizes!
         </ThemedText>
       </ThemedView>
     </ThemedView>
@@ -27,34 +34,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    height: height,
   },
+
   ovalShape: {
     position: "absolute",
-    top: height * 0.7,
-    left: -width * 0.3,
-    width: width * 1.2,
-    height: height * 0.7,
+    top: "70%",
+    left: "-30%",
+    width: "120%",
+    height: "70%",
     borderRadius: width * 0.6,
-    backgroundColor: "#E6BC95",
   },
+
   textContainer: {
     flex: 1,
+    width: "90%",
+    alignSelf: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 60,
-    backgroundColor: "transparent",
+    paddingBottom: height * 0.095,
   },
+
   title: {
-    fontSize: 56,
-    fontWeight: "900",
-    lineHeight: 62,
-    marginBottom: 20,
+    marginBottom: height * 0.05,
   },
+
   description: {
-    paddingTop: 60,
-    fontSize: 20,
-    fontWeight: "800",
-    lineHeight: 26,
+    textAlign: "center",
   },
 });

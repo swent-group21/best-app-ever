@@ -1,37 +1,37 @@
 import React from "react";
-import { ViewStyle } from "react-native";
-import { useTheme } from "@react-navigation/native";
-import { Icon } from "react-native-elements";
+import { Icon, IconProps } from "react-native-elements";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Colors } from "@/constants/Colors";
 
-interface ThemedIconButtonProps {
-  iconName: string;
+interface ThemedIconButtonProps extends IconProps {
   onPress: () => void;
   iconType?: string;
-  style?: ViewStyle;
   size?: number;
-  color?: string;
-  testID?: string;
+  colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+  lightColor?: string;
+  darkColor?: string;
 }
 
 export function ThemedIconButton({
-  iconName,
+  lightColor,
+  darkColor,
   onPress,
   iconType = "ionicon",
   size,
-  style,
-  color,
+  colorType,
   ...props
 }: ThemedIconButtonProps) {
-  const { colors } = useTheme();
+  const color = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    colorType ?? "backgroundPrimary",
+  );
 
   return (
     <Icon
-      name={iconName}
-      color={color ? color : colors.text}
+      color={color}
       type={iconType}
       onPress={onPress}
       size={size}
-      containerStyle={style}
       {...props}
     />
   );

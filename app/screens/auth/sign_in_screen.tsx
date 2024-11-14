@@ -1,8 +1,6 @@
 import {
-  Image,
-  View,
-  StyleSheet,
   Dimensions,
+  StyleSheet,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -17,6 +15,9 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
+
 export default function SignInScreen() {
   const router = useRouter();
   const firestoreCtrl = new FirestoreCtrl();
@@ -24,7 +25,6 @@ export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const uri = "@/assets/images/auth/SignInScreen/";
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -32,43 +32,61 @@ export default function SignInScreen() {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ThemedView style={styles.signInScreen}>
-          {/* Background Image */}
-          <Image
-            source={require("@/assets/images/auth/SignInScreen/bg.png")}
-            style={[styles.backgroundImage]}
+          {/* Background shape */}
+          <ThemedView
+            style={styles.ovalShapeTwo}
+            colorType="backgroundSecondary"
           />
-          <ThemedText style={styles.titleText}>We've missed you</ThemedText>
 
+          {/* Screen content */}
+          <ThemedText
+            style={styles.titleText}
+            colorType="textPrimary"
+            type="title"
+          >
+            We've missed you
+          </ThemedText>
+
+          {/* Input fields */}
           <ThemedView style={styles.colContainer}>
+            {/* Email input */}
             <ThemedTextInput
               style={styles.input}
               type="email"
               onChangeText={(text) => setEmail(text)}
-              viewWidth={"100%"}
+              viewWidth={"90%"}
               title="Email"
             />
 
+            {/* Password input */}
             <ThemedTextInput
               style={styles.input}
               type="password"
               onChangeText={(text) => setPassword(text)}
-              viewWidth={"100%"}
+              viewWidth={"90%"}
               title="Password"
             />
 
+            {/* Sign in button */}
             <ThemedTextButton
               style={styles.buttonSignIn}
               onPress={() => {
                 logInWithEmail(email, password, firestoreCtrl, router);
               }}
               text="Sign In"
+              textStyle={{ fontWeight: "600" }}
+              textColorType="textOverLight"
             />
 
+            {/* Forgot password button */}
             <ThemedTextButton
+              style={{ alignItems: "center" }}
               onPress={() =>
                 router.push("/screens/auth/forgot_password_screen")
               }
               text="Forgot Password?"
+              colorType="transparent"
+              textColorType="textPrimary"
             />
           </ThemedView>
         </ThemedView>
@@ -84,11 +102,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  ovalShapeTwo: {
+    position: "absolute",
+    top: "-40%",
+    left: "30%",
+    width: "130%",
+    height: "70%",
+    borderRadius: width * 0.7,
+  },
+
   colContainer: {
     flex: 2,
     width: "90%",
     backgroundColor: "transparent",
-    gap: 20,
+    alignItems: "center",
+    gap: height * 0.027,
   },
 
   backgroundImage: {
@@ -99,34 +127,25 @@ const styles = StyleSheet.create({
 
   titleText: {
     flex: 1,
-    fontSize: 51,
-    fontWeight: "800",
+    width: "85%",
+    alignSelf: "center",
     textAlign: "right",
     textAlignVertical: "center",
   },
 
   input: {
+    alignSelf: "center",
     width: "100%",
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 15,
-    borderColor: "#ccc",
     padding: 8,
   },
 
   buttonSignIn: {
-    width: "100%",
-    borderRadius: 15,
-    backgroundColor: "#E6BC95",
     alignItems: "center",
-    padding: 8,
-  },
-
-  buttonContinueWith: {
-    width: "100%",
+    alignSelf: "center",
+    width: "80%",
     borderRadius: 15,
-    backgroundColor: "#F5F5F5",
-    alignItems: "center",
-    marginTop: 35,
     padding: 8,
   },
 });

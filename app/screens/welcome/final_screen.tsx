@@ -1,43 +1,60 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
+import Nav from "@/navigation/Navigation"
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
-  const router = useRouter();
+  const router = Nav();
+  const uri = "./screens/auth/";
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
-      <ThemedView style={styles.ovalShapeOne} />
-      <ThemedView style={styles.ovalShapeTwo} />
-      <ThemedText style={styles.title}>Ready to{"\n"}Strive?</ThemedText>
+      {/* Background shapes */}
+      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
+      <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
 
-      <ThemedView style={styles.buttonContainer}>
+      {/* Screen content */}
+      <ThemedText
+        style={styles.title}
+        colorType="textPrimary"
+        type="superTitle"
+      >
+        Ready to{"\n"}Strive?
+      </ThemedText>
+
+      {/* Buttons */}
+      <ThemedView style={styles.buttonContainer} colorType="transparent">
+        {/* Sign in button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/sign_in_screen")}
-          text="Login"
+          onPress={() => router.navigate(`${uri}sign_in_screen`)}
+          text="Sign In"
           textStyle={styles.buttonText}
-          testID="login-button"
+          textColorType="textOverLight"
         />
 
+
+        {/* Sign up button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate("./screens/auth/set_up_screen")}
+          onPress={() => router.navigate(`${uri}sign_up_screen`)}
           text="Sign Up"
           textStyle={styles.buttonText}
+          textColorType="textOverLight"
         />
 
+        {/* Continue as guest button */}
         <ThemedTextButton
           onPress={() => {
-            alert("Spooky user!");
             router.navigate("./screens/home/home_screen");
           }}
           text="Continue as guest"
+          colorType="transparent"
+          textColorType="textPrimary"
         />
       </ThemedView>
     </ThemedView>
@@ -48,51 +65,47 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    height: height,
   },
+
   ovalShapeOne: {
     position: "absolute",
-    top: height * 0.8,
-    left: -width * 0.3,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "80%",
+    left: "-30%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
-    backgroundColor: "#E6BC95",
   },
+
   ovalShapeTwo: {
     position: "absolute",
-    top: -height * 0.4,
-    left: width * 0.3,
-    width: width * 1.3,
-    height: height * 0.7,
+    top: "-40%",
+    left: "30%",
+    width: "130%",
+    height: "70%",
     borderRadius: width * 0.7,
-    backgroundColor: "#E6BC95",
   },
+
   title: {
+    width: "80%",
+    alignSelf: "center",
     paddingTop: height * 0.3,
-    paddingLeft: width * 0.05,
-    fontSize: 64,
-    fontWeight: "900",
-    lineHeight: 62,
     paddingBottom: height * 0.12,
   },
+
   buttonContainer: {
-    flex: 1,
     alignItems: "center",
-    paddingBottom: 60,
-    gap: 20,
-    backgroundColor: "transparent",
+    gap: height * 0.027,
   },
+
   buttonAccount: {
     width: "80%",
     height: height * 0.05,
-    backgroundColor: "#000",
-    borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 15,
   },
+
   buttonText: {
-    fontWeight: "600",
-    color: "#FFF",
+    fontWeight: "bold",
   },
 });

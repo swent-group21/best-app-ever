@@ -1,24 +1,40 @@
 import React from "react";
 import { TextInput, TextInputProps, TextStyle, View } from "react-native";
-import { useTheme } from "@react-navigation/native";
 import { ThemedText } from "./ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Colors } from "@/constants/Colors";
 
 interface ThemedTextInputProps extends TextInputProps {
   title?: string;
   titleStyle?: TextStyle;
   viewWidth?: any;
   type?: "none" | "email" | "password";
+  lightColor?: string;
+  darkColor?: string;
+  colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+  borderColorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
 }
 
 export function ThemedTextInput({
+  lightColor,
+  darkColor,
+  colorType,
+  borderColorType,
   style,
   title,
   titleStyle,
-  viewWidth,
+  viewWidth = "100%",
   type = "none",
   ...props
 }: ThemedTextInputProps) {
-  const { colors } = useTheme();
+  const color = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    colorType ?? "textPrimary",
+  );
+  const borderColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    borderColorType ?? "textPrimary",
+  );
   const getInputProps = (
     type: "none" | "email" | "password",
   ): TextInputProps => {
@@ -50,8 +66,8 @@ export function ThemedTextInput({
         </ThemedText>
       )}
       <TextInput
-        style={[{ color: colors.text, borderColor: colors.border }, style]}
-        placeholderTextColor={colors.border}
+        style={[{ color: color, borderColor: borderColor }, style]}
+        placeholderTextColor={borderColor}
         {...getInputProps(type)}
         {...props}
       />

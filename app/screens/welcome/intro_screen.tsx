@@ -1,22 +1,46 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import { StyleSheet, Dimensions, Image } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeIntroScreen() {
+  // Logo image uri
   const uri = "@/assets/images/";
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.ovalShape} />
-      <ThemedText style={styles.title}>
+      {/* Background shape */}
+      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
+
+      {/* Screen content */}
+      <ThemedText
+        style={styles.title}
+        colorType="backgroundPrimary"
+        type="superTitle"
+      >
         So what is{"\n"}Strive{"\n"}about ?
       </ThemedText>
+      <ThemedText
+        style={styles.smallTitle}
+        colorType="textPrimary"
+        type="title"
+      >
+        Participating in Weekly challenges !
+      </ThemedText>
+      <ThemedText
+        style={styles.description}
+        colorType="textPrimary"
+        type="description"
+      >
+        Compete with your friends and people around you{"\n"}Become the goat and
+        win prizes!
+      </ThemedText>
 
+      {/* Logo */}
       <ThemedView style={styles.imageContainer}>
-        <Image style={styles.image} source={require(`${uri}goat.png`)} />
+        <Image style={styles.image} source={require(`${uri}icon_trans.png`)} />
       </ThemedView>
     </ThemedView>
   );
@@ -30,22 +54,21 @@ const styles = StyleSheet.create({
 
   ovalShape: {
     position: "absolute",
-    top: -height * 0.95,
-    left: -width * 0.8,
-    width: width * 1.8,
-    height: height * 1.5,
+    top: "-95%",
+    left: "-80%",
+    width: "180%",
+    height: "140%",
     borderRadius: width * 0.9,
-    backgroundColor: "#E6BC95",
     justifyContent: "center",
     paddingLeft: width * 0.3,
   },
 
   imageContainer: {
-    flex: 1,
+    width: "95%",
     justifyContent: "flex-end",
     alignItems: "flex-start",
-    paddingBottom: 30,
-    paddingLeft: 20,
+    alignSelf: "center",
+    paddingBottom: height * 0.04,
     backgroundColor: "transparent",
   },
 
@@ -55,10 +78,20 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    paddingTop: height * 0.2,
+    flex: 4,
+    paddingTop: height * 0.1,
     paddingLeft: width * 0.05,
-    fontSize: 70,
-    fontWeight: "900",
-    lineHeight: 56,
+  },
+
+  smallTitle: {
+    flex: 2,
+    alignSelf: "center",
+    textAlign: "center",
+    fontSize: 36,
+  },
+
+  description: {
+    flex: 2,
+    textAlign: "center",
   },
 });
