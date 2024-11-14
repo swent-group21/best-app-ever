@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
 
   user: {
-    width: width*0.8,
+    width: width * 0.8,
     flexDirection: "row",
     alignItems: "center",
     gap: width * 0.01,
@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
   },
 
   commentInput: {
-    height : height*0.05,
-    width: width*0.85,
+    height: height * 0.05,
+    width: width * 0.85,
     padding: 8,
     borderWidth: 2,
     borderRadius: 15,
