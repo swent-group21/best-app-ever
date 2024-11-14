@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
   const router = useRouter();
-  const uri = "./screens/auth/"
+  const uri = "./screens/auth/";
   return (
     <ThemedView style={styles.container}>
       {/* Background shapes */}

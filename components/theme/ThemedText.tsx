@@ -24,14 +24,5 @@ export function ThemedText({
     colorType ?? "textPrimary",
   );
 
-  return (
-    <Text
-      style={[
-        { color },
-        TextStyles[type],
-        style,
-      ]}
-      {...rest}
-    />
-  );
+  return <Text style={[{ color }, TextStyles[type], style]} {...rest} />;
 }
