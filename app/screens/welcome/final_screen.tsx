@@ -3,10 +3,7 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { useRouter } from "expo-router";
 import React from "react";
-import {
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

@@ -11,55 +11,109 @@ import { useFetchChallenge } from '@/types/ChallengeBuilder';
 const { width } = Dimensions.get("window");
 
 export function Challenge(challengeId: any) {
-    const router = useRouter();
-    const firestoreCtrl = new FirestoreCtrl();
-    const challengeData = useFetchChallenge(challengeId, firestoreCtrl);
+  const router = useRouter();
+  const firestoreCtrl = new FirestoreCtrl();
+  const challengeData = useFetchChallenge(challengeId, firestoreCtrl);
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [isLiked, setIsLiked] = useState(false);
-    const theme = useColorScheme() ?? 'light';
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const theme = useColorScheme() ?? 'light';
 
-    // Display loading state or handle absence of challenge data
-    if (!challengeData) {
-        return <ThemedText>Loading Challenge...</ThemedText>;
-    }
+  // Display loading state or handle absence of challenge data
+  if (!challengeData) {
+      return <ThemedText>Loading Challenge...</ThemedText>;
+  }
 
-    const { challengeName, description, image, userName, location, dateTime } = challengeData;
-    
-    return (
-    <ThemedView style={{backgroundColor: 'transparent'}}>
-        <TouchableOpacity
-            onPress={() => setIsOpen(!isOpen)}
-            activeOpacity={0.8}>
-            <ThemedView style={[styles.challenge, {height: 279}]}>
-                <Image source={image} style={styles.image}/>
-                
-                {isOpen 
-                && 
-                <ThemedView style={styles.container}>  
-                    <ThemedView style={[styles.user, {justifyContent: 'space-between'}]}>
-                        <ThemedView style={styles.user}>
-                            <ThemedIconButton iconName="person-circle-outline" onPress={() => {/* user button */}} size={45} color='white'/>
-                            <ThemedView style={styles.userInfo}>
-                                <ThemedText lightColor='white' darkColor='white' type='smallSemiBold'>{userName}</ThemedText>
-                                <ThemedText lightColor='white' darkColor='white' type='small'>{`in ${location || 'unknown'} at ${dateTime}`}</ThemedText>
-                            </ThemedView>
-                        </ThemedView>
-                        <ThemedIconButton iconName="chevron-expand-outline" onPress={() => {router.push("../home/maximize_screen")}} size={25} style={{paddingRight: 8}} color='white'/> 
-                    </ThemedView>
-                    <ThemedView style={styles.bottomBar}>
-                        <ThemedIconButton iconName="heart" onPress={() => {setIsLiked(!isLiked)}} size={25} color={isLiked ? 'red' : 'white'}/>
-                        <ThemedIconButton iconName="location-outline" onPress={() => {/* location button */}} size={25} color='white'/>
-                    </ThemedView>
+  const { challenge_name, description, image_id, uid, location, date } = challengeData;
+
+  return (
+    <ThemedView style={{ backgroundColor: "transparent" }}>
+      <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
+        <ThemedView style={[styles.challenge]}>
+          {/* Challenge Image */}
+          <Image
+            source={require("@/assets/images/challenge2.png")}
+            style={styles.image}
+          />
+
+          {isOpen && (
+            <ThemedView style={styles.container}>
+              <ThemedView
+                style={[styles.user, { justifyContent: "space-between" }]}
+              >
+                <ThemedView style={styles.user}>
+                  <ThemedIconButton
+                    iconName="person-circle-outline"
+                    onPress={() => {
+                      /* user button */
+                    }}
+                    size={45}
+                    color="white"
+                  />
+                  <ThemedView style={styles.userInfo}>
+                    <ThemedText
+                      lightColor="white"
+                      darkColor="white"
+                      type="smallSemiBold"
+                    >
+                      {uid}
+                    </ThemedText>
+                    <ThemedText
+                      lightColor="white"
+                      darkColor="white"
+                      type="small"
+                    >
+                      {"in " + userLocation + " at " + userTime}
+                    </ThemedText>
+                  </ThemedView>
                 </ThemedView>
-                }
+                <ThemedIconButton
+                  iconName="chevron-expand-outline"
+                  onPress={() => {
+                    router.push("../home/maximize_screen");
+                  }}
+                  size={25}
+                  style={{ paddingRight: 8 }}
+                  color="white"
+                />
+              </ThemedView>
+              <ThemedView style={styles.bottomBar}>
+                <ThemedIconButton
+                  iconName="heart"
+                  onPress={() => {
+                    setIsLiked(!isLiked);
+                  }}
+                  size={25}
+                  color={isLiked ? "red" : "white"}
+                />
+                <ThemedIconButton
+                  iconName="location-outline"
+                  onPress={() => {
+                    /* location button */
+                  }}
+                  size={25}
+                  color="white"
+                />
+              </ThemedView>
             </ThemedView>
-        </TouchableOpacity>
+          )}
+        </ThemedView>
+      </TouchableOpacity>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  heading: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  content: {
+    marginTop: 6,
+    marginLeft: 24,
+    marginRight: 24,
+  },
   challenge: {
     width: width - 20,
     height: 279,
@@ -67,33 +121,33 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.background,
   },
   image: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    position: "absolute",
+    width: "100%",
+    height: "100%",
     borderRadius: 15,
   },
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: 'transparent',
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
   },
   user: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 3,
     padding: 5,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   userInfo: {
-    flexDirection: 'column',
-    backgroundColor: 'transparent',
+    flexDirection: "column",
+    backgroundColor: "transparent",
   },
   bottomBar: {
-    flexDirection: 'row',
-    verticalAlign: 'middle',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    verticalAlign: "middle",
+    justifyContent: "space-between",
     padding: 15,
     gap: 3,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
 });

@@ -12,7 +12,10 @@ export default function WelcomeConceptScreen() {
       <ThemedView style={styles.ovalShape} />
       <ThemedView style={styles.textContainer}>
         <ThemedText style={styles.title}>Compete{"\n"}yourself</ThemedText>
-        <ThemedText style={styles.description}>Become the best version of yourself{"\n"}Interact with motivated people to reach your goals !</ThemedText>
+        <ThemedText style={styles.description}>
+          Become the best version of yourself{"\n"}Interact with motivated
+          people to reach your goals !
+        </ThemedText>
       </ThemedView>
     </ThemedView>
   );

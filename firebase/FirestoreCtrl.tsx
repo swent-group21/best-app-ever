@@ -1,13 +1,5 @@
-import {
-  firestore,
-  doc,
-  getDoc,
-  setDoc,
-  storage,
-  auth
-} from "./Firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-
+import { firestore, doc, getDoc, setDoc, storage, auth } from "./Firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export type DBUser = {
   uid: string;
@@ -37,7 +29,6 @@ export type DBComment = {
 };
 
 export default class FirestoreCtrl {
-  
   /**
    * Creates or updates a user document in Firestore.
    * @param userId The UID of the user.
@@ -114,6 +105,11 @@ export default class FirestoreCtrl {
     }
   }
 
+  async getName(id: string) {
+    const user = await this.getUser(id);
+    return user?.name;
+  }
+
   /**
    * Create a challenge using the challenge_id and DBChallenge
    */
@@ -141,15 +137,6 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
-
-  async getName(id : string) {
-    const user = await this.getUser(id);
-    return user?.name;
-  }
-
 }
-
-
-
 
 
