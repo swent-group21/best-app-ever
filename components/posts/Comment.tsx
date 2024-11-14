@@ -21,7 +21,7 @@ export function SingleComment(comment: CommentType) {
       }}
     >
       <ThemedIconButton
-        iconName="person-circle-outline"
+        name="person-circle-outline"
         onPress={() => {
           /* user button */
         }}

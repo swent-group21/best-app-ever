@@ -1,39 +1,49 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { TopBar } from "@/components/TopBar";
-import { BottomBar } from "@/components/BottomBar";
+import { TopBar } from "@/components/navigation/TopBar";
+import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+
+// Get the screen dimensions
+const { width, height } = Dimensions.get("window");
 
 export default function SetUsername() {
   const [username, setUsername] = React.useState("");
   const router = useRouter();
-  const uri = "@/assets/images/auth/SignUpScreen/";
   return (
     <ThemedView style={styles.screenContainer}>
-      <Image
-        source={require(`${uri}Ellipse 3.png`)}
-        style={styles.background}
-      />
+      {/* Background shape */}
+      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
+      {/* Top bar */}
       <TopBar
         leftIcon="arrow-back"
         leftAction={() => router.back()}
         title="Set up your profile"
       />
 
-      <ThemedView style={styles.mainContainer}>
-        <ThemedView style={styles.smallContainer}>
+      {/* Screen content */}
+      <ThemedScrollView
+        style={styles.mainContainer}
+        automaticallyAdjustKeyboardInsets={true}
+        colorType="transparent"
+      >
+        {/* Input fields */}
+        <ThemedView style={styles.smallContainer} colorType="transparent">
+          {/* Profile picture */}
           <ThemedIconButton
-            iconName="person-circle-outline"
+            name="person-circle-outline"
             size={300}
-            color="white"
+            colorType="textPrimary"
             onPress={() => router.push("../camera")}
           />
 
+          {/* Username input */}
           <ThemedTextInput
             onChangeText={setUsername}
             value={username}
@@ -43,9 +53,12 @@ export default function SetUsername() {
           />
         </ThemedView>
 
-        <ThemedText style={styles.title}>What will we see of you ?</ThemedText>
-      </ThemedView>
+        <ThemedText style={styles.title} type="subtitle">
+          What will we see of you ?
+        </ThemedText>
+      </ThemedScrollView>
 
+      {/* Bottom bar */}
       <BottomBar
         rightIcon="arrow-forward"
         rightAction={() => router.navigate("../home/home_screen")}
@@ -55,42 +68,38 @@ export default function SetUsername() {
 }
 
 const styles = StyleSheet.create({
+  ovalShapeOne: {
+    position: "absolute",
+    top: "79%",
+    left: "20%",
+    width: "130%",
+    height: "70%",
+    borderRadius: width * 0.7,
+  },
+
   screenContainer: {
     flex: 1,
-    alignItems: "center",
   },
 
   mainContainer: {
-    width: "100%",
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "space-around",
     flex: 1,
+    width: "100%",
   },
 
   smallContainer: {
     width: "100%",
-    backgroundColor: "transparent",
     alignItems: "center",
+    paddingBottom: height * 0.09,
   },
 
   title: {
-    fontSize: 25,
-    color: "white",
-    fontWeight: "bold",
-  },
-
-  background: {
-    position: "absolute",
-    bottom: 0,
-    left: 200,
-    transform: [{ rotate: "180deg" }],
+    textAlign: "center",
   },
 
   input: {
-    padding: 10,
     fontSize: 20,
+    padding: 8,
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 2,
   },
 });

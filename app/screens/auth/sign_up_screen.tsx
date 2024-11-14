@@ -1,23 +1,15 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-  Platform,
-  KeyboardAvoidingView,
-  Keyboard,
-  TextInput,
-  Alert,
-} from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { TouchableWithoutFeedback } from "react-native";
-import { isValidEmail, signUpWithEmail, logInWithGoogle } from "@/types/Auth";
+import { StyleSheet, Dimensions } from "react-native";
+import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+
 import { useRouter } from "expo-router";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { TopBar } from "@/components/navigation/TopBar";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { BottomBar } from "@/components/navigation/BottomBar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,238 +22,144 @@ export default function SignUp() {
   const router = useRouter();
   const firestoreCtrl = new FirestoreCtrl();
 
+  const namePlaceholder = "Sarah";
+  const surnamePlaceholder = "Connor";
+  const emailPlaceholder = "sarah.connor@gmail.com";
+  const passwordPlaceholder = "**********";
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <Image
-            source={require("@/assets/images/auth/SignUpScreen/Ellipse 3.png")}
-            style={styles.backroundimage}
-            testID="ellipse"
-          />
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <View style={styles.backround}>
-              <TouchableOpacity
-                style={styles.goBack}
-                onPress={() => router.back()}
-              >
-                <Ionicons name="arrow-back" size={24} color="white" />
-              </TouchableOpacity>
-              <Text style={styles.title}>Tell us about you!</Text>
-              <View style={styles.inputColumn}>
-                <Text style={styles.titleinput}>Name *</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Name"
-                  placeholderTextColor="#888"
-                  onChangeText={(text) => setName(text)}
-                  autoComplete="name"
-                />
+    <ThemedView style={styles.signUpScreen}>
+      {/* Background oval shape */}
+      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
-                <Text style={styles.titleinput}>Surname *</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Surname"
-                  placeholderTextColor="#888"
-                  onChangeText={(text) => setSurname(text)}
-                  autoComplete="family-name"
-                />
+      {/* Top bar */}
+      <TopBar
+        title="Set up your profile"
+        leftIcon="arrow-back"
+        leftAction={() => router.back()}
+      />
 
-                <Text style={styles.titleinput}>Email *</Text>
-                <TextInput
-                  style={
-                    isValidEmail(email) || email.length === 0
-                      ? styles.input
-                      : styles.inputWrong
-                  }
-                  placeholder="example@your.domain"
-                  placeholderTextColor="#888"
-                  autoComplete="email"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={(text) => setEmail(text)}
-                  maxLength={50}
-                />
+      {/* Screen content */}
+      <ThemedText style={styles.title} colorType="textPrimary" type="title">
+        Tell us about you !
+      </ThemedText>
 
-                <Text style={styles.titleinput}>Password *</Text>
-                <TextInput
-                  style={
-                    password.length >= 8 || password.length === 0
-                      ? styles.input
-                      : styles.inputWrong
-                  }
-                  placeholder="Password"
-                  placeholderTextColor="#888"
-                  secureTextEntry
-                  onChangeText={(text) => setPassword(text)}
-                />
+      {/* Input fields */}
+      <ThemedScrollView
+        style={styles.inputColumn}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        {/* Name */}
+        <ThemedTextInput
+          onChangeText={setName}
+          style={styles.input}
+          placeholder={namePlaceholder}
+          title="Name *"
+        />
 
-                <Text style={styles.titleinput}>Confirm Password *</Text>
-                <TextInput
-                  style={
-                    confirmPassword.length === 0 || password === confirmPassword
-                      ? styles.input
-                      : styles.inputWrong
-                  }
-                  placeholder="Confirm Password"
-                  placeholderTextColor="#888"
-                  secureTextEntry
-                  onChangeText={(text) => setConfirmPassword(text)}
-                />
+        {/* Surname */}
+        <ThemedTextInput
+          onChangeText={setSurname}
+          style={styles.input}
+          placeholder={surnamePlaceholder}
+          title="Surname *"
+        />
 
-                <TouchableOpacity
-                  style={styles.buttonStrive}
-                  testID="striveButton"
-                  onPress={() =>
-                    signUpWithEmail(
-                      name + surname,
-                      email,
-                      password,
-                      firestoreCtrl,
-                      router,
-                    )
-                  }
-                >
-                  <Text style={styles.buttonText}>Strive with us</Text>
-                </TouchableOpacity>
+        {/* Email */}
+        <ThemedTextInput
+          onChangeText={setEmail}
+          type="email"
+          style={
+            isValidEmail(email) || email.length == 0
+              ? styles.input
+              : styles.inputWrong
+          }
+          placeholder={emailPlaceholder}
+          title="Email *"
+        />
 
-                <Text style={styles.or}>OR</Text>
+        {/* Password */}
+        <ThemedTextInput
+          onChangeText={setPassword}
+          type="password"
+          style={
+            password.length >= 8 || password.length == 0
+              ? styles.input
+              : styles.inputWrong
+          }
+          placeholder={passwordPlaceholder}
+          title="Password *"
+        />
 
-                <TouchableOpacity
-                  style={styles.buttonContinueWith}
-                  testID="GoogleSign"
-                  onPress={() => {
-                    Alert.alert("Sign In with Google");
-                    router.navigate("../home/home_screen");
-                  }}
-                >
-                  <View style={styles.buttonIcon}>
-                    <Image
-                      source={require("@/assets/images/auth/SignUpScreen/google.png")}
-                      style={styles.icon}
-                    />
-                    <Text style={styles.buttonText}>Continue with Google</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        {/* Confirm Password */}
+        <ThemedTextInput
+          onChangeText={setConfirmPassword}
+          type="password"
+          style={
+            confirmPassword.length == 0 || password == confirmPassword
+              ? styles.input
+              : styles.inputWrong
+          }
+          placeholder={passwordPlaceholder}
+          title="Confirm Password *"
+        />
+      </ThemedScrollView>
+
+      {/* Bottom bar */}
+      <BottomBar
+        rightIcon="arrow-forward"
+        rightAction={() =>
+          signUpWithEmail(
+            name + surname,
+            email,
+            password,
+            firestoreCtrl,
+            router,
+          )
+        }
+      />
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  signUpScreen: {
     flex: 1,
   },
-  scrollView: {
-    flexGrow: 1,
-  },
-  input: {
-    width: "100%",
-    height: height * 0.06,
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: "#ccc",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-  title: {
-    fontSize: width * 0.14,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "right",
-    paddingTop: height * 0.12,
-    paddingBottom: height * 0.05,
-  },
-  buttonStrive: {
-    width: "100%",
-    height: height * 0.05,
-    backgroundColor: "#E6BC95",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  or: {
-    position: "relative",
-    textAlign: "center",
-    height: height * 0.04,
-    fontSize: width * 0.03,
-    textAlignVertical: "center",
-    color: "black",
-    paddingTop: height * 0.02,
-  },
-  backround: {
-    backgroundColor: "transparent",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  titleinput: {
-    fontSize: width * 0.04,
-    color: "black",
-    width: "100%",
-    textAlign: "left",
-    marginBottom: height * 0.01,
-  },
-  backroundimage: {
+
+  ovalShape: {
     position: "absolute",
-    top: 0,
-    left: 0,
-  },
-  buttonText: {
-    fontSize: width * 0.045,
-    color: "black",
+    top: "-110%",
+    left: "-100%",
+    width: "180%",
+    height: "140%",
+    borderRadius: width * 0.9,
   },
   inputColumn: {
-    width: "83%",
-    height: "60%",
+    width: "90%",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: height * 0.001,
+    alignSelf: "center",
   },
-  buttonContinueWith: {
-    width: "100%",
-    height: height * 0.05,
-    backgroundColor: "#F5F5F5",
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
+
+  title: {
+    textAlign: "right",
+    paddingHorizontal: width * 0.1,
+    marginBottom: height * 0.05,
+  },
+
+  input: {
+    height: height * 0.06,
     marginBottom: height * 0.02,
-  },
-  buttonIcon: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  icon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
+    paddingLeft: width * 0.05,
+    borderWidth: 2,
+    borderRadius: 15,
   },
   inputWrong: {
-    width: "100%",
     height: height * 0.06,
+    marginBottom: height * 0.02,
+    paddingLeft: width * 0.05,
     borderWidth: 1,
     borderRadius: 15,
     borderColor: "red",
-    paddingLeft: 20,
-    marginBottom: height * 0.02,
-  },
-  goBack: {
-    position: "absolute",
-    top: height * 0.05,
-    left: width * 0.05,
-    width: width * 0.1,
-    height: width * 0.1,
-    backgroundColor: "black",
-    borderRadius: 90,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

@@ -43,7 +43,7 @@ export function Challenge(challengeId: any) {
               >
                 <ThemedView style={styles.user}>
                   <ThemedIconButton
-                    iconName="person-circle-outline"
+                    name="person-circle-outline"
                     onPress={() => {
                       /* user button */
                     }}
@@ -68,7 +68,7 @@ export function Challenge(challengeId: any) {
                   </ThemedView>
                 </ThemedView>
                 <ThemedIconButton
-                  iconName="chevron-expand-outline"
+                  name="chevron-expand-outline"
                   onPress={() => {
                     router.push("../home/maximize_screen");
                   }}
@@ -79,7 +79,7 @@ export function Challenge(challengeId: any) {
               </ThemedView>
               <ThemedView style={styles.bottomBar}>
                 <ThemedIconButton
-                  iconName="heart"
+                  name={isLiked ? "heart" : "heart-outline"}
                   onPress={() => {
                     setIsLiked(!isLiked);
                   }}
@@ -87,7 +87,7 @@ export function Challenge(challengeId: any) {
                   color={isLiked ? "red" : "white"}
                 />
                 <ThemedIconButton
-                  iconName="location-outline"
+                  name="location-outline"
                   onPress={() => {
                     /* location button */
                   }}
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     width: width - 20,
     height: 279,
     borderRadius: 15,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.light.transparent,
   },
   image: {
     position: "absolute",
