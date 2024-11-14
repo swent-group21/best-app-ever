@@ -30,7 +30,6 @@ export type DBComment = {
 };
 
 export default class FirestoreCtrl {
-
   /**
    * Creates or updates a user document in Firestore.
    * @param userId The UID of the user.

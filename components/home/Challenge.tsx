@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { StyleSheet, TouchableOpacity, useColorScheme, Dimensions, Image } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
 import { useRouter } from "expo-router";
+import FirestoreCtrl, { DBUser } from '@/firebase/FirestoreCtrl';
+import { async } from '@firebase/util';
 
 const { width, height } = Dimensions.get("window");
 
@@ -12,6 +14,25 @@ export function Challenge({ challengeDB, index }: any) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [user, setUser] = useState<DBUser>();
+
+  useEffect(() => {
+    if (challengeDB.uid){
+      const firestoreCtrl = new FirestoreCtrl();
+
+      const fetchUser = async() => {
+        try {
+          const userData = await firestoreCtrl.getUser(challengeDB.uid);
+          console.log("User", userData);
+          setUser(userData);
+        } catch (error) {
+          console.error("Error fetching challenges: ", error);
+        }
+      };
+
+      fetchUser();
+    }
+  }, [user]);
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -50,7 +71,7 @@ export function Challenge({ challengeDB, index }: any) {
                         darkColor="white"
                         type="smallSemiBold"
                       >
-                        {challengeDB.uid}
+                        {user?.name}
                       </ThemedText>
                       <ThemedText
                         lightColor="white"
