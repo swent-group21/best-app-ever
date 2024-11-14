@@ -26,7 +26,7 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { useRouter } from "expo-router";
+import Nav from "@/navigation/Navigation"
 
 export default function CameraTest() {
   const [facing, setFacing] = useState<CameraType>("back");
@@ -44,7 +44,7 @@ export default function CameraTest() {
   const cameraPictureOptions: CameraPictureOptions = {
     base64: true,
   };
-  const router = useRouter();
+  const router = Nav();
 
   const onPinch = useCallback(
     (event: any) => {
