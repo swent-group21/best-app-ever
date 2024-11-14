@@ -77,7 +77,7 @@ export const signUpWithEmail = async (
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
-            router.navigate("../home/home_screen");
+            router.navigate("../auth/set_up_screen");
           })
           .catch((error) => {
             console.log(
