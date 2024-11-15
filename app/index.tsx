@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Nav } from "@/navigation/Navigation";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationIndependentTree, } from "@react-navigation/native";
 
 import { registerRootComponent } from "expo";
 
@@ -11,9 +11,9 @@ function App(){
   const firestoreCtrl = new FirestoreCtrl();
 
   return (
-    <NavigationContainer>
+    <NavigationIndependentTree>
       <Nav isLoggedIn={isLoggedIn} firestoreCtrl={firestoreCtrl}/>
-    </NavigationContainer>
+    </NavigationIndependentTree>
   );
 }
 
