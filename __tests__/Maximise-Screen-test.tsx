@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import MaximizeScreen from "@/app/screens/home/maximize_screen";  // Update with your file path if different
+import MaximizeScreen from "@/app/screens/home/maximize_screen"; // Update with your file path if different
 
 describe("MaximizeScreen Component UI Tests", () => {
   it("renders the TopBar with the correct title", () => {
@@ -31,7 +31,7 @@ describe("MaximizeScreen Component UI Tests", () => {
     expect(likeButton).toBe("white");
 
     fireEvent.press(likeButton);
-    expect(likeButton).toBe( "red");
+    expect(likeButton).toBe("red");
 
     fireEvent.press(likeButton);
     expect(likeButton).toBe("white");
@@ -56,4 +56,3 @@ describe("MaximizeScreen Component UI Tests", () => {
     expect(getByText("New comment")).toBeTruthy();
   });
 });
-

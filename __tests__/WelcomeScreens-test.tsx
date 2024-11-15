@@ -13,7 +13,6 @@ describe("WelcomeScreens Component", () => {
     );
   });
 
-
   it("renders the final screen", () => {
     TestTextAppearsOnScreen("Ready to\nStrive?");
   });

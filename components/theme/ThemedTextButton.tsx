@@ -29,7 +29,6 @@ export function ThemedTextButton({
   textType,
   colorType,
   textColorType = "backgroundPrimary",
-  
 }: ThemedTextButtonProps) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
