@@ -40,7 +40,11 @@ export function TopBar({
         <View style={styles.placeholder} />
       )}
       {title && (
-        <ThemedText style={styles.title} colorType={colorType} testID={`topTitle-${title}`}>
+        <ThemedText
+          style={styles.title}
+          colorType={colorType}
+          testID={`topTitle-${title}`}
+        >
           {title}
         </ThemedText>
       )}
