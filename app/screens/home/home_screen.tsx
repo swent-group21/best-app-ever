@@ -1,15 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
+import { auth } from "@/firebase/Firebase"; // Import auth
+import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
+  const [challenges, setChallenges] = useState<DBChallenge[]>([]);
+  const [uid, setUid] = useState<string | null>(null); // Add this line
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUid(user.uid);
+      } else {
+        setUid(null);
+      }
+    });
+
+    // Cleanup the listener on unmount
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (uid) {
+      const fetchChallenges = async () => {
+        try {
+          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
+          console.log("Challenges", challengesData);
+          setChallenges(challengesData);
+        } catch (error) {
+          console.error("Error fetching challenges: ", error);
+        }
+      };
+
+      fetchChallenges();
+    }
+  }, [uid]);
+
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -24,9 +59,13 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-        <Challenge title="Challenge 1"></Challenge>
-        <Challenge title="Challenge 2"></Challenge>
-        <Challenge title="Challenge 3"></Challenge>
+        {challenges.map((challenge, index) => (
+          <Challenge
+            key={index}
+            challengeDB={challenge}
+            // Include other props as needed
+          />
+        ))}
       </ThemedScrollView>
 
       <BottomBar

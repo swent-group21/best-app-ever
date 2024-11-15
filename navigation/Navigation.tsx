@@ -12,6 +12,8 @@ import SignInScreen from "@/app/screens/auth/sign_in_screen";
 import ForgotPasswordScreen from "@/app/screens/auth/forgot_password_screen";
 import Camera from "@/app/screens/camera";
 import SetUsername from "@/app/screens/auth/set_up_screen";
+import MaximizeScreen from "@/app/screens/home/maximize_screen";
+import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 
 const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
 

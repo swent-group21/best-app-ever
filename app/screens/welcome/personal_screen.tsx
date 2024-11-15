@@ -1,4 +1,3 @@
-import { Challenge } from "@/components/home/Challenge";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
@@ -21,9 +20,6 @@ export default function WelcomeConceptScreen({ navigation }: any) {
       >
         Building up memories{" "}
       </ThemedText>
-      <ThemedView style={styles.challengeContainer} colorType="transparent">
-        <Challenge title="" />
-      </ThemedView>
       <ThemedText
         style={styles.description}
         colorType="textPrimary"

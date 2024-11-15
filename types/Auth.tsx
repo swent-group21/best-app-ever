@@ -27,7 +27,24 @@ export const logInWithEmail = async (
       const response = await signInWithEmailAndPassword(auth, email, password);
       // Checks that the user exists in auth
       if (response.user) {
-        const user = await firestoreCtrl.getUser(response.user.uid);
+        // Checks that the user's info exists in the database
+        const user = await firestoreCtrl
+          .getUser(response.user.uid)
+          .catch(() => {
+            // User might not exist in the database
+            firestoreCtrl
+              .createUser(response.user.uid, {
+                uid: response.user.uid || "",
+                name: response.user.displayName || "",
+                email: response.user.email || "",
+                createdAt: new Date(),
+              })
+              .then(() => {
+                alert("User did not exist. Please set up your profile.");
+                navigation.navigate("SetUser");
+              });
+          });
+        // User exists in both auth and database
         if (user) {
           navigation.reset({
             index: 0,
@@ -55,6 +72,7 @@ export const signUpWithEmail = async (
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userData: DBUser = {
+          uid: userCredential.user.uid,
           name: userName,
           email: email,
           createdAt: new Date(),

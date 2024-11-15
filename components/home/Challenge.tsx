@@ -1,106 +1,121 @@
-import { PropsWithChildren, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-  Dimensions,
-  Image,
-} from "react-native";
-
+import { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
-// Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-export function Challenge({ navigation }: any) {
-  //image: string
-
+export function Challenge({ challengeDB, index, navigation }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [user, setUser] = useState<DBUser>();
 
-  const height = 279; // derived from the height of the image
-  const userName = "Sandraa"; // derived from the name of the user
-  const userLocation = "Plage de Vidy"; // derived from the location of the user
-  const userTime = "18:26"; // derived from the time the user posted the challenge
+  useEffect(() => {
+    if (challengeDB.uid) {
+      const firestoreCtrl = new FirestoreCtrl();
 
-  return (
-    <ThemedView style={{ backgroundColor: "transparent" }}>
-      <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
-        <ThemedView style={[styles.challenge, { height: height }]}>
-          {/* Challenge Image */}
-          <Image
-            source={require("@/assets/images/challenge2.png")}
-            style={styles.image}
-          />
+      const fetchUser = async () => {
+        try {
+          const userData = await firestoreCtrl.getUser(challengeDB.uid);
+          setUser(userData);
+        } catch (error) {
+          console.error("Error fetching challenges: ", error);
+        }
+      };
 
-          {isOpen && (
-            <ThemedView style={styles.container}>
-              <ThemedView
-                style={[styles.user, { justifyContent: "space-between" }]}
-              >
-                <ThemedView style={styles.user}>
+      fetchUser();
+    }
+  }, [user]);
+
+  // Display loading state or handle absence of challenge data
+  if (!challengeDB) {
+    return <ThemedText>Loading Challenge...</ThemedText>;
+  } else {
+    return (
+      <ThemedView style={{ backgroundColor: "transparent" }}>
+        <TouchableOpacity
+          onPress={() => setIsOpen(!isOpen)}
+          activeOpacity={0.8}
+        >
+          <ThemedView style={[styles.challenge]}>
+            {/* 
+              Challenge Image 
+              source={{uri: challengeData.image_id}}
+            */}
+            <Image
+              source={require("@/assets/images/challenge2.png")}
+              style={styles.image}
+            />
+
+            {isOpen && (
+              <ThemedView style={styles.container}>
+                <ThemedView
+                  style={[styles.user, { justifyContent: "space-between" }]}
+                >
+                  <ThemedView style={styles.user}>
+                    <ThemedIconButton
+                      name="person-circle-outline"
+                      onPress={() => {
+                        /* user button */
+                      }}
+                      size={45}
+                      color="white"
+                    />
+                    <ThemedView style={styles.userInfo}>
+                      <ThemedText
+                        lightColor="white"
+                        darkColor="white"
+                        type="smallSemiBold"
+                      >
+                        {user?.name}
+                      </ThemedText>
+                      <ThemedText
+                        lightColor="white"
+                        darkColor="white"
+                        type="small"
+                      >
+                        {"at " + challengeDB.date}
+                      </ThemedText>
+                    </ThemedView>
+                  </ThemedView>
                   <ThemedIconButton
-                    name="person-circle-outline"
+                    name="chevron-expand-outline"
                     onPress={() => {
-                      /* user button */
+                      navigation.navigate("MaxScreen");
                     }}
-                    size={45}
+                    size={25}
+                    style={{ paddingRight: 8 }}
                     color="white"
                   />
-                  <ThemedView style={styles.userInfo}>
-                    <ThemedText
-                      lightColor="white"
-                      darkColor="white"
-                      type="smallSemiBold"
-                    >
-                      {userName}
-                    </ThemedText>
-                    <ThemedText
-                      lightColor="white"
-                      darkColor="white"
-                      type="small"
-                    >
-                      {"in " + userLocation + " at " + userTime}
-                    </ThemedText>
-                  </ThemedView>
                 </ThemedView>
-                <ThemedIconButton
-                  name="chevron-expand-outline"
-                  onPress={() => {
-                    router.push("../home/maximize_screen");
-                  }}
-                  size={25}
-                  style={{ paddingRight: 8 }}
-                  color="white"
-                />
+                <ThemedView style={styles.bottomBar}>
+                  <ThemedIconButton
+                    name={isLiked ? "heart" : "heart-outline"}
+                    onPress={() => {
+                      setIsLiked(!isLiked);
+                    }}
+                    size={25}
+                    color={isLiked ? "red" : "white"}
+                  />
+                  <ThemedIconButton
+                    name="location-outline"
+                    onPress={() => {
+                      /* location button */
+                    }}
+                    size={25}
+                    color="white"
+                  />
+                </ThemedView>
               </ThemedView>
-              <ThemedView style={styles.bottomBar}>
-                <ThemedIconButton
-                  name={isLiked ? "heart" : "heart-outline"}
-                  onPress={() => {
-                    setIsLiked(!isLiked);
-                  }}
-                  size={25}
-                  color={isLiked ? "red" : "white"}
-                />
-                <ThemedIconButton
-                  name="location-outline"
-                  onPress={() => {
-                    /* location button */
-                  }}
-                  size={25}
-                  color="white"
-                />
-              </ThemedView>
-            </ThemedView>
-          )}
-        </ThemedView>
-      </TouchableOpacity>
-    </ThemedView>
-  );
+            )}
+          </ThemedView>
+        </TouchableOpacity>
+      </ThemedView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
