@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { RootStackParamList } from "@/types/RootStackParamList";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -26,56 +25,47 @@ interface AppStackProps {
 
 export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, firestoreCtrl}) => {
   return (
-    <NavigationContainer>
-      <Navigator
-        initialRouteName={isLoggedIn}
-        screenOptions={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: "#f9f9f9",
-          },
-          headerTintColor: "#000",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
-        <Group>
-          <Screen name="Welcome" options={{ title: "Login to Strive" }}>
-            {(props: any) => <WelcomeScreens {...props} />}
-          </Screen>
-          <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
-            {(props: any) => <WelcomeFinalScreen {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="SignUp">
-            {(props: any) => <SignUp {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="SignIn">
-            {(props: any) => <SignInScreen {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="ForgotPassword">
-            {(props: any) => <ForgotPasswordScreen {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="SetUp">
-            {(props: any) => <SetUsername {...props} firestoreCtrl={ firestoreCtrl }/>}
-          </Screen>
-        </Group>
-        <Group>
-          <Screen name="Home">
-            {(props: any) => <HomeScreen {...props} user={ user } firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="Camera">
-            {(props: any) => <Camera {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="MaxScreen">
-            {(props: any) => <MaximizeScreen {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-          <Screen name="CreateChallenge">
-            {(props: any) => <CreateChallengeScreen {...props} firestoreCtrl={ firestoreCtrl } />}
-          </Screen>
-        </Group>
-      </Navigator>
-      
-    </NavigationContainer>
+    <Navigator
+      initialRouteName={isLoggedIn}
+      screenOptions={{
+        headerShown: false,
+        headerStyle: {
+          backgroundColor: "#f9f9f9",
+        },
+        headerTintColor: "#000",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
+      <Group>
+        <Screen name="Welcome" options={{ title: "Login to Strive" }}>
+          {(props: any) => <WelcomeScreens {...props} />}
+        </Screen>
+        <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
+          {(props: any) => <WelcomeFinalScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
+        </Screen>
+        <Screen name="SignUp">
+          {(props: any) => <SignUp {...props} firestoreCtrl={{ firestoreCtrl }} />}
+        </Screen>
+        <Screen name="SignIn">
+          {(props: any) => <SignInScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
+        </Screen>
+        <Screen name="ForgotPassword">
+          {(props: any) => <ForgotPasswordScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
+        </Screen>
+        <Screen name="SetUp">
+          {(props: any) => <SetUsername {...props} firestoreCtrl={{ firestoreCtrl }}/>}
+        </Screen>
+      </Group>
+      <Group>
+        <Screen name="Home">
+          {(props: any) => <HomeScreen {...props} user={{ user }} firestoreCtrl={{ firestoreCtrl }}/>}
+        </Screen>
+        <Screen name="Camera">
+          {(props: any) => <Camera {...props} firestoreCtrl={{ firestoreCtrl }} />}
+        </Screen>
+      </Group>
+    </Navigator>
   );
 }

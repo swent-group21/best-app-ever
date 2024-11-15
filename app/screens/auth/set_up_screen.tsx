@@ -7,12 +7,31 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { TouchableOpacity, Image } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function SetUsername({ navigation }: any) {
   const [username, setUsername] = React.useState("");
+
+  const router = useRouter();
+  const [image, setImage] = React.useState<string | null>(null);
+  const pickImage = async () => {
+    console.log("Loading image");
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      console.log("Couldn't load image");
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}
@@ -34,6 +53,7 @@ export default function SetUsername({ navigation }: any) {
         {/* Input fields */}
         <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
+
           <ThemedIconButton
             name="person-circle-outline"
             size={300}
@@ -99,5 +119,11 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 10,
     borderWidth: 2,
+  },
+  image: {
+    width: 220,
+    height: 220,
+    borderRadius: 100,
+    marginBottom: 40,
   },
 });

@@ -39,7 +39,6 @@ First, import the necessary modules in your navigation file (e.g., `Nav.tsx`):
 
 ```tsx
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 ```
 
@@ -199,49 +198,6 @@ Use the `navigation` prop to navigate to the new screen from any component:
 
 ```tsx
 navigation.navigate('Profile');
-```
-
-## Full Example
-
-Below is a simplified version of the navigation code, incorporating all the concepts:
-
-```tsx
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-
-import WelcomeScreen from './screens/WelcomeScreen';
-import HomeScreen from './screens/HomeScreen';
-import ProfileScreen from './screens/ProfileScreen';
-
-const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
-
-const App: React.FC = () => {
-  return (
-    <NavigationContainer>
-      <Navigator initialRouteName="Welcome">
-        {/* Authentication Screens */}
-        <Group
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Screen name="Welcome" component={WelcomeScreen} />
-          {/* Add other auth screens here */}
-        </Group>
-
-        {/* Main Application Screens */}
-        <Group>
-          <Screen name="Home" component={HomeScreen} />
-          <Screen name="Profile" component={ProfileScreen} />
-          {/* Add other main screens here */}
-        </Group>
-      </Navigator>
-    </NavigationContainer>
-  );
-};
-
-export default App;
 ```
 
 ## Conclusion

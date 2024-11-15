@@ -27,6 +27,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
           type="email"
           title="Email"
           viewWidth={"90%"}
+          testID="emailInput"
         />
 
         {/* Buttons */}
@@ -38,6 +39,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
             text="Cancel"
             textType="defaultSemiBold"
             textColorType="textOverLight"
+            testID="cancelButton"
           />
           {/* Reset password button */}
           <ThemedTextButton
@@ -46,6 +48,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
             text="Reset Password"
             textType="defaultSemiBold"
             textColorType="textOverLight"
+            testID="resetPasswordButton"
           />
         </ThemedView>
       </ThemedView>
