@@ -6,7 +6,7 @@ import { StyleSheet, Dimensions, Image } from "react-native";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeIntroScreen() {
+export default function WelcomeIntroScreen({ navigation }: any) {
   // Logo image uri
   const uri = "@/assets/images/";
   return (

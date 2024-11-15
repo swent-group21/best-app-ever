@@ -11,21 +11,15 @@ import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { useRouter } from "expo-router";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-export function Challenge({
-  children,
-  title,
-}: PropsWithChildren & { title: string }) {
+export function Challenge({ navigation }:any) {
   //image: string
-  const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const theme = useColorScheme() ?? "light";
 
   const height = 279; // derived from the height of the image
   const userName = "Sandraa"; // derived from the name of the user

@@ -5,13 +5,11 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import App from "@/app/App";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen() {
-  const router = App();
+export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -35,7 +33,7 @@ export default function HomeScreen() {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-        centerAction={() => router.push("../camera")}
+        centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>
   );

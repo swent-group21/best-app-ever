@@ -3,13 +3,12 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import App from "@/app/App";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function ForgotPasswordScreen() {
-  const router = App();
+export default function ForgotPasswordScreen({ navigation }: any) {
+
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}
@@ -35,7 +34,7 @@ export default function ForgotPasswordScreen() {
           {/* Cancel button */}
           <ThemedTextButton
             style={styles.buttonCancel}
-            onPress={() => router.back()}
+            onPress={() => navigation.goBack()}
             text="Cancel"
             textType="defaultSemiBold"
             textColorType="textOverLight"

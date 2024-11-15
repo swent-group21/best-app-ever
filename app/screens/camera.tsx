@@ -25,10 +25,8 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import App from "@/app/App";
 
-export default function CameraTest() {
+export default function Camera({ navigation, firestoreCtrl }: any) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const camera = useRef<CameraView>(null);
@@ -40,11 +38,9 @@ export default function CameraTest() {
   const [zoom, setZoom] = useState(0);
   const [lastZoom, setLastZoom] = useState(0);
 
-  const firestoreCtrl = new FirestoreCtrl();
   const cameraPictureOptions: CameraPictureOptions = {
     base64: true,
   };
-  const router = App();
 
   const onPinch = useCallback(
     (event: any) => {
@@ -185,7 +181,7 @@ export default function CameraTest() {
             style={styles.send}
             onPress={() => {
               picture ? firestoreCtrl.uploadImageFromUri(picture?.uri) : null;
-              router.push("./home/home_screen");
+              navigation.navigate("Home");
             }}
           >
             <Ionicons name="send" size={30} color="white" />
