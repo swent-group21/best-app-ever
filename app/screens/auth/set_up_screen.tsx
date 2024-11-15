@@ -52,13 +52,13 @@ export default function SetUsername() {
         {/* Input fields */}
         <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
-          <ThemedIconButton onPress={pickImage} style = {styles.smallContainer} name = "">
+          <TouchableOpacity onPress={pickImage} style = {styles.smallContainer} >
           {!image ? (
             <ThemedIconButton name="person-circle-outline" size={300} color="white" onPress={pickImage} />
           ) : (
             <Image source={{ uri: image }} style={styles.image} />
           )}
-        </ThemedIconButton>
+        </TouchableOpacity>
 
           {/* Username input */}
           <ThemedTextInput
