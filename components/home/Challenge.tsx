@@ -20,7 +20,6 @@ export function Challenge({ challengeDB, index, navigation }: any) {
       const fetchUser = async() => {
         try {
           const userData = await firestoreCtrl.getUser(challengeDB.uid);
-          console.log("User", userData);
           setUser(userData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);

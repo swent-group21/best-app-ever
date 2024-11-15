@@ -96,7 +96,7 @@ export default class FirestoreCtrl {
       await uploadBytes(storageRef, blob);
 
       const downloadUrl = await getDownloadURL(storageRef);
-
+      console.log("DownloadUrl", downloadUrl)
       return downloadUrl;
     } catch (error) {
       console.error("Error uploading image: ", error);

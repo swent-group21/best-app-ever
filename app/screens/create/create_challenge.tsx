@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { createChallenge } from '@/types/ChallengeBuilder';
-import { useRouter } from 'expo-router';
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 
-const CreateChallengeScreen = (image_id: string) => {
-  const firestoreCtrl = new FirestoreCtrl();
+const CreateChallengeScreen = ({ navigation, image_id, firestoreCtrl}: any) => {
 
   const [challenge_name, setChallengeName] = useState('');
   const [description, setDescription] = useState('');
-
-  const router = useRouter();
+  console.log("image_id", image_id)
 
   async function makeChallenge(){
     try {
@@ -25,7 +21,7 @@ const CreateChallengeScreen = (image_id: string) => {
         date,
         description,
       )      
-      router.navigate("../home/home_screen");
+      navigation.navigate("Home");
 
     } catch (error) {
       console.log("Unable to create challenge");
