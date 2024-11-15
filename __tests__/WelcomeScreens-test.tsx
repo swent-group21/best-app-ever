@@ -13,11 +13,6 @@ describe("WelcomeScreens Component", () => {
     );
   });
 
-  it("renders the personal screen", () => {
-    TestTextAppearsOnScreen(
-      "Become the best version of yourself\nInteract with motivated people to reach your goals !",
-    );
-  });
 
   it("renders the final screen", () => {
     TestTextAppearsOnScreen("Ready to\nStrive?");

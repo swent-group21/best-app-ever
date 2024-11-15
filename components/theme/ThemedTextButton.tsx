@@ -16,6 +16,7 @@ interface ThemedTextButtonProps extends TouchableOpacityProps {
   textStyle?: TextStyle;
   textColorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
   textType?: keyof typeof TextStyles;
+  testID?: string;
 }
 
 export function ThemedTextButton({
@@ -28,6 +29,7 @@ export function ThemedTextButton({
   textType,
   colorType,
   textColorType = "backgroundPrimary",
+  
 }: ThemedTextButtonProps) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },

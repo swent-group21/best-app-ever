@@ -32,3 +32,4 @@ function TestButtonAppearsOnScreen(text: string) {
 
   expect(getByTestId(text)).toBeTruthy();
 }
+
