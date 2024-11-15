@@ -9,13 +9,12 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { getAuth } from "firebase/auth";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import Nav from "@/navigation/Navigation"
-
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen() {
-  const router = Nav();
+  const router = useRouter();
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);

@@ -5,14 +5,13 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import Nav from "@/navigation/Navigation"
-
+import { useRouter } from "expo-router";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen() {
-  const router = Nav();
+  const router = useRouter();
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar

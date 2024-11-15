@@ -3,13 +3,13 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import Nav from "@/navigation/Navigation"
+import { useRouter } from "expo-router";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeConceptScreen() {
-  const router = Nav();
+  const router = useRouter();
   const uri = "./screens/auth/";
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
@@ -36,7 +36,6 @@ export default function WelcomeConceptScreen() {
           textStyle={styles.buttonText}
           textColorType="textOverLight"
         />
-
 
         {/* Sign up button */}
         <ThemedTextButton

@@ -13,14 +13,13 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedText } from "@/components/theme/ThemedText";
-import Nav from "@/navigation/Navigation"
-
+import { useRouter } from "expo-router";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function SignInScreen() {
-  const router = Nav();
+  const router = useRouter();
   const firestoreCtrl = new FirestoreCtrl();
 
   const [email, setEmail] = useState("");
