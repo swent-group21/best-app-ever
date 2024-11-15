@@ -1,4 +1,15 @@
-import { firestore, doc, addDoc, getDoc, getDocs, setDoc, auth, collection, query, where } from "./Firebase";
+import {
+  firestore,
+  doc,
+  addDoc,
+  getDoc,
+  getDocs,
+  setDoc,
+  auth,
+  collection,
+  query,
+  where,
+} from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export type DBUser = {
@@ -62,7 +73,7 @@ export default class FirestoreCtrl {
           uid = currUser.uid;
         } else {
           // Use the anonymous user account ID
-          uid = 'rhf9LyQ4r1UGZWtepzFENAjJQfo2';
+          uid = "rhf9LyQ4r1UGZWtepzFENAjJQfo2";
         }
       }
       const userRef = doc(firestore, "users", uid);
@@ -80,7 +91,7 @@ export default class FirestoreCtrl {
   /**
    * Upload an image to Firestore storage.
    */
-  async uploadImageFromUri(imageUri:string) {
+  async uploadImageFromUri(imageUri: string) {
     try {
       if (!imageUri) {
         throw new Error("No image URI provided.");
@@ -89,14 +100,14 @@ export default class FirestoreCtrl {
       const response = await fetch(imageUri);
       const blob = await response.blob();
 
-      const id_picture = (Math.random()+1).toString(36).substring(2);
-      const storageRef = ref(getStorage(), "images/" + id_picture); 
+      const id_picture = (Math.random() + 1).toString(36).substring(2);
+      const storageRef = ref(getStorage(), "images/" + id_picture);
       console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       const downloadUrl = await getDownloadURL(storageRef);
-      console.log("DownloadUrl", downloadUrl)
+      console.log("DownloadUrl", downloadUrl);
       return downloadUrl;
     } catch (error) {
       console.error("Error uploading image: ", error);
@@ -115,11 +126,14 @@ export default class FirestoreCtrl {
    */
   async newChallenge(challengeData: DBChallenge): Promise<void> {
     try {
-      const docRef = await addDoc(collection(firestore, "challenges"), challengeData);
-      console.log("Challenge id: ", docRef.id)
+      const docRef = await addDoc(
+        collection(firestore, "challenges"),
+        challengeData,
+      );
+      console.log("Challenge id: ", docRef.id);
     } catch (error) {
       console.error("Error writting challenge document: ", error);
-      throw error
+      throw error;
     }
   }
 
@@ -142,10 +156,10 @@ export default class FirestoreCtrl {
   }
 
   /**
-  * Retrieves all challenges created by a specific user.
-  * @param uid The UID of the user whose challenges are to be fetched.
-  * @returns A promise that resolves to an array of challenges.
-  */
+   * Retrieves all challenges created by a specific user.
+   * @param uid The UID of the user whose challenges are to be fetched.
+   * @returns A promise that resolves to an array of challenges.
+   */
   async getChallengesByUserId(uid: string): Promise<DBChallenge[]> {
     try {
       const challengesRef = collection(firestore, "challenges");
@@ -167,5 +181,3 @@ export default class FirestoreCtrl {
     }
   }
 }
-
-

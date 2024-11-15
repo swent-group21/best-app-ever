@@ -5,7 +5,7 @@ import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
  */
 export const buildChallenge = async (
   challengeId: string,
-  firestoreCtrl: FirestoreCtrl
+  firestoreCtrl: FirestoreCtrl,
 ): Promise<DBChallenge> => {
   try {
     // Fetch the challenge data from Firestore
@@ -44,13 +44,12 @@ export const createChallenge = async (
   comment_id?: string,
 ): Promise<void> => {
   try {
-
     // Prepare the challenge data for Firestore
     const user: DBUser = await firestoreCtrl.getUser();
-    console.log("createChallenge uid", user.uid)
+    console.log("createChallenge uid", user.uid);
     const newChallenge: DBChallenge = {
       challenge_name: challenge_name,
-      description: description || '',
+      description: description || "",
       uid: user.uid,
       date: date,
       // Add other fields as needed
@@ -58,9 +57,7 @@ export const createChallenge = async (
 
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
-    
   } catch (error) {
     console.error("Error creating challenge: ", error);
   }
 };
-

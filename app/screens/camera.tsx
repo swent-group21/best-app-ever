@@ -181,8 +181,12 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
           <TouchableOpacity
             style={styles.send}
             onPress={() => {
-              let picture_id: string = firestoreCtrl.uploadImageFromUri(picture?.uri); 
-              navigation.navigate("CreateChallenge", { picture_id: picture_id});
+              let picture_id: string = firestoreCtrl.uploadImageFromUri(
+                picture?.uri,
+              );
+              navigation.navigate("CreateChallenge", {
+                picture_id: picture_id,
+              });
             }}
           >
             <Ionicons name="send" size={30} color="white" />

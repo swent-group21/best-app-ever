@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Colors } from '@/constants/Colors';
-import { ThemedText } from '@/components/theme/ThemedText';
-import { ThemedView } from '@/components/theme/ThemedView';
-import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
-import FirestoreCtrl, { DBUser } from '@/firebase/FirestoreCtrl';
+import { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,10 +14,10 @@ export function Challenge({ challengeDB, index, navigation }: any) {
   const [user, setUser] = useState<DBUser>();
 
   useEffect(() => {
-    if (challengeDB.uid){
+    if (challengeDB.uid) {
       const firestoreCtrl = new FirestoreCtrl();
 
-      const fetchUser = async() => {
+      const fetchUser = async () => {
         try {
           const userData = await firestoreCtrl.getUser(challengeDB.uid);
           setUser(userData);
@@ -32,11 +32,14 @@ export function Challenge({ challengeDB, index, navigation }: any) {
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
-      return <ThemedText>Loading Challenge...</ThemedText>;
+    return <ThemedText>Loading Challenge...</ThemedText>;
   } else {
     return (
       <ThemedView style={{ backgroundColor: "transparent" }}>
-        <TouchableOpacity onPress={() => setIsOpen(!isOpen)} activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => setIsOpen(!isOpen)}
+          activeOpacity={0.8}
+        >
           <ThemedView style={[styles.challenge]}>
             {/* 
               Challenge Image 
