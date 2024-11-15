@@ -25,6 +25,7 @@ export const logInWithEmail = async (
   if (email && password) {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
+      // Checks that the user exists in auth
       if (response.user) {
         const user = await firestoreCtrl.getUser(response.user.uid)
         if (user) {
@@ -34,10 +35,10 @@ export const logInWithEmail = async (
           });
         }
       } else {
-        console.log("Invalid credentials");
+        alert("Failed to log in. Please check your credentials.");
       }
     } catch (e) {
-      console.log("Login failed. Please check your credentials.");
+      alert("Failed to log in: " + e);
     }
   }
 };
@@ -50,6 +51,7 @@ export const signUpWithEmail = async (
   navigation: any,
 ) => {
   if (userName && email && password) {
+    // Creates user in auth
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userData: DBUser = {
@@ -58,23 +60,20 @@ export const signUpWithEmail = async (
           createdAt: new Date(),
         };
 
-        console.log("User INFO \n", userCredential.user.uid, userData);
+        // Creates user in firestore
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
             navigation.navigate("SetUser");
           })
           .catch((error) => {
-            console.log(
-              "FirestoreCtrl failed to create user due to following error \n",
-              error,
-            );
+            alert("Failed to create user: " + error);
           });
       })
       .catch((error) => {
-        console.log("Sign Up failed. Please check your credentials.", error);
+        alert("Failed to create user: " + error);
       });
   } else {
-    console.log("Please input email and password.");
+    alert("Please fill in all fields.");
   }
 };
