@@ -32,8 +32,8 @@ export default function WelcomeScreens({ navigation }: any) {
       >
         <WelcomeIntroScreen navigation={navigation} />
         <WelcomeConceptScreen navigation={navigation} />
-        <WelcomePersonalScreen navigation={navigation}/>
-        <WelcomeFinalScreen navigation={navigation}/>
+        <WelcomePersonalScreen navigation={navigation} />
+        <WelcomeFinalScreen navigation={navigation} />
       </ScrollView>
 
       {/* Render the dots, only if not on the last screen */}

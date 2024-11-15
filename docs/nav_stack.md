@@ -38,8 +38,8 @@ Before you begin, ensure you have the following:
 First, import the necessary modules in your navigation file (e.g., `Nav.tsx`):
 
 ```tsx
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 ```
 
 Define the types for your navigation stack parameters using TypeScript:
@@ -64,7 +64,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 Use the `Stack.Screen` component to define your screens within the `Stack.Navigator`. Each screen corresponds to a component in your application.
 
-```tsx
+````tsx
 <Stack.Navigator initialRouteName="Welcome">
   <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
     {(props: any) => <WelcomeFinalScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
@@ -98,7 +98,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation }: any) => {
     />
   );
 };
-```
+````
 
 ## Passing Props to Screens
 
@@ -120,7 +120,7 @@ You can group screens using `Stack.Group` to apply common options or configurati
 <Stack.Navigator>
   <Stack.Group
     screenOptions={{
-      headerStyle: { backgroundColor: 'lightblue' },
+      headerStyle: { backgroundColor: "lightblue" },
     }}
   >
     <Stack.Screen name="Welcome" component={WelcomeScreen} />
@@ -129,7 +129,7 @@ You can group screens using `Stack.Group` to apply common options or configurati
 
   <Stack.Group
     screenOptions={{
-      headerStyle: { backgroundColor: 'white' },
+      headerStyle: { backgroundColor: "white" },
     }}
   >
     <Stack.Screen name="Home" component={HomeScreen} />
@@ -147,8 +147,8 @@ To add a new screen to your navigation stack, follow these steps:
 Create a new component for your screen, e.g., `ProfileScreen.tsx`:
 
 ```tsx
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 const ProfileScreen: React.FC = () => {
   return (
@@ -163,8 +163,8 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 ```
@@ -187,9 +187,9 @@ type RootStackParamList = {
 Import your new screen and add it to the navigator:
 
 ```tsx
-import ProfileScreen from './screens/ProfileScreen';
+import ProfileScreen from "./screens/ProfileScreen";
 
-<Stack.Screen name="Profile" component={ProfileScreen} />
+<Stack.Screen name="Profile" component={ProfileScreen} />;
 ```
 
 ### 4. Navigate to the New Screen
@@ -197,7 +197,7 @@ import ProfileScreen from './screens/ProfileScreen';
 Use the `navigation` prop to navigate to the new screen from any component:
 
 ```tsx
-navigation.navigate('Profile');
+navigation.navigate("Profile");
 ```
 
 ## Conclusion
