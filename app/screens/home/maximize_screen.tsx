@@ -4,17 +4,14 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { useRouter } from "expo-router";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { getAuth } from "firebase/auth";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen() {
-  const router = useRouter();
+export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
@@ -23,7 +20,6 @@ export default function MaximizeScreen() {
   const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
-  const firestoreCtrl = new FirestoreCtrl();
   const auth = getAuth();
   const user = auth.currentUser?.uid;
   const infoUser = firestoreCtrl.getUser(user ?? "");
@@ -33,7 +29,7 @@ export default function MaximizeScreen() {
       <TopBar
         title="Commute by foot"
         leftIcon="arrow-back-outline"
-        leftAction={router.back}
+        leftAction={navigation.pop}
       />
 
       <ThemedScrollView

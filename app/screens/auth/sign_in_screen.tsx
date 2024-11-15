@@ -8,8 +8,6 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { logInWithEmail } from "@/types/Auth";
-import { useRouter } from "expo-router";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
@@ -18,10 +16,7 @@ import { ThemedText } from "@/components/theme/ThemedText";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SignInScreen() {
-  const router = useRouter();
-  const firestoreCtrl = new FirestoreCtrl();
-
+export default function SignInScreen({ navigation, firestoreCtrl }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -71,7 +66,7 @@ export default function SignInScreen() {
             <ThemedTextButton
               style={styles.buttonSignIn}
               onPress={() => {
-                logInWithEmail(email, password, firestoreCtrl, router);
+                logInWithEmail(email, password, firestoreCtrl, navigation);
               }}
               text="Sign In"
               textStyle={{ fontWeight: "600" }}
@@ -81,9 +76,7 @@ export default function SignInScreen() {
             {/* Forgot password button */}
             <ThemedTextButton
               style={{ alignItems: "center" }}
-              onPress={() =>
-                router.push("/screens/auth/forgot_password_screen")
-              }
+              onPress={() => navigation.navigate("ForgotPassword")}
               text="Forgot Password?"
               colorType="transparent"
               textColorType="textPrimary"

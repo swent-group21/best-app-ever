@@ -1,16 +1,14 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeConceptScreen() {
-  const router = useRouter();
-  const uri = "./screens/auth/";
+export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
+  console.log("Navigation", navigation);
   return (
     <ThemedView style={styles.container}>
       {/* Background shapes */}
@@ -31,8 +29,8 @@ export default function WelcomeConceptScreen() {
         {/* Sign in button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate(`${uri}sign_in_screen`)}
-          text="Login"
+          onPress={() => navigation.navigate("SignIn")}
+          text="Sign In"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
         />
@@ -40,7 +38,7 @@ export default function WelcomeConceptScreen() {
         {/* Sign up button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => router.navigate(`${uri}sign_up_screen`)}
+          onPress={() => navigation.navigate("SignUp")}
           text="Sign Up"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
@@ -49,7 +47,10 @@ export default function WelcomeConceptScreen() {
         {/* Continue as guest button */}
         <ThemedTextButton
           onPress={() => {
-            router.navigate("./screens/home/home_screen");
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            });
           }}
           text="Continue as guest"
           colorType="transparent"

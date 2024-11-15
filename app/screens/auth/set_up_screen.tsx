@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
 import { BottomBar } from "@/components/navigation/BottomBar";
@@ -14,8 +13,9 @@ import * as ImagePicker from "expo-image-picker";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername() {
+export default function SetUsername({ navigation }: any) {
   const [username, setUsername] = React.useState("");
+
   const router = useRouter();
   const [image, setImage] = React.useState<string | null>(null);
   const pickImage = async () => {
@@ -31,6 +31,7 @@ export default function SetUsername() {
       setImage(result.assets[0].uri);
     }
   };
+
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}
@@ -39,7 +40,7 @@ export default function SetUsername() {
       {/* Top bar */}
       <TopBar
         leftIcon="arrow-back"
-        leftAction={() => router.back()}
+        leftAction={() => navigation.goBack()}
         title="Set up your profile"
       />
 
@@ -52,18 +53,13 @@ export default function SetUsername() {
         {/* Input fields */}
         <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
-          <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
-            {!image ? (
-              <ThemedIconButton
-                name="person-circle-outline"
-                size={300}
-                color="white"
-                onPress={pickImage}
-              />
-            ) : (
-              <Image source={{ uri: image }} style={styles.image} />
-            )}
-          </TouchableOpacity>
+
+          <ThemedIconButton
+            name="person-circle-outline"
+            size={300}
+            colorType="textPrimary"
+            onPress={() => navigation.navigate("Camera")}
+          />
 
           {/* Username input */}
           <ThemedTextInput
@@ -83,7 +79,7 @@ export default function SetUsername() {
       {/* Bottom bar */}
       <BottomBar
         rightIcon="arrow-forward"
-        rightAction={() => router.navigate("../home/home_screen")}
+        rightAction={() => navigation.navigate("Home")}
       />
     </ThemedView>
   );

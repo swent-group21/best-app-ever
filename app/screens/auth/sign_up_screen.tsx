@@ -1,9 +1,7 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { isValidEmail, signUpWithEmail } from "@/types/Auth";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
-import { useRouter } from "expo-router";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -13,19 +11,19 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SignUp() {
+export default function SignUp({ navigation, firestoreCtrl }: any) {
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const router = useRouter();
-  const firestoreCtrl = new FirestoreCtrl();
 
   const namePlaceholder = "Sarah";
   const surnamePlaceholder = "Connor";
   const emailPlaceholder = "sarah.connor@gmail.com";
   const passwordPlaceholder = "**********";
+
+  console.log("Navigation", navigation);
 
   return (
     <ThemedView style={styles.signUpScreen}>
@@ -36,7 +34,7 @@ export default function SignUp() {
       <TopBar
         title="Set up your profile"
         leftIcon="arrow-back"
-        leftAction={() => router.back()}
+        leftAction={() => navigation.goBack()}
       />
 
       {/* Screen content */}
@@ -114,7 +112,7 @@ export default function SignUp() {
             email,
             password,
             firestoreCtrl,
-            router,
+            navigation,
           )
         }
       />
