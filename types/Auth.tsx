@@ -27,7 +27,7 @@ export const logInWithEmail = async (
       const response = await signInWithEmailAndPassword(auth, email, password);
       // Checks that the user exists in auth
       if (response.user) {
-        const user = await firestoreCtrl.getUser(response.user.uid)
+        const user = await firestoreCtrl.getUser(response.user.uid);
         if (user) {
           navigation.reset({
             index: 0,

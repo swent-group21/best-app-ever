@@ -8,7 +8,6 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 const { width, height } = Dimensions.get("window");
 
 export default function ForgotPasswordScreen({ navigation }: any) {
-
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}

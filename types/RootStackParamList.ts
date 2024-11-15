@@ -1,4 +1,1 @@
-
-export type RootStackParamList = {
-
-}
+export type RootStackParamList = {};

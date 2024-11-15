@@ -23,7 +23,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
   const emailPlaceholder = "sarah.connor@gmail.com";
   const passwordPlaceholder = "**********";
 
-  console.log("Navigation", navigation)
+  console.log("Navigation", navigation);
 
   return (
     <ThemedView style={styles.signUpScreen}>

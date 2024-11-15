@@ -15,7 +15,7 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
-export function Challenge({ navigation }:any) {
+export function Challenge({ navigation }: any) {
   //image: string
 
   const [isOpen, setIsOpen] = useState(false);

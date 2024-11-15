@@ -17,7 +17,6 @@ import { ThemedText } from "@/components/theme/ThemedText";
 const { width, height } = Dimensions.get("window");
 
 export default function SignInScreen({ navigation, firestoreCtrl }: any) {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -77,9 +76,7 @@ export default function SignInScreen({ navigation, firestoreCtrl }: any) {
             {/* Forgot password button */}
             <ThemedTextButton
               style={{ alignItems: "center" }}
-              onPress={() =>
-                navigation.navigate("ForgotPassword")
-              }
+              onPress={() => navigation.navigate("ForgotPassword")}
               text="Forgot Password?"
               colorType="transparent"
               textColorType="textPrimary"

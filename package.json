@@ -16,7 +16,9 @@
   },
   "doctor": {
     "reactNativeDirectoryCheck": {
-      "exclude": ["react-redux"]
+      "exclude": [
+        "react-redux"
+      ]
     }
   },
   "dependencies": {

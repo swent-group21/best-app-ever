@@ -8,7 +8,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
-  console.log("Navigation", navigation)
+  console.log("Navigation", navigation);
   return (
     <ThemedView style={styles.container}>
       {/* Background shapes */}
@@ -46,7 +46,7 @@ export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
 
         {/* Continue as guest button */}
         <ThemedTextButton
-          onPress={() => { 
+          onPress={() => {
             navigation.reset({
               index: 0,
               routes: [{ name: "Home" }],

@@ -16,12 +16,16 @@ import SetUsername from "@/app/screens/auth/set_up_screen";
 const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
 
 interface AppStackProps {
-  isLoggedIn: "Welcome" | "Home" ;
+  isLoggedIn: "Welcome" | "Home";
   user?: DBUser | null;
   firestoreCtrl: FirestoreCtrl;
 }
 
-export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, firestoreCtrl}) => {
+export const Nav: React.FC<AppStackProps> = ({
+  isLoggedIn,
+  user,
+  firestoreCtrl,
+}) => {
   return (
     <Navigator
       initialRouteName={isLoggedIn}
@@ -41,29 +45,50 @@ export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, firestoreCtrl})
           {(props: any) => <WelcomeScreens {...props} />}
         </Screen>
         <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
-          {(props: any) => <WelcomeFinalScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
+          {(props: any) => (
+            <WelcomeFinalScreen {...props} firestoreCtrl={{ firestoreCtrl }} />
+          )}
         </Screen>
         <Screen name="SignUp">
-          {(props: any) => <SignUp {...props} firestoreCtrl={{ firestoreCtrl }} />}
+          {(props: any) => (
+            <SignUp {...props} firestoreCtrl={{ firestoreCtrl }} />
+          )}
         </Screen>
         <Screen name="SignIn">
-          {(props: any) => <SignInScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
+          {(props: any) => (
+            <SignInScreen {...props} firestoreCtrl={{ firestoreCtrl }} />
+          )}
         </Screen>
         <Screen name="ForgotPassword">
-          {(props: any) => <ForgotPasswordScreen {...props} firestoreCtrl={{ firestoreCtrl }} />}
+          {(props: any) => (
+            <ForgotPasswordScreen
+              {...props}
+              firestoreCtrl={{ firestoreCtrl }}
+            />
+          )}
         </Screen>
         <Screen name="SetUp">
-          {(props: any) => <SetUsername {...props} firestoreCtrl={{ firestoreCtrl }}/>}
+          {(props: any) => (
+            <SetUsername {...props} firestoreCtrl={{ firestoreCtrl }} />
+          )}
         </Screen>
       </Group>
       <Group>
         <Screen name="Home">
-          {(props: any) => <HomeScreen {...props} user={{ user }} firestoreCtrl={{ firestoreCtrl }}/>}
+          {(props: any) => (
+            <HomeScreen
+              {...props}
+              user={{ user }}
+              firestoreCtrl={{ firestoreCtrl }}
+            />
+          )}
         </Screen>
         <Screen name="Camera">
-          {(props: any) => <Camera {...props} firestoreCtrl={{ firestoreCtrl }} />}
+          {(props: any) => (
+            <Camera {...props} firestoreCtrl={{ firestoreCtrl }} />
+          )}
         </Screen>
       </Group>
     </Navigator>
   );
-}
+};
