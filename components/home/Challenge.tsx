@@ -4,14 +4,11 @@ import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedIconButton } from '@/components/theme/ThemedIconButton';
-import { useRouter } from "expo-router";
 import FirestoreCtrl, { DBUser } from '@/firebase/FirestoreCtrl';
-import { async } from '@firebase/util';
 
 const { width, height } = Dimensions.get("window");
 
-export function Challenge({ challengeDB, index }: any) {
-  const router = useRouter();
+export function Challenge({ challengeDB, index, navigation }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState<DBUser>();
@@ -85,7 +82,7 @@ export function Challenge({ challengeDB, index }: any) {
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      router.push("../home/maximize_screen");
+                      navigation.navigate("MaxScreen");
                     }}
                     size={25}
                     style={{ paddingRight: 8 }}

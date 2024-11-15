@@ -5,17 +5,15 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import { useRouter } from "expo-router";
-import FirestoreCtrl, { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { auth } from "@/firebase/Firebase"; // Import auth
+import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen() {
+export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [uid, setUid] = useState<string | null>(null); // Add this line
-  const router = useRouter();
 
   useEffect(() => {
     // Listen for authentication state changes
@@ -33,8 +31,6 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (uid) {
-      const firestoreCtrl = new FirestoreCtrl();
-
       const fetchChallenges = async () => {
         try {
           const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
@@ -76,7 +72,7 @@ export default function HomeScreen() {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-        centerAction={() => router.push("../camera")}
+        centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>
   );

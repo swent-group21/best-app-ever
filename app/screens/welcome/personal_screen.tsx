@@ -6,8 +6,7 @@ import { StyleSheet, Dimensions } from "react-native";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeConceptScreen() {
-  
+export default function WelcomeConceptScreen({ navigation }: any) {
   return (
     <ThemedView style={styles.container}>
       {/* Background shape */}

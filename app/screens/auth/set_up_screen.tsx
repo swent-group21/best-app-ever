@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { useRouter } from "expo-router";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
 import { BottomBar } from "@/components/navigation/BottomBar";
@@ -12,9 +11,8 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername() {
+export default function SetUsername({ navigation }: any) {
   const [username, setUsername] = React.useState("");
-  const router = useRouter();
   return (
     <ThemedView style={styles.screenContainer}>
       {/* Background shape */}
@@ -23,7 +21,7 @@ export default function SetUsername() {
       {/* Top bar */}
       <TopBar
         leftIcon="arrow-back"
-        leftAction={() => router.back()}
+        leftAction={() => navigation.goBack()}
         title="Set up your profile"
       />
 
@@ -40,7 +38,7 @@ export default function SetUsername() {
             name="person-circle-outline"
             size={300}
             colorType="textPrimary"
-            onPress={() => router.push("../camera")}
+            onPress={() => navigation.navigate("Camera")}
           />
 
           {/* Username input */}
@@ -61,7 +59,7 @@ export default function SetUsername() {
       {/* Bottom bar */}
       <BottomBar
         rightIcon="arrow-forward"
-        rightAction={() => router.navigate("../home/home_screen")}
+        rightAction={() => navigation.navigate("Home")}
       />
     </ThemedView>
   );

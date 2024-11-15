@@ -20,7 +20,7 @@ export const logInWithEmail = async (
   email: string,
   password: string,
   firestoreCtrl: FirestoreCtrl,
-  router: any,
+  navigation: any,
 ) => {
   if (email && password) {
     try {
@@ -41,12 +41,15 @@ export const logInWithEmail = async (
               })
               .then(() => {
                 alert("User did not exist. Please set up your profile.");
-                router.navigate("../auth/set_up_screen");
+                navigation.navigate("SetUser");
               });
           });
         // User exists in both auth and database
         if (user) {
-          router.navigate("../home/home_screen");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Home" }],
+          });
         }
       } else {
         alert("Failed to log in. Please check your credentials.");
@@ -62,7 +65,7 @@ export const signUpWithEmail = async (
   email: string,
   password: string,
   firestoreCtrl: FirestoreCtrl,
-  router: any,
+  navigation: any,
 ) => {
   if (userName && email && password) {
     // Creates user in auth
@@ -79,7 +82,7 @@ export const signUpWithEmail = async (
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
-            router.navigate("../auth/set_up_screen");
+            navigation.navigate("SetUser");
           })
           .catch((error) => {
             alert("Failed to create user: " + error);
