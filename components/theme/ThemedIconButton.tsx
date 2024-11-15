@@ -10,6 +10,7 @@ interface ThemedIconButtonProps extends IconProps {
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
   lightColor?: string;
   darkColor?: string;
+  paddingLeft?: number;
 }
 
 export function ThemedIconButton({
@@ -18,6 +19,7 @@ export function ThemedIconButton({
   onPress,
   iconType = "ionicon",
   size,
+  paddingLeft,
   colorType,
   ...props
 }: ThemedIconButtonProps) {

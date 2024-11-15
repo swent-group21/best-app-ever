@@ -44,7 +44,7 @@ export default function MaximizeScreen() {
       >
         {/* User information */}
         <ThemedView
-          style={[styles.user, { justifyContent: "space-evenly" }]}
+          style={[styles.user, { justifyContent: "center" }]}
           colorType="transparent"
         >
           {/* User column */}
@@ -148,14 +148,13 @@ export default function MaximizeScreen() {
 const styles = StyleSheet.create({
   bigContainer: {
     flex: 1,
-    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
 
   container: {
-    height: "40%",
-    width: "95%",
+    height: height * 0.4,
+    width: width * 0.9,
     borderWidth: 2,
     borderRadius: 15,
     borderColor: "white",
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
   },
 
   user: {
-    width: "95%",
+    width: width * 0.8,
     flexDirection: "row",
     alignItems: "center",
     gap: width * 0.01,
@@ -187,22 +186,24 @@ const styles = StyleSheet.create({
   },
 
   commentInput: {
-    width: "85%",
+    height: height * 0.05,
+    width: width * 0.85,
     padding: 8,
     borderWidth: 2,
     borderRadius: 15,
   },
 
   scroll: {
-    flex: 1,
+    height: "100%",
     width: "100%",
   },
 
   row: {
     width: "90%",
-    height: height,
+    minHeight: height * 0.1,
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
   },
 
   commentColumn: {
