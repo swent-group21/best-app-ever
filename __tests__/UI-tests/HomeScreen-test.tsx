@@ -7,6 +7,7 @@ describe("HomeScreen Component", () => {
   it("renders the TopBar", () => {
     const { getByTestId } = render(<HomeScreen />);
     expect(getByTestId("topBar")).toBeTruthy();
+    expect(getByTestId("topTitle-Commute by foot")).toBeTruthy();
   });
 
   // Test if the TopBar icons are rendered
@@ -45,6 +46,6 @@ describe("HomeScreen Component", () => {
 
   it("renders the right icon in BottomBar", () => {
     const { getByTestId } = render(<HomeScreen />);
-    expect(getByTestId("bottomRightIcon-logo-docker")).toBeTruthy();
+    expect(getByTestId("bottomRightIcon-trophy-outline")).toBeTruthy();
   });
 });
