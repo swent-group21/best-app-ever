@@ -25,7 +25,7 @@ export default function SetUsername() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    }); 
+    });
     if (!result.canceled) {
       console.log("Couldn't load image");
       setImage(result.assets[0].uri);
@@ -52,13 +52,18 @@ export default function SetUsername() {
         {/* Input fields */}
         <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
-          <TouchableOpacity onPress={pickImage} style = {styles.smallContainer} >
-          {!image ? (
-            <ThemedIconButton name="person-circle-outline" size={300} color="white" onPress={pickImage} />
-          ) : (
-            <Image source={{ uri: image }} style={styles.image} />
-          )}
-        </TouchableOpacity>
+          <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
+            {!image ? (
+              <ThemedIconButton
+                name="person-circle-outline"
+                size={300}
+                color="white"
+                onPress={pickImage}
+              />
+            ) : (
+              <Image source={{ uri: image }} style={styles.image} />
+            )}
+          </TouchableOpacity>
 
           {/* Username input */}
           <ThemedTextInput
