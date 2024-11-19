@@ -23,6 +23,7 @@ export const buildChallenge = async (
       description: challenge.description,
       uid: challenge.uid,
       date: challenge.date,
+      coordinates: challenge.coordinates,
     };
 
     return challengeData;
@@ -39,7 +40,7 @@ export const createChallenge = async (
   challenge_name: string,
   date: Date,
   description: string,
-  location?: Location,
+  coordinates?: GeolocationCoordinates,
   image_id?: string,
   comment_id?: string,
 ): Promise<void> => {

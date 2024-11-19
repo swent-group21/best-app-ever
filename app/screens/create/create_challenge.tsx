@@ -18,18 +18,34 @@ const CreateChallengeScreen = ({
 }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
+  const[userCoordinates, setUserCoordinates] = useState<GeolocationCoordinates>();
+  
 
   // Switch values
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  const getUserCoordinates = () => {
+    // method to access user's position
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {setUserCoordinates(position.coords);},
+        (error) => {
+          // show an error message
+          console.error('Error getting user location:', error);}
+      );
+    }
+  };
 
   console.log("image_id", image_id);
 
   async function makeChallenge() {
     try {
       let date = new Date();
-      let location = isEnabled? new Location() : undefined;
-      await createChallenge(firestoreCtrl, challenge_name, date, description, location);
+      if (isEnabled) {
+        getUserCoordinates();
+      }
+      await createChallenge(firestoreCtrl, challenge_name, date, description, userCoordinates);
       navigation.navigate("Home");
     } catch (error) {
       console.log("Unable to create challenge");
