@@ -8,10 +8,9 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
 const { width, height } = Dimensions.get("window");
-
 
 const CreateChallengeScreen = ({
   navigation,
@@ -24,8 +23,7 @@ const CreateChallengeScreen = ({
 
   // Switch values
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   console.log("image_id", image_id);
 
@@ -33,10 +31,16 @@ const CreateChallengeScreen = ({
     try {
       let date = new Date();
       let currentLocation = undefined;
-      if (isEnabled && permission && permission.status === 'granted') {
+      if (isEnabled && permission && permission.status === "granted") {
         currentLocation = (await Location.getCurrentPositionAsync()).coords;
       }
-      await createChallenge(firestoreCtrl, challenge_name, date, description, currentLocation);
+      await createChallenge(
+        firestoreCtrl,
+        challenge_name,
+        date,
+        description,
+        currentLocation,
+      );
       navigation.navigate("Home");
     } catch (error) {
       console.log("Unable to create challenge");
@@ -71,10 +75,12 @@ const CreateChallengeScreen = ({
         />
 
         <ThemedView style={styles.containerRow}>
-
           <Switch
             style={styles.switch}
-            trackColor={{false: Colors.dark.icon, true: Colors.light.tabIconDefault}}
+            trackColor={{
+              false: Colors.dark.icon,
+              true: Colors.light.tabIconDefault,
+            }}
             thumbColor={isEnabled ? Colors.light.tint : Colors.dark.white}
             ios_backgroundColor={Colors.light.tint}
             onValueChange={() => {
@@ -86,21 +92,18 @@ const CreateChallengeScreen = ({
             value={isEnabled}
           />
 
-          <ThemedText colorType="textPrimary" style={styles.switchText}>Enable location ?</ThemedText>
-
+          <ThemedText colorType="textPrimary" style={styles.switchText}>
+            Enable location ?
+          </ThemedText>
         </ThemedView>
 
         <BottomBar rightIcon="arrow-forward" rightAction={makeChallenge} />
       </ThemedScrollView>
-
-      
-      
     </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
-  
   createChallengeScreen: {
     flex: 1,
     justifyContent: "flex-start",
@@ -139,16 +142,16 @@ const styles = StyleSheet.create({
   },
 
   switch: {
-    alignSelf : 'flex-start',
+    alignSelf: "flex-start",
     width: "15%",
     borderWidth: 2,
     borderRadius: 15,
   },
 
-  switchText: { 
-    width: '90%',
+  switchText: {
+    width: "90%",
     padding: 15,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 
   imagePicker: {
