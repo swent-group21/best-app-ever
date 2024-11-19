@@ -11,9 +11,11 @@ function App() {
   const firestoreCtrl = new FirestoreCtrl();
 
   return (
+
     <NavigationIndependentTree>
       <Nav isLoggedIn={isLoggedIn} firestoreCtrl={firestoreCtrl} />
     </NavigationIndependentTree>
+
   );
 }
 

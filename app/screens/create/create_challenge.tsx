@@ -8,6 +8,8 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 
+import * as Location from 'expo-location';
+
 const { width, height } = Dimensions.get("window");
 
 
@@ -18,34 +20,23 @@ const CreateChallengeScreen = ({
 }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
-  const[userCoordinates, setUserCoordinates] = useState<GeolocationCoordinates>();
-  
+  const [permission, requestPermission] = Location.useForegroundPermissions();
 
   // Switch values
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const getUserCoordinates = () => {
-    // method to access user's position
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {setUserCoordinates(position.coords);},
-        (error) => {
-          // show an error message
-          console.error('Error getting user location:', error);}
-      );
-    }
-  };
 
   console.log("image_id", image_id);
 
   async function makeChallenge() {
     try {
       let date = new Date();
-      if (isEnabled) {
-        getUserCoordinates();
+      let currentLocation = undefined;
+      if (isEnabled && permission && permission.status === 'granted') {
+        currentLocation = (await Location.getCurrentPositionAsync()).coords;
       }
-      await createChallenge(firestoreCtrl, challenge_name, date, description, userCoordinates);
+      await createChallenge(firestoreCtrl, challenge_name, date, description, currentLocation);
       navigation.navigate("Home");
     } catch (error) {
       console.log("Unable to create challenge");
@@ -86,7 +77,12 @@ const CreateChallengeScreen = ({
             trackColor={{false: Colors.dark.icon, true: Colors.light.tabIconDefault}}
             thumbColor={isEnabled ? Colors.light.tint : Colors.dark.white}
             ios_backgroundColor={Colors.light.tint}
-            onValueChange={toggleSwitch}
+            onValueChange={() => {
+              toggleSwitch();
+              if (isEnabled) {
+                requestPermission();
+              }
+            }}
             value={isEnabled}
           />
 
