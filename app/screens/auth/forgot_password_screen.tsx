@@ -3,6 +3,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { useRouter } from "expo-router";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -19,18 +20,17 @@ export default function ForgotPasswordScreen({ navigation }: any) {
       </ThemedText>
 
       {/* Input fields */}
-      <ThemedView style={styles.smallContainer}>
+      <ThemedView style={styles.smallContainer} testID="emailInput">
         {/* Email input */}
         <ThemedTextInput
           style={styles.input}
           type="email"
           title="Email"
           viewWidth={"90%"}
-          testID="emailInput"
         />
 
         {/* Buttons */}
-        <ThemedView style={styles.rowContainer}>
+        <ThemedView style={styles.rowContainer} testID="buttonsReset">
           {/* Cancel button */}
           <ThemedTextButton
             style={styles.buttonCancel}

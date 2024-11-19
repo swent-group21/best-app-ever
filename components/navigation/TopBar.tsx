@@ -27,19 +27,24 @@ export function TopBar({
 }: TopbarProps) {
   const color = useThemeColor({}, colorType);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="topBar">
       {leftIcon ? (
         <ThemedIconButton
           name={leftIcon}
           onPress={leftAction}
           size={30}
           color={color}
+          testID={`topLeftIcon-${leftIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
       )}
       {title && (
-        <ThemedText style={styles.title} colorType={colorType}>
+        <ThemedText
+          style={styles.title}
+          colorType={colorType}
+          testID={`topTitle-${title}`}
+        >
           {title}
         </ThemedText>
       )}
@@ -49,6 +54,7 @@ export function TopBar({
           onPress={rightAction}
           size={30}
           color={color}
+          testID={`topRightIcon-${rightIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />

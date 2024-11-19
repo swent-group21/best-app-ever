@@ -8,6 +8,7 @@ import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { getAuth } from "firebase/auth";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { useRouter } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
