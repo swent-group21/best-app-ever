@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import MapView from "react-native-maps";
 
 const MapScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Map screen</Text>
+      <MapView style={styles.map} />
     </View>
   );
 };
@@ -15,8 +16,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 20,
+  map: {
+    width: "100%",
+    height: "100%",
   },
 });
 
