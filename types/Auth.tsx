@@ -2,6 +2,7 @@ import {
   auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "@/firebase/Firebase";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -95,3 +96,17 @@ export const signUpWithEmail = async (
     alert("Please fill in all fields.");
   }
 };
+
+export const resetPassword = async (email: string) => {
+  if (email) {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Password reset email sent.");
+      })
+      .catch((error) => {
+        alert("Failed to send password reset email: " + error);
+      });
+  } else {
+    alert("Please enter your email.");
+  }
+}
