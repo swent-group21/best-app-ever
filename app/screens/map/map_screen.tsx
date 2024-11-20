@@ -5,7 +5,7 @@ import MapView from "react-native-maps";
 const MapScreen = () => {
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} />
+      <MapView style={styles.map} testID="mapView" />
     </View>
   );
 };
