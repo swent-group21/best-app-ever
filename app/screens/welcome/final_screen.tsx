@@ -9,7 +9,6 @@ import { useRouter } from "expo-router";
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
-  console.log("Navigation", navigation);
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
       {/* Background shapes */}
