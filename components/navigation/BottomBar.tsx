@@ -29,14 +29,14 @@ export function BottomBar({
 }: BottomBarProps) {
   const color = useThemeColor({}, colorType);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="bottomBar">
       {leftIcon ? (
         <ThemedIconButton
           name={leftIcon}
           onPress={leftAction}
           size={30}
           color={color}
-          testID={`input-${leftIcon}`}
+          testID={`bottomLeftIcon-${leftIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -47,7 +47,7 @@ export function BottomBar({
           onPress={centerAction}
           size={30}
           color={color}
-          testID={`input-${centerIcon}`}
+          testID={`bottomCenterIcon-${centerIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -58,7 +58,7 @@ export function BottomBar({
           onPress={rightAction}
           size={30}
           color={color}
-          testID={`input-${rightIcon}`}
+          testID={`bottomRightIcon-${rightIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />

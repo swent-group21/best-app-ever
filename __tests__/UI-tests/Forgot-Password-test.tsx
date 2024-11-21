@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import ForgotPasswordScreen from "../app/screens/auth/forgot_password_screen";
+import ForgotPasswordScreen from "@/app/screens/auth/forgot_password_screen";
 
 describe("ForgotPasswordScreen Component", () => {
   it('renders the "Forgot your Password?" title', () => {
@@ -13,11 +13,11 @@ describe("ForgotPasswordScreen Component", () => {
   });
 
   it("renders the Cancel button", () => {
-    TestButtonAppearsOnScreen("cancelButton");
+    TestTextAppearsOnScreen("Cancel");
   });
 
   it("renders the Reset Password button", () => {
-    TestButtonAppearsOnScreen("resetPasswordButton");
+    TestTextAppearsOnScreen("Reset Password");
   });
 });
 
