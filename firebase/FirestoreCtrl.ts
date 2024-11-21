@@ -183,7 +183,7 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves all challenges from Firestore. WARNING: This can be slow and expensive.
-   * 
+   *
    * @returns A promise that resolves to an array of all challenges.
    */
   async getAllChallenges(): Promise<DBChallenge[]> {
