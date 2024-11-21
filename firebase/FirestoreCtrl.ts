@@ -30,7 +30,7 @@ export type DBChallenge = {
   image_id?: string;
   comment_id?: string;
   date: Date;
-  coordinates?: Location.LocationObjectCoords;
+  location?: Location.LocationObjectCoords;
 };
 
 export type DBComment = {

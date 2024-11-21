@@ -78,7 +78,7 @@ describe("CreateChallengeScreen", () => {
     // Get the input fields
     const challengeNameInput = getByTestId("Challenge-Name-Input");
     const descriptionInput = getByTestId("Description-Input");
-    const createButton = getByTestId("input-arrow-forward");
+    const createButton = getByTestId("bottomRightIcon-arrow-forward");
 
     // Create the challenge
     fireEvent.changeText(challengeNameInput, "Test Challenge Name");
@@ -116,7 +116,7 @@ describe("CreateChallengeScreen", () => {
     // Get the input fields
     const challengeNameInput = getByTestId("Challenge-Name-Input");
     const descriptionInput = getByTestId("Description-Input");
-    const createButton = getByTestId("input-arrow-forward");
+    const createButton = getByTestId("bottomRightIcon-arrow-forward");
 
     // Create the challenge
     fireEvent.changeText(challengeNameInput, "Test Challenge Name");

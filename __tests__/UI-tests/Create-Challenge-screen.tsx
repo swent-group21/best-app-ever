@@ -21,6 +21,6 @@ describe("CreateChallengeScreen", () => {
     expect(getByTestId("switch-button")).toBeTruthy();
     expect(getByTestId("Location-validation")).toBeTruthy();
     expect(getByTestId("bottom-bar")).toBeTruthy();
-    expect(getByTestId("input-arrow-forward")).toBeTruthy();
+    expect(getByTestId("bottomRightIcon-arrow-forward")).toBeTruthy();
   });
 });

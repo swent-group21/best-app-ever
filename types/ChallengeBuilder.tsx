@@ -24,7 +24,7 @@ export const buildChallenge = async (
       description: challenge.description,
       uid: challenge.uid,
       date: challenge.date,
-      coordinates: challenge.coordinates,
+      location: challenge.location,
     };
 
     return challengeData;
@@ -41,7 +41,7 @@ export const createChallenge = async (
   challenge_name: string,
   date: Date,
   description: string,
-  coordinates?: Location.LocationObjectCoords,
+  location?: Location.LocationObjectCoords,
   image_id?: string,
   comment_id?: string,
 ): Promise<void> => {
@@ -54,7 +54,7 @@ export const createChallenge = async (
       description: description || "",
       uid: user.uid,
       date: date,
-      coordinates: coordinates,
+      location: location,
       // Add other fields as needed
     };
 
