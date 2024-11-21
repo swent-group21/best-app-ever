@@ -8,6 +8,7 @@ import {
 } from "expo-location";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
+import { BottomBar } from "@/components/navigation/BottomBar";
 
 /**
  * The default location object, centered on the city of Nice, France.
@@ -86,7 +87,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
    * Renders the MapScreen component with every challenge as a marker on the map.
    */
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       <MapView
         style={styles.map}
         testID="mapView"
@@ -107,7 +108,14 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
           />
         ))}
       </MapView>
-    </View>
+      <BottomBar
+        leftIcon="map-outline"
+        centerIcon="home-outline"
+        rightIcon="trophy-outline"
+        leftAction={() => navigation.navigate("MapScreen")}
+        centerAction={() => navigation.navigate("Home")}
+      />
+    </ThemedView>
   );
 }
 
