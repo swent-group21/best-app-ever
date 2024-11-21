@@ -7,10 +7,13 @@ import {
   LocationObject,
 } from "expo-location";
 
+/**
+ * The default location object, centered on the city of Nice, France.
+ */
 const defaultLocation = {
   coords: {
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: 43.6763,
+    longitude: 7.0122,
   },
 } as LocationObject;
 
@@ -29,9 +32,11 @@ const MapScreen = () => {
     async function getCurrentLocation() {
       let { status } = await requestForegroundPermissionsAsync();
 
-      if (status === "granted") {
+      if (status && status === "granted") {
         let location = await getCurrentPositionAsync();
         setLocation(location);
+      } else {
+        setLocation(defaultLocation);
       }
     }
 
