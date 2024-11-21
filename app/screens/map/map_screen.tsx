@@ -9,6 +9,8 @@ import {
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
+import { DBChallenge } from "@/firebase/FirestoreCtrl";
+// import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 /**
  * The default location object, centered on the city of Nice, France.
@@ -27,10 +29,12 @@ const defaultLocation = {
  */
 export default function MapScreen({ navigation, firestoreCtrl }: any) {
   const [permission, setPermission] = useState<boolean>(false);
-  const [location, setLocation] = useState<LocationObject | undefined>(
+  const [userLocation, setUserPosition] = useState<LocationObject | undefined>(
     undefined,
   );
-  const [markers, setMarkers] = useState<LatLng[]>([]);
+  const [challengesWithLocation, setChallengesWithLocation] = useState<
+    DBChallenge[]
+  >([]);
 
   /**
    * Asks for permission to access the user's location and sets the location state to the user's current location.
@@ -42,10 +46,10 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
         if (status === "granted") {
           setPermission(true);
           const location = await getCurrentPositionAsync();
-          setLocation(location);
+          setUserPosition(location);
         } else {
           setPermission(false);
-          setLocation(defaultLocation);
+          setUserPosition(defaultLocation);
         }
       } catch (error) {
         console.log("Error getting location permission or location:", error);
@@ -61,15 +65,13 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
+        console.log("Fetching challenges...");
         const challengesData = await firestoreCtrl.getAllChallenges();
-        const markers: LatLng[] = challengesData
-          .filter((challenge: any) => challenge.coordinates !== undefined)
-          .map((challenge: any) => ({
-            latitude: challenge.coordinates.latitude,
-            longitude: challenge.coordinates.longitude,
-          }));
-        setMarkers(markers);
-        console.log("Markers", markers);
+        const filteredChallenges = challengesData.filter(
+          (challenge: any) => challenge.location !== undefined,
+        );
+        setChallengesWithLocation(filteredChallenges);
+        console.log("Markers", filteredChallenges);
       } catch (error) {
         console.error("Error fetching challenges: ", error);
       }
@@ -81,7 +83,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
   /**
    * Renders a loading message while the location is being fetched.
    */
-  if (permission && location === undefined) {
+  if (permission && userLocation === undefined) {
     return (
       <ThemedView>
         <ThemedText>Getting location...</ThemedText>
@@ -103,15 +105,29 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
         style={styles.map}
         testID="mapView"
         initialRegion={{
-          latitude: location?.coords.latitude ?? 0,
-          longitude: location?.coords.longitude ?? 0,
+          latitude: userLocation?.coords.latitude ?? 0,
+          longitude: userLocation?.coords.longitude ?? 0,
           latitudeDelta: 0.0,
           longitudeDelta: 0.0,
         }}
         zoomControlEnabled={true}
+        mapType="standard"
+        showsUserLocation={true}
+        showsCompass={true}
+        loadingEnabled={true}
       >
-        {markers.map((marker: any, index) => (
-          <MapMarker key={index} coordinate={marker} />
+        {challengesWithLocation.map((challengeWithLocation: any, index) => (
+          <MapMarker
+            key={index}
+            coordinate={{
+              latitude: challengeWithLocation.location.latitude,
+              longitude: challengeWithLocation.location.longitude,
+            }}
+            image={require("@/assets/images/icon_trans.png")}
+            flat={true}
+            title={challengeWithLocation.challenge_name}
+            description={challengeWithLocation.description}
+          />
         ))}
       </MapView>
     </ThemedView>

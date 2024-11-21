@@ -192,7 +192,7 @@ export default class FirestoreCtrl {
       const querySnapshot = await getDocs(challengesRef);
       const challenges = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        console.log("Challenge data retrieved:", data);
+        console.log("+ Challenge data retrieved:", data);
         return {
           ...data,
           challenge_id: doc.id,
