@@ -8,15 +8,18 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export function Challenge({ challengeDB, index, navigation }: any) {
+export function Challenge({
+  challengeDB,
+  index,
+  firestoreCtrl,
+  navigation,
+}: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState<DBUser>();
 
   useEffect(() => {
     if (challengeDB.uid) {
-      const firestoreCtrl = new FirestoreCtrl();
-
       const fetchUser = async () => {
         try {
           const userData = await firestoreCtrl.getUser(challengeDB.uid);
@@ -25,7 +28,6 @@ export function Challenge({ challengeDB, index, navigation }: any) {
           console.error("Error fetching challenges: ", error);
         }
       };
-
       fetchUser();
     }
   }, [user]);
@@ -84,7 +86,7 @@ export function Challenge({ challengeDB, index, navigation }: any) {
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaxScreen");
+                      navigation.navigate("MaximizeScreen");
                     }}
                     size={25}
                     style={{ paddingRight: 8 }}

@@ -7,7 +7,6 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { TouchableOpacity, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 // Get the screen dimensions
@@ -16,7 +15,6 @@ const { width, height } = Dimensions.get("window");
 export default function SetUsername({ navigation }: any) {
   const [username, setUsername] = React.useState("");
 
-  const router = useRouter();
   const [image, setImage] = React.useState<string | null>(null);
   const pickImage = async () => {
     console.log("Loading image");
