@@ -14,7 +14,7 @@ const { width, height } = Dimensions.get("window");
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
 
-  const auth = getAuth()
+  const auth = getAuth();
   const uid = auth.currentUser?.uid;
 
   useEffect(() => {
@@ -32,8 +32,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
       fetchChallenges();
     }
   }, [uid]);
-
-
 
   return (
     <ThemedView style={styles.bigContainer}>
