@@ -15,6 +15,7 @@ interface BottomBarProps {
   rightIcon?: string;
   rightAction?: () => void;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+  testID?: string;
 }
 
 export function BottomBar({
@@ -35,6 +36,7 @@ export function BottomBar({
           onPress={leftAction}
           size={30}
           color={color}
+          testID={`input-${leftIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -45,6 +47,7 @@ export function BottomBar({
           onPress={centerAction}
           size={30}
           color={color}
+          testID={`input-${centerIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />
@@ -55,6 +58,7 @@ export function BottomBar({
           onPress={rightAction}
           size={30}
           color={color}
+          testID={`input-${rightIcon}`}
         />
       ) : (
         <View style={styles.placeholder} />

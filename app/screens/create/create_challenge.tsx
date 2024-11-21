@@ -50,7 +50,7 @@ const CreateChallengeScreen = ({
 
   return (
     <ThemedView style={styles.createChallengeScreen}>
-      <ThemedText style={styles.title} colorType="textPrimary" type="title">
+      <ThemedText style={styles.title} colorType="textPrimary" type="title" testID="Create-Challenge-Text">
         Create a New Challenge
       </ThemedText>
 
@@ -64,6 +64,7 @@ const CreateChallengeScreen = ({
           onChangeText={(text) => setChallengeName(text)}
           viewWidth={"90%"}
           title="Challenge Name"
+          testID="Challenge-Name-Input"
         />
 
         <ThemedTextInput
@@ -72,9 +73,10 @@ const CreateChallengeScreen = ({
           onChangeText={(text) => setChallengeName(text)}
           viewWidth={"90%"}
           title="Description"
+          testID="Description-Input"
         />
 
-        <ThemedView style={styles.containerRow}>
+        <ThemedView style={styles.containerRow} testID="switch-button">
           <Switch
             style={styles.switch}
             trackColor={{
@@ -92,12 +94,12 @@ const CreateChallengeScreen = ({
             value={isEnabled}
           />
 
-          <ThemedText colorType="textPrimary" style={styles.switchText}>
+          <ThemedText colorType="textPrimary" style={styles.switchText} testID="Location-validation">
             Enable location ?
           </ThemedText>
         </ThemedView>
 
-        <BottomBar rightIcon="arrow-forward" rightAction={makeChallenge} />
+        <BottomBar rightIcon="arrow-forward" rightAction={makeChallenge} testID="bottom-bar" />
       </ThemedScrollView>
     </ThemedView>
   );
