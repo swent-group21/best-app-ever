@@ -8,7 +8,7 @@ import {
 } from "expo-location";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
-import { BottomBar } from "@/components/navigation/BottomBar";
+import { TopBar } from "@/components/navigation/TopBar";
 
 /**
  * The default location object, centered on the city of Nice, France.
@@ -94,6 +94,11 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
    */
   return (
     <ThemedView style={styles.container}>
+      <TopBar
+        title="Map"
+        leftIcon="arrow-back"
+        leftAction={() => navigation.goBack()}
+      />
       <MapView
         style={styles.map}
         testID="mapView"
@@ -109,24 +114,18 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
           <MapMarker key={index} coordinate={marker} />
         ))}
       </MapView>
-      <BottomBar
-        leftIcon="map-outline"
-        centerIcon="home-outline"
-        rightIcon="trophy-outline"
-        leftAction={() => navigation.navigate("MapScreen")}
-        centerAction={() => navigation.navigate("Home")}
-      />
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
   map: {
+    flex: 1,
     width: "100%",
     height: "100%",
   },
