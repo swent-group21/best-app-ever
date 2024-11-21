@@ -22,7 +22,7 @@ const defaultLocation = {
  *
  * @returns The MapScreen component
  */
-const MapScreen = () => {
+export default function MapScreen({ navigation, firestoreCtrl }: any) {
   const [location, setLocation] = useState<LocationObject>(defaultLocation);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const MapScreen = () => {
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -74,5 +74,3 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
-
-export default MapScreen;

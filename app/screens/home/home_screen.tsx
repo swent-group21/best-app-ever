@@ -72,6 +72,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
+        leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>
