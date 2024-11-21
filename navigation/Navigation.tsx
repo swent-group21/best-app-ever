@@ -66,7 +66,7 @@ export const Nav: React.FC<AppStackProps> = ({
             <ForgotPasswordScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
-        <Screen name="SetUp">
+        <Screen name="SetUser">
           {(props: any) => (
             <SetUsername {...props} firestoreCtrl={firestoreCtrl} />
           )}
