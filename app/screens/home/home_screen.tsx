@@ -18,7 +18,9 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
     if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(user.uid);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(
+            user.uid,
+          );
           console.log("Challenges", challengesData);
           setChallenges(challengesData);
         } catch (error) {
