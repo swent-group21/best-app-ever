@@ -62,12 +62,14 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
     const fetchChallenges = async () => {
       try {
         const challengesData = await firestoreCtrl.getAllChallenges();
-        const markers: LatLng[] = challengesData.map((challenge: any) => ({
-          latitude: challenge.coordinates.latitude,
-          longitude: challenge.coordinates.longitude,
-        }));
+        const markers: LatLng[] = challengesData
+          .filter((challenge: any) => challenge.coordinates !== undefined)
+          .map((challenge: any) => ({
+            latitude: challenge.coordinates.latitude,
+            longitude: challenge.coordinates.longitude,
+          }));
         setMarkers(markers);
-        console.log("Challenges", markers);
+        console.log("Markers", markers);
       } catch (error) {
         console.error("Error fetching challenges: ", error);
       }
@@ -101,6 +103,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
           latitudeDelta: 0.0,
           longitudeDelta: 0.0,
         }}
+        zoomControlEnabled={true}
       >
         {markers.map((marker: any, index) => (
           <MapMarker key={index} coordinate={marker} />
