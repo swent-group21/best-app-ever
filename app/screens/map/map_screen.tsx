@@ -30,13 +30,14 @@ const MapScreen = () => {
      * Asks for permission to access the user's location and sets the location state to the user's current location.
      */
     async function getCurrentLocation() {
-      let { status } = await requestForegroundPermissionsAsync();
-
-      if (status && status === "granted") {
-        let location = await getCurrentPositionAsync();
-        setLocation(location);
-      } else {
-        setLocation(defaultLocation);
+      try {
+        const { status } = await requestForegroundPermissionsAsync();
+        if (status === "granted") {
+          const location = await getCurrentPositionAsync();
+          if (location) setLocation(location);
+        }
+      } catch (error) {
+        console.log("Error getting location permission or location:", error);
       }
     }
 
