@@ -8,9 +8,8 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
-  console.log("Navigation", navigation);
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} testID="welcome-final-screen">
       {/* Background shapes */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
       <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
