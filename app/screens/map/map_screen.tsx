@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import MapView, { LatLng, MapMarker } from "react-native-maps";
 import {
   requestForegroundPermissionsAsync,
@@ -103,13 +103,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
         }}
       >
         {markers.map((marker: any, index) => (
-          <MapMarker
-            key={index}
-            coordinate={{
-              latitude: marker.coordinates.latitude,
-              longitude: marker.coordinates.longitude,
-            }}
-          />
+          <MapMarker key={index} coordinate={marker} />
         ))}
       </MapView>
       <BottomBar
