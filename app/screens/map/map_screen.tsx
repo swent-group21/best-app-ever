@@ -44,6 +44,9 @@ const MapScreen = () => {
     getCurrentLocation();
   }, []);
 
+  /**
+   * Renders the MapScreen component.
+   */
   return (
     <View style={styles.container}>
       <MapView
