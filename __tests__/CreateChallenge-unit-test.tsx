@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Colors";
 jest.mock("expo-location", () => ({
   useForegroundPermissions: jest.fn(() => [null, jest.fn()]),
   getCurrentPositionAsync: jest.fn(() =>
-    Promise.resolve({ coords: { latitude: 10, longitude: 20 } })
+    Promise.resolve({ coords: { latitude: 10, longitude: 20 } }),
   ),
 }));
 
@@ -24,7 +24,7 @@ describe("CreateChallengeScreen", () => {
         navigation={navigationMock}
         image_id="test-image"
         firestoreCtrl={firestoreCtrlMock}
-      />
+      />,
     );
 
     // Get the input fields
@@ -40,7 +40,6 @@ describe("CreateChallengeScreen", () => {
     expect(descriptionInput.props.value).toBe("This is a test description");
   });
 
-  
   it("toggles the location switch and requests permissions", async () => {
     const requestPermissionMock = jest.fn();
 
@@ -49,7 +48,7 @@ describe("CreateChallengeScreen", () => {
         navigation={navigationMock}
         image_id="test-image"
         firestoreCtrl={firestoreCtrlMock}
-      />
+      />,
     );
 
     // Get the switch element
@@ -65,7 +64,7 @@ describe("CreateChallengeScreen", () => {
 
   it("calls makeChallenge and navigates to Home", async () => {
     const createChallengeMock = jest.requireMock(
-      "@/types/ChallengeBuilder"
+      "@/types/ChallengeBuilder",
     ).createChallenge;
 
     const { getByTestId } = render(
@@ -73,7 +72,7 @@ describe("CreateChallengeScreen", () => {
         navigation={navigationMock}
         image_id="test-image"
         firestoreCtrl={firestoreCtrlMock}
-      />
+      />,
     );
 
     // Get the input fields
@@ -93,7 +92,7 @@ describe("CreateChallengeScreen", () => {
         "Test Challenge Name",
         expect.any(Date),
         "This is a test description",
-        undefined // Since location is disabled
+        undefined, // Since location is disabled
       );
       expect(navigationMock.navigate).toHaveBeenCalledWith("Home");
     });
@@ -102,14 +101,16 @@ describe("CreateChallengeScreen", () => {
   it("handles error during challenge creation", async () => {
     const createChallengeMock = jest
       .requireMock("@/types/ChallengeBuilder")
-      .createChallenge.mockRejectedValue(new Error("Challenge creation failed"));
+      .createChallenge.mockRejectedValue(
+        new Error("Challenge creation failed"),
+      );
 
     const { getByTestId } = render(
       <CreateChallengeScreen
         navigation={navigationMock}
         image_id="test-image"
         firestoreCtrl={firestoreCtrlMock}
-      />
+      />,
     );
 
     // Get the input fields

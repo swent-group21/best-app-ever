@@ -50,7 +50,12 @@ const CreateChallengeScreen = ({
 
   return (
     <ThemedView style={styles.createChallengeScreen}>
-      <ThemedText style={styles.title} colorType="textPrimary" type="title" testID="Create-Challenge-Text">
+      <ThemedText
+        style={styles.title}
+        colorType="textPrimary"
+        type="title"
+        testID="Create-Challenge-Text"
+      >
         Create a New Challenge
       </ThemedText>
 
@@ -94,12 +99,20 @@ const CreateChallengeScreen = ({
             value={isEnabled}
           />
 
-          <ThemedText colorType="textPrimary" style={styles.switchText} testID="Location-validation">
+          <ThemedText
+            colorType="textPrimary"
+            style={styles.switchText}
+            testID="Location-validation"
+          >
             Enable location ?
           </ThemedText>
         </ThemedView>
 
-        <BottomBar rightIcon="arrow-forward" rightAction={makeChallenge} testID="bottom-bar" />
+        <BottomBar
+          rightIcon="arrow-forward"
+          rightAction={makeChallenge}
+          testID="bottom-bar"
+        />
       </ThemedScrollView>
     </ThemedView>
   );

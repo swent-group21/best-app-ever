@@ -12,7 +12,7 @@ describe("CreateChallengeScreen", () => {
         navigation={navigationMock}
         image_id="test-image"
         firestoreCtrl={firestoreCtrlMock}
-      />
+      />,
     );
 
     expect(getByTestId("Create-Challenge-Text")).toBeTruthy();
