@@ -81,7 +81,7 @@ export function Challenge({ challengeDB, index, firestoreCtrl, navigation }: any
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaxScreen");
+                      navigation.navigate("MaximizeScreen");
                     }}
                     size={25}
                     style={{ paddingRight: 8 }}

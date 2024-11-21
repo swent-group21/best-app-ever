@@ -6,34 +6,19 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { auth } from "@/firebase/Firebase"; // Import auth
-import { DBChallenge } from "@/firebase/FirestoreCtrl";
+import getUser, { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  const [uid, setUid] = useState<string | null>(null); // Add this line
 
   useEffect(() => {
-    // Listen for authentication state changes
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUid(user.uid);
-      } else {
-        setUid(null);
-      }
-    });
-
-    // Cleanup the listener on unmount
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (uid) {
+    if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(user.uid);
           console.log("Challenges", challengesData);
           setChallenges(challengesData);
         } catch (error) {
@@ -43,7 +28,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
       fetchChallenges();
     }
-  }, [uid]);
+  }, [user.uid]);
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -61,6 +46,8 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
       >
         {challenges.map((challenge, index) => (
           <Challenge
+            navigation={navigation}
+            firestoreCtrl={firestoreCtrl}
             key={index}
             challengeDB={challenge}
             // Include other props as needed
