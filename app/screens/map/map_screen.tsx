@@ -6,7 +6,8 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedText } from "@/components/theme/ThemedText";
 
 /**
  * The default location object, centered on the city of Nice, France.
@@ -24,8 +25,11 @@ const defaultLocation = {
  * @returns The MapScreen component
  */
 export default function MapScreen({ navigation, firestoreCtrl }: any) {
-  const [location, setLocation] = useState<LocationObject>(defaultLocation);
-  const [markers, setMarkers] = useState<MapMarker[]>([]);
+  const [permission, setPermission] = useState<boolean>(false);
+  const [location, setLocation] = useState<LocationObject | undefined>(
+    undefined,
+  );
+  const [markers, setMarkers] = useState<Location[]>([]);
 
   /**
    * Asks for permission to access the user's location and sets the location state to the user's current location.
@@ -35,8 +39,12 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
       try {
         const { status } = await requestForegroundPermissionsAsync();
         if (status === "granted") {
+          setPermission(true);
           const location = await getCurrentPositionAsync();
-          if (location) setLocation(location);
+          setLocation(location);
+        } else {
+          setPermission(false);
+          setLocation(defaultLocation);
         }
       } catch (error) {
         console.log("Error getting location permission or location:", error);
@@ -64,6 +72,17 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
   }, []);
 
   /**
+   * Renders a loading message while the location is being fetched.
+   */
+  if (permission && location === undefined) {
+    return (
+      <ThemedView>
+        <ThemedText>Getting location...</ThemedText>
+      </ThemedView>
+    );
+  }
+
+  /**
    * Renders the MapScreen component with every challenge as a marker on the map.
    */
   return (
@@ -72,8 +91,8 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
         style={styles.map}
         testID="mapView"
         initialRegion={{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
+          latitude: location?.coords.latitude ?? 0,
+          longitude: location?.coords.longitude ?? 0,
           latitudeDelta: 0.0,
           longitudeDelta: 0.0,
         }}
