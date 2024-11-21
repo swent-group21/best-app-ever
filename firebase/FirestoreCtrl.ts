@@ -180,4 +180,28 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
+
+  /**
+   * Retrieves all challenges from Firestore. WARNING: This can be slow and expensive.
+   * 
+   * @returns A promise that resolves to an array of all challenges.
+   */
+  async getAllChallenges(): Promise<DBChallenge[]> {
+    try {
+      const challengesRef = collection(firestore, "challenges");
+      const querySnapshot = await getDocs(challengesRef);
+      const challenges = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        console.log("Challenge data retrieved:", data);
+        return {
+          ...data,
+          challenge_id: doc.id,
+        } as DBChallenge;
+      });
+      return challenges;
+    } catch (error) {
+      console.error("Error getting all challenges: ", error);
+      throw error;
+    }
+  }
 }
