@@ -109,4 +109,4 @@ export const resetPassword = async (email: string) => {
   } else {
     alert("Please enter your email.");
   }
-}
+};
