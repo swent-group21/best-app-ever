@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import MapView, { MapMarker } from "react-native-maps";
+import MapView, { LatLng, MapMarker } from "react-native-maps";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
@@ -30,7 +30,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
   const [location, setLocation] = useState<LocationObject | undefined>(
     undefined,
   );
-  const [markers, setMarkers] = useState<Location[]>([]);
+  const [markers, setMarkers] = useState<LatLng[]>([]);
 
   /**
    * Asks for permission to access the user's location and sets the location state to the user's current location.
@@ -62,7 +62,11 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
     const fetchChallenges = async () => {
       try {
         const challengesData = await firestoreCtrl.getAllChallenges();
-        setMarkers(challengesData.map((challenge: any) => challenge.location));
+        const markers: LatLng[] = challengesData.map((challenge: any) => ({
+          latitude: challenge.coordinates.latitude,
+          longitude: challenge.coordinates.longitude,
+        }));
+        setMarkers(markers);
         console.log("Challenges", markers);
       } catch (error) {
         console.error("Error fetching challenges: ", error);
