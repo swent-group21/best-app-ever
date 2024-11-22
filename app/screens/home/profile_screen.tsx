@@ -13,6 +13,7 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 import { Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import { auth } from "@/firebase/Firebase"; 
+import { updateEmail, sendPasswordResetEmail} from "firebase/auth";
 
 
 //TODO : change the colors for light mode 
@@ -22,7 +23,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
 
   const currentUser = auth.currentUser;
   const username = currentUser?.displayName;
- // const email = currentUser?.email;
+  const email = currentUser?.email;
   //const username = "test";
   const [image, setImage] = React.useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(auth.currentUser ? true : false);
@@ -49,6 +50,8 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
      }
    };
 
+  
+
   return (
     <ThemedView style = {styles.bigContainer} >
      {isLoggedIn &&
@@ -67,12 +70,12 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
           <ThemedText style={styles.username}>{username}</ThemedText>
         </ThemedView><ThemedView style={styles.actionsContainer}>
           <ThemedView style={styles.row}>
-            <ThemedTextButton text='Change your email' textColorType='white' darkColor="transparent" lightColor="transparent" onPress={() => Alert.alert("Email", email)} style={styles.action}> </ThemedTextButton>
+            <ThemedTextButton text='Change your email' textColorType='white' darkColor="transparent" lightColor="transparent" onPress={() => alert('Change email')} style={styles.action}> </ThemedTextButton>
             <Icon name='email' color='white' size={30} />
           </ThemedView>
 
           <ThemedView style={styles.row}>
-            <ThemedTextButton text='Change your password' textColorType='white' darkColor="transparent" lightColor="transparent" onPress={() => Alert.alert("Email", email)} style={styles.action}>
+            <ThemedTextButton text='Change your password' textColorType='white' darkColor="transparent" lightColor="transparent" style={styles.action} onPress={() => {if (email) sendPasswordResetEmail(auth, email )}}>
             </ThemedTextButton>
             <Icon name='key' color='white' size={30} />
           </ThemedView>
