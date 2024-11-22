@@ -15,7 +15,6 @@ import SetUsername from "@/app/screens/auth/set_up_screen";
 import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import ProfileScreen from "@/app/screens/home/profile_screen";
-import UpdateEmail from "@/app/screens/home/update_email";
 
 const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
 
@@ -106,14 +105,7 @@ export const Nav: React.FC<AppStackProps> = ({
             />
           )}
         </Screen>
-        <Screen name= "UpdateEmail">
-          {(props: any) => (
-            <UpdateEmail {...props} firestoreCtrl={firestoreCtrl} />
-          )}
-
-
-
-        </Screen>
+      
       </Group>
     </Navigator>
   );
