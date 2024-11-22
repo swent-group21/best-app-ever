@@ -6,16 +6,12 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 
-const CreateChallengeScreen = ({
-  navigation,
-  route,
-  firestoreCtrl,
-}: any) => {
+const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
 
   const image_id = route.params?.image_id;
-  console.log("image_id: ", image_id)
+  console.log("image_id: ", image_id);
 
   async function makeChallenge() {
     try {
@@ -25,7 +21,7 @@ const CreateChallengeScreen = ({
         challenge_name,
         date,
         description,
-        image_id
+        image_id,
       );
       navigation.navigate("Home");
     } catch (error) {

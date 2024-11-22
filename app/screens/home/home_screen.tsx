@@ -6,22 +6,19 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge } from "@/firebase/FirestoreCtrl";
-import { getAuth } from "firebase/auth";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
+export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-
-  const auth = getAuth();
-  const uid = auth.currentUser?.uid;
+  const user = route.params?.user || {};
 
   useEffect(() => {
-    if (uid) {
+    if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(user.uid);
           console.log("Challenges", challengesData);
           setChallenges(challengesData);
         } catch (error) {
@@ -31,7 +28,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
       fetchChallenges();
     }
-  }, [uid]);
+  }, [user.uid]);
 
   return (
     <ThemedView style={styles.bigContainer}>

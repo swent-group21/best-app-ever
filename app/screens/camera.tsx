@@ -76,7 +76,7 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
     [onPinch, onPinchEnd],
   );
 
-  async function imageUrlGen () {
+  async function imageUrlGen() {
     let img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
     navigation.navigate("CreateChallenge", {
       image_id: img_id,
@@ -186,7 +186,9 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
 
           <TouchableOpacity
             style={styles.send}
-            onPress={() => {imageUrlGen()}}
+            onPress={() => {
+              imageUrlGen();
+            }}
           >
             <Ionicons name="send" size={30} color="white" />
           </TouchableOpacity>

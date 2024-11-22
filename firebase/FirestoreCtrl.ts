@@ -105,7 +105,7 @@ export default class FirestoreCtrl {
 
       await uploadBytes(storageRef, blob);
 
-      return id_picture 
+      return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
       console.log("Error uploading image: ", error);
@@ -113,7 +113,7 @@ export default class FirestoreCtrl {
     }
   }
 
-  async getImageUrl(id_picture: string){
+  async getImageUrl(id_picture: string) {
     const storageRef = ref(getStorage(), "images/" + id_picture);
     const url = await getDownloadURL(storageRef);
     return url;
