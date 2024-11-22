@@ -49,7 +49,7 @@ export const Nav: React.FC<AppStackProps> = ({
             <WelcomeScreens {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
-        <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
+        <Screen name="WelcomeFinal" options={{ title: "Final Screen" }}>
           {(props: any) => (
             <WelcomeFinalScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
@@ -86,7 +86,7 @@ export const Nav: React.FC<AppStackProps> = ({
         <Screen name="Camera">
           {(props: any) => <Camera {...props} firestoreCtrl={firestoreCtrl} />}
         </Screen>
-        <Screen name="MaximizeScreen">
+        <Screen name="Maximize">
           {(props: any) => (
             <MaximizeScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}

@@ -76,6 +76,14 @@ jest.mock("@react-navigation/native", () => ({
   }),
 }));
 
+// Mock registerRootComponent from 'expo'
+jest.mock("expo", () => ({
+  registerRootComponent: jest.fn(),
+}));
+
+// Mock gesture-handler
+jest.mock("@/gesture-handler", () => {});
+
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn(),
