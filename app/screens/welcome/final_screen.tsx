@@ -37,7 +37,7 @@ export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
         {/* Sign up button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => navigation.navigate("SetUser")}
+          onPress={() => navigation.navigate("SignUp")}
           text="Sign Up"
           textStyle={styles.buttonText}
           textColorType="textOverLight"

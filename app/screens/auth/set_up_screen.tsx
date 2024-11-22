@@ -8,11 +8,12 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import * as ImagePicker from "expo-image-picker";
+import { getUID } from "@/types/Auth";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername({ navigation }: any) {
+export default function SetUsername({ navigation, firestoreCtrl }: any) {
   const [username, setUsername] = React.useState("");
 
   const [image, setImage] = React.useState<string | null>(null);
@@ -26,6 +27,18 @@ export default function SetUsername({ navigation }: any) {
     });
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+    }
+  };
+
+  const upload = async () => {
+    if (username === "") {
+      alert("Please enter a username.");
+    }
+    else {
+      await firestoreCtrl.setName(getUID(), username);
+      if (image) {
+        await firestoreCtrl.setProfilePicture(getUID(), image);
+      }
     }
   };
 
@@ -82,7 +95,12 @@ export default function SetUsername({ navigation }: any) {
       {/* Bottom bar */}
       <BottomBar
         rightIcon="arrow-forward"
-        rightAction={() => navigation.navigate("Home")}
+        rightAction={
+          async () => {
+            await upload();
+            navigation.navigate("Home");
+          }
+        }
       />
     </ThemedView>
   );

@@ -18,6 +18,7 @@ export type DBUser = {
   email: string;
   phone?: string;
   address?: string;
+  image_id?: string;
   createdAt: Date;
 };
 
@@ -116,9 +117,38 @@ export default class FirestoreCtrl {
     }
   }
 
+  /**
+   * Get the name of a user by their UID.
+   */
   async getName(id: string) {
     const user = await this.getUser(id);
     return user?.name;
+  }
+
+  /**
+   * Set the name of a user by their UID.
+   */
+  async setName(id: string, name: string) {
+    const user = await this.getUser(id);
+    user.name = name;
+    await this.createUser(id, user);
+  }
+
+  /**
+   * Get the profile picture of a user by their UID.
+   */
+  async getProfilePicture(id: string) {
+    const user = await this.getUser(id);
+    return user?.image_id;
+  }
+
+  /**
+   * Set the profile picture of a user by their UID.
+   */
+  async setProfilePicture(id: string, imageUri: string) {
+    const user = await this.getUser(id);
+    user.image_id = await this.uploadImageFromUri(imageUri);
+    await this.createUser(id, user);
   }
 
   /**
