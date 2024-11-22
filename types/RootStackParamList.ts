@@ -11,4 +11,5 @@ export type RootStackParamList = {
   CreateChallengeScreen: {
     picture_id: string;
   };
+  MapScreen: undefined;
 };

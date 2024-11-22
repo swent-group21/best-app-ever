@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { isValidEmail, signUpWithEmail } from "@/types/Auth";
-
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
