@@ -1,4 +1,5 @@
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import * as Location from "expo-location";
 
 /**
  * Used to build an already created Challenge from Firestore DB
@@ -23,6 +24,7 @@ export const buildChallenge = async (
       description: challenge.description,
       uid: challenge.uid,
       date: challenge.date,
+      location: challenge.location,
     };
 
     return challengeData;
@@ -39,7 +41,7 @@ export const createChallenge = async (
   challenge_name: string,
   date: Date,
   description: string,
-  location?: Location,
+  location?: Location.LocationObjectCoords,
   image_id?: string,
   comment_id?: string,
 ): Promise<void> => {
@@ -52,6 +54,7 @@ export const createChallenge = async (
       description: description || "",
       uid: user.uid,
       date: date,
+      location: location,
       // Add other fields as needed
     };
 

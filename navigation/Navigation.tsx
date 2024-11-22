@@ -15,6 +15,7 @@ import SetUsername from "@/app/screens/auth/set_up_screen";
 import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import ProfileScreen from "@/app/screens/home/profile_screen";
+import MapScreen from "@/app/screens/map/map_screen";
 
 const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
 
@@ -31,6 +32,7 @@ export const Nav: React.FC<AppStackProps> = ({
 }) => {
   return (
     <Navigator
+      firestoreCtrl={firestoreCtrl}
       initialRouteName={isLoggedIn}
       screenOptions={{
         headerShown: false,
@@ -106,6 +108,12 @@ export const Nav: React.FC<AppStackProps> = ({
           )}
         </Screen>
       
+        <Screen name="MapScreen">
+          {(props: any) => (
+            <MapScreen {...props} firestoreCtrl={firestoreCtrl} />
+          )}
+        </Screen>
+
       </Group>
     </Navigator>
   );

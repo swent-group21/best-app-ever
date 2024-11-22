@@ -7,6 +7,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { getAuth } from "firebase/auth";
+import { ThemedText } from "@/components/theme/ThemedText";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -23,7 +24,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
       const fetchChallenges = async () => {
         try {
           const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
-          console.log("Challenges", challengesData);
+          console.log("Challenges [" + uid + "]", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -49,21 +50,26 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-        {challenges.map((challenge, index) => (
-          <Challenge
-            navigation={navigation}
-            firestoreCtrl={firestoreCtrl}
-            key={index}
-            challengeDB={challenge}
-            // Include other props as needed
-          />
-        ))}
+        {challenges.length === 0 ? (
+          <ThemedText>No challenge to display</ThemedText>
+        ) : (
+          challenges.map((challenge, index) => (
+            <Challenge
+              navigation={navigation}
+              firestoreCtrl={firestoreCtrl}
+              key={index}
+              challengeDB={challenge}
+              // Include other props as needed
+            />
+          ))
+        )}
       </ThemedScrollView>
 
       <BottomBar
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
+        leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>
