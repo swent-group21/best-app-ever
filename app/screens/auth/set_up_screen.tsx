@@ -34,9 +34,14 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
     if (username === "") {
       alert("Please enter a username.");
     } else {
-      await firestoreCtrl.setName(getUID(), username);
-      if (image) {
-        await firestoreCtrl.setProfilePicture(getUID(), image);
+      try {
+        if (image) {
+          await firestoreCtrl.setProfilePicture(getUID(), image);
+        }
+        await firestoreCtrl.setName(getUID(), username);
+      } catch (error) {
+        console.error("Error setting up profile: ", error);
+        alert("Error setting up profile: " + error);
       }
     }
   };
@@ -63,16 +68,25 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
         <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
 
-          <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
+          <TouchableOpacity
+            onPress={pickImage}
+            style={styles.smallContainer}
+            testID="profilePicButton"
+          >
             {!image ? (
               <ThemedIconButton
                 name="person-circle-outline"
                 size={300}
                 color="white"
                 onPress={pickImage}
+                testID="profilePicIcon"
               />
             ) : (
-              <Image source={{ uri: image }} style={styles.image} />
+              <Image
+                source={{ uri: image }}
+                style={styles.image}
+                testID="profilePicImage"
+              />
             )}
           </TouchableOpacity>
 
@@ -83,6 +97,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
             style={styles.input}
             viewWidth="80%"
             placeholder="ex : sandraa"
+            testID="usernameInput"
           />
         </ThemedView>
 

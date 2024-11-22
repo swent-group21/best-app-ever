@@ -121,34 +121,54 @@ export default class FirestoreCtrl {
    * Get the name of a user by their UID.
    */
   async getName(id: string) {
-    const user = await this.getUser(id);
-    return user?.name;
+    try {
+      const user = await this.getUser(id);
+      return user?.name;
+    } catch (error) {
+      console.error("Error getting name: ", error);
+      throw error;
+    }
   }
 
   /**
    * Set the name of a user by their UID.
    */
   async setName(id: string, name: string) {
-    const user = await this.getUser(id);
-    user.name = name;
-    await this.createUser(id, user);
+    try {
+      const user = await this.getUser(id);
+      user.name = name;
+      await this.createUser(id, user);
+    } catch (error) {
+      console.error("Error setting name: ", error);
+      throw error;
+    }
   }
 
   /**
    * Get the profile picture of a user by their UID.
    */
   async getProfilePicture(id: string) {
-    const user = await this.getUser(id);
-    return user?.image_id;
+    try {
+      const user = await this.getUser(id);
+      return user?.image_id;
+    } catch (error) {
+      console.error("Error getting profile picture: ", error);
+      throw error;
+    }
   }
 
   /**
    * Set the profile picture of a user by their UID.
    */
   async setProfilePicture(id: string, imageUri: string) {
-    const user = await this.getUser(id);
-    user.image_id = await this.uploadImageFromUri(imageUri);
-    await this.createUser(id, user);
+    try {
+      const user = await this.getUser(id);
+      user.image_id = await this.uploadImageFromUri(imageUri);
+      await this.createUser(id, user);
+    } catch (error) {
+      console.error("Error setting profile picture: ", error);
+      throw error;
+    }
   }
 
   /**
