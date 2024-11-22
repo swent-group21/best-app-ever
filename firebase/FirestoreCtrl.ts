@@ -1,3 +1,4 @@
+import { limit } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -227,6 +228,32 @@ export default class FirestoreCtrl {
       return challenges;
     } catch (error) {
       console.error("Error getting challenges by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the first k challenges from Firestore.
+   *
+   * @param k The number of challenges to retrieve.
+   * @returns A promise that resolves to an array of challenges.
+   */
+  async getKChallenges(k: number): Promise<DBChallenge[]> {
+    try {
+      const challengesRef = collection(firestore, "challenges");
+      const q = query(challengesRef, limit(k));
+      const querySnapshot = await getDocs(q);
+      const challenges = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          challenge_id: doc.id,
+        } as DBChallenge;
+      });
+      console.log("Challenges retrieved:", challenges);
+      return challenges;
+    } catch (error) {
+      console.error("Error getting challenges: ", error);
       throw error;
     }
   }

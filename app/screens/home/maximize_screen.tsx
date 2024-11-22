@@ -29,7 +29,7 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
       <TopBar
         title="Commute by foot"
         leftIcon="arrow-back-outline"
-        leftAction={navigation.pop}
+        leftAction={navigation.goBack}
       />
 
       <ThemedScrollView
