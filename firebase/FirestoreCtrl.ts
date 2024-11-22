@@ -12,6 +12,7 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as Location from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -31,7 +32,7 @@ export type DBChallenge = {
   image_id?: string;
   comment_id?: string;
   date: Date;
-  location?: Location;
+  location?: Location.LocationObjectCoords;
 };
 
 export type DBComment = {
