@@ -15,7 +15,6 @@ const CreateChallengeScreen = ({
   const [description, setDescription] = useState("");
 
   const image_id = route.params?.image_id;
-  console.log("image_id: ", image_id)
 
   async function makeChallenge() {
     try {
