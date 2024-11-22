@@ -12,11 +12,10 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { Alert } from "react-native";
 import { Icon } from "react-native-elements";
-import { Firestore } from "firebase/firestore";
 import { auth } from "@/firebase/Firebase"; 
 
 
-
+//TODO : change the colors for light mode 
 const { width, height } = Dimensions.get("window");
 
 export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
@@ -24,7 +23,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
   const username = "Tristan";
   const email = "tristan@gmail.com";
   const [image, setImage] = React.useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(auth.currentUser ? true : false);
 
   const signOut = async () => {
     try {
@@ -33,7 +32,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
     } catch (error) {
       console.error("Error signing out: ", error);
     }
-  }s
+  };
   const pickImage = async () => {
     console.log("Loading image");
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,79 +49,58 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
 
   return (
     <ThemedView style = {styles.bigContainer} >
-      <TopBar title="Your profile" leftIcon="arrow-back"/>
+     {isLoggedIn &&
+     ( <><TopBar title="Your profile" leftIcon="arrow-back" leftAction={navigation.goBack} /><TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
+        {!image ? (
+          <ThemedIconButton
+            name="person-circle-outline"
+            size={300}
+            color="white"
+            onPress={pickImage} />
+        ) : (
+          <Image source={{ uri: image }} style={styles.image} />
+        )}
 
-      <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
-             {!image ? (
-               <ThemedIconButton
-                 name="person-circle-outline"
-                 size={300}
-                 color="white"
-                 onPress={pickImage}
-               />
-             ) : (
-               <Image source={{ uri: image }} style={styles.image} />
-             )}
+      </TouchableOpacity><ThemedView style={styles.smallContainer}>
+          <ThemedText style={styles.username}>{username}</ThemedText>
+        </ThemedView><ThemedView style={styles.actionsContainer}>
+          <ThemedView style={styles.row}>
+            <ThemedTextButton text='Change your email' textColorType='white' darkColor="transparent" lightColor="transparent" onPress={() => Alert.alert("Email", email)} style={styles.action}> </ThemedTextButton>
+            <Icon name='email' color='white' size={30} />
+          </ThemedView>
 
-        </TouchableOpacity>
-        
-        <ThemedView style = {styles.smallContainer}>
-            <ThemedText style = {styles.username}>{username}</ThemedText>
-        </ThemedView>
+          <ThemedView style={styles.row}>
+            <ThemedTextButton text='Change your password' textColorType='white' darkColor="transparent" lightColor="transparent" onPress={() => Alert.alert("Email", email)} style={styles.action}>
+            </ThemedTextButton>
+            <Icon name='key' color='white' size={30} />
+          </ThemedView>
+          <ThemedView style={styles.row}>
+            <ThemedTextButton text='Log Out' textColorType='white' darkColor="transparent" lightColor="transparent" onPress={() => { signOut; navigation.navigate("SignIn"); } } style={styles.action}>
+            </ThemedTextButton>
+            <Icon name='logout' color='white' size={30} />
+          </ThemedView>
 
-        <ThemedView style = {styles.actionsContainer}> 
-            <ThemedView style ={styles.row}> 
-                <ThemedTextButton text = 'Change your email' textColorType = 'white' darkColor="transparent" lightColor="transparent" onPress={() => Alert.alert("Email", email)} style = {styles.action}> </ThemedTextButton>
-                <Icon name='email' color='white' size={30} />
-            </ThemedView>
+        </ThemedView></> 
+        )}
 
-            <ThemedView style ={styles.row}> 
-                <ThemedTextButton text = 'Change your password' textColorType = 'white' darkColor="transparent" lightColor="transparent" onPress={() => Alert.alert("Email", email)} style = {styles.action}>
-                </ThemedTextButton>
-                <Icon name='key' color='white' size={30}/>
-            </ThemedView>
-            <ThemedView style ={styles.row}> 
-                <ThemedTextButton text = 'Log Out' textColorType = 'white' darkColor="transparent" lightColor="transparent" onPress={() => {signOut; }} style = {styles.action}>
-                </ThemedTextButton>
-                <Icon name='logout' color='white' size={30} />
-            </ThemedView>
-      
-        </ThemedView> 
+        {!isLoggedIn && (
+          <ThemedView style={styles.smallContainer}>
+            <ThemedText style={styles.username}>You are not logged in</ThemedText>
+            <ThemedTextButton
+              text="Sign In"
+              textColorType="white"
+              darkColor="transparent"
+              lightColor="transparent"
+              onPress={() => navigation.navigate("SignIn")}
+            />
+          </ThemedView>
+        )}
             
         </ThemedView>  
-             
-
-    
-    
   );
 };
 
 
-const updateEmail = async (newEmail:any) => {
-  try {
-    // Obtenez l'utilisateur actuellement connecté
-    const user = auth().currentUser;
-
-    if (!user) {
-      console.log('Aucun utilisateur connecté.');
-      return;
-    }
-
-    // Met à jour l'adresse e-mail
-    await user.updateEmail(newEmail);
-
-    // Envoyer un e-mail de vérification pour la nouvelle adresse e-mail
-    await user.sendEmailVerification();
-
-    console.log('Adresse e-mail mise à jour avec succès. Un e-mail de validation a été envoyé.');
-  } catch (error) {
-    if (error.code === 'auth/requires-recent-login') {
-      console.error("L'utilisateur doit se reconnecter pour des raisons de sécurité.");
-    } else {
-      console.error('Erreur lors de la mise à jour de l’adresse e-mail:', error.message);
-    }
-  }
-};
 
 
 
