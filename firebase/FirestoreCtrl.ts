@@ -1,3 +1,4 @@
+import { limit } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -182,14 +183,16 @@ export default class FirestoreCtrl {
   }
 
   /**
-   * Retrieves all challenges from Firestore. WARNING: This can be slow and expensive.
+   * Retrieves the first k challenges from Firestore.
    *
-   * @returns A promise that resolves to an array of all challenges.
+   * @param k The number of challenges to retrieve.
+   * @returns A promise that resolves to an array of challenges.
    */
-  async getAllChallenges(): Promise<DBChallenge[]> {
+  async getKChallenges(k: number): Promise<DBChallenge[]> {
     try {
       const challengesRef = collection(firestore, "challenges");
-      const querySnapshot = await getDocs(challengesRef);
+      const q = query(challengesRef, limit(k));
+      const querySnapshot = await getDocs(q);
       const challenges = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         console.log("+ Challenge data retrieved:", data);
@@ -200,7 +203,7 @@ export default class FirestoreCtrl {
       });
       return challenges;
     } catch (error) {
-      console.error("Error getting all challenges: ", error);
+      console.error("Error getting challenges: ", error);
       throw error;
     }
   }

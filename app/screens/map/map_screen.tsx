@@ -66,7 +66,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
     const fetchChallenges = async () => {
       try {
         console.log("Fetching challenges...");
-        const challengesData = await firestoreCtrl.getAllChallenges();
+        const challengesData = await firestoreCtrl.getKChallenges(100);
         const filteredChallenges = challengesData.filter(
           (challenge: any) => challenge.location !== undefined,
         );
