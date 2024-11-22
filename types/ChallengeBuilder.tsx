@@ -46,8 +46,6 @@ export const createChallenge = async (
   try {
     // Prepare the challenge data for Firestore
     const user: DBUser = await firestoreCtrl.getUser();
-    console.log("createChallenge uid", user.uid);
-    console.log("image builder", image_id);
 
     const newChallenge: DBChallenge = {
       challenge_name: challenge_name,
@@ -62,7 +60,6 @@ export const createChallenge = async (
       newChallenge.image_id = image_url;
     }
 
-    console.log("newChallenge: ", newChallenge)
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
   } catch (error) {

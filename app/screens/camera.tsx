@@ -78,7 +78,6 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
 
   async function imageUrlGen () {
     let img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
-    console.log("image camera: ", img_id)
     navigation.navigate("CreateChallenge", {
       image_id: img_id,
     });
