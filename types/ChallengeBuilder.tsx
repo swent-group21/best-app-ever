@@ -39,14 +39,14 @@ export const createChallenge = async (
   challenge_name: string,
   date: Date,
   description: string,
-  location?: Location,
   image_id?: string,
+  location?: Location,
   comment_id?: string,
 ): Promise<void> => {
   try {
     // Prepare the challenge data for Firestore
     const user: DBUser = await firestoreCtrl.getUser();
-    console.log("createChallenge uid", user.uid);
+
     const newChallenge: DBChallenge = {
       challenge_name: challenge_name,
       description: description || "",
@@ -54,6 +54,11 @@ export const createChallenge = async (
       date: date,
       // Add other fields as needed
     };
+
+    if (image_id) {
+      const image_url = await firestoreCtrl.getImageUrl(image_id);
+      newChallenge.image_id = image_url;
+    }
 
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);

@@ -8,7 +8,12 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export function Challenge({ challengeDB, index, firestoreCtrl, navigation }: any) {
+export function Challenge({
+  challengeDB,
+  index,
+  firestoreCtrl,
+  navigation,
+}: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState<DBUser>();
@@ -40,10 +45,10 @@ export function Challenge({ challengeDB, index, firestoreCtrl, navigation }: any
           <ThemedView style={[styles.challenge]}>
             {/* 
               Challenge Image 
-              source={{uri: challengeData.image_id}}
+              source={require("@/assets/images/challenge2.png")}
             */}
             <Image
-              source={require("@/assets/images/challenge2.png")}
+              source={{uri: challengeDB.image_id}}
               style={styles.image}
             />
 
