@@ -33,8 +33,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
   const upload = async () => {
     if (username === "") {
       alert("Please enter a username.");
-    }
-    else {
+    } else {
       await firestoreCtrl.setName(getUID(), username);
       if (image) {
         await firestoreCtrl.setProfilePicture(getUID(), image);
@@ -95,12 +94,10 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
       {/* Bottom bar */}
       <BottomBar
         rightIcon="arrow-forward"
-        rightAction={
-          async () => {
-            await upload();
-            navigation.navigate("Home");
-          }
-        }
+        rightAction={async () => {
+          await upload();
+          navigation.navigate("Home");
+        }}
       />
     </ThemedView>
   );

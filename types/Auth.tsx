@@ -113,4 +113,4 @@ export const resetPassword = async (email: string) => {
 
 export const getUID = () => {
   return auth.currentUser?.uid;
-}
+};
