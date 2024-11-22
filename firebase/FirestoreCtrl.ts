@@ -1,3 +1,4 @@
+import { limit } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -11,6 +12,7 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as Location from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -18,6 +20,7 @@ export type DBUser = {
   email: string;
   phone?: string;
   address?: string;
+  image_id?: string;
   createdAt: Date;
 };
 
@@ -29,7 +32,7 @@ export type DBChallenge = {
   image_id?: string;
   comment_id?: string;
   date: Date;
-  location?: Location;
+  location?: Location.LocationObjectCoords;
 };
 
 export type DBComment = {
@@ -113,15 +116,67 @@ export default class FirestoreCtrl {
     }
   }
 
+  /**
+   * Get the image url from id_picture
+   */
   async getImageUrl(id_picture: string){
     const storageRef = ref(getStorage(), "images/" + id_picture);
     const url = await getDownloadURL(storageRef);
     return url;
   }
 
+  /**
+   * Get the name of a user by their UID.
+   */
   async getName(id: string) {
-    const user = await this.getUser(id);
-    return user?.name;
+    try {
+      const user = await this.getUser(id);
+      return user?.name;
+    } catch (error) {
+      console.error("Error getting name: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Set the name of a user by their UID.
+   */
+  async setName(id: string, name: string) {
+    try {
+      const user = await this.getUser(id);
+      user.name = name;
+      await this.createUser(id, user);
+    } catch (error) {
+      console.error("Error setting name: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get the profile picture of a user by their UID.
+   */
+  async getProfilePicture(id: string) {
+    try {
+      const user = await this.getUser(id);
+      return user?.image_id;
+    } catch (error) {
+      console.error("Error getting profile picture: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Set the profile picture of a user by their UID.
+   */
+  async setProfilePicture(id: string, imageUri: string) {
+    try {
+      const user = await this.getUser(id);
+      user.image_id = await this.uploadImageFromUri(imageUri);
+      await this.createUser(id, user);
+    } catch (error) {
+      console.error("Error setting profile picture: ", error);
+      throw error;
+    }
   }
 
   /**
@@ -178,6 +233,32 @@ export default class FirestoreCtrl {
       return challenges;
     } catch (error) {
       console.error("Error getting challenges by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the first k challenges from Firestore.
+   *
+   * @param k The number of challenges to retrieve.
+   * @returns A promise that resolves to an array of challenges.
+   */
+  async getKChallenges(k: number): Promise<DBChallenge[]> {
+    try {
+      const challengesRef = collection(firestore, "challenges");
+      const q = query(challengesRef, limit(k));
+      const querySnapshot = await getDocs(q);
+      const challenges = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          challenge_id: doc.id,
+        } as DBChallenge;
+      });
+      console.log("Challenges retrieved:", challenges);
+      return challenges;
+    } catch (error) {
+      console.error("Error getting challenges: ", error);
       throw error;
     }
   }
