@@ -48,7 +48,7 @@ export function Challenge({
               source={require("@/assets/images/challenge2.png")}
             */}
             <Image
-              source={{uri: challengeDB.image_id}}
+              source={{ uri: challengeDB.image_id }}
               style={styles.image}
             />
 

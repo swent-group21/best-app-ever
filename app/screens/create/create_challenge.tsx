@@ -11,11 +11,7 @@ import * as Location from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
-const CreateChallengeScreen = ({
-  navigation,
-  route,
-  firestoreCtrl,
-}: any) => {
+const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
   const image_id = route.params?.image_id;
@@ -25,7 +21,6 @@ const CreateChallengeScreen = ({
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-
   async function makeChallenge() {
     try {
       let date = new Date();
@@ -34,7 +29,7 @@ const CreateChallengeScreen = ({
         challenge_name,
         date,
         description,
-        image_id
+        image_id,
       );
       let currentLocation = undefined;
       if (isEnabled && permission && permission.status === "granted") {
@@ -46,7 +41,7 @@ const CreateChallengeScreen = ({
         date,
         description,
         currentLocation,
-        image_id
+        image_id,
       );
       navigation.navigate("Home");
     } catch (error) {
