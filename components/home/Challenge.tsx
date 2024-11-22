@@ -13,7 +13,9 @@ export function Challenge({
   index,
   firestoreCtrl,
   navigation,
+  testID,
 }: any) {
+
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState<DBUser>();
@@ -37,7 +39,11 @@ export function Challenge({
     return <ThemedText>Loading Challenge...</ThemedText>;
   } else {
     return (
-      <ThemedView style={{ backgroundColor: "transparent" }}>
+      <ThemedView 
+        key={index}
+        testID={testID} 
+        style={{ backgroundColor: "transparent" }}
+      >
         <TouchableOpacity
           onPress={() => setIsOpen(!isOpen)}
           activeOpacity={0.8}
@@ -86,7 +92,10 @@ export function Challenge({
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaximizeScreen");
+                      navigation.navigate("MaximizeScreen", {
+                        challenge: challengeDB,
+                        user: user
+                      });
                     }}
                     size={25}
                     style={{ paddingRight: 8 }}

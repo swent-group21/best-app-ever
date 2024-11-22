@@ -50,12 +50,14 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
             firestoreCtrl={firestoreCtrl}
             key={index}
             challengeDB={challenge}
+            testID={`challenge-id-${index}`}
             // Include other props as needed
           />
         ))}
       </ThemedScrollView>
 
       <BottomBar
+        testID="bottomBar"
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"

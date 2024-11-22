@@ -52,7 +52,11 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         onChangeText={setDescription}
       />
 
-      <BottomBar rightIcon="arrow-forward" rightAction={makeChallenge} />
+      <BottomBar 
+        testID="right-icon"
+        rightIcon="arrow-forward"
+        rightAction={makeChallenge} 
+      />
     </ThemedScrollView>
   );
 };

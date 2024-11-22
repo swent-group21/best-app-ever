@@ -6,23 +6,19 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { getAuth } from "firebase/auth";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
+export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
 
-  const userName = "Sandraa"; // derived from the name of the user
-  const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
-  const auth = getAuth();
-  const user = auth.currentUser?.uid;
-  const infoUser = firestoreCtrl.getUser(user ?? "");
+  const user = route.params?.user || {};
+  const challenge = route.params?.challenge || {};
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -58,10 +54,10 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
             {/* User name and location */}
             <ThemedView style={styles.userInfo} colorType="transparent">
               <ThemedText colorType="white" type="smallSemiBold">
-                {userName}
+                {user.name}
               </ThemedText>
               <ThemedText colorType="white" type="small">
-                {"in " + userLocation + " at " + userTime}
+                {"in " + challenge.location + " at " + challenge.date}
               </ThemedText>
             </ThemedView>
           </ThemedView>
