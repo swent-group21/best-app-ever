@@ -20,8 +20,10 @@ const { width, height } = Dimensions.get("window");
 
 export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
 
-  const username = "Tristan";
-  const email = "tristan@gmail.com";
+  const currentUser = auth.currentUser;
+  const username = currentUser?.displayName;
+ // const email = currentUser?.email;
+  //const username = "test";
   const [image, setImage] = React.useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(auth.currentUser ? true : false);
 
@@ -85,7 +87,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: any) {
 
         {!isLoggedIn && (
           <ThemedView style={styles.smallContainer}>
-            <ThemedText style={styles.username}>You are not logged in</ThemedText>
+            <ThemedText style={styles.notLoggedIn}>You are not logged in !</ThemedText>
             <ThemedTextButton
               text="Sign In"
               textColorType="white"
@@ -113,6 +115,7 @@ const styles = {
     smallContainer: {
         width: "100%",
         alignItems: "center",
+        
        
         },
 
@@ -127,6 +130,7 @@ const styles = {
             fontSize: 20,
             fontWeight: "bold",
             marginBottom: 20,
+            color: "white",
             
           },
 
@@ -181,6 +185,13 @@ const styles = {
             justifyContent: "space-between",
             alignItems: "center",
             
+           }, 
+           
+           notLoggedIn: {
+            width: "100%",
+            alignItems: "center",
+            fontSize: 20,
+            fontWeight: "bold",
            }
 
         
