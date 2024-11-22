@@ -8,17 +8,25 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 
 const CreateChallengeScreen = ({
   navigation,
-  image_id,
+  route,
   firestoreCtrl,
 }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
-  console.log("image_id", image_id);
+
+  const image_id = route.params?.image_id;
+  console.log("image_id: ", image_id)
 
   async function makeChallenge() {
     try {
       let date = new Date();
-      await createChallenge(firestoreCtrl, challenge_name, date, description);
+      await createChallenge(
+        firestoreCtrl,
+        challenge_name,
+        date,
+        description,
+        image_id
+      );
       navigation.navigate("Home");
     } catch (error) {
       console.log("Unable to create challenge");
