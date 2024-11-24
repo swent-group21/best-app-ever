@@ -77,20 +77,4 @@ describe("HomeScreen", () => {
     });
   });
 
-  //it("navigates to Camera screen when center icon is pressed", async () => {
-  //  const navigateMock = jest.fn();
-  //  jest.spyOn(require("@react-navigation/native"), "useNavigation").mockReturnValue({
-  //    navigate: navigateMock,
-  //  });
-
-  //  const { getByTestId } = render(<HomeScreenTest />);
-
-  //  const bottomBar = getByTestId("bottomBar");
-  //  //const cameraIcon = getByTestId("bottomCenterIcon-camera-outline");
-  //  fireEvent.press(bottomBar);
-  //  
-  //  await waitFor(() => {
-  //    expect(screen.getByTestId("camera-screen")).toBeTruthy();
-  //  });
-  //});
 });
