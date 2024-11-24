@@ -1,5 +1,5 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { RootStackParamList } from "@/types/RootStackParamList";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -16,8 +16,7 @@ import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import MapScreen from "@/app/screens/map/map_screen";
 
-const { Navigator, Screen, Group } =
-  createNativeStackNavigator<RootStackParamList>();
+const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
 
 interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
