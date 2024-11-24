@@ -12,7 +12,7 @@ interface ThemedIconButtonProps extends IconProps {
   lightColor?: string;
   darkColor?: string;
   paddingLeft?: number;
-  testId?: string;
+  testID?: string;
 }
 
 export function ThemedIconButton({
@@ -23,7 +23,7 @@ export function ThemedIconButton({
   size,
   paddingLeft,
   colorType,
-  testId,
+  testID,
   ...props
 }: ThemedIconButtonProps) {
   const color = useThemeColor(
@@ -32,13 +32,13 @@ export function ThemedIconButton({
   );
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7} {...(testId && { testId })}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.7} {...(testID && { testID })}>
       <Icon
+        testID={testID}
         color={color}
         type={iconType}
         onPress={onPress}
         size={size}
-        testID={testId}
         {...props}
       />
     </TouchableOpacity>
