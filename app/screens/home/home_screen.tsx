@@ -8,6 +8,7 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
+import { ChallengeDescription } from "@/components/home/Challenge_Description";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -19,6 +20,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const uid = auth.currentUser?.uid;
 
   useEffect(() => {
+    console.log("UID", uid);
     if (uid) {
       const fetchChallenges = async () => {
         try {
@@ -37,10 +39,22 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
-        title="Commute by foot"
+        title="Strive"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
+        rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
       />
+
+      {/* Current Challenge Description  */}
+      <ChallengeDescription
+        navigation={navigation}
+        firestoreCtrl={firestoreCtrl}
+        title = "It's almost Christmas!"
+        description = "Go drink a hot wine at the Christmas market"
+        startDate = "2024-12-24"
+        onTimerFinished = {() => console.log("Timer Finished")}
+      />
+
 
       {/* Challenges */}
       <ThemedScrollView
@@ -52,14 +66,14 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
           <ThemedText>No challenge to display</ThemedText>
         ) : (
           challenges.map((challenge, index) => (
-            <Challenge
-              navigation={navigation}
-              firestoreCtrl={firestoreCtrl}
-              key={index}
-              challengeDB={challenge}
-              // Include other props as needed
-            />
-          ))
+          <Challenge
+            navigation={navigation}
+            firestoreCtrl={firestoreCtrl}
+            key={index}
+            challengeDB={challenge}
+            // Include other props as needed
+          />
+        ))
         )}
       </ThemedScrollView>
 
@@ -67,7 +81,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-        leftAction={() => navigation.navigate("MapScreen")}
+leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>
