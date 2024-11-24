@@ -10,6 +10,21 @@
       "android": {
         "image": "latest",
         "buildType": "apk"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "image": "latest",
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "distribution": "internal",
+      "android": {
+        "image": "latest",
+        "buildType": "apk"
       },
       "env": {
         "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyBkMkNI0ShOWKByQDYNh6sFxAS0xgd1wA0",
@@ -23,10 +38,6 @@
         "EXPO_PUBLIC_IOS_CLIENT_ID_OAUTH": "78136023669-fgnhdh3eee7shnn16htndvefr7ias1vb.apps.googleusercontent.com",
         "EXPO_PUBLIC_ANDROID_CLIENT_IDOAUTH": "78136023669-1c00r0e1bvmv7nt10c758m3p0gdf5gbf.apps.googleusercontent.com"
       }
-    },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {}
+    }
   }
 }

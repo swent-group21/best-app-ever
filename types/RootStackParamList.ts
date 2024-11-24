@@ -19,4 +19,5 @@ export type RootStackParamList = {
   CreateChallenge: {
     picture_id: string;
   };
+  MapScreen: undefined;
 };

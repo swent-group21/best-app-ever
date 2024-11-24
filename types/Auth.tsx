@@ -110,3 +110,7 @@ export const resetPassword = async (email: string) => {
     alert("Please enter your email.");
   }
 };
+
+export const getUID = () => {
+  return auth.currentUser?.uid;
+};

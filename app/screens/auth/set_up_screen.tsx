@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
 import { BottomBar } from "@/components/navigation/BottomBar";
@@ -7,12 +7,43 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import * as ImagePicker from "expo-image-picker";
+import { getUID } from "@/types/Auth";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername({ navigation }: any) {
+export default function SetUsername({ navigation, firestoreCtrl }: any) {
   const [username, setUsername] = React.useState("");
+  const [image, setImage] = React.useState<string | null>(null);
+  const pickImage = async () => {
+    console.log("Loading image");
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const upload = async () => {
+    if (username === "") {
+      alert("Please enter a username.");
+    } else {
+      try {
+        if (image) {
+          await firestoreCtrl.setProfilePicture(getUID(), image);
+        }
+        await firestoreCtrl.setName(getUID(), username);
+      } catch (error) {
+        console.error("Error setting up profile: ", error);
+        alert("Error setting up profile: " + error);
+      }
+    }
+  };
 
   return (
     <ThemedView style={styles.screenContainer}>
@@ -36,13 +67,27 @@ export default function SetUsername({ navigation }: any) {
         <ThemedView style={styles.smallContainer} colorType="transparent">
           {/* Profile picture */}
 
-          <ThemedIconButton
-            testID="profile-icon-button"
-            name="person-circle-outline"
-            size={300}
-            colorType="textPrimary"
-            onPress={() => navigation.navigate("Camera")}
-          />
+          <TouchableOpacity
+            onPress={pickImage}
+            style={styles.smallContainer}
+            testID="profilePicButton"
+          >
+            {!image ? (
+              <ThemedIconButton
+                name="person-circle-outline"
+                size={300}
+                color="white"
+                onPress={pickImage}
+                testID="profile-icon-button"
+              />
+            ) : (
+              <Image
+                source={{ uri: image }}
+                style={styles.image}
+                testID="profilePicImage"
+              />
+            )}
+          </TouchableOpacity>
 
           {/* Username input */}
           <ThemedTextInput
@@ -51,6 +96,7 @@ export default function SetUsername({ navigation }: any) {
             style={styles.input}
             viewWidth="80%"
             placeholder="ex : sandraa"
+            testID="usernameInput"
           />
         </ThemedView>
 
@@ -63,7 +109,10 @@ export default function SetUsername({ navigation }: any) {
       <BottomBar
         testID="bottomBar-rightIcon"
         rightIcon="arrow-forward"
-        rightAction={() => navigation.navigate("Home")}
+        rightAction={async () => {
+          await upload();
+          navigation.navigate("Home");
+        }}
       />
     </ThemedView>
   );

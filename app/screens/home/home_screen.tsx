@@ -6,6 +6,7 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge } from "@/firebase/FirestoreCtrl";
+import { ThemedText } from "@/components/theme/ThemedText";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -44,16 +45,20 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-        {challenges.map((challenge, index) => (
-          <Challenge
-            navigation={navigation}
-            firestoreCtrl={firestoreCtrl}
-            key={index}
-            challengeDB={challenge}
-            testID={`challenge-id-${index}`}
-            // Include other props as needed
-          />
-        ))}
+        {challenges.length === 0 ? (
+          <ThemedText>No challenge to display</ThemedText>
+        ) : (
+          challenges.map((challenge, index) => (
+            <Challenge
+              navigation={navigation}
+              firestoreCtrl={firestoreCtrl}
+              key={index}
+              challengeDB={challenge}
+              testID={`challenge-id-${index}`}
+              // Include other props as needed
+            />
+          ))
+        )}
       </ThemedScrollView>
 
       <BottomBar
@@ -61,6 +66,7 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
+        leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>
