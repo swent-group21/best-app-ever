@@ -32,7 +32,6 @@ export const Nav: React.FC<AppStackProps> = ({
 }) => {
   return (
     <Navigator
-      firestoreCtrl={firestoreCtrl}
       initialRouteName={isLoggedIn}
       screenOptions={{
         headerShown: false,

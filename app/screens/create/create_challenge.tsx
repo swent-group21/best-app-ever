@@ -38,7 +38,11 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         currentLocation,
         image_id
       );
-      navigation.navigate("Home");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home"}],
+      });
+
     } catch (error) {
       console.log("Unable to create challenge");
       return error;

@@ -19,11 +19,23 @@ const Stack = createNativeStackNavigator();
 
 // Wrap MaximizeScreen with NavigationContainer and Stack.Navigator
 const MaximizeScreenTest = () => {
+  const route = {
+    params : {
+        user: {
+          uid: '12345',
+          name: 'Test User',
+          email: 'test@example.com',
+        }, 
+        challenge: {
+          
+        }
+    }
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="MaximizeScreen" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="MaximizeScreen">
-          {(props) => <MaximizeScreen {...props} firestoreCtrl={mockFirestoreCtrl} />}
+          {(props) => <MaximizeScreen {...props} route={route} firestoreCtrl={mockFirestoreCtrl} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -33,9 +45,6 @@ const MaximizeScreenTest = () => {
 describe('MaximizeScreen', () => {
   it('renders correctly', async () => {
     const { getByText, getByTestId } = render(<MaximizeScreenTest />);
-
-    // Wait for async operations to complete
-    await waitFor(() => expect(mockFirestoreCtrl.getUser).toHaveBeenCalled());
 
     // Check if the user name is displayed
     expect(getByText('Test User')).toBeTruthy();

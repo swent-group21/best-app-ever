@@ -43,6 +43,7 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
     async function getCurrentLocation() {
       try {
         const { status } = await requestForegroundPermissionsAsync();
+        console.log("Status: ", status)
         if (status === "granted") {
           setPermission(true);
           const location = await getCurrentPositionAsync();

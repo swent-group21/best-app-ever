@@ -82,7 +82,7 @@ export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any
         </ThemedView>
 
         {/* Like button */}
-        <ThemedView>
+        <ThemedView testID="like-button">
           <ThemedIconButton
             name="heart"
             onPress={() => {
@@ -96,6 +96,7 @@ export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any
         {/* Comment input */}
         <ThemedView style={styles.row} colorType="transparent">
           <ThemedTextInput
+            testID="comment-input"
             style={styles.commentInput}
             value={commentText}
             onChangeText={(text) => {
@@ -103,6 +104,7 @@ export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any
             }}
           />
           <ThemedIconButton
+            testID="send-button"
             name="send"
             size={25}
             colorType="white"

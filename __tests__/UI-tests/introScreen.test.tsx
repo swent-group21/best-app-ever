@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 describe("WelcomeIntroScreen", () => {
   it("renders the screen correctly", () => {
-    const { getByText, getByRole } = render(
+    const { getByText, getByTestId } = render(
       <NavigationContainer>
         <WelcomeIntroScreen />
       </NavigationContainer>
@@ -26,6 +26,6 @@ describe("WelcomeIntroScreen", () => {
     ).toBeTruthy();
 
     // Check if the image is rendered
-    expect(getByRole("image")).toBeTruthy();
+    expect(getByTestId("test-image")).toBeTruthy();
   });
 });
