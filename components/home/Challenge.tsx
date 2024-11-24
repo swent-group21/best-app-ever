@@ -45,9 +45,10 @@ export function Challenge({
           <ThemedView style={[styles.challenge]}>
             {/* 
               Challenge Image 
+              source={{uri: challengeData.image_id}}
             */}
             <Image
-              source={{ uri: challengeDB.image_id }}
+              source={require("@/assets/images/challenge2.png")}
               style={styles.image}
             />
 
