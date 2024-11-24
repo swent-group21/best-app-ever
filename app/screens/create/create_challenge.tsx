@@ -7,29 +7,30 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedView } from "@/components/theme/ThemedView";
-
 import * as Location from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
-const CreateChallengeScreen = ({
-  navigation,
-  image_id,
-  firestoreCtrl,
-}: any) => {
+const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
+  const image_id = route.params?.image_id;
   const [permission, requestPermission] = Location.useForegroundPermissions();
 
   // Switch values
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  console.log("image_id", image_id);
-
   async function makeChallenge() {
     try {
       let date = new Date();
+      await createChallenge(
+        firestoreCtrl,
+        challenge_name,
+        date,
+        description,
+        image_id,
+      );
       let currentLocation = undefined;
       if (isEnabled && permission && permission.status === "granted") {
         currentLocation = (await Location.getCurrentPositionAsync()).coords;
@@ -40,6 +41,7 @@ const CreateChallengeScreen = ({
         date,
         description,
         currentLocation,
+        image_id,
       );
       navigation.navigate("Home");
     } catch (error) {

@@ -105,18 +105,24 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture);
-      console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
-      const downloadUrl = await getDownloadURL(storageRef);
-      console.log("DownloadUrl", downloadUrl);
-      return downloadUrl;
+      return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
       console.log("Error uploading image: ", error);
       throw error;
     }
+  }
+
+  /**
+   * Get the image url from id_picture
+   */
+  async getImageUrl(id_picture: string) {
+    const storageRef = ref(getStorage(), "images/" + id_picture);
+    const url = await getDownloadURL(storageRef);
+    return url;
   }
 
   /**
@@ -182,7 +188,6 @@ export default class FirestoreCtrl {
         collection(firestore, "challenges"),
         challengeData,
       );
-      console.log("Challenge id: ", docRef.id);
     } catch (error) {
       console.error("Error writting challenge document: ", error);
       throw error;
@@ -220,7 +225,6 @@ export default class FirestoreCtrl {
       const querySnapshot = await getDocs(q);
       const challenges = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        console.log("Challenge data retrieved:", data);
         return {
           ...data,
           challenge_id: doc.id,
