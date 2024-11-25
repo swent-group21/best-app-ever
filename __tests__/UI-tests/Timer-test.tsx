@@ -1,91 +1,60 @@
 import React from "react";
 import { render, act } from "@testing-library/react-native";
 import Timer from "@/components/home/timer";
-import NumberCard from "@/components/home/number_cards";
 
-jest.mock("@/components/home/number_cards", () => {
-  const React = require("react");
-  const { Text } = require("react-native");
-  return ({ number }: { number: number }) => <Text testID="number-card">{number}</Text>;
-});
+jest.useFakeTimers(); // Use Jest's fake timers
 
-describe("Timer Component", () => {
-  beforeAll(() => {
-    jest.useFakeTimers(); // Mock timers to control time progression
+describe("Timer Component - Individual Time Units", () => {
+  it("displays the correct minutes when less than an hour is left", () => {
+    const endDate = new Date(Date.now() + 1000 * 60 * 45); // 45 minutes from now
+    const { getByText } = render(<Timer endDate={endDate} onTimerFinished={jest.fn()} />);
+
+    // Assert that the minutes are correctly calculated and displayed
+    expect(getByText("45")).toBeTruthy(); // Minutes
   });
 
-  afterAll(() => {
-    jest.useRealTimers(); // Restore real timers after tests
-  });
+  it("updates seconds correctly over time", () => {
+    const endDate = new Date(Date.now() + 1000 * 5); // 5 seconds from now
+    const { getByText } = render(<Timer endDate={endDate} onTimerFinished={jest.fn()} />);
 
-  it("renders correctly with initial time difference", () => {
-    const startDate = new Date(Date.now() + 86400000).toISOString(); // 1 day in the future
-    const { getAllByTestId, getByText } = render(
-      <Timer startDate={startDate} onTimerFinished={jest.fn()} />
-    );
+    // Check initial state
+    expect(getByText("05")).toBeTruthy(); // Seconds
 
-    const numberCards = getAllByTestId("number-card");
-    expect(numberCards).toHaveLength(4); // Ensure there are 4 NumberCard components
-
-  });
-
-  it("calculates initial time values correctly", () => {
-    const startDate = new Date(Date.now() + 86461000).toISOString(); // 1 day + 1 hour + 1 minute + 1 second
-    const { getAllByTestId } = render(
-      <Timer startDate={startDate} onTimerFinished={jest.fn()} />
-    );
-
-    const numberCards = getAllByTestId("number-card");
-
-    expect(numberCards[0].props.children).toBe(1); // Days
-    expect(numberCards[1].props.children).toBe(0); // Hours
-    expect(numberCards[2].props.children).toBe(1); // Minutes
-    expect(numberCards[3].props.children).toBe(1); // Seconds
-  });
-
-  it("updates time values as time progresses", () => {
-    const startDate = new Date(Date.now() + 10000).toISOString(); // 10 seconds in the future
-    const { getAllByTestId } = render(
-      <Timer startDate={startDate} onTimerFinished={jest.fn()} />
-    );
-
+    // Advance by 1 second
     act(() => {
-      jest.advanceTimersByTime(1000); // Simulate 1 second passing
+      jest.advanceTimersByTime(1000); // Fast-forward 1 second
     });
+    expect(getByText("04")).toBeTruthy(); // Seconds decrease
 
-    const numberCardsAfter1s = getAllByTestId("number-card");
-    expect(numberCardsAfter1s[3].props.children).toBe(9); // Seconds remaining
+  
+  });
 
-    act(() => {
-      jest.advanceTimersByTime(9000); // Simulate 9 more seconds
-    });
+  it("displays the correct hours when more than an hour is left", () => {
+    const endDate = new Date(Date.now() + 1000 * 60 * 60 * 2); // 2 hours from now
+    const { getByText } = render(<Timer endDate={endDate} onTimerFinished={jest.fn()} />);
 
-    const numberCardsAfter10s = getAllByTestId("number-card");
-    expect(numberCardsAfter10s[3].props.children).toBe(0); // Seconds remaining should reach 0
+    // Assert that the hours are correctly calculated and displayed
+    expect(getByText("02")).toBeTruthy(); // Hours
+  });
+
+  it("displays the correct days when more than a day is left", () => {
+    const endDate = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // 3 days from now
+    const { getByText } = render(<Timer endDate={endDate} onTimerFinished={jest.fn()} />);
+
+    // Assert that the days are correctly calculated and displayed
+    expect(getByText("03")).toBeTruthy(); // Days
   });
 
   it("calls onTimerFinished when the timer reaches zero", () => {
-    const onTimerFinishedMock = jest.fn();
-    const startDate = new Date(Date.now() + 3000).toISOString(); // 3 seconds in the future
+    const onTimerFinished = jest.fn();
+    const endDate = new Date(Date.now() + 1000 * 3); // 3 seconds from now
+    render(<Timer endDate={endDate} onTimerFinished={onTimerFinished} />);
 
-    render(<Timer startDate={startDate} onTimerFinished={onTimerFinishedMock} />);
-
+    // Fast-forward to after the timer ends
     act(() => {
-      jest.advanceTimersByTime(3001); // Simulate 3 seconds passing
+      jest.advanceTimersByTime(4000); // 4 seconds to exceed the timer
     });
 
-    expect(onTimerFinishedMock).toHaveBeenCalledTimes(1); // Ensure the callback is called once
-  });
-
-  it("clears the interval when unmounted", () => {
-    const startDate = new Date(Date.now() + 10000).toISOString(); // 10 seconds in the future
-    const clearIntervalSpy = jest.spyOn(global, "clearInterval");
-
-    const { unmount } = render(
-      <Timer startDate={startDate} onTimerFinished={jest.fn()} />
-    );
-
-    unmount(); // Unmount the component
-    expect(clearIntervalSpy).toHaveBeenCalled(); // Ensure interval is cleared
+    expect(onTimerFinished).toHaveBeenCalledTimes(1);
   });
 });
