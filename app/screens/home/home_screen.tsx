@@ -9,15 +9,43 @@ import { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
+import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
+  const [currentChallenge, setCurrentChallenge] = useState<DBChallengeDescription>({
+    title: "Challenge Title",
+    description: "Challenge Description",
+    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+  });
 
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
+  
+  useEffect(() => {
+    
+    const fetchCurrentChallenge = async () => {
+      try {
+          const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        
+          // Transformation des données
+          const formattedChallenge = {
+              title: currentChallengeData.Title,
+              description: currentChallengeData.Description,
+              endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+          };
+    
+          setCurrentChallenge(formattedChallenge);
+      } catch (error) {
+          console.error("Error fetching current challenge: ", error);
+      }
+  };
+  fetchCurrentChallenge();
+  }) 
+    
 
   useEffect(() => {
     console.log("UID", uid);
@@ -36,6 +64,8 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
     }
   }, [uid]);
 
+
+
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -47,13 +77,10 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
       {/* Current Challenge Description  */}
       <ChallengeDescription
-        navigation={navigation}
-        firestoreCtrl={firestoreCtrl}
-        title = "It's almost Christmas!"
-        description = "Go drink a hot wine at the Christmas market"
-        startDate = "2024-12-24"
+        dBChallengeDescription = {currentChallenge}
         onTimerFinished = {() => console.log("Timer Finished")}
-      />
+      /> 
+    
 
 
       {/* Challenges */}
@@ -81,7 +108,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-leftAction={() => navigation.navigate("MapScreen")}
+        leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
       />
     </ThemedView>

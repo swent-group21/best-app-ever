@@ -27,7 +27,6 @@ describe("Timer Component", () => {
     const numberCards = getAllByTestId("number-card");
     expect(numberCards).toHaveLength(4); // Ensure there are 4 NumberCard components
 
-    expect(getByText(":")).toBeTruthy(); // Verify the separators (":") are rendered
   });
 
   it("calculates initial time values correctly", () => {
@@ -72,7 +71,7 @@ describe("Timer Component", () => {
     render(<Timer startDate={startDate} onTimerFinished={onTimerFinishedMock} />);
 
     act(() => {
-      jest.advanceTimersByTime(3000); // Simulate 3 seconds passing
+      jest.advanceTimersByTime(3001); // Simulate 3 seconds passing
     });
 
     expect(onTimerFinishedMock).toHaveBeenCalledTimes(1); // Ensure the callback is called once

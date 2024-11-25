@@ -5,17 +5,22 @@ import Timer from "./timer";
 
 import { Dimensions } from "react-native";
 import { Colors } from "../../constants/Colors";
+import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
+interface ChallengeDescriptionProps {
+    dBChallengeDescription: DBChallengeDescription;
+    onTimerFinished: () => void;
+}
 
-export function ChallengeDescription({firestoreCtrl, navigation, title, description, startDate, onTimerFinished} : any) {
-    
+export function ChallengeDescription({dBChallengeDescription, onTimerFinished}: ChallengeDescriptionProps) {
+
     return (
         <ThemedView style={styles.challenge}>
-            <ThemedText style={{fontSize: 20, fontWeight: 'bold'}}>{title}</ThemedText>
-            <ThemedText style={{fontSize: 15}}>{description}</ThemedText>
-            <Timer startDate={startDate} onTimerFinished={onTimerFinished}/>
+            <ThemedText style={{fontSize: 20, fontWeight: 'bold'}}>{dBChallengeDescription.title}</ThemedText>
+            <ThemedText style={{fontSize: 15}}>{dBChallengeDescription.description}</ThemedText>
+            <Timer endDate={dBChallengeDescription.endDate} onTimerFinished={onTimerFinished}/>
         </ThemedView>
     );
     }
