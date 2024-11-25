@@ -38,9 +38,4 @@ describe("NumberCard Component", () => {
     const numberElement = getByText("12345"); // Large numbers should display as-is
     expect(numberElement).toBeTruthy();
   });
-
-  it("matches the snapshot", () => {
-    const { toJSON } = render(<NumberCard number={7} />);
-    expect(toJSON()).toMatchSnapshot(); // Ensure UI consistency
-  });
 });

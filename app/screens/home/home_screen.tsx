@@ -16,36 +16,36 @@ const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  const [currentChallenge, setCurrentChallenge] = useState<DBChallengeDescription>({
-    title: "Challenge Title",
-    description: "Challenge Description",
-    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-  });
+  const [currentChallenge, setCurrentChallenge] =
+    useState<DBChallengeDescription>({
+      title: "Challenge Title",
+      description: "Challenge Description",
+      endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+    });
 
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
-  
+
   useEffect(() => {
-    
     const fetchCurrentChallenge = async () => {
       try {
-          const currentChallengeData = await firestoreCtrl.getChallengeDescription();
-        
-          // Transformation des données
-          const formattedChallenge = {
-              title: currentChallengeData.Title,
-              description: currentChallengeData.Description,
-              endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
-          };
-    
-          setCurrentChallenge(formattedChallenge);
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+
+        // Transformation des données
+        const formattedChallenge = {
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
+          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+        };
+
+        setCurrentChallenge(formattedChallenge);
       } catch (error) {
-          console.error("Error fetching current challenge: ", error);
+        console.error("Error fetching current challenge: ", error);
       }
-  };
-  fetchCurrentChallenge();
-  }) 
-    
+    };
+    fetchCurrentChallenge();
+  });
 
   useEffect(() => {
     console.log("UID", uid);
@@ -64,24 +64,23 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
     }
   }, [uid]);
 
-
-
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
         title="Strive"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
-        rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
+        rightAction={() => {
+          navigation.navigate("Profile");
+          console.log(auth.currentUser);
+        }}
       />
 
       {/* Current Challenge Description  */}
       <ChallengeDescription
-        dBChallengeDescription = {currentChallenge}
-        onTimerFinished = {() => console.log("Timer Finished")}
-      /> 
-    
-
+        dBChallengeDescription={currentChallenge}
+        onTimerFinished={() => console.log("Timer Finished")}
+      />
 
       {/* Challenges */}
       <ThemedScrollView
@@ -93,14 +92,14 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
           <ThemedText>No challenge to display</ThemedText>
         ) : (
           challenges.map((challenge, index) => (
-          <Challenge
-            navigation={navigation}
-            firestoreCtrl={firestoreCtrl}
-            key={index}
-            challengeDB={challenge}
-            // Include other props as needed
-          />
-        ))
+            <Challenge
+              navigation={navigation}
+              firestoreCtrl={firestoreCtrl}
+              key={index}
+              challengeDB={challenge}
+              // Include other props as needed
+            />
+          ))
         )}
       </ThemedScrollView>
 

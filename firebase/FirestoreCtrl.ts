@@ -276,8 +276,10 @@ export default class FirestoreCtrl {
 
   async getChallengeDescription(): Promise<DBChallengeDescription> {
     try {
-      
-      const challengeDescrpitionRef = collection(firestore, "challenge_description");
+      const challengeDescrpitionRef = collection(
+        firestore,
+        "challenge_description",
+      );
       const q = query(challengeDescrpitionRef);
       const querySnapshot = await getDocs(q);
       const challengeDescription = querySnapshot.docs.map((doc) => {
@@ -291,8 +293,5 @@ export default class FirestoreCtrl {
       console.error("Error getting challenge description: ", error);
       throw error;
     }
-
+  }
 }
-}
-
-

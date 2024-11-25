@@ -10,28 +10,37 @@ import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 const { width, height } = Dimensions.get("window");
 
 interface ChallengeDescriptionProps {
-    dBChallengeDescription: DBChallengeDescription;
-    onTimerFinished: () => void;
+  dBChallengeDescription: DBChallengeDescription;
+  onTimerFinished: () => void;
 }
 
-export function ChallengeDescription({dBChallengeDescription, onTimerFinished}: ChallengeDescriptionProps) {
-
-    return (
-        <ThemedView style={styles.challenge}>
-            <ThemedText style={{fontSize: 20, fontWeight: 'bold'}}>{dBChallengeDescription.title}</ThemedText>
-            <ThemedText style={{fontSize: 15}}>{dBChallengeDescription.description}</ThemedText>
-            <Timer endDate={dBChallengeDescription.endDate} onTimerFinished={onTimerFinished}/>
-        </ThemedView>
-    );
-    }
+export function ChallengeDescription({
+  dBChallengeDescription,
+  onTimerFinished,
+}: ChallengeDescriptionProps) {
+  return (
+    <ThemedView style={styles.challenge}>
+      <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
+        {dBChallengeDescription.title}
+      </ThemedText>
+      <ThemedText style={{ fontSize: 15 }}>
+        {dBChallengeDescription.description}
+      </ThemedText>
+      <Timer
+        endDate={dBChallengeDescription.endDate}
+        onTimerFinished={onTimerFinished}
+      />
+    </ThemedView>
+  );
+}
 
 const styles = {
-    challenge: {
-        width: width - 20,
-        height: 0.2 * height,
-        borderRadius: 15,
-        backgroundColor: 'transparent',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-    };
+  challenge: {
+    width: width - 20,
+    height: 0.2 * height,
+    borderRadius: 15,
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
