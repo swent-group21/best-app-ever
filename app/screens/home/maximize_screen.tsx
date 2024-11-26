@@ -111,14 +111,15 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
             size={25}
             colorType="white"
             onPress={() => {
-              setCommentList([
-                ...commentList,
-                {
-                  comment: commentText,
-                  user: "tristan",
-                  date: userTime,
-                } as CommentType,
-              ]);
+              commentText.length > 0 &&
+                setCommentList([
+                  ...commentList,
+                  {
+                    comment: commentText,
+                    user: "tristan",
+                    date: userTime,
+                  } as CommentType,
+                ]);
               setCommentText("");
             }}
           />
