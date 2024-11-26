@@ -127,7 +127,9 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
 
         {/* Comment section */}
         <ThemedView style={styles.commentColumn} colorType="transparent">
-          {commentList.length > 0 &&
+          {commentList.length === 0 ? (
+            <ThemedText>No comment to display</ThemedText>
+          ) : (
             commentList.map((eachComment, i) => (
               <SingleComment
                 comment={eachComment.comment}
@@ -135,7 +137,8 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
                 createdAt={new Date().toLocaleString()}
                 key={i}
               />
-            ))}
+            ))
+          )}
         </ThemedView>
       </ThemedScrollView>
     </ThemedView>
