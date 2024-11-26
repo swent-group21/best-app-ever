@@ -11,7 +11,11 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
+export default function MaximizeScreen({
+  navigation,
+  firestoreCtrl,
+  challenge,
+}: any) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);

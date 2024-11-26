@@ -86,7 +86,7 @@ export function Challenge({
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaximizeScreen");
+                      navigation.navigate("MaximizeScreen", { challengeDB });
                     }}
                     size={25}
                     style={{ paddingRight: 8 }}
