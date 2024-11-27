@@ -41,7 +41,6 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
         rightIcon="person-circle-outline"
         rightAction={() => {
           navigation.navigate("Profile");
-          console.log(auth.currentUser);
         }}
       />
 
