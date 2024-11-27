@@ -10,7 +10,7 @@ describe("WelcomeScreens", () => {
     const { getByText } = render(
       <NavigationContainer>
         <WelcomeScreens />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     // Initial screen should have the intro screen content
@@ -21,7 +21,7 @@ describe("WelcomeScreens", () => {
     const { getByTestId, getByText } = render(
       <NavigationContainer>
         <WelcomeScreens />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     const scrollView = getByTestId("welcome-scrollview");

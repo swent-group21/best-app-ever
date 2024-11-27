@@ -9,7 +9,7 @@ const resolvedUser = {
 };
 
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
 );
 
 jest.mock("firebase/app", () => ({
@@ -49,7 +49,6 @@ jest.mock("firebase/firestore", () => ({
   onSnapshot: jest.fn(),
   updateDoc: jest.fn(),
 }));
-
 
 jest.mock("firebase/auth", () => ({
   getAuth: jest.fn(),
@@ -99,8 +98,8 @@ jest.mock("@/types/Auth", () => ({
   resetPassword: jest.fn(),
 }));
 
-jest.mock('react-native-elements', () => {
-  const React = require('react');
+jest.mock("react-native-elements", () => {
+  const React = require("react");
   return {
     // Mock Icon component
     Icon: (props) => {
@@ -112,7 +111,7 @@ jest.mock('react-native-elements', () => {
   };
 });
 
-jest.mock("@/firebase/FirestoreCtrl")
+jest.mock("@/firebase/FirestoreCtrl");
 
 jest.mock("react-native-maps", () => {
   const { View } = require("react-native");
@@ -129,11 +128,10 @@ jest.mock("react-native-maps", () => {
 
 jest.mock("expo-location", () => ({
   requestForegroundPermissionsAsync: jest.fn(() =>
-    Promise.resolve({ status: "granted" })
+    Promise.resolve({ status: "granted" }),
   ),
 }));
 
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
 );
-

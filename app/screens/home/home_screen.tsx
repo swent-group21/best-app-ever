@@ -19,7 +19,9 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
     if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(user.uid);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(
+            user.uid,
+          );
           console.log("Challenges", challengesData);
           setChallenges(challengesData);
         } catch (error) {
@@ -62,7 +64,7 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
       </ThemedScrollView>
 
       <BottomBar
-        testID="bottomBar"
+        testID="bottom-bar"
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"

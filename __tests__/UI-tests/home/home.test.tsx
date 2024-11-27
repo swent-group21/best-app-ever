@@ -35,7 +35,9 @@ const mockChallenges: DBChallenge[] = [
 ];
 
 // Mock getChallengesByUserId method
-mockFirestoreCtrl.getChallengesByUserId = jest.fn().mockResolvedValue(mockChallenges);
+mockFirestoreCtrl.getChallengesByUserId = jest
+  .fn()
+  .mockResolvedValue(mockChallenges);
 
 // Create a test component to wrap HomeScreen with navigation
 const HomeScreenTest = () => {
@@ -45,20 +47,16 @@ const HomeScreenTest = () => {
         initialRouteName="Home"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen 
+        <Stack.Screen
           name="Home"
-          initialParams={{ user: { uid: '12345' } }} // Add this line
+          initialParams={{ user: { uid: "12345" } }} // Add this line
         >
           {(props) => (
             <HomeScreen {...props} firestoreCtrl={mockFirestoreCtrl} />
           )}
         </Stack.Screen>
-        <Stack.Screen
-          name="Camera"
-        >
-          {() => (
-            <Text testID="camera-screen">Camera Screen</Text>
-          )}
+        <Stack.Screen name="Camera">
+          {() => <Text testID="camera-screen">Camera Screen</Text>}
         </Stack.Screen>
         {/* Add other screens if necessary */}
       </Stack.Navigator>
@@ -76,5 +74,4 @@ describe("HomeScreen", () => {
       expect(getByTestId("challenge-id-1")).toBeTruthy();
     });
   });
-
 });

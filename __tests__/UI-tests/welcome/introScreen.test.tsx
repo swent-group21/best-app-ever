@@ -9,7 +9,7 @@ describe("WelcomeIntroScreen", () => {
     const { getByText, getByTestId } = render(
       <NavigationContainer>
         <WelcomeIntroScreen />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     // Check if the main title is rendered
@@ -21,8 +21,8 @@ describe("WelcomeIntroScreen", () => {
     // Check if the description is rendered
     expect(
       getByText(
-        "Compete with your friends and people around you\nBecome the goat and win prizes!"
-      )
+        "Compete with your friends and people around you\nBecome the goat and win prizes!",
+      ),
     ).toBeTruthy();
 
     // Check if the image is rendered

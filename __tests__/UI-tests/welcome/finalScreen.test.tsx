@@ -9,7 +9,7 @@ describe("WelcomeFinalScreen", () => {
     const { getByText } = render(
       <NavigationContainer>
         <WelcomeFinalScreen />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     // Check if the title is rendered
@@ -26,7 +26,7 @@ describe("WelcomeFinalScreen", () => {
     const { getByText } = render(
       <NavigationContainer>
         <WelcomeFinalScreen navigation={{ navigate }} />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     fireEvent.press(getByText("Sign In"));
@@ -38,7 +38,7 @@ describe("WelcomeFinalScreen", () => {
     const { getByText } = render(
       <NavigationContainer>
         <WelcomeFinalScreen navigation={{ navigate }} />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     fireEvent.press(getByText("Sign Up"));
@@ -50,7 +50,7 @@ describe("WelcomeFinalScreen", () => {
     const { getByText } = render(
       <NavigationContainer>
         <WelcomeFinalScreen navigation={{ reset }} />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     fireEvent.press(getByText("Continue as guest"));

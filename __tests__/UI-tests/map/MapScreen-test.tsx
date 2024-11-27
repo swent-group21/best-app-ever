@@ -6,14 +6,14 @@ import * as Location from "expo-location";
 describe("MapScreen Component", () => {
   beforeAll(() => {
     jest.mock("expo-location", () => ({
-      getCurrentPositionAsync: jest.fn(() => 
+      getCurrentPositionAsync: jest.fn(() =>
         Promise.resolve({
           coords: {
             latitude: 37.7749,
             longitude: -122.4194,
           },
-        })
-      )
+        }),
+      ),
     }));
   });
 

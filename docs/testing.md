@@ -37,11 +37,7 @@ module.exports = {
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   collectCoverage: true,
-  collectCoverageFrom: [
-    "app/**/*.{ts,tsx}",
-    "!app/**/*.d.ts",
-    "!types/**",
-  ],
+  collectCoverageFrom: ["app/**/*.{ts,tsx}", "!app/**/*.d.ts", "!types/**"],
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov"],
   transformIgnorePatterns: [
@@ -53,6 +49,7 @@ module.exports = {
 ### Breakdown of Configuration:
 
 - **TypeScript Preset**:
+
   ```javascript
   const { defaults: tsjPreset } = require("ts-jest/presets");
   module.exports = {
@@ -60,23 +57,29 @@ module.exports = {
     // ...
   };
   ```
+
   - **Explanation**: This imports the default configuration presets from `ts-jest`, which is a Jest transformer for handling TypeScript files. By spreading `tsjPreset`, we inherit the default settings for TypeScript testing.
 
 - **Preset**:
+
   ```javascript
   preset: "jest-expo",
   ```
+
   - **Explanation**: Specifies the Jest preset for React Native apps using Expo. `jest-expo` provides a Jest preset that's pre-configured to work with Expo apps.
 
 - **Setup Files**:
+
   ```javascript
   setupFiles: ["<rootDir>/jestSetupFile.js"],
   setupFilesAfterEnv: ["@testing-library/jest-native/extend-expect"],
   ```
+
   - **`setupFiles`**: Executes before the test framework is installed, setting up any necessary mocks or configurations. Here, it includes `jestSetupFile.js`, which we'll discuss later.
   - **`setupFilesAfterEnv`**: Executes after the test framework is installed. It includes `@testing-library/jest-native/extend-expect` to extend Jest's matchers with custom matchers for React Native testing.
 
 - **Globals**:
+
   ```javascript
   globals: {
     "process.env": {
@@ -84,9 +87,11 @@ module.exports = {
     },
   },
   ```
+
   - **Explanation**: Defines global variables available in all test environments. This is useful for setting environment variables like Firebase config. The actual values are commented out and can be filled as needed.
 
 - **Transform**:
+
   ```javascript
   transform: {
     "^.+\\.(js|jsx|ts)$": "babel-jest",
@@ -98,17 +103,21 @@ module.exports = {
     ],
   },
   ```
+
   - **Explanation**: Specifies how to transform files before testing.
     - Files ending with `.js`, `.jsx`, or `.ts` are transformed using `babel-jest`.
     - Files ending with `.ts` or `.tsx` are transformed using `ts-jest` with a specific TypeScript configuration (`tsconfig.jest.json`).
 
 - **Module File Extensions**:
+
   ```javascript
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   ```
+
   - **Explanation**: Lists the file extensions Jest should look for when resolving modules.
 
 - **Coverage Collection**:
+
   ```javascript
   collectCoverage: true,
   collectCoverageFrom: [
@@ -119,6 +128,7 @@ module.exports = {
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov"],
   ```
+
   - **Explanation**:
     - **`collectCoverage`**: Enables coverage collection.
     - **`collectCoverageFrom`**: Specifies which files to collect coverage from.
@@ -154,7 +164,7 @@ const resolvedUser = {
 
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
 );
 
 // Mock Firebase modules
@@ -238,7 +248,7 @@ jest.mock("@/types/Auth", () => ({
 jest.mock("@/firebase/FirestoreCtrl");
 
 jest.mock("react-native-elements", () => {
-  const React = require('react');
+  const React = require("react");
   return {
     Icon: (props) => <React.Fragment />,
     IconProps: {},
@@ -249,27 +259,36 @@ jest.mock("react-native-maps", () => {
   const { View } = require("react-native");
   return {
     __esModule: true,
-    default: jest.fn().mockImplementation((props) => <View {...props} testID="map-view" />),
-    Marker: jest.fn().mockImplementation((props) => <View {...props} testID="map-marker" />),
+    default: jest
+      .fn()
+      .mockImplementation((props) => <View {...props} testID="map-view" />),
+    Marker: jest
+      .fn()
+      .mockImplementation((props) => <View {...props} testID="map-marker" />),
   };
 });
 
 jest.mock("expo-location", () => ({
-  requestForegroundPermissionsAsync: jest.fn(() => Promise.resolve({ status: "granted" })),
+  requestForegroundPermissionsAsync: jest.fn(() =>
+    Promise.resolve({ status: "granted" }),
+  ),
 }));
 ```
 
 ### Breakdown of Mocks:
 
 - **Mocking `AsyncStorage`**:
+
   ```javascript
   jest.mock("@react-native-async-storage/async-storage", () =>
-    require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+    require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
   );
   ```
+
   - **Explanation**: Uses the provided mock for `AsyncStorage`, which simulates the storage API for testing purposes.
 
 - **Mocking Firebase Modules**:
+
   - **Firebase App**:
     ```javascript
     jest.mock("firebase/app", () => ({
@@ -303,6 +322,7 @@ jest.mock("expo-location", () => ({
   - **Explanation**: Mocks Firebase modules to prevent actual network calls during tests. Functions are replaced with Jest mock functions (`jest.fn()`), and methods that return Promises are mocked to return resolved Promises with predefined values.
 
 - **Mocking React Navigation**:
+
   ```javascript
   jest.mock("@react-navigation/native", () => ({
     ...jest.requireActual("@react-navigation/native"),
@@ -311,17 +331,21 @@ jest.mock("expo-location", () => ({
     }),
   }));
   ```
+
   - **Explanation**: Mocks the `useNavigation` hook from React Navigation to prevent navigation errors during tests and to track navigation calls.
 
 - **Mocking Expo Modules**:
+
   ```javascript
   jest.mock("expo", () => ({
     registerRootComponent: jest.fn(),
   }));
   ```
+
   - **Explanation**: Mocks Expo's `registerRootComponent`.
 
 - **Mocking Custom Modules**:
+
   - **Authentication Types**:
     ```javascript
     jest.mock("@/types/Auth", () => ({
@@ -341,8 +365,8 @@ jest.mock("expo-location", () => ({
 - **Mocking External Libraries**:
   - **React Native Elements**:
     ```javascript
-    jest.mock('react-native-elements', () => {
-      const React = require('react');
+    jest.mock("react-native-elements", () => {
+      const React = require("react");
       return {
         Icon: (props) => <React.Fragment />,
         IconProps: {},
@@ -355,15 +379,23 @@ jest.mock("expo-location", () => ({
       const { View } = require("react-native");
       return {
         __esModule: true,
-        default: jest.fn().mockImplementation((props) => <View {...props} testID="map-view" />),
-        Marker: jest.fn().mockImplementation((props) => <View {...props} testID="map-marker" />),
+        default: jest
+          .fn()
+          .mockImplementation((props) => <View {...props} testID="map-view" />),
+        Marker: jest
+          .fn()
+          .mockImplementation((props) => (
+            <View {...props} testID="map-marker" />
+          )),
       };
     });
     ```
   - **Expo Location**:
     ```javascript
     jest.mock("expo-location", () => ({
-      requestForegroundPermissionsAsync: jest.fn(() => Promise.resolve({ status: "granted" })),
+      requestForegroundPermissionsAsync: jest.fn(() =>
+        Promise.resolve({ status: "granted" }),
+      ),
     }));
     ```
   - **Explanation**: Mocks external libraries that are difficult to test due to native modules or dependencies. Provides simple mocked implementations to allow tests to run without errors.
@@ -390,8 +422,8 @@ module.exports = {
 
 - **`process` Function**:
   - **Explanation**: Returns an empty object (`module.exports = {};`) for any imported assets. This prevents errors when modules import assets like images, fonts, or styles during tests.
-  
 - **`getCacheKey` Function**:
+
   - **Explanation**: Returns a constant cache key (`"staticAssetTransformer"`), ensuring that the transformed output is always cached consistently.
 
 - **Usage**:
@@ -449,7 +481,7 @@ const HomeScreenTest = () => {
         initialRouteName="Home"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen 
+        <Stack.Screen
           name="Home"
           initialParams={{ user: { uid: '12345' } }}
         >
@@ -486,9 +518,11 @@ describe("HomeScreen", () => {
 ### Breakdown of the Test:
 
 1. **Imports**:
+
    - Imports necessary modules and components, including React, React Native components, testing utilities, the `HomeScreen` component, navigation components, and the `FirestoreCtrl` class.
 
 2. **Setting Up Navigation**:
+
    ```typescript
    const Stack = createNativeStackNavigator();
 
@@ -506,9 +540,11 @@ describe("HomeScreen", () => {
      );
    };
    ```
+
    - **Explanation**: Creates a `HomeScreenTest` component that wraps the `HomeScreen` with a navigation container and stack navigator. This is necessary because the `HomeScreen` likely depends on navigation props provided by React Navigation.
 
 3. **Mocking Firestore Controller**:
+
    ```typescript
    const mockFirestoreCtrl = new FirestoreCtrl();
 
@@ -518,13 +554,17 @@ describe("HomeScreen", () => {
    ];
 
    // Mock getChallengesByUserId method
-   mockFirestoreCtrl.getChallengesByUserId = jest.fn().mockResolvedValue(mockChallenges);
+   mockFirestoreCtrl.getChallengesByUserId = jest
+     .fn()
+     .mockResolvedValue(mockChallenges);
    ```
+
    - **Explanation**: Creates a mock instance of `FirestoreCtrl` and mocks the `getChallengesByUserId` method to return predefined mock challenges. This prevents actual database calls during the test and provides controlled data for testing.
 
 4. **Passing Mock Props**:
+
    ```typescript
-   <Stack.Screen 
+   <Stack.Screen
      name="Home"
      initialParams={{ user: { uid: '12345' } }}
    >
@@ -533,9 +573,11 @@ describe("HomeScreen", () => {
      )}
    </Stack.Screen>
    ```
+
    - **Explanation**: Passes the `mockFirestoreCtrl` as a prop to the `HomeScreen` component. Also provides initial parameters like `user` with a `uid`. This ensures that the component has all the necessary props and context to run.
 
 5. **Defining the Test Suite**:
+
    ```typescript
    describe("HomeScreen", () => {
      it("renders challenges fetched from Firestore", async () => {
@@ -543,9 +585,11 @@ describe("HomeScreen", () => {
      });
    });
    ```
+
    - **Explanation**: Defines a test suite for `HomeScreen` and a test case to verify that challenges are rendered correctly.
 
 6. **Running the Test**:
+
    ```typescript
    const { getByTestId } = render(<HomeScreenTest />);
 
@@ -555,6 +599,7 @@ describe("HomeScreen", () => {
      expect(getByTestId("challenge-id-1")).toBeTruthy();
    });
    ```
+
    - **Explanation**:
      - Renders the `HomeScreenTest` component.
      - Uses `waitFor` to wait until the asynchronous fetching and rendering of challenges is complete.

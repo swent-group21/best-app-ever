@@ -107,7 +107,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
 
       {/* Bottom bar */}
       <BottomBar
-        testID="bottomBar-rightIcon"
+        testID="bottom-bar-right-icon"
         rightIcon="arrow-forward"
         rightAction={async () => {
           await upload();

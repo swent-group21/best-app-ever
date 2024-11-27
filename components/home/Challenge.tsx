@@ -15,7 +15,6 @@ export function Challenge({
   navigation,
   testID,
 }: any) {
-
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState<DBUser>();
@@ -39,9 +38,9 @@ export function Challenge({
     return <ThemedText>Loading Challenge...</ThemedText>;
   } else {
     return (
-      <ThemedView 
+      <ThemedView
         key={index}
-        testID={testID} 
+        testID={testID}
         style={{ backgroundColor: "transparent" }}
       >
         <TouchableOpacity
@@ -49,10 +48,6 @@ export function Challenge({
           activeOpacity={0.8}
         >
           <ThemedView style={[styles.challenge]}>
-            {/* 
-              Challenge Image 
-              source={require("@/assets/images/challenge2.png")}
-            */}
             <Image
               source={{ uri: challengeDB.image_id }}
               style={styles.image}
@@ -94,7 +89,7 @@ export function Challenge({
                     onPress={() => {
                       navigation.navigate("MaximizeScreen", {
                         challenge: challengeDB,
-                        user: user
+                        user: user,
                       });
                     }}
                     size={25}

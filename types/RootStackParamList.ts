@@ -5,7 +5,7 @@ export type RootStackParamList = {
   WelcomeFinal: undefined;
   Home: {
     user: DBUser;
-  }
+  };
   SignUp: undefined;
   SignIn: undefined;
   ForgotPassword: undefined;
@@ -15,7 +15,7 @@ export type RootStackParamList = {
   Maximize: {
     challenge: DBChallenge;
     user: DBUser;
-  }
+  };
   CreateChallenge: {
     picture_id: string;
   };

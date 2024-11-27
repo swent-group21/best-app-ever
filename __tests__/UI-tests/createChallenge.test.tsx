@@ -46,20 +46,25 @@ const CreateChallengeScreenTest = () => {
 describe("CreateChallengeScreen", () => {
   it("allows creating a new challenge", async () => {
     const navigateMock = jest.fn();
-    jest.spyOn(require("@react-navigation/native"), "useNavigation").mockReturnValue({
-      navigate: navigateMock,
-    });
+    jest
+      .spyOn(require("@react-navigation/native"), "useNavigation")
+      .mockReturnValue({
+        navigate: navigateMock,
+      });
 
     const { getByPlaceholderText, getByTestId } = render(
-      <CreateChallengeScreenTest />
+      <CreateChallengeScreenTest />,
     );
 
     // Fill in the form
     fireEvent.changeText(
       getByPlaceholderText("Challenge Name"),
-      "Test Challenge"
+      "Test Challenge",
     );
-    fireEvent.changeText(getByPlaceholderText("Description"), "Test Description");
+    fireEvent.changeText(
+      getByPlaceholderText("Description"),
+      "Test Description",
+    );
 
     // Press the right icon (arrow-forward) to submit
     const rightIcon = getByTestId("bottomBar");
@@ -72,7 +77,7 @@ describe("CreateChallengeScreen", () => {
         "Test Challenge",
         expect.any(Date),
         "Test Description",
-        "test_image_id"
+        "test_image_id",
       );
     });
 

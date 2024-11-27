@@ -10,7 +10,11 @@ import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any) {
+export default function MaximizeScreen({
+  navigation,
+  route,
+  firestoreCtrl,
+}: any) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
@@ -74,7 +78,11 @@ export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any
         </ThemedView>
 
         {/* Image */}
-        <ThemedView testID="max-image" style={styles.container} colorType="transparent">
+        <ThemedView
+          testID="max-image"
+          style={styles.container}
+          colorType="transparent"
+        >
           <Image
             source={require("@/assets/images/challenge2.png")}
             style={styles.image}
@@ -82,7 +90,7 @@ export default function MaximizeScreen({ navigation, route, firestoreCtrl }: any
         </ThemedView>
 
         {/* Like button */}
-        <ThemedView >
+        <ThemedView>
           <ThemedIconButton
             testID="like-button"
             name="heart"

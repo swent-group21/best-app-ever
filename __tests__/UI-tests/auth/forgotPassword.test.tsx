@@ -9,7 +9,7 @@ describe("ForgotPasswordScreen", () => {
     const mockNavigation = { goBack: jest.fn(), navigate: jest.fn() };
 
     const { getByTestId } = render(
-      <ForgotPasswordScreen navigation={mockNavigation} />
+      <ForgotPasswordScreen navigation={mockNavigation} />,
     );
 
     // Enter email
@@ -28,7 +28,7 @@ describe("ForgotPasswordScreen", () => {
     const mockNavigation = { goBack: jest.fn(), navigate: jest.fn() };
 
     const { getByTestId } = render(
-      <ForgotPasswordScreen navigation={mockNavigation} />
+      <ForgotPasswordScreen navigation={mockNavigation} />,
     );
 
     // Press the "Cancel" button

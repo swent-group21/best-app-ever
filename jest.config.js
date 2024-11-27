@@ -5,10 +5,7 @@ module.exports = {
   preset: "jest-expo",
   setupFiles: ["<rootDir>/jestSetupFile.js"],
   setupFilesAfterEnv: ["@testing-library/jest-native/extend-expect"],
-  globals: { "process.env": {
-      //EXPO_PUBLIC_FIREBASE: "your-firebase-endpoint-url",
-    },
-  },
+  globals: { "process.env": {} },
   transform: {
     "^.+\\.(js|jsx|ts)$": "babel-jest",
     "^.+\\.tsx?$": [
@@ -21,11 +18,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   collectCoverage: true,
   // ignore the src/services/ folder
-  collectCoverageFrom: [
-    "app/**/*.{ts,tsx}",
-    "!app/**/*.d.ts",
-    "!types/**",
-  ],
+  collectCoverageFrom: ["app/**/*.{ts,tsx}", "!app/**/*.d.ts", "!types/**"],
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov"],
   //moduleNameMapper: {
@@ -36,4 +29,3 @@ module.exports = {
     "node_modules/(?!(jest-)?react-native|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native|@react-native|@react-navigation|@firebase|firebase|firebase/firestore|firebase/app|@react-native-async-storage)",
   ],
 };
-

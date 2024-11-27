@@ -114,13 +114,12 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
               password,
               firestoreCtrl,
               navigation,
-            )
+            );
           }}
           text="Join Us!"
           textStyle={{ fontWeight: "600" }}
           textColorType="textOverLight"
         />
-
       </ThemedScrollView>
     </ThemedView>
   );

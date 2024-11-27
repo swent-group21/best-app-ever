@@ -32,7 +32,11 @@ export function ThemedIconButton({
   );
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7} {...(testID && { testID })}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      {...(testID && { testID })}
+    >
       <Icon
         testID={testID}
         color={color}

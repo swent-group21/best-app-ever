@@ -1,7 +1,12 @@
 // set_up_screen.test.tsx
 import React from "react";
 import { Text } from "react-native";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+} from "@testing-library/react-native";
 import SetUsername from "@/app/screens/auth/set_up_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -20,8 +25,12 @@ const SetUsernameTest = () => {
           {(props) => <SetUsername {...props} />}
         </Stack.Screen>
         {/* Mock other screens if necessary */}
-        <Stack.Screen name="Home">{() => <Text testID="home-screen"></Text>}</Stack.Screen>
-        <Stack.Screen name="Camera">{() => <Text testID="camera-screen"></Text>}</Stack.Screen>
+        <Stack.Screen name="Home">
+          {() => <Text testID="home-screen"></Text>}
+        </Stack.Screen>
+        <Stack.Screen name="Camera">
+          {() => <Text testID="camera-screen"></Text>}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

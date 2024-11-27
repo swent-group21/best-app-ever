@@ -1,25 +1,25 @@
-// concept_screen.test.tsx
+// personal_screen.test.tsx
 import React from "react";
 import { render } from "@testing-library/react-native";
-import WelcomeConceptScreen from "@/app/screens/welcome/concept_screen";
+import WelcomeConceptScreen from "@/app/screens/welcome/personal_screen";
 import { NavigationContainer } from "@react-navigation/native";
 
-describe("WelcomeConceptScreen", () => {
+describe("WelcomePersonalScreen", () => {
   it("renders the screen correctly", () => {
     const { getByText } = render(
       <NavigationContainer>
         <WelcomeConceptScreen />
-      </NavigationContainer>
+      </NavigationContainer>,
     );
 
     // Check if the title is rendered
-    expect(getByText("Competing\nyourself")).toBeTruthy();
+    expect(getByText("Building up memories")).toBeTruthy();
 
     // Check if the description is rendered
     expect(
       getByText(
-        "Become the best version of yourself\nInteract with motivated people to reach your goals !prizes!"
-      )
+        "Create and share your memories with your friends\nGet rewarded for your creativity",
+      ),
     ).toBeTruthy();
   });
 });

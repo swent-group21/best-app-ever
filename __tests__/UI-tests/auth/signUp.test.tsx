@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-} from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import SignUp from "@/app/screens/auth/sign_up_screen";
 import { signUpWithEmail } from "@/types/Auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -22,9 +19,7 @@ const SignUpTest = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="SignUp">
-          {(props) => (
-            <SignUp {...props} firestoreCtrl={mockFirestoreCtrl} />
-          )}
+          {(props) => <SignUp {...props} firestoreCtrl={mockFirestoreCtrl} />}
         </Stack.Screen>
         {/* Add other screens if necessary */}
       </Stack.Navigator>
@@ -56,5 +51,4 @@ describe("SignUpScreen", () => {
       expect.any(Object), // navigation prop
     );
   });
-
 });
