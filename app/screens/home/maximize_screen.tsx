@@ -21,7 +21,7 @@ export default function MaximizeScreen({ route }: any) {
   }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
     route.params;
 
-  console.log("-> Maximized challenge: ", { challenge });
+  // console.log("-> Maximized challenge: ", { challenge });
 
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
