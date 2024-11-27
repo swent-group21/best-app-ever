@@ -43,6 +43,14 @@ export type DBComment = {
   uid: string;
 };
 
+export type DBGroup = {
+  group_id: string;
+  group_name: string;
+  description?: string;
+  members: string[];
+  creationDate?: Date;
+}
+
 export default class FirestoreCtrl {
   /**
    * Creates or updates a user document in Firestore.
@@ -255,6 +263,60 @@ export default class FirestoreCtrl {
       return challenges;
     } catch (error) {
       console.error("Error getting challenges: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all groups assigned to a specific user.
+   * 
+   * @param uid The UID of the user whose groups are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getGroupsByUserId(uid: string): Promise<DBGroup[]> {
+    try {
+      const groupsRef = collection(firestore, "Groups");
+      const q = query(groupsRef, where("uid", "==", uid));
+
+      const querySnapshot = await getDocs(q);
+      const groups = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        console.log("Groups data retrieved:", data);
+        return {
+          ...data,
+          group_id: doc.id,
+        } as DBGroup;
+      });
+      return groups;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all groups assigned to a specific user.
+   * 
+   * @param uid The UID of the user whose groups are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getUsersInGroup(gid: string): Promise<DBUser[]> {
+    try {
+      const groupsRef = collection(firestore, "Groups");
+      const q = query(groupsRef, where("gid", "==", gid));
+
+      const querySnapshot = await getDocs(q);
+      const users = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        console.log("Groups data retrieved:", data);
+        return {
+          ...data,
+          uid: doc.id,
+        } as DBUser;
+      });
+      return users;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
       throw error;
     }
   }
