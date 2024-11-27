@@ -44,6 +44,7 @@ export default function MaximizeScreen({ route }: any) {
   // Set post data
   const postUserName = postUser?.name ?? undefined;
   const postLocation = challenge.location ?? undefined;
+  // @ts-ignore - date is not of the correct type
   const postDate = challenge.date ? challenge.date.toDate() : new Date();
   const postTitle =
     challenge.challenge_name == ""

@@ -43,7 +43,8 @@ export const createChallenge = async (
   description: string,
   location?: Location.LocationObjectCoords,
   image_id?: string,
-  comment_id?: string,
+  comments?: string[],
+  likes?: string[],
 ): Promise<void> => {
   try {
     // Prepare the challenge data for Firestore
@@ -55,7 +56,9 @@ export const createChallenge = async (
       uid: user.uid,
       date: date,
       location: location,
-      // Add other fields as needed
+      image_id: image_id,
+      comments: comments,
+      likes: likes,
     };
 
     // Save the challenge to Firestore
