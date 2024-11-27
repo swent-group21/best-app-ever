@@ -27,14 +27,15 @@ const CreateChallengeScreen = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [isEnabled, setIsEnabled] = useState(true);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => {setIsEnabled((previousState) => !previousState)};
 
   useEffect(() => {
     async function getCurrentLocation() {
       
       let { status } = await requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+        console.log('Permission to access location was denied');
+        setIsEnabled(false);
         return;
       }
 
@@ -42,7 +43,7 @@ const CreateChallengeScreen = ({
       setLocation(location);
     }
 
-    getCurrentLocation();
+    if (isEnabled) getCurrentLocation();
   }, []);
 
   async function makeChallenge() {
@@ -54,7 +55,7 @@ const CreateChallengeScreen = ({
         challenge_name,
         date,
         description,
-        location,
+        isEnabled? location : null,
       );
       navigation.navigate("Home");
     } catch (error) {
@@ -105,9 +106,7 @@ const CreateChallengeScreen = ({
             }}
             thumbColor={isEnabled ? Colors.light.tint : Colors.dark.white}
             ios_backgroundColor={Colors.light.tint}
-            onValueChange={() => {
-              toggleSwitch();
-            }}
+            onValueChange={() => {toggleSwitch();}}
             value={isEnabled}
           />
 
