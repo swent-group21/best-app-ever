@@ -8,6 +8,7 @@ import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -32,7 +33,7 @@ export default function MaximizeScreen({ route }: any) {
 
   const userName = postUser?.name ?? undefined;
   const userLocation = challenge.location ?? undefined;
-  const userTime = new Date(challenge.date).toLocaleString() ?? undefined;
+  const postDate = challenge.date ? challenge.date.toDate() : new Date();
   console.log(challenge.date);
 
   return (
@@ -72,7 +73,10 @@ export default function MaximizeScreen({ route }: any) {
                 {userName}
               </ThemedText>
               <ThemedText colorType="white" type="small">
-                {"at " + userTime}
+                {"on " +
+                  postDate.toLocaleDateString() +
+                  ", at " +
+                  postDate.toLocaleTimeString()}
               </ThemedText>
             </ThemedView>
           </ThemedView>

@@ -18,6 +18,10 @@ export function Challenge({
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState<DBUser>();
 
+  const challengeDate = challengeDB.date
+    ? challengeDB.date.toDate()
+    : new Date();
+
   useEffect(() => {
     if (challengeDB.uid) {
       const fetchUser = async () => {
@@ -79,7 +83,7 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"at " + challengeDB.date}
+                        {"on " + challengeDate.toLocaleDateString()}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
