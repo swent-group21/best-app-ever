@@ -9,7 +9,13 @@ const initialCardNumber = "00";
 const initNumber = 0;
 const slice = -2;
 
-function NumberCard({ number = initNumber , testID }: { number?: number; testID?: string }) {
+function NumberCard({
+  number = initNumber,
+  testID,
+}: {
+  number?: number;
+  testID?: string;
+}) {
   function numberText() {
     if (number && Math.sign(number) >= initNumber) {
       if (number.toString().length === 1) {

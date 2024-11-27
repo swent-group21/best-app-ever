@@ -16,12 +16,11 @@ const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  const [TitleChallenge, setTitleChallenge] =
-    useState<DBChallengeDescription>({
-      title: "Challenge Title",
-      description: "Challenge Description",
-      endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-    });
+  const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
+    title: "Challenge Title",
+    description: "Challenge Description",
+    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+  });
 
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
@@ -75,8 +74,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
           console.log(auth.currentUser);
         }}
       />
-
-      
 
       {/* Challenges */}
       <ThemedScrollView

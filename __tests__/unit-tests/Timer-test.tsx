@@ -24,7 +24,7 @@ describe("Timer Component", () => {
   it("renders the initial timer values correctly", () => {
     const endDate = new Date(Date.now() + 90061000); // 1 day, 1 hour, 1 minute, 1 second
     const { getByTestId } = render(
-      <Timer endDate={endDate} onTimerFinished={jest.fn()} />
+      <Timer endDate={endDate} onTimerFinished={jest.fn()} />,
     );
 
     expect(getByTestId("days").props.children).toBe(1); // Days
@@ -36,7 +36,7 @@ describe("Timer Component", () => {
   it("updates the timer values as time progresses", () => {
     const endDate = new Date(Date.now() + 10000); // 10 seconds from now
     const { getByTestId } = render(
-      <Timer endDate={endDate} onTimerFinished={jest.fn()} />
+      <Timer endDate={endDate} onTimerFinished={jest.fn()} />,
     );
 
     // Advance 1 second
@@ -73,7 +73,7 @@ describe("Timer Component", () => {
     const endDate = new Date(Date.now() + 10000); // 10 seconds from now
 
     const { unmount } = render(
-      <Timer endDate={endDate} onTimerFinished={jest.fn()} />
+      <Timer endDate={endDate} onTimerFinished={jest.fn()} />,
     );
 
     unmount(); // Unmount the component

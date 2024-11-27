@@ -58,9 +58,9 @@ function Timer({ endDate, onTimerFinished, testID }: any) {
   return (
     <View style={styles.container}>
       <NumberCard number={days} testID="days" />
-      <NumberCard number={hours} testID="hours"/>
-      <NumberCard number={minutes} testID="minutes"/>
-      <NumberCard number={seconds} testID="seconds"/>
+      <NumberCard number={hours} testID="hours" />
+      <NumberCard number={minutes} testID="minutes" />
+      <NumberCard number={seconds} testID="seconds" />
     </View>
   );
 }
