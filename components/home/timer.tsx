@@ -7,7 +7,7 @@ const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
 
-function Timer({ endDate, onTimerFinished }: any) {
+function Timer({ endDate, onTimerFinished, testID }: any) {
   const targetTime = endDate.getTime();
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(
@@ -57,13 +57,10 @@ function Timer({ endDate, onTimerFinished }: any) {
 
   return (
     <View style={styles.container}>
-      <NumberCard number={days} />
-      <Text style={styles.colorDivider}>:</Text>
-      <NumberCard number={hours} />
-      <Text style={styles.colorDivider}>:</Text>
-      <NumberCard number={minutes} />
-      <Text style={styles.colorDivider}>:</Text>
-      <NumberCard number={seconds} />
+      <NumberCard number={days} testID="days" />
+      <NumberCard number={hours} testID="hours"/>
+      <NumberCard number={minutes} testID="minutes"/>
+      <NumberCard number={seconds} testID="seconds"/>
     </View>
   );
 }

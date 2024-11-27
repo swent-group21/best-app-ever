@@ -9,13 +9,13 @@ const initialCardNumber = "00";
 const initNumber = 0;
 const slice = -2;
 
-function NumberCard({ number = initNumber , testID }: { number?: number; testID?: string }) {
+export function NumberCard({ number = initNumber, testID }: { number?: number; testID?: string }) {
   function numberText() {
     if (number && Math.sign(number) >= initNumber) {
       if (number.toString().length === 1) {
         return ("0" + number).slice(slice);
       } else {
-        return number;
+        return number.toString();
       }
     } else {
       return initialCardNumber;
@@ -24,7 +24,7 @@ function NumberCard({ number = initNumber , testID }: { number?: number; testID?
 
   const renderNumber = () => <Text style={styles.number}>{numberText()}</Text>;
 
-  return <View style={styles.container}>{renderNumber()}</View>;
+  return <View testID="number-card" style={styles.container}>{renderNumber()}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -49,4 +49,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NumberCard;

@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  const [currentChallenge, setCurrentChallenge] =
+  const [TitleChallenge, setTitleChallenge] =
     useState<DBChallengeDescription>({
       title: "Challenge Title",
       description: "Challenge Description",
@@ -39,7 +39,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
           endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
         };
 
-        setCurrentChallenge(formattedChallenge);
+        setTitleChallenge(formattedChallenge);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
@@ -76,11 +76,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         }}
       />
 
-      {/* Current Challenge Description  */}
-      <ChallengeDescription
-        dBChallengeDescription={currentChallenge}
-        onTimerFinished={() => console.log("Timer Finished")}
-      />
+      
 
       {/* Challenges */}
       <ThemedScrollView
@@ -88,6 +84,11 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
+        {/* Current Challenge Description  */}
+        <ChallengeDescription
+          dBChallengeDescription={TitleChallenge}
+          onTimerFinished={() => console.log("Timer Finished")}
+        />
         {challenges.length === 0 ? (
           <ThemedText>No challenge to display</ThemedText>
         ) : (
