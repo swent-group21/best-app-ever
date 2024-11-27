@@ -32,8 +32,8 @@ export default function MaximizeScreen({ route }: any) {
   >(undefined);
 
   // Fetch post user data
-  const posterId = challenge.uid;
-  firestoreCtrl.getUser(posterId).then((user: any) => {
+  const postUid = challenge.uid;
+  firestoreCtrl.getUser(postUid).then((user: any) => {
     setPostUser(user);
   });
 
