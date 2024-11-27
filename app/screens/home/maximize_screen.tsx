@@ -6,8 +6,8 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { getAuth } from "firebase/auth";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -15,18 +15,25 @@ export default function MaximizeScreen({
   navigation,
   firestoreCtrl,
   challenge,
-}: any) {
+}: {
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+  challenge: DBChallenge;
+}) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
+  const [postUser, setPostUser] = React.useState<DBUser>();
   const [isLiked, setIsLiked] = React.useState(false);
 
-  const userName = "Sandraa"; // derived from the name of the user
-  const userLocation = "Plage de Vidy"; // derived from the location of the user
-  const userTime = "18:26"; // derived from the time the user posted the challenge
+  console.log("-> Challenge", challenge);
+  const posterId = challenge.uid;
+  firestoreCtrl.getUser(posterId).then((user) => {
+    setPostUser(user);
+  });
 
-  const auth = getAuth();
-  const user = auth.currentUser?.uid;
-  const infoUser = firestoreCtrl.getUser(user ?? "");
+  const userName = postUser?.name;
+  const userLocation = challenge.location ?? undefined;
+  const userTime = challenge.date.toLocaleDateString();
 
   return (
     <ThemedView style={styles.bigContainer}>
