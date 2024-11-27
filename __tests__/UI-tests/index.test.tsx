@@ -27,28 +27,28 @@ describe("App", () => {
   test("always passes", () => {
     expect(true).toBe(true);
   });
-//  it("renders the Welcome screen when user is not logged in", async () => {
-//    const { getByText } = render(<App />);
-//
-//    // Assuming that the Welcome screen contains the text 'Login to Strive'
-//    await waitFor(() => expect(getByText("Login to Strive")).toBeTruthy());
-//  });
-//
-//  it("renders the Home screen when user is logged in", async () => {
-//    // Modify the App component to accept props for testing purposes
-//    const TestApp = () => {
-//      const [isLoggedIn, setIsLoggedIn] = React.useState<"Welcome" | "Home">("Home");
-//
-//      return (
-//        <NavigationIndependentTree>
-//          <Nav isLoggedIn={isLoggedIn} firestoreCtrl={mockFirestoreCtrl} />
-//        </NavigationIndependentTree>
-//      );
-//    };
-//
-//    const { getByText } = render(<TestApp />);
-//
-//    // Assuming that the Home screen contains the text 'Home Screen' or similar
-//    await waitFor(() => expect(getByText("Home Screen")).toBeTruthy());
-//  });
+  //  it("renders the Welcome screen when user is not logged in", async () => {
+  //    const { getByText } = render(<App />);
+  //
+  //    // Assuming that the Welcome screen contains the text 'Login to Strive'
+  //    await waitFor(() => expect(getByText("Login to Strive")).toBeTruthy());
+  //  });
+  //
+  //  it("renders the Home screen when user is logged in", async () => {
+  //    // Modify the App component to accept props for testing purposes
+  //    const TestApp = () => {
+  //      const [isLoggedIn, setIsLoggedIn] = React.useState<"Welcome" | "Home">("Home");
+  //
+  //      return (
+  //        <NavigationIndependentTree>
+  //          <Nav isLoggedIn={isLoggedIn} firestoreCtrl={mockFirestoreCtrl} />
+  //        </NavigationIndependentTree>
+  //      );
+  //    };
+  //
+  //    const { getByText } = render(<TestApp />);
+  //
+  //    // Assuming that the Home screen contains the text 'Home Screen' or similar
+  //    await waitFor(() => expect(getByText("Home Screen")).toBeTruthy());
+  //  });
 });
