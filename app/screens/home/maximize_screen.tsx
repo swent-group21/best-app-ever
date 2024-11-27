@@ -51,6 +51,9 @@ export default function MaximizeScreen({ route }: any) {
       ? "Secret Challenge"
       : challenge.challenge_name;
   const postImage = challenge.image_id ?? "";
+  const postDescription = challenge.description ?? "";
+  const postComments = challenge.comments ?? [];
+  const postLikes = challenge.likes ?? [];
 
   return (
     <ThemedView style={styles.bigContainer}>
