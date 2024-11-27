@@ -1,6 +1,7 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
+import { auth } from "@/firebase/Firebase";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 
@@ -50,6 +51,7 @@ export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
               index: 0,
               routes: [{ name: "Home" }],
             });
+            auth.signOut();
           }}
           text="Continue as guest"
           colorType="transparent"

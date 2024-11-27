@@ -31,6 +31,7 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
   const [permission, requestPermission] = useCameraPermissions();
   const camera = useRef<CameraView>(null);
   const [picture, setPicture] = useState<CameraCapturedPicture>();
+  const [picture_id, setPictureId] = useState<string | null>("");
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
   const [flashMode, setFlashMode] = useState<FlashMode | string>("off");
   const [isFlashEnabled, setIsFlashEnabled] = useState(false);
@@ -82,7 +83,6 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
       image_id: img_id,
     });
   }
-
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;

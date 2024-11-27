@@ -39,6 +39,7 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
         title="Commute by foot"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
+        rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
       />
 
       {/* Challenges */}
