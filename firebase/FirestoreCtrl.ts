@@ -32,13 +32,12 @@ export type DBChallenge = {
   image_id?: string;
   date: Date;
   location?: Location.LocationObjectCoords;
-  comments: DBComment[];
+  comments?: string[]; // Comment IDs
+  likes?: string[]; // User IDs
 };
 
 export type DBComment = {
   comment_id: string;
-  prev_id: string;
-  next_id?: string;
   comment_text: string;
   uid: string;
 };
