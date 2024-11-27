@@ -42,7 +42,7 @@ export const createChallenge = async (
   challenge_name: string,
   date: Date,
   description: string,
-  location : LocationObject | null,
+  location: LocationObject | null,
   image_id?: string,
   comment_id?: string,
 ): Promise<void> => {
@@ -50,19 +50,23 @@ export const createChallenge = async (
     // Prepare the challenge data for Firestore
     const user: DBUser = await firestoreCtrl.getUser();
     console.log("createChallenge uid", user.uid);
-    
-    if (location == null) {console.log("location undefined")}
+
+    if (location == null) {
+      console.log("location undefined");
+    }
 
     // Convert the location object to a Firestore GeoPoint
-    let locationFirebase  = (location === null) ? null : new GeoPoint(location.coords.latitude, location.coords.longitude);
-       
+    let locationFirebase =
+      location === null
+        ? null
+        : new GeoPoint(location.coords.latitude, location.coords.longitude);
 
     const newChallenge: DBChallenge = {
       challenge_name: challenge_name,
       description: description || "",
       uid: user.uid,
       date: date,
-      location : locationFirebase,
+      location: locationFirebase,
       // Add other fields as needed
     };
 

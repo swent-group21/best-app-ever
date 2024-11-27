@@ -11,7 +11,8 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
-  LocationObject } from "expo-location";
+  LocationObject,
+} from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,14 +28,15 @@ const CreateChallengeScreen = ({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [isEnabled, setIsEnabled] = useState(true);
-  const toggleSwitch = () => {setIsEnabled((previousState) => !previousState)};
+  const toggleSwitch = () => {
+    setIsEnabled((previousState) => !previousState);
+  };
 
   useEffect(() => {
     async function getCurrentLocation() {
-      
       let { status } = await requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
         setIsEnabled(false);
         return;
       }
@@ -55,7 +57,7 @@ const CreateChallengeScreen = ({
         challenge_name,
         date,
         description,
-        isEnabled? location : null,
+        isEnabled ? location : null,
       );
       navigation.navigate("Home");
     } catch (error) {
@@ -106,7 +108,9 @@ const CreateChallengeScreen = ({
             }}
             thumbColor={isEnabled ? Colors.light.tint : Colors.dark.white}
             ios_backgroundColor={Colors.light.tint}
-            onValueChange={() => {toggleSwitch();}}
+            onValueChange={() => {
+              toggleSwitch();
+            }}
             value={isEnabled}
           />
 

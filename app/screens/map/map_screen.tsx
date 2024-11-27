@@ -68,7 +68,8 @@ export default function MapScreen({ navigation, firestoreCtrl }: any) {
         console.log("Fetching challenges...");
         const challengesData = await firestoreCtrl.getKChallenges(100);
         const filteredChallenges = challengesData.filter(
-          (challenge: any) => (challenge.location !== undefined && challenge.location !== null),
+          (challenge: any) =>
+            challenge.location !== undefined && challenge.location !== null,
         );
         setChallengesWithLocation(filteredChallenges);
         console.log("Markers", filteredChallenges);
