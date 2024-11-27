@@ -21,7 +21,7 @@ export default function MaximizeScreen({ route }: any) {
   }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
     route.params;
 
-  // console.log("-> Maximized challenge: ", { challenge });
+  console.log("-> Maximized challenge: ", { challenge });
 
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
@@ -45,7 +45,11 @@ export default function MaximizeScreen({ route }: any) {
   const postUserName = postUser?.name ?? undefined;
   const postLocation = challenge.location ?? undefined;
   const postDate = challenge.date ? challenge.date.toDate() : new Date();
-  const postTitle = challenge.challenge_name ?? "Secret Challenge";
+  const postTitle =
+    challenge.challenge_name == ""
+      ? "Secret Challenge"
+      : challenge.challenge_name;
+  const postImage = challenge.image_id ?? "";
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -104,12 +108,15 @@ export default function MaximizeScreen({ route }: any) {
         </ThemedView>
 
         {/* Image */}
-        <ThemedView style={styles.container} colorType="transparent">
-          <Image
-            source={require("@/assets/images/challenge2.png")}
-            style={styles.image}
-          />
-        </ThemedView>
+        {postImage != "" ? (
+          <ThemedView style={styles.container} colorType="transparent">
+            <Image source={{ uri: postImage }} style={styles.image} />
+          </ThemedView>
+        ) : (
+          <ThemedText>No image to display</ThemedText>
+        )}
+
+        {/* Location */}
 
         {/* Like button */}
         <ThemedView>
