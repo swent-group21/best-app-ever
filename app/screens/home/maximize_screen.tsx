@@ -11,29 +11,29 @@ import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({
-  navigation,
-  firestoreCtrl,
-  challenge,
-}: {
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
-  challenge: DBChallenge;
-}) {
+export default function MaximizeScreen({ route }: any) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [postUser, setPostUser] = React.useState<DBUser>();
   const [isLiked, setIsLiked] = React.useState(false);
 
-  console.log("-> Challenge", challenge);
+  const {
+    navigation,
+    firestoreCtrl,
+    challenge,
+  }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
+    route.params;
+
+  console.log("-> Challenge", { challenge });
   const posterId = challenge.uid;
-  firestoreCtrl.getUser(posterId).then((user) => {
+  firestoreCtrl.getUser(posterId).then((user: any) => {
     setPostUser(user);
   });
 
-  const userName = postUser?.name;
+  const userName = postUser?.name ?? undefined;
   const userLocation = challenge.location ?? undefined;
-  const userTime = challenge.date.toLocaleDateString();
+  const userTime = new Date(challenge.date).toLocaleString() ?? undefined;
+  console.log(challenge.date);
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -72,7 +72,7 @@ export default function MaximizeScreen({
                 {userName}
               </ThemedText>
               <ThemedText colorType="white" type="small">
-                {"in " + userLocation + " at " + userTime}
+                {"at " + userTime}
               </ThemedText>
             </ThemedView>
           </ThemedView>
