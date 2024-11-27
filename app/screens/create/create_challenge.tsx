@@ -8,7 +8,10 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 
-import * as Location from "expo-location";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+  LocationObject } from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
@@ -19,27 +22,42 @@ const CreateChallengeScreen = ({
 }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
-  const [permission, requestPermission] = Location.useForegroundPermissions();
+
+  const [userLocation, setUserLocation] = useState<LocationObject | null>(null,);
+  const [permission, setPermission] = useState<boolean>(false);
+
 
   // Switch values
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   console.log("image_id", image_id);
 
+  async function getCurrentLocation() {
+    try {
+      const { status } = await requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        setPermission(true);
+        const location = await getCurrentPositionAsync();
+        setUserLocation(location);
+      }
+    } catch (error) {
+      console.log("Error getting location permission or location:", error);
+    }
+  }
+
   async function makeChallenge() {
     try {
       let date = new Date();
-      let currentLocation = undefined;
-      if (isEnabled && permission && permission.status === "granted") {
-        currentLocation = (await Location.getCurrentPositionAsync()).coords;
-      }
+
+      if (isEnabled) {await getCurrentLocation();}
+
       await createChallenge(
         firestoreCtrl,
         challenge_name,
         date,
         description,
-        currentLocation,
+        userLocation,
       );
       navigation.navigate("Home");
     } catch (error) {
@@ -75,7 +93,7 @@ const CreateChallengeScreen = ({
         <ThemedTextInput
           style={styles.input}
           placeholder="Description"
-          onChangeText={(text) => setChallengeName(text)}
+          onChangeText={(text) => setDescription(text)}
           viewWidth={"90%"}
           title="Description"
           testID="Description-Input"
@@ -90,12 +108,7 @@ const CreateChallengeScreen = ({
             }}
             thumbColor={isEnabled ? Colors.light.tint : Colors.dark.white}
             ios_backgroundColor={Colors.light.tint}
-            onValueChange={() => {
-              toggleSwitch();
-              if (isEnabled) {
-                requestPermission();
-              }
-            }}
+            onValueChange={() => {toggleSwitch();}}
             value={isEnabled}
           />
 
