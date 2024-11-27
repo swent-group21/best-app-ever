@@ -26,6 +26,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const uid = auth.currentUser?.uid;
 
   useEffect(() => {
+    console.log("UID", uid);
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =
