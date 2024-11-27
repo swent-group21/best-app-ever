@@ -1,5 +1,5 @@
 import React from "react";
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/RootStackParamList";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -17,7 +17,8 @@ import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import ProfileScreen from "@/app/screens/home/profile_screen";
 import MapScreen from "@/app/screens/map/map_screen";
 
-const { Navigator, Screen, Group } = createNativeStackNavigator<RootStackParamList>();
+const { Navigator, Screen, Group } =
+  createNativeStackNavigator<RootStackParamList>();
 
 interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
@@ -106,13 +107,12 @@ export const Nav: React.FC<AppStackProps> = ({
             />
           )}
         </Screen>
-      
+
         <Screen name="MapScreen">
           {(props: any) => (
             <MapScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
-
       </Group>
     </Navigator>
   );
