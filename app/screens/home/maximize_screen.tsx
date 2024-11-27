@@ -8,16 +8,12 @@ import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
+import { auth } from "@/firebase/Firebase";
 
 const { width, height } = Dimensions.get("window");
 
 export default function MaximizeScreen({ route }: any) {
-  const [commentText, setCommentText] = React.useState("");
-  const [commentList, setCommentList] = React.useState<CommentType[]>([]);
-  const [postUser, setPostUser] = React.useState<DBUser>();
-  const [isLiked, setIsLiked] = React.useState(false);
-
+  // Get screen parameters
   const {
     navigation,
     firestoreCtrl,
@@ -25,21 +21,36 @@ export default function MaximizeScreen({ route }: any) {
   }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
     route.params;
 
-  console.log("-> Challenge", { challenge });
+  console.log("-> Maximized challenge: ", { challenge });
+
+  const [commentText, setCommentText] = React.useState("");
+  const [commentList, setCommentList] = React.useState<CommentType[]>([]);
+  const [postUser, setPostUser] = React.useState<DBUser>();
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [currentUserName, setCurrentUserName] = React.useState<
+    string | undefined
+  >(undefined);
+
+  // Fetch post user data
   const posterId = challenge.uid;
   firestoreCtrl.getUser(posterId).then((user: any) => {
     setPostUser(user);
   });
 
-  const userName = postUser?.name ?? undefined;
-  const userLocation = challenge.location ?? undefined;
+  // Fetch current user name
+  const currentUserId = auth.currentUser?.uid ?? "";
+  firestoreCtrl.getName(currentUserId).then((name) => setCurrentUserName(name));
+
+  // Set post data
+  const postUserName = postUser?.name ?? undefined;
+  const postLocation = challenge.location ?? undefined;
   const postDate = challenge.date ? challenge.date.toDate() : new Date();
-  console.log(challenge.date);
+  const postTitle = challenge.challenge_name ?? "Secret Challenge";
 
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
-        title="Commute by foot"
+        title={postTitle}
         leftIcon="arrow-back-outline"
         leftAction={navigation.goBack}
       />
@@ -70,7 +81,7 @@ export default function MaximizeScreen({ route }: any) {
             {/* User name and location */}
             <ThemedView style={styles.userInfo} colorType="transparent">
               <ThemedText colorType="white" type="smallSemiBold">
-                {userName}
+                {postUserName}
               </ThemedText>
               <ThemedText colorType="white" type="small">
                 {"on " +
@@ -131,8 +142,8 @@ export default function MaximizeScreen({ route }: any) {
                   ...commentList,
                   {
                     comment: commentText,
-                    user: "tristan",
-                    date: userTime,
+                    user: currentUserName ?? "Anonymous",
+                    date: new Date(),
                   } as CommentType,
                 ]);
               setCommentText("");
@@ -148,7 +159,7 @@ export default function MaximizeScreen({ route }: any) {
             commentList.map((eachComment, i) => (
               <SingleComment
                 comment={eachComment.comment}
-                user={"tristan"}
+                user={eachComment.user}
                 createdAt={new Date().toLocaleString()}
                 key={i}
               />
