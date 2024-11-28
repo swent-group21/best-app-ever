@@ -1,4 +1,5 @@
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import { Icon, IconProps } from "react-native-elements";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
@@ -11,6 +12,7 @@ interface ThemedIconButtonProps extends IconProps {
   lightColor?: string;
   darkColor?: string;
   paddingLeft?: number;
+  testID?: string;
 }
 
 export function ThemedIconButton({
@@ -21,6 +23,7 @@ export function ThemedIconButton({
   size,
   paddingLeft,
   colorType,
+  testID,
   ...props
 }: ThemedIconButtonProps) {
   const color = useThemeColor(
@@ -29,12 +32,19 @@ export function ThemedIconButton({
   );
 
   return (
-    <Icon
-      color={color}
-      type={iconType}
+    <TouchableOpacity
       onPress={onPress}
-      size={size}
-      {...props}
-    />
+      activeOpacity={0.7}
+      {...(testID && { testID })}
+    >
+      <Icon
+        testID={testID}
+        color={color}
+        type={iconType}
+        onPress={onPress}
+        size={size}
+        {...props}
+      />
+    </TouchableOpacity>
   );
 }

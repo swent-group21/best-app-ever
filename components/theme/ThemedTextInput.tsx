@@ -13,6 +13,7 @@ interface ThemedTextInputProps extends TextInputProps {
   darkColor?: string;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
   borderColorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+  testID?: string;
 }
 
 export function ThemedTextInput({
@@ -25,6 +26,7 @@ export function ThemedTextInput({
   titleStyle,
   viewWidth = "100%",
   type = "none",
+  testID,
   ...props
 }: ThemedTextInputProps) {
   const color = useThemeColor(
@@ -59,7 +61,7 @@ export function ThemedTextInput({
   };
 
   return (
-    <View style={{ gap: 5, width: viewWidth }}>
+    <View testID={testID} style={{ gap: 5, width: viewWidth }}>
       {title && (
         <ThemedText style={titleStyle} type={"defaultSemiBold"}>
           {title}

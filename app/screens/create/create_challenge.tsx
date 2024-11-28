@@ -16,16 +16,14 @@ import {
 
 const { width, height } = Dimensions.get("window");
 
-const CreateChallengeScreen = ({
-  navigation,
-  image_id,
-  firestoreCtrl,
-}: any) => {
+const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
 
+  const image_id = route.params?.image_id;
+  console.log("image_id: ", image_id);
+
   const [location, setLocation] = useState<LocationObject | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => {
@@ -58,8 +56,12 @@ const CreateChallengeScreen = ({
         date,
         description,
         isEnabled ? location : null,
+        image_id,
       );
-      navigation.navigate("Home");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      });
     } catch (error) {
       console.log("Unable to create challenge");
       return error;

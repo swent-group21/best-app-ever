@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/RootStackParamList";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -17,7 +17,8 @@ import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import ProfileScreen from "@/app/screens/home/profile_screen";
 import MapScreen from "@/app/screens/map/map_screen";
 
-const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
+const { Navigator, Screen, Group } =
+  createNativeStackNavigator<RootStackParamList>();
 
 interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
@@ -32,7 +33,6 @@ export const Nav: React.FC<AppStackProps> = ({
 }) => {
   return (
     <Navigator
-      firestoreCtrl={firestoreCtrl}
       initialRouteName={isLoggedIn}
       screenOptions={{
         headerShown: false,
@@ -51,7 +51,7 @@ export const Nav: React.FC<AppStackProps> = ({
             <WelcomeScreens {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
-        <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
+        <Screen name="WelcomeFinal" options={{ title: "Final Screen" }}>
           {(props: any) => (
             <WelcomeFinalScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
@@ -88,7 +88,7 @@ export const Nav: React.FC<AppStackProps> = ({
         <Screen name="Camera">
           {(props: any) => <Camera {...props} firestoreCtrl={firestoreCtrl} />}
         </Screen>
-        <Screen name="MaximizeScreen">
+        <Screen name="Maximize">
           {(props: any) => (
             <MaximizeScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}

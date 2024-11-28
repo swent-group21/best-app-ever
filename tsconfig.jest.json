@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "commonjs"
+  },
+  "moduleNameMapper": {
+    "\\.(ttf|png|jpg)$": "<rootDir>/jestAssetTransformer.js",
+    "\\.(css)$": "identity-obj-proxy"
+  }
+}
