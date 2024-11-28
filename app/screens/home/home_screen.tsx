@@ -10,6 +10,9 @@ import { DBChallenge, DBGroup } from "@/firebase/FirestoreCtrl";
 import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { Colors } from "@/constants/Colors";
+import { color } from "react-native-elements/dist/helpers";
+
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
@@ -76,6 +79,26 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
             // Include other props as needed
           />
         ))}
+
+        <ThemedView style={styles.createGroupContainer}>
+          
+            <ThemedTextButton 
+                style={styles.createGroup} 
+                onPress={() => {}}
+                text="+"
+                textStyle={styles.createGroupText}
+                textColorType="textOverLight"
+                colorType= "backgroundSecondary"
+            >
+              <ThemedText 
+                  //style={styles.createGroup} 
+                  colorType="textOverLight"
+              >
+                Create a new group
+            </ThemedText>
+
+            </ThemedTextButton>
+        </ThemedView>
 
       </ThemedScrollView>
 
@@ -145,4 +168,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: height * 0.04,
   },
+
+  createGroupContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    backgroundColor: "transparent",
+    width: width * 0.23,
+    height:width * 0.2,
+    borderRadius: 20,
+    margin: 10,
+    alignItems: "center",
+  },
+
+  createGroup: {
+    alignItems: "center",
+    alignSelf: "center",
+    width: "100%",
+    height: "100%",
+    borderRadius: 15,
+    padding: 8,
+    //gap: 6,
+    color:"transparent",
+    fontSize: 5,
+    fontWeight: "bold",
+    textAlign: "center",
+    backgroundColor : "transparent",
+    
+  },
+
+
+  createGroupText: {
+    flex: 1,
+    width: "100%",
+    alignSelf: "center",
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontSize: 60,
+    fontWeight: "normal",
+  }
 });
