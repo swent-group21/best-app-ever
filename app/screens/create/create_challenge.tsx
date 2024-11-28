@@ -14,6 +14,8 @@ import {
   LocationObject,
 } from "expo-location";
 
+import { GeoPoint } from "firebase/firestore";
+
 const { width, height } = Dimensions.get("window");
 
 const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
@@ -40,6 +42,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
       }
 
       let location = await getCurrentPositionAsync();
+
       setLocation(location);
     }
 

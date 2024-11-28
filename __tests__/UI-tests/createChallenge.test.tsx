@@ -7,6 +7,7 @@ import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import { createChallenge } from "@/types/ChallengeBuilder";
 
 jest.mock("@/types/ChallengeBuilder");
+jest.mock("expo-location");
 
 const Stack = createNativeStackNavigator();
 
