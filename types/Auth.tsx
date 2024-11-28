@@ -142,7 +142,6 @@ export const signInAsGuest = async (
 export const logOut = async (navigation: any) => {
   signOut(auth)
     .then(() => {
-      alert("Logged out.");
       navigation.reset({
         index: 0,
         routes: [{ name: "WelcomeConcept" }],
