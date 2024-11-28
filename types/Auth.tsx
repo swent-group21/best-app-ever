@@ -144,7 +144,7 @@ export const logOut = async (navigation: any) => {
     .then(() => {
       navigation.reset({
         index: 0,
-        routes: [{ name: "WelcomeConcept" }],
+        routes: [{ name: "WelcomeFinal" }],
       });
     })
     .catch((error) => {
