@@ -129,7 +129,7 @@ jest.mock("react-native-maps", () => {
 jest.mock("expo-location", () => ({
   requestForegroundPermissionsAsync: jest.fn(() =>
     Promise.resolve({ status: "granted" }),
-  ),
+  )
 }));
 
 jest.mock("@react-native-async-storage/async-storage", () =>

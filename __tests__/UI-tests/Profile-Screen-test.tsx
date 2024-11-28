@@ -1,3 +1,4 @@
+
 //import React from "react";
 //import { render } from "@testing-library/react-native";
 //import ProfileScreen from "@/app/screens/home/profile_screen";
@@ -5,8 +6,8 @@
 //import * as ImagePicker from "expo-image-picker";
 
 // Test if the screen renders correctly
-
 describe("ProfileScreen", () => {
+
   test("always passes", () => {
     expect(true).toBe(true);
   });

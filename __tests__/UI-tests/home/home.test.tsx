@@ -24,6 +24,7 @@ const mockChallenges: DBChallenge[] = [
     description: "Description 1",
     uid: "12345",
     date: new Date(),
+    location: null,
   },
   {
     challenge_id: "2",
@@ -31,6 +32,7 @@ const mockChallenges: DBChallenge[] = [
     description: "Description 2",
     uid: "12345",
     date: new Date(),
+    location: null,
   },
 ];
 

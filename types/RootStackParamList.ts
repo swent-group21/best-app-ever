@@ -12,7 +12,7 @@ export type RootStackParamList = {
   SetUser: undefined;
   Camera: undefined;
   SetUsername: undefined;
-  Maximize: {
+  MaximizeScreen: {
     challenge: DBChallenge;
     user: DBUser;
   };
