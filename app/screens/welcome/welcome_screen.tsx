@@ -29,6 +29,7 @@ export default function WelcomeScreens({ navigation }: any) {
         showsHorizontalScrollIndicator={false}
         style={styles.scrollView}
         onScroll={handleScroll}
+        testID="welcome-scrollview"
       >
         <WelcomeIntroScreen navigation={navigation} />
         <WelcomeConceptScreen navigation={navigation} />
