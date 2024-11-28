@@ -22,6 +22,10 @@ export type DBUser = {
   address?: string;
   image_id?: string;
   createdAt: Date;
+  friends?: string[];
+  userRequestedFriends? : string[];
+  friendsRequestedUser? : string[];
+
 };
 
 export type DBChallenge = {
@@ -52,6 +56,11 @@ export default class FirestoreCtrl {
   async createUser(userId: string, userData: DBUser): Promise<void> {
     try {
       userData.uid = userId;
+
+      userData.userRequestedFriends = userData.userRequestedFriends || [];
+      userData.friendsRequestedUser = userData.friendsRequestedUser || [];
+      userData.friends = userData.friends || [];
+
       await setDoc(doc(firestore, "users", userId), userData);
     } catch (error) {
       console.error("Error writing user document: ", error);
@@ -268,10 +277,118 @@ console.log("Challenge data retrieved:", data);
           ...data,
         } as DBUser;
       });
+      
       return users;
     } catch (error) {
       console.error("Error getting all users: ", error);
       throw error;
     }
   }
+
+  async addFriend(userId: string, friendId: string) {
+    try
+    {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.userRequestedFriends = user.userRequestedFriends || [];
+      friend.friendsRequestedUser = friend.friendsRequestedUser || [];
+      if (user.friends?.includes(friendId) || user.userRequestedFriends?.includes(friendId) || user.friendsRequestedUser?.includes(friendId)) {
+        return;
+      }
+
+      user.userRequestedFriends?.push(friendId);
+      friend.friendsRequestedUser?.push(userId);
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    }
+    catch (error) {
+      console.error("Error adding friend: ", error);
+      throw error;
+    }
+  }
+
+  async acceptFriend(userId: string, friendId: string) {
+    try
+    {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.friends = user.friends || [];
+      friend.friends = friend.friends || [];
+
+      if (user.friends?.includes(friendId) ) {
+        return;
+      }
+      user.friends?.push(friendId);
+      friend.friends?.push(userId);
+
+      user.friendsRequestedUser = user.friendsRequestedUser?.filter((id) => id !== friendId);
+      friend.userRequestedFriends = friend.userRequestedFriends?.filter((id) => id !== userId);
+      
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    }
+    catch (error) {
+      console.error("Error accepting friend: ", error);
+      throw error;
+    }
+  }
+
+  async rejectFriend(userId: string, friendId: string) {
+    try
+    {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.userRequestedFriends = user.userRequestedFriends || [];
+      friend.friendsRequestedUser = friend.friendsRequestedUser || [];
+
+      user.userRequestedFriends = user.userRequestedFriends?.filter((id) => id !== friendId);
+      friend.friendsRequestedUser = friend.friendsRequestedUser?.filter((id) => id !== userId);
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    }
+    catch (error) {
+      console.error("Error rejecting friend: ", error);
+      throw error;
+    }
+  }
+
+  async getFriends(userId: string): Promise<DBUser[]> {
+    try {
+      const user = await this.getUser(userId);
+      const friends = await Promise.all(user.friends?.map(async (id) => await this.getUser(id)) || []);
+      return friends;
+    } catch (error) {
+      console.error("Error getting friends: ", error);
+      throw error;
+    }
+  }
+
+  async getRequestedFriends(userId: string): Promise<DBUser[]> {
+    try {
+      const user = await this.getUser(userId);
+      const friends = await Promise.all(user.userRequestedFriends?.map(async (id) => await this.getUser(id)) || []);
+      return friends;
+    } catch (error) {
+      console.error("Error getting requested friends: ", error);
+      throw error;
+    }
+  }
+
+  async getFriendRequests(userId: string): Promise<DBUser[]> {
+    try {
+      const user = await this.getUser(userId);
+      const friends = await Promise.all(user.friendsRequestedUser?.map(async (id) => await this.getUser(id)) || []);
+      return friends;
+    } catch (error) {
+      console.error("Error getting friends requested user: ", error);
+      throw error;
+    }
+  }
+
+
 }

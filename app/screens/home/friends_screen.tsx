@@ -8,55 +8,17 @@ import { ThemedScrollView } from '@/components/theme/ThemedScrollView';
 import { DBUser } from '@/firebase/FirestoreCtrl';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Dimensions } from 'react-native';
+import { getAuth } from 'firebase/auth';
+import { firestore } from '@/firebase/Firebase';
+import { documentId } from 'firebase/firestore';
 
   
-    const { width, height } = Dimensions.get('window');
-  // Placeholder for friends
-  const friends = [
-    { id: '101', name: 'Anna Brown', avatar: null },
-    { id: '102', name: 'Mark Taylor', avatar: null },
-    { id: '103', name: 'Jessica White', avatar: null },
-    { id: '104', name: 'Tom Hanks', avatar: null },
-    { id: '32', name: 'Lily Phillips', username: 'lilyp', avatar: null },
-    { id: '33', name: 'Ryan Evans', username: 'ryane', avatar: null },
-    { id: '34', name: 'Grace Campbell', username: 'gracec', avatar: null },
-    { id: '35', name: 'Hannah Mitchell', username: 'hannahm', avatar: null },
-    { id: '36', name: 'Henry Collins', username: 'henryc', avatar: null },
-    { id: '37', name: 'Abigail Morris', username: 'abigailm', avatar: null },
-    { id: '38', name: 'Victoria Perez', username: 'victoriap', avatar: null },
-  ];
+  const { width, height } = Dimensions.get('window');
+  
+ 
 
-
-  const requests = [
-    { id: '201', name: 'Oliver Smith', avatar: null },
-    { id: '202', name: 'Emma Johnson', avatar: null },
-    { id: '203', name: 'Ava Brown', avatar: null },
-    { id: '204', name: 'Liam Davis', avatar: null },
-  ];
-
-  const FriendRequestItem = ({ name, avatar, onAccept, onDecline }: any) => (
-    <ThemedView style={styles.requestItem}>
-      {avatar ? (
-        <Image source={{ uri: avatar }} style={styles.avatar} />
-      ) : (
-        <ThemedView style={[styles.avatar, styles.defaultAvatar]}>
-          <ThemedText style={styles.avatarText}>{name.charAt(0).toUpperCase()}</ThemedText>
-        </ThemedView>
-      )}
-      <ThemedText style={styles.name}>{name}</ThemedText>
-      <View style={styles.requestButtons}>
-         {/* Accept Button with Icon */}
-      <TouchableOpacity style={styles.acceptButton} onPress={onAccept}>
-        <Icon name="check" size={20} color="#fff" />
-      </TouchableOpacity>
-
-      {/* Decline Button with Icon */}
-      <TouchableOpacity style={styles.declineButton} onPress={onDecline}>
-        <Icon name="close" size={20} color="#fff" />
-      </TouchableOpacity>
-      </View>
-    </ThemedView>
-  );
+  
+  
   
 
 // Search Bar 
@@ -96,10 +58,19 @@ const UserListItem = ({ name, username, avatar, onAdd }: any) => (
 );
 
 
+
+
 // Friends Screen
 export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
   const [searchText, setSearchText] = useState('');
   const [users, setUsers] = useState<DBUser[]>([]);
+  const [filteredRequests, setFilteredRequests] = useState<DBUser[]>([]);
+  const [requests, setRequests] = useState<DBUser[]>([]);
+  const [friends, setFriends] =useState<DBUser[]>([]);
+ 
+
+  const auth = getAuth();
+  const uid = auth.currentUser?.uid;
 
  useEffect(() => {
     const fetchUsers = async () => {
@@ -113,12 +84,37 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
         fetchUsers();
   });
 
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const friends = await firestoreCtrl.getFriends(uid);
+        setFriends(friends);
+      } catch (error) {
+        console.error('Error fetching friends: ', error);
+      }
+    };
+      fetchFriends();
+    });
+
+    useEffect(() => {
+      const fetchRequests = async () => {
+        try {
+          const request = await firestoreCtrl.getFriendRequests(uid);
+
+          setRequests(request);
+        } catch (error) {
+          console.error('Error fetching requests: ', error);
+        }
+      };
+      fetchRequests();
+    });
+
 
   // Filter users in regard to the search text
   
     const filteredUsers = (searchText && users.length > 0)
     ? users.filter((user) => {
-        return user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
+        return user.uid && user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
         })
     : [];
 
@@ -135,25 +131,52 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
           <ThemedText style={styles.friendName}>{name}</ThemedText>
         </TouchableOpacity>
       );
-    
-      const handleFriendPress = (friendId: string) => {
-        console.log(`Navigate to friend ${friendId}'s profile`);
-      };
 
-  const handleAdd = (userId: string) => {
-    console.log(`User ${userId} added`);
+      const FriendRequestItem = ({ name, avatar, onAccept, onDecline }: any) => (
+        <ThemedView style={styles.requestItem}>
+          {avatar ? (
+            <Image source={{ uri: avatar }} style={styles.avatar} />
+          ) : (
+            <ThemedView style={[styles.avatar, styles.defaultAvatar]}>
+              <ThemedText style={styles.avatarText}>{name.charAt(0).toUpperCase()}</ThemedText>
+            </ThemedView>
+          )}
+          <ThemedText style={styles.name}>{name}</ThemedText>
+          <View style={styles.requestButtons}>
+             {/* Accept Button with Icon */}
+          <TouchableOpacity style={styles.acceptButton} onPress={onAccept}>
+            <Icon name="check" size={20} color="#fff" />
+          </TouchableOpacity>
+    
+          {/* Decline Button with Icon */}
+          <TouchableOpacity style={styles.declineButton} onPress={onDecline}>
+            <Icon name="close" size={20} color="#fff" />
+          </TouchableOpacity>
+          </View>
+        </ThemedView>
+      );
+
+    
+  const handleFriendPress = (friendId: string) => {
+     console.log(`Navigate to friend ${friendId}'s profile`);
   };
 
-  const [filteredRequests, setFilteredRequests] = useState(requests);
+  const handleAdd = (userId: string) => {
+    console.log(`Add user ${userId} as friend`);
+    console.log('other UID', userId);
+
+    firestoreCtrl.addFriend(uid, userId);
+  };
 
   const handleAccept = (requestId: string) => {
     console.log(`Friend request ${requestId} accepted`);
-    setFilteredRequests(filteredRequests.filter((req) => req.id !== requestId));
-  };
+    firestoreCtrl.acceptFriend(uid, requestId);
+    };
 
   const handleDecline = (requestId: string) => {
     console.log(`Friend request ${requestId} declined`);
-    setFilteredRequests(filteredRequests.filter((req) => req.id !== requestId));
+    firestoreCtrl.rejectFriend(uid, requestId);
+    setRequests(requests.filter((req) => req.uid !== requestId));
   };
 
   return (
@@ -171,9 +194,11 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
           renderItem={({ item, index }) => (
             <UserListItem
               name={item.name}
-              key={index}
+              key= {index}
               avatar={item.image_id }
-              onAdd={() => handleAdd(item.uid)}
+              onAdd={() => {
+                console.log('Add user', item.uid); 
+                handleAdd(item.uid)} }
 
             />
           )}
@@ -188,34 +213,39 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       <Text style={styles.friendsTitle}> Your friends </Text>
       <FlatList
         data={friends}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.uid}
         style = {{padding: 10, maxHeight: height * 0.15}}
-        renderItem={({ item }) => (
+        renderItem={({ item, index}) => (
           <FriendListItem
+            key={index}
             name={item.name}
-            avatar={item.avatar}
-            onPress={() => handleFriendPress(item.id)}
+            avatar={item.image_id}
+            onPress={() => handleFriendPress(item.uid)}
           />
         )}
         horizontal 
         showsHorizontalScrollIndicator={false}
+        ListEmptyComponent={
+          <ThemedText style={styles.noFriends}>You don't have any friends yet</ThemedText>
+        }
       />
 
       {/* Friend Requests Section */}
       <ThemedView style={styles.requestsContainer}></ThemedView>
       <ThemedView style= {styles.container}>
       <ThemedText style={styles.sectionTitle}>Requests</ThemedText>
-      {filteredRequests.length > 0 ? (
+      {requests.length > 0 ? (
         <FlatList
-          data={filteredRequests}
-          keyExtractor={(item) => item.id}
+          data={requests}
+          keyExtractor={(item) => item.uid}
           style = {{position: 'relative'}}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <FriendRequestItem
               name={item.name}
-              avatar={item.avatar}
-              onAccept={() => handleAccept(item.id)}
-              onDecline={() => handleDecline(item.id)}
+              key={index}
+              avatar={item.image_id} 
+              onAccept={() => handleAccept(item.uid)}
+              onDecline={() => handleDecline(item.uid)}
               
             />
           )}
@@ -354,6 +384,13 @@ const styles = StyleSheet.create({
     color: '#aaa',
     textAlign: 'center',
     marginVertical: 20,
+  },
+  noFriends: {
+    color: '#aaa',
+    textAlign: 'center',
+    marginVertical: 20,
+    alignSelf: 'center',
+    marginLeft : width * 0.2,
   },
 
   requestItem: {
