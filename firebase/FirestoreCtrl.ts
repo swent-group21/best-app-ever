@@ -1,4 +1,4 @@
-import { limit, orderBy, Timestamp } from "firebase/firestore";
+import { limit, orderBy, Timestamp, GeoPoint } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -12,7 +12,7 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as Location from "expo-location";
+import { LocationObject, LocationObjectCoords } from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -31,8 +31,8 @@ export type DBChallenge = {
   uid: string;
   image_id?: string;
   date: Date;
-  location?: Location.LocationObjectCoords;
   likes?: string[]; // User IDs
+  location: GeoPoint | null;
 };
 
 export type DBComment = {
