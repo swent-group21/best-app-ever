@@ -4,7 +4,8 @@ import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import { DBUser } from "@/firebase/FirestoreCtrl";
+import { auth } from "@/firebase/Firebase";
 
 const { width, height } = Dimensions.get("window");
 
@@ -16,6 +17,8 @@ export function Challenge({
 }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState<string[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string>("");
   const [user, setUser] = useState<DBUser>();
 
   const challengeDate = challengeDB.date
@@ -35,6 +38,20 @@ export function Challenge({
       fetchUser();
     }
   }, [user]);
+
+  useEffect(() => {
+    // Fetch current user ID
+    const uid = auth.currentUser?.uid ?? "";
+    setCurrentUserId(uid);
+
+    // Fetch likes
+    firestoreCtrl
+      .getLikesOf(challengeDB.challenge_id ?? "")
+      .then((likes: string[]) => {
+        setIsLiked(likes.includes(uid));
+        setLikes(likes);
+      });
+  }, [challengeDB, firestoreCtrl, likes]);
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -106,6 +123,25 @@ export function Challenge({
                     name={isLiked ? "heart" : "heart-outline"}
                     onPress={() => {
                       setIsLiked(!isLiked);
+                      setIsLiked(!isLiked);
+                      // Add or remove user id from like list
+                      if (isLiked) {
+                        const newLikeList = likes.filter(
+                          (userId) => userId !== currentUserId,
+                        );
+                        setLikes(newLikeList);
+                        firestoreCtrl.updateLikesOf(
+                          challengeDB.challenge_id ?? "",
+                          newLikeList,
+                        );
+                      } else {
+                        const newLikeList = [...likes, currentUserId];
+                        setLikes(newLikeList);
+                        firestoreCtrl.updateLikesOf(
+                          challengeDB.challenge_id ?? "",
+                          newLikeList,
+                        );
+                      }
                     }}
                     size={25}
                     color={isLiked ? "red" : "white"}
