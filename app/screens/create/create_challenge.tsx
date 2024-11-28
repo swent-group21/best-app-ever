@@ -39,11 +39,11 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         return;
       }
 
-      let location = await getCurrentPositionAsync({});
+      let location = await getCurrentPositionAsync();
       setLocation(location);
     }
 
-    if (isEnabled) getCurrentLocation();
+    getCurrentLocation();
   }, []);
 
   async function makeChallenge() {
@@ -101,7 +101,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
           testID="Description-Input"
         />
 
-        <ThemedView style={styles.containerRow} testID="switch-button">
+        <ThemedView style={styles.containerRow}>
           <Switch
             style={styles.switch}
             trackColor={{
@@ -114,6 +114,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
               toggleSwitch();
             }}
             value={isEnabled}
+            testID="switch-button"
           />
 
           <ThemedText
