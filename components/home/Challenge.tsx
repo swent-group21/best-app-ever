@@ -108,7 +108,7 @@ export function Challenge({
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaximizeScreen", {
+                      navigation.navigate("Maximize", {
                         navigation: navigation,
                         firestoreCtrl: firestoreCtrl,
                         challenge: challengeDB,
