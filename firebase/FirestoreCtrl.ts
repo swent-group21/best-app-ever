@@ -297,4 +297,35 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
+
+  /**
+   * Updates the likes of a challenge.
+   * @param challengeId The ID of the challenge to update likes for.
+   * @param likes The new list of likes to set.
+   * @returns A promise that resolves when the likes are updated.
+   */
+  async updateLikesOf(challengeId: string, likes: string[]): Promise<void> {
+    try {
+      const challengeRef = doc(firestore, "challenges", challengeId);
+      await setDoc(challengeRef, { likes }, { merge: true });
+    } catch (error) {
+      console.error("Error updating likes: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the likes of a challenge.
+   * @param challengeId The ID of the challenge to get likes for.
+   * @returns A promise that resolves to an array of user IDs.
+   */
+  async getLikesOf(challengeId: string): Promise<string[]> {
+    try {
+      const challenge = await this.getChallenge(challengeId);
+      return challenge.likes || [];
+    } catch (error) {
+      console.error("Error getting likes: ", error);
+      throw error;
+    }
+  }
 }

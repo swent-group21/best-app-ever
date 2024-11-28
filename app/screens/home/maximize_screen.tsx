@@ -29,23 +29,25 @@ export default function MaximizeScreen({ route }: any) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<DBComment[]>([]);
   const [postUser, setPostUser] = React.useState<DBUser>();
+  const [likeList, setLikeList] = React.useState<string[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
   const [currentUserName, setCurrentUserName] = React.useState<
     string | undefined
   >(undefined);
+  const [currentUserId, setCurrentUserId] = React.useState<string>("");
 
   useEffect(() => {
+    // Fetch current user name and ID
+    const uid = auth.currentUser?.uid ?? "";
+    setCurrentUserId(uid);
+    console.log("Current user ID: ", uid);
+    firestoreCtrl.getName(uid).then((name) => setCurrentUserName(name));
+
     // Fetch post user data
     const postUid = challenge.uid;
     firestoreCtrl.getUser(postUid).then((user: any) => {
       setPostUser(user);
     });
-
-    // Fetch current user name
-    const currentUserId = auth.currentUser?.uid ?? "";
-    firestoreCtrl
-      .getName(currentUserId)
-      .then((name) => setCurrentUserName(name));
 
     // Fetch comments
     firestoreCtrl
@@ -56,6 +58,14 @@ export default function MaximizeScreen({ route }: any) {
           (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
         );
         setCommentList(sortedComments);
+      });
+
+    // Fetch likes
+    firestoreCtrl
+      .getLikesOf(challenge.challenge_id ?? "")
+      .then((likes: string[]) => {
+        setLikeList(likes);
+        setIsLiked(likes.includes(uid));
       });
 
     console.log("-> Maximized challenge: ", { challenge });
@@ -69,7 +79,6 @@ export default function MaximizeScreen({ route }: any) {
       : challenge.challenge_name;
   const postImage = challenge.image_id ?? "";
   const postDescription = challenge.description ?? "";
-  const postLikes = challenge.likes ?? [];
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -147,12 +156,30 @@ export default function MaximizeScreen({ route }: any) {
               name={isLiked ? "heart" : "heart-outline"}
               onPress={() => {
                 setIsLiked(!isLiked);
+                // Add or remove user id from like list
+                if (isLiked) {
+                  const newLikeList = likeList.filter(
+                    (userId) => userId !== currentUserId,
+                  );
+                  setLikeList(newLikeList);
+                  firestoreCtrl.updateLikesOf(
+                    challenge.challenge_id ?? "",
+                    newLikeList,
+                  );
+                } else {
+                  const newLikeList = [...likeList, currentUserId];
+                  setLikeList(newLikeList);
+                  firestoreCtrl.updateLikesOf(
+                    challenge.challenge_id ?? "",
+                    newLikeList,
+                  );
+                }
               }}
               size={35}
               color={isLiked ? "red" : "white"}
             />
             <ThemedText colorType="white" style={styles.likeCountText}>
-              {postLikes.length} {postLikes.length <= 1 ? "like" : "likes"}
+              {likeList.length} {likeList.length <= 1 ? "like" : "likes"}
             </ThemedText>
           </ThemedView>
           {/* Description */}
