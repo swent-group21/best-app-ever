@@ -123,7 +123,7 @@ export function Challenge({
                     name={isLiked ? "heart" : "heart-outline"}
                     onPress={() => {
                       setIsLiked(!isLiked);
-                      setIsLiked(!isLiked);
+
                       // Add or remove user id from like list
                       if (isLiked) {
                         const newLikeList = likes.filter(
