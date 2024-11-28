@@ -57,7 +57,6 @@ export const createChallenge = async (
       date: date,
       location: location,
       image_id: image_id,
-      comments: comments,
       likes: likes,
     };
 

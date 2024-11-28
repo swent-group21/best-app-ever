@@ -4,7 +4,7 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { SingleComment, CommentType } from "@/components/posts/Comment";
+import { SingleComment } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import FirestoreCtrl, {
@@ -26,7 +26,7 @@ export default function MaximizeScreen({ route }: any) {
   }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
     route.params;
 
-  console.log("-> Maximized challenge: ", { challenge });
+  // console.log("-> Maximized challenge: ", { challenge });
 
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<DBComment[]>([]);
@@ -50,7 +50,11 @@ export default function MaximizeScreen({ route }: any) {
   firestoreCtrl
     .getCommentsOf(challenge.challenge_id ?? "")
     .then((comments: DBComment[]) => {
-      setCommentList(comments);
+      // Sort comments by date
+      const sortedComments = comments.sort(
+        (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
+      );
+      setCommentList(sortedComments);
     });
 
   // Set post data
@@ -185,12 +189,7 @@ export default function MaximizeScreen({ route }: any) {
             <ThemedText>No comment to display</ThemedText>
           ) : (
             commentList.map((eachComment, i) => (
-              <SingleComment
-                comment={eachComment.comment_text}
-                user={eachComment.user_name}
-                createdAt={eachComment.created_at.toDate().toLocaleDateString()}
-                key={i}
-              />
+              <SingleComment key={i} {...eachComment} />
             ))
           )}
         </ThemedView>

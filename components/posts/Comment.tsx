@@ -1,16 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { DBComment } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export type CommentType = {
-  comment: string;
-  user: string;
-  createdAt?: string;
-};
-
-export function SingleComment(comment: CommentType) {
+export function SingleComment(comment: DBComment) {
   return (
     <View
       style={{
@@ -36,10 +31,12 @@ export function SingleComment(comment: CommentType) {
             paddingBottom: 10,
           }}
         >
-          <Text style={styles.user}> {comment.user} </Text>
-          <Text style={styles.textofcomment}> {comment.createdAt} </Text>
+          <Text style={styles.user}> {comment.user_name} </Text>
+          <Text style={styles.textofcomment}>
+            {comment.created_at.toDate().toLocaleString()}
+          </Text>
         </View>
-        <Text style={styles.textofcomment}> {comment.comment} </Text>
+        <Text style={styles.textofcomment}> {comment.comment_text} </Text>
       </View>
     </View>
   );
