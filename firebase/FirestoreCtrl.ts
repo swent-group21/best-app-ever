@@ -1,4 +1,4 @@
-import { limit } from "firebase/firestore";
+import { FieldPath, limit, documentId } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -22,6 +22,7 @@ export type DBUser = {
   address?: string;
   image_id?: string;
   createdAt: Date;
+  groups?: string[];
 };
 
 export type DBChallenge = {
@@ -49,6 +50,7 @@ export type DBGroup = {
   description?: string;
   members: string[];
   creationDate?: Date;
+  
 }
 
 export default class FirestoreCtrl {
@@ -284,19 +286,28 @@ export default class FirestoreCtrl {
    */
   async getGroupsByUserId(uid: string): Promise<DBGroup[]> {
     try {
-      const groupsRef = collection(firestore, "Groups");
-      const q = query(groupsRef, where("uid", "==", uid));
+      const userRef = doc(firestore, "users", uid);
+      const userDoc = await getDoc(userRef);
 
-      const querySnapshot = await getDocs(q);
-      const groups = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        console.log("Groups data retrieved:", data);
-        return {
-          ...data,
-          group_id: doc.id,
-        } as DBGroup;
-      });
-      return groups;
+      const userData = userDoc.data() as DBUser;
+
+      console.log("userGroups [" + uid + "]", userData.groups);
+
+      // Retrieve all groups using the group IDs
+      const groupsRef = collection(firestore, "groups");
+
+      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+
+      const groupSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBGroup
+      const dbGroups: DBGroup[] = groupSnapshots.docs.map(doc => ({
+        group_id: doc.id,
+        ...doc.data()
+      } as DBGroup));
+
+      return dbGroups;
+
     } catch (error) {
       console.error("Error getting groups by user ID: ", error);
       throw error;
@@ -311,19 +322,25 @@ export default class FirestoreCtrl {
    */
   async getUsersInGroup(gid: string): Promise<DBUser[]> {
     try {
-      const groupsRef = collection(firestore, "Groups");
-      const q = query(groupsRef, where("gid", "==", gid));
+      const groupRef = doc(firestore, "groups", gid);
+      const groupDoc = await getDoc(groupRef);
 
-      const querySnapshot = await getDocs(q);
-      const users = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        console.log("Groups data retrieved:", data);
-        return {
-          ...data,
-          uid: doc.id,
-        } as DBUser;
-      });
-      return users;
+      const userData = groupDoc.data() as DBGroup;
+
+      // Retrieve all users using the user IDs
+      const usersRef = collection(firestore, "users");
+      const q = query(usersRef, where("uid", "in", userData.members));
+
+      const usersSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBUser
+      const dbUsers: DBUser[] = usersSnapshots.docs.map(doc => ({
+        uid: doc.id,
+        ...doc.data()
+      } as DBUser));
+
+      return dbUsers;
+      
     } catch (error) {
       console.error("Error getting groups by user ID: ", error);
       throw error;

@@ -9,23 +9,24 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge, DBGroup } from "@/firebase/FirestoreCtrl";
 import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: DBUser; navigation: any; firestoreCtrl: FirestoreCtrl }) {
+export default function GroupScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
 
+  const auth = getAuth();
+  const uid = auth.currentUser?.uid;
+
   useEffect(() => {
-    if (user.uid) {
+    console.log("UID", uid);
+    if (uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(
-            user.uid,
-          );
-          console.log("Challenges", challengesData);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
+          console.log("Challenges [" + uid + "]", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -36,43 +37,28 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
     }
   }, [uid]);
 
-  useEffect(() => {
-    console.log("UID", uid);
-    if (uid) {
-      const fetchGroups = async () => {
-        try {
-          const groupsData = await firestoreCtrl.getGroupsByUserId(uid);
-          console.log("Groups [" + uid + "]", groupsData);
-          setGroups(groupsData);
-        } catch (error) {
-          console.error("Error fetching groups: ", error);
-        }
-      };
-
-      fetchGroups();
-    }
-  }, [uid]);
-
+  
   return (
-    <ThemedView style={styles.bigContainer} testID="home-screen">
+    <ThemedView style={styles.bigContainer}>
       <TopBar
-        title="Commute by foot"
-        leftIcon="people-outline"
+        title="Group"
+        leftIcon="arrow-backward"
         rightIcon="person-circle-outline"
+        leftAction={() => navigation.navigate("Home")}
         rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
       />
 
       <ThemedScrollView
-        style={styles.groupsContainer}
-        //colorType="transparent"
-        horizontal
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        colorType="transparent"
       >
         {groups.map((group, index) => (
           <Group
-            groupDB={group}
             navigation={navigation}
             firestoreCtrl={firestoreCtrl}
             key={index}
+            challengeDB={group}
             // Include other props as needed
           />
         ))}
@@ -94,7 +80,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
               firestoreCtrl={firestoreCtrl}
               key={index}
               challengeDB={challenge}
-              testID={`challenge-id-${index}`}
               // Include other props as needed
             />
           ))
@@ -102,7 +87,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
       </ThemedScrollView>
 
       <BottomBar
-        testID="bottom-bar"
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
@@ -118,21 +102,6 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-  },
-
-  input: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "100%",
-    borderRadius: 20,
-    padding: 20,
-  },
-
-  groupsContainer: {
-    width: width - 20,
-    height: 0.2 * height,
-    borderRadius: 15,
-    backgroundColor: "transparent",
   },
 
   container: {

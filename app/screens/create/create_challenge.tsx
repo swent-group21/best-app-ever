@@ -12,7 +12,12 @@ import * as Location from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
-const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
+const CreateChallengeScreen = ({
+  navigation,
+  image_id,
+  firestoreCtrl,
+  group_id
+}: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
   const image_id = route.params?.image_id;

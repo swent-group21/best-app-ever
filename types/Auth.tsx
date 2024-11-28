@@ -43,6 +43,7 @@ export const logInWithEmail = async (
                 name: response.user.displayName || "",
                 email: response.user.email || "",
                 createdAt: new Date(),
+                groups: [],
               })
               .then(() => {
                 alert("User did not exist. Please set up your profile.");
@@ -89,6 +90,7 @@ export const signUpWithEmail = async (
           name: userName,
           email: email,
           createdAt: new Date(),
+          groups: [],
         };
 
         // Creates user in firestore
