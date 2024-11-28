@@ -4,6 +4,8 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signInAnonymously,
+  signOut,
+  updateEmail,
 } from "@/firebase/Firebase";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -136,12 +138,19 @@ export const signInAsGuest = async (
       alert("Failed to sign in as guest: " + error);
     });
 }
-export const signOut = async () => {
-  try {
-    await auth.signOut();
-  } catch (error) {
-    alert("Error signing out: " + error);
-  }
+
+export const logOut = async (navigation: any) => {
+  signOut(auth)
+    .then(() => {
+      alert("Logged out.");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "WelcomeConcept" }],
+      });
+    })
+    .catch((error) => {
+      alert("Failed to log out: " + error);
+    });
 }
 
 export const resetPassword = async (email: string) => {
@@ -157,3 +166,21 @@ export const resetPassword = async (email: string) => {
     alert("Please enter your email.");
   }
 };
+
+export const resetEmail = async (email: string) => {
+  if (email) {
+    if (auth.currentUser) {
+      updateEmail(auth.currentUser, email)
+        .then(() => {
+          alert("Email updated.");
+        })
+        .catch((error) => {
+          alert("Failed to update email: " + error);
+        });
+    } else {
+      alert("No user is currently signed in.");
+    }
+  } else {
+    alert("Please enter your email.");
+  }
+}

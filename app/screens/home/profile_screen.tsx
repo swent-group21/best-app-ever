@@ -10,6 +10,7 @@ import { Dimensions } from "react-native";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Icon } from "react-native-elements";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
@@ -63,7 +64,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: {user: 
                 textColorType="white"
                 darkColor="transparent"
                 lightColor="transparent"
-                onPress={() => alert("Change email")}
+                onPress={() => resetEmail(user.email)}
                 style={styles.action}
               >
                 {" "}
@@ -78,7 +79,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: {user: 
                 darkColor="transparent"
                 lightColor="transparent"
                 style={styles.action}
-                onPress={() => alert("Change password")}
+                onPress={() => resetPassword(user.email)}
               ></ThemedTextButton>
               <Icon name="key" color="white" size={30} />
             </ThemedView>
@@ -88,7 +89,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: {user: 
                 textColorType="white"
                 darkColor="transparent"
                 lightColor="transparent"
-                onPress={() => navigation.reset({ index: 0, routes: [{ name: "SignIn" }] })}
+                onPress={() => logOut(navigation)}
                 style={styles.action}
               ></ThemedTextButton>
               <Icon name="logout" color="white" size={30} />
@@ -107,7 +108,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: {user: 
             textColorType="white"
             darkColor="transparent"
             lightColor="transparent"
-            onPress={() => navigation.navigate("SignIn")}
+            onPress={() => navigation.navigate("WelcomeFinal")}
           />
         </ThemedView>
       )}
