@@ -14,6 +14,7 @@ export function Challenge({
   index,
   firestoreCtrl,
   navigation,
+  testID,
 }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -58,16 +59,16 @@ export function Challenge({
     return <ThemedText>Loading Challenge...</ThemedText>;
   } else {
     return (
-      <ThemedView style={{ backgroundColor: "transparent" }}>
+      <ThemedView
+        key={index}
+        testID={testID}
+        style={{ backgroundColor: "transparent" }}
+      >
         <TouchableOpacity
           onPress={() => setIsOpen(!isOpen)}
           activeOpacity={0.8}
         >
           <ThemedView style={[styles.challenge]}>
-            {/* 
-              Challenge Image 
-              source={{uri: challengeData.image_id}}
-            */}
             <Image
               source={require("@/assets/images/challenge2.png")}
               style={styles.image}

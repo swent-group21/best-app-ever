@@ -77,6 +77,12 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
     [onPinch, onPinchEnd],
   );
 
+  async function imageUrlGen() {
+    let img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
+    navigation.navigate("CreateChallenge", {
+      image_id: img_id,
+    });
+  }
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -181,12 +187,7 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
           <TouchableOpacity
             style={styles.send}
             onPress={() => {
-              let picture_id: string = firestoreCtrl.uploadImageFromUri(
-                picture?.uri,
-              );
-              navigation.navigate("CreateChallenge", {
-                picture_id: picture_id,
-              });
+              imageUrlGen();
             }}
           >
             <Ionicons name="send" size={30} color="white" />

@@ -138,7 +138,7 @@ export default function MaximizeScreen({ route }: any) {
 
         {/* Image */}
         {postImage != "" ? (
-          <ThemedView style={styles.container} colorType="transparent">
+          <ThemedView style={styles.container} colorType="transparent" testID="max-image">
             <Image source={{ uri: postImage }} style={styles.image} />
           </ThemedView>
         ) : (
@@ -153,6 +153,7 @@ export default function MaximizeScreen({ route }: any) {
             colorType="transparent"
           >
             <ThemedIconButton
+              testID="like-button"
               name={isLiked ? "heart" : "heart-outline"}
               onPress={() => {
                 setIsLiked(!isLiked);
@@ -178,7 +179,7 @@ export default function MaximizeScreen({ route }: any) {
               size={35}
               color={isLiked ? "red" : "white"}
             />
-            <ThemedText colorType="white" style={styles.likeCountText}>
+            <ThemedText colorType="white" style={styles.likeCountText} testId="like-count">
               {likeList.length} {likeList.length <= 1 ? "like" : "likes"}
             </ThemedText>
           </ThemedView>
@@ -196,6 +197,7 @@ export default function MaximizeScreen({ route }: any) {
         {/* Comment input */}
         <ThemedView style={styles.row} colorType="transparent">
           <ThemedTextInput
+            testID="comment-input"
             style={styles.commentInput}
             value={commentText}
             onChangeText={(text) => {
@@ -203,6 +205,7 @@ export default function MaximizeScreen({ route }: any) {
             }}
           />
           <ThemedIconButton
+            testID="send-button"
             name="send"
             size={25}
             colorType="white"
