@@ -16,6 +16,7 @@ const CreateChallengeScreen = ({
   navigation,
   image_id,
   firestoreCtrl,
+  group_id
 }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
