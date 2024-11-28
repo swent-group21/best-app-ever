@@ -12,7 +12,7 @@ const SearchBar = ({ onSearch }: { onSearch: (text: string) => void }) => {
 
   return (
     <View style={styles.container}>
-      <Icon name="search" size={20} color="#888" style={styles.icon} />
+      <Icon name="search" size={20} color="transparent" style={styles.icon} />
       <TextInput
         style={styles.input}
         placeholder="Rechercher..."
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'transparent',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: 'transparent',
   },
 });
 

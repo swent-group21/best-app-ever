@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
+import { TopBar } from '@/components/navigation/TopBar';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 // Données des utilisateurs
 const users = [
@@ -45,6 +47,12 @@ const users = [
     { id: '40', name: 'Alexander Hughes', username: 'alexh', avatar: 'https://via.placeholder.com/150' },
   ];
   
+  const friends = [
+    { id: '101', name: 'Anna Brown', avatar: 'https://via.placeholder.com/150' },
+    { id: '102', name: 'Mark Taylor', avatar: null },
+    { id: '103', name: 'Jessica White', avatar: 'https://via.placeholder.com/150' },
+    { id: '104', name: 'Tom Hanks', avatar: null },
+  ];
 
 // Barre de recherche
 const SearchBar = ({ onSearch }: { onSearch: (text: string) => void }) => (
@@ -83,8 +91,10 @@ const UserListItem = ({ name, username, avatar, onAdd }: any) => (
   </View>
 );
 
+
+
 // Écran principal
-const App = () => {
+export default function FriendsScreen({ navigation }: any) {
   const [searchText, setSearchText] = useState('');
 
   // Fonction de filtrage
@@ -96,12 +106,31 @@ const App = () => {
       )
     : [];
 
+    const FriendListItem = ({ name, avatar, onPress }: any) => (
+        <TouchableOpacity style={styles.friendItem} onPress={onPress}>
+          {avatar ? (
+            <Image source={{ uri: avatar }} style={styles.friendAvatar} />
+          ) : (
+            <View style={[styles.friendAvatar, styles.defaultAvatar]}>
+              <Text style={styles.avatarText}>{name.charAt(0).toUpperCase()}</Text>
+            </View>
+          )}
+          <Text style={styles.friendName}>{name}</Text>
+        </TouchableOpacity>
+      );
+    
+      const handleFriendPress = (friendId: string) => {
+        console.log(`Navigate to friend ${friendId}'s profile`);
+      };
+
   const handleAdd = (userId: string) => {
     console.log(`User ${userId} added`);
   };
 
   return (
     <View style={styles.container}>
+        <TopBar title="Strive is better with friends" leftIcon='arrow-back' leftAction={navigation.goBack}/>
+
       {/* Barre de recherche */}
       <SearchBar onSearch={(text) => setSearchText(text)} />
 
@@ -124,6 +153,22 @@ const App = () => {
           <Text style={styles.noResults}>Aucun utilisateur trouvé</Text>
         )
       )}
+
+      {/* Liste des amis */}
+      <Text style={styles.friendsTitle}>Vos amis</Text>
+      <FlatList
+        data={friends}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <FriendListItem
+            name={item.name}
+            avatar={item.avatar}
+            onPress={() => handleFriendPress(item.id)}
+          />
+        )}
+        horizontal // Afficher les amis en ligne horizontale
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };
@@ -136,7 +181,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     padding: 10,
-    backgroundColor: '#111', // Gris foncé pour le fond
+    backgroundColor: 'transparent', // Gris foncé pour le fond
   },
   searchInput: {
     backgroundColor: '#222', // Fond du champ de recherche
@@ -197,6 +242,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
   },
+  friendsTitle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginLeft: 10,
+  },
+  friendItem: {
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  friendAvatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#ccc',
+  },
+  friendName: {
+    color: '#fff',
+    fontSize: 14,
+    marginTop: 5,
+  },
 });
 
-export default App;
