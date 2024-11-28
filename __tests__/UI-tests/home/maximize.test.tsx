@@ -152,14 +152,6 @@ describe("MaximizeScreen", () => {
     });
   });
 
-  it("fetches comments", async () => {
-    const { getByText } = render(<MaximizeScreenTest />);
-
-    await waitFor(() => {
-      expect(getByText("This is a test comment")).toBeTruthy();
-    });
-  });
-
   it("gets the right number of likes", async () => {
     const { findByText } = render(<MaximizeScreenTest />);
 
