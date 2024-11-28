@@ -7,21 +7,18 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({
-  navigation,
-  route,
-  firestoreCtrl,
-}: any) {
+export default function MaximizeScreen({ user, navigation, route, firestoreCtrl }: {user: DBUser, navigation: any, route: any, firestoreCtrl: FirestoreCtrl}) {
+
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
 
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
-  const user = route.params?.user || {};
   const challenge = route.params?.challenge || {};
 
   return (

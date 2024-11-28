@@ -5,15 +5,15 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { ThemedText } from "@/components/theme/ThemedText";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
+export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: DBUser; navigation: any; firestoreCtrl: FirestoreCtrl }) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  const user = route.params?.user || {};
 
   useEffect(() => {
     if (user.uid) {
