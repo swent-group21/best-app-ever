@@ -107,13 +107,12 @@ export const Nav: React.FC<AppStackProps> = ({
             />
           )}
         </Screen>
-      
+
         <Screen name="MapScreen">
           {(props: any) => (
             <MapScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
-
       </Group>
     </Navigator>
   );
