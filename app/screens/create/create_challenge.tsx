@@ -109,7 +109,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         </ThemedView>
 
         <BottomBar
-          rightIcon="right-icon"
+          rightIcon="arrow-forward"
           rightAction={makeChallenge}
           testID="bottom-bar"
         />
