@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  signInAnonymously,
 } from "@/firebase/Firebase";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -22,6 +23,7 @@ export const logInWithEmail = async (
   password: string,
   firestoreCtrl: FirestoreCtrl,
   navigation: any,
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
 ) => {
   if (email && password) {
     try {
@@ -42,11 +44,18 @@ export const logInWithEmail = async (
               })
               .then(() => {
                 alert("User did not exist. Please set up your profile.");
+                setUser({
+                  uid: response.user.uid || "",
+                  name: response.user.displayName || "",
+                  email: response.user.email || "",
+                  createdAt: new Date(),
+                });
                 navigation.navigate("SetUser");
               });
           });
         // User exists in both auth and database
         if (user) {
+          setUser(user);
           navigation.reset({
             index: 0,
             routes: [{ name: "Home", params: { user: user } }],
@@ -67,6 +76,7 @@ export const signUpWithEmail = async (
   password: string,
   firestoreCtrl: FirestoreCtrl,
   navigation: any,
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
 ) => {
   if (userName && email && password) {
     // Creates user in auth
@@ -83,6 +93,7 @@ export const signUpWithEmail = async (
         firestoreCtrl
           .createUser(userCredential.user.uid, userData)
           .then(() => {
+            setUser(userData);
             navigation.navigate("SetUser");
           })
           .catch((error) => {
@@ -97,6 +108,42 @@ export const signUpWithEmail = async (
   }
 };
 
+export const signInAsGuest = async (
+  firestoreCtrl: FirestoreCtrl,
+  navigation: any,
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+) => {
+  signInAnonymously(auth)
+    .then((userCredential) => {
+      const userData: DBUser = {
+        uid: userCredential.user.uid,
+        name: "Guest",
+        email: "",
+        createdAt: new Date(),
+      };
+      console.log("User data:", userData);
+      firestoreCtrl
+        .createUser(userCredential.user.uid, userData)
+        .then(() => {
+          setUser(userData);
+          navigation.navigate("Home");
+        })
+        .catch((error) => {
+          alert("Failed to create user: " + error);
+        });
+    })
+    .catch((error) => {
+      alert("Failed to sign in as guest: " + error);
+    });
+}
+export const signOut = async () => {
+  try {
+    await auth.signOut();
+  } catch (error) {
+    alert("Error signing out: " + error);
+  }
+}
+
 export const resetPassword = async (email: string) => {
   if (email) {
     sendPasswordResetEmail(auth, email)
@@ -109,8 +156,4 @@ export const resetPassword = async (email: string) => {
   } else {
     alert("Please enter your email.");
   }
-};
-
-export const getUID = () => {
-  return auth.currentUser?.uid;
 };
