@@ -23,8 +23,13 @@ export default function MaximizeScreen({ route }: any) {
     navigation,
     firestoreCtrl,
     challenge,
-  }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
-    route.params;
+    user,
+  }: {
+    navigation: any;
+    firestoreCtrl: FirestoreCtrl;
+    challenge: DBChallenge;
+    user: DBUser;
+  } = route.params;
 
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<DBComment[]>([]);
@@ -38,10 +43,8 @@ export default function MaximizeScreen({ route }: any) {
 
   useEffect(() => {
     // Fetch current user name and ID
-    const uid = auth.currentUser?.uid ?? "";
-    setCurrentUserId(uid);
-    console.log("Current user ID: ", uid);
-    firestoreCtrl.getName(uid).then((name) => setCurrentUserName(name));
+    setCurrentUserId(user.uid);
+    setCurrentUserName(user.name);
 
     // Fetch post user data
     const postUid = challenge.uid;
@@ -65,7 +68,7 @@ export default function MaximizeScreen({ route }: any) {
       .getLikesOf(challenge.challenge_id ?? "")
       .then((likes: string[]) => {
         setLikeList(likes);
-        setIsLiked(likes.includes(uid));
+        setIsLiked(likes.includes(user.uid));
       });
 
     console.log("-> Maximized challenge: ", { challenge });
@@ -85,7 +88,7 @@ export default function MaximizeScreen({ route }: any) {
       <TopBar
         title={postTitle}
         leftIcon="arrow-back-outline"
-        leftAction={navigation.goBack}
+        leftAction={() => navigation.goBack()}
       />
 
       <ThemedScrollView
@@ -138,7 +141,11 @@ export default function MaximizeScreen({ route }: any) {
 
         {/* Image */}
         {postImage != "" ? (
-          <ThemedView style={styles.container} colorType="transparent" testID="max-image">
+          <ThemedView
+            style={styles.container}
+            colorType="transparent"
+            testID="challenge-image"
+          >
             <Image source={{ uri: postImage }} style={styles.image} />
           </ThemedView>
         ) : (
@@ -179,7 +186,11 @@ export default function MaximizeScreen({ route }: any) {
               size={35}
               color={isLiked ? "red" : "white"}
             />
-            <ThemedText colorType="white" style={styles.likeCountText} testId="like-count">
+            <ThemedText
+              colorType="white"
+              style={styles.likeCountText}
+              testID="like-count"
+            >
               {likeList.length} {likeList.length <= 1 ? "like" : "likes"}
             </ThemedText>
           </ThemedView>
@@ -217,10 +228,12 @@ export default function MaximizeScreen({ route }: any) {
                   created_at: Timestamp.now(),
                   post_id: challenge.challenge_id ?? "",
                 };
-                setCommentList([...commentList, newComment]);
                 firestoreCtrl
                   .addComment(newComment)
-                  .then(() => console.log("Comment added"))
+                  .then(() => {
+                    setCommentList([...commentList, newComment]);
+                    console.log("Comment added");
+                  })
                   .catch((error) =>
                     console.error("Error adding comment: ", error),
                   );
@@ -231,7 +244,11 @@ export default function MaximizeScreen({ route }: any) {
         </ThemedView>
 
         {/* Comment section */}
-        <ThemedView style={styles.commentColumn} colorType="transparent">
+        <ThemedView
+          style={styles.commentColumn}
+          colorType="transparent"
+          testID="comments-section"
+        >
           {commentList.length === 0 ? (
             <ThemedText>No comment to display</ThemedText>
           ) : (

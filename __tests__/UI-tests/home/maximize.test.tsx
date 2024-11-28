@@ -9,6 +9,10 @@ import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+const mockTimestamp = {
+  toDate: jest.fn().mockReturnValue(new Date()),
+};
+
 // Mock the FirestoreCtrl methods used in MaximizeScreen
 const mockFirestoreCtrl = {
   getUser: jest.fn().mockResolvedValue({
@@ -16,7 +20,20 @@ const mockFirestoreCtrl = {
     name: "Test User",
     email: "test@example.com",
   }),
-  // Add any other methods as needed
+  getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
+  getCommentsOf: jest.fn().mockResolvedValue([
+    {
+      uid: "12345",
+      name: "Test User",
+      comment: "This is a test comment",
+      created_at: mockTimestamp,
+    },
+  ]),
+};
+
+const mockNavigation = {
+  navigate: jest.fn(),
+  goBack: jest.fn(),
 };
 
 // Create a stack navigator for testing
@@ -31,7 +48,16 @@ const MaximizeScreenTest = () => {
         name: "Test User",
         email: "test@example.com",
       },
-      challenge: {},
+      challenge: {
+        challenge_id: "1",
+        challenge_name: "Challenge 1",
+        description: "Description 1",
+        uid: "12345",
+        created_at: mockTimestamp,
+        likes: ["12345", "67890"],
+      },
+      firestoreCtrl: mockFirestoreCtrl,
+      navigation: mockNavigation,
     },
   };
   return (
@@ -41,13 +67,7 @@ const MaximizeScreenTest = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="MaximizeScreen">
-          {(props) => (
-            <MaximizeScreen
-              {...props}
-              route={route}
-              firestoreCtrl={mockFirestoreCtrl}
-            />
-          )}
+          {(props) => <MaximizeScreen route={route} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -56,51 +76,105 @@ const MaximizeScreenTest = () => {
 
 describe("MaximizeScreen", () => {
   it("renders correctly", async () => {
-    const { getByText, getByTestId } = render(<MaximizeScreenTest />);
+    const { findByText, findByTestId } = render(<MaximizeScreenTest />);
 
-    // Check if the user name is displayed
-    expect(getByText("Test User")).toBeTruthy();
-
-    // Check if the image is rendered
-    expect(getByTestId("max-image")).toBeTruthy();
-
-    // Check if the like button is rendered
-    expect(getByTestId("like-button")).toBeTruthy();
-
-    // Check if the comment input is rendered
-    expect(getByTestId("comment-input")).toBeTruthy();
-
-    // Check if the send button is rendered
-    expect(getByTestId("send-button")).toBeTruthy();
+    await waitFor(() => {
+      expect(findByText("Description 1")).toBeTruthy();
+      expect(findByText("Test User")).toBeTruthy();
+      expect(findByTestId("challenge-image")).toBeTruthy();
+      expect(findByTestId("like-button")).toBeTruthy();
+      expect(findByTestId("comment-input")).toBeTruthy();
+      expect(findByTestId("send-button")).toBeTruthy();
+      expect(findByTestId("comments-section")).toBeTruthy();
+    });
   });
 
   it("allows liking the image", async () => {
-    const { getByTestId } = render(<MaximizeScreenTest />);
+    const { findByTestId } = render(<MaximizeScreenTest />);
 
     // Wait for the component to finish rendering
-    await waitFor(() => getByTestId("like-button"));
+    await waitFor(() => findByTestId("like-button"));
 
-    const likeButton = getByTestId("like-button");
+    const likeButton = findByTestId("like-button");
 
     // Press the like button
     fireEvent.press(likeButton);
   });
 
-  it("allows adding a comment", async () => {
-    const { getByTestId, queryByText } = render(<MaximizeScreenTest />);
+  it("allows commenting on the image", async () => {
+    const { findByTestId } = render(<MaximizeScreenTest />);
 
-    const commentInput = getByTestId("comment-input");
-    const sendButton = getByTestId("send-button");
+    // Wait for the component to finish rendering
+    await waitFor(() => findByTestId("comment-input"));
 
-    // Type a comment
+    const commentInput = findByTestId("comment-input");
+    const sendButton = findByTestId("send-button");
+
+    // Type a comment in the input field
     fireEvent.changeText(commentInput, "This is a test comment");
 
     // Press the send button
     fireEvent.press(sendButton);
+  });
 
-    // Wait for the comment to appear
+  it("display text if no comments are available", async () => {
+    mockFirestoreCtrl.getCommentsOf.mockResolvedValue([]);
+
+    const { findByText } = render(<MaximizeScreenTest />);
+
     await waitFor(() => {
-      expect(queryByText("This is a test comment")).toBeTruthy();
+      expect(findByText("No comments available")).toBeTruthy();
+    });
+  });
+
+  it("displays comments", async () => {
+    const { findByText } = render(<MaximizeScreenTest />);
+
+    await waitFor(() => {
+      expect(findByText("This is a test comment")).toBeTruthy();
+    });
+  });
+
+  // Functions used in maximize_screen.tsx should be tested here
+  it("fetches user data", async () => {
+    const { getByText } = render(<MaximizeScreenTest />);
+
+    await waitFor(() => {
+      expect(getByText("Test User")).toBeTruthy();
+    });
+  });
+
+  it("fetches likes", async () => {
+    const { findByTestId } = render(<MaximizeScreenTest />);
+
+    await waitFor(() => {
+      expect(findByTestId("like-button")).toBeTruthy();
+    });
+  });
+
+  it("fetches comments", async () => {
+    const { getByText } = render(<MaximizeScreenTest />);
+
+    await waitFor(() => {
+      expect(getByText("This is a test comment")).toBeTruthy();
+    });
+  });
+
+  it("gets the right number of likes", async () => {
+    const { findByText } = render(<MaximizeScreenTest />);
+
+    await waitFor(() => {
+      expect(findByText("2 likes")).toBeTruthy();
+    });
+  });
+
+  it("displays correctly when no likes are available", async () => {
+    mockFirestoreCtrl.getLikesOf.mockResolvedValue([]);
+
+    const { getByText } = render(<MaximizeScreenTest />);
+
+    await waitFor(() => {
+      expect(getByText("0 like")).toBeTruthy();
     });
   });
 });

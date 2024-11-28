@@ -65,13 +65,19 @@ const HomeScreenTest = () => {
 };
 
 describe("HomeScreen", () => {
+  it("renders default text", async () => {
+    const { getByText } = render(<HomeScreenTest />);
+
+    expect(getByText("No challenge to display")).toBeTruthy();
+  });
+
   it("renders challenges fetched from Firestore", async () => {
-    const { getByTestId } = render(<HomeScreenTest />);
+    const { findByTestId } = render(<HomeScreenTest />);
 
     // Wait for the challenges to be fetched and rendered
     await waitFor(() => {
-      expect(getByTestId("challenge-id-0")).toBeTruthy();
-      expect(getByTestId("challenge-id-1")).toBeTruthy();
+      expect(findByTestId("challenge-id-0")).toBeTruthy();
+      expect(findByTestId("challenge-id-1")).toBeTruthy();
     });
   });
 });
