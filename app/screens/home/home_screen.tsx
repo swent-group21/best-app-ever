@@ -42,6 +42,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
         rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
+        leftAction={() => {navigation.navigate("Friends")}}
       />
 
       {/* Challenges */}

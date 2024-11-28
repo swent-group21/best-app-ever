@@ -16,6 +16,7 @@ import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import ProfileScreen from "@/app/screens/home/profile_screen";
 import MapScreen from "@/app/screens/map/map_screen";
+import FriendsScreen from "@/app/screens/home/friends_screen";
 
 const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
 
@@ -107,12 +108,24 @@ export const Nav: React.FC<AppStackProps> = ({
             />
           )}
         </Screen>
+
+        <Screen name="Friends">
+          {(props: any) => (
+            <FriendsScreen
+              {...props}
+              user={{ user }}
+              firestoreCtrl={firestoreCtrl}
+            />
+          )}
+        </Screen>
       
         <Screen name="MapScreen">
           {(props: any) => (
             <MapScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
+
+
 
       </Group>
     </Navigator>

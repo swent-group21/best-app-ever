@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Camera: undefined;
   SetUsername: undefined;
   MaximizeScreen: undefined;
+  FriendsScreen: undefined;
   CreateChallengeScreen: {
     picture_id: string;
   };
