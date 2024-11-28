@@ -15,7 +15,6 @@ const { width, height } = Dimensions.get("window");
 
 export default function SetUsername({ navigation, firestoreCtrl }: any) {
   const [username, setUsername] = React.useState("");
-
   const [image, setImage] = React.useState<string | null>(null);
   const pickImage = async () => {
     console.log("Loading image");
@@ -79,7 +78,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
                 size={300}
                 color="white"
                 onPress={pickImage}
-                testID="profilePicIcon"
+                testID="profile-icon-button"
               />
             ) : (
               <Image
@@ -108,6 +107,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
 
       {/* Bottom bar */}
       <BottomBar
+        testID="bottom-bar-right-icon"
         rightIcon="arrow-forward"
         rightAction={async () => {
           await upload();
