@@ -216,6 +216,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
               avatar={item.avatar}
               onAccept={() => handleAccept(item.id)}
               onDecline={() => handleDecline(item.id)}
+              
             />
           )}
           
@@ -238,6 +239,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     padding: 10,
     backgroundColor: 'transparent', 
+  
   },
   searchInput: {
     backgroundColor: '#222', 
@@ -253,6 +255,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#333',
     backgroundColor: '#000',
+    
+    
   },
   avatar: {
     width: 50,
@@ -290,6 +294,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 5,
+    marginLeft: 'auto',
   },
   addButtonText: {
     color: '#fff',
@@ -358,6 +363,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#333',
     backgroundColor: 'transparent',
+    
+    
   },
 
   buttonText: {
