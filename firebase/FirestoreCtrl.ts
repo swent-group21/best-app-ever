@@ -191,7 +191,7 @@ console.log("StorageRef:", storageRef);
         collection(firestore, "challenges"),
         challengeData,
       );
-console.log("Challenge id: ", docRef.id);
+    console.log("Challenge id: ", docRef.id);
     } catch (error) {
       console.error("Error writting challenge document: ", error);
       throw error;
@@ -267,6 +267,12 @@ console.log("Challenge data retrieved:", data);
       throw error;
     }
   }
+
+  /** 
+   * Retrieves all users from Firestore.
+   * @returns A promise that resolves to an array of users.
+   * */
+
   async getAllUsers(): Promise<DBUser[]> {
     try {
       const usersRef = collection(firestore, "users");
@@ -285,6 +291,12 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  /**
+   * Add a friend to the user's friend list.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to add.
+   */ 
+
   async addFriend(userId: string, friendId: string) {
     try
     {
@@ -293,9 +305,9 @@ console.log("Challenge data retrieved:", data);
 
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
-      if (user.friends?.includes(friendId) || user.userRequestedFriends?.includes(friendId) || user.friendsRequestedUser?.includes(friendId)) {
-        return;
-      }
+     // if (user.friends?.includes(friendId) || user.userRequestedFriends?.includes(friendId) || user.friendsRequestedUser?.includes(friendId)) {
+     //   return;
+     // }
 
       user.userRequestedFriends?.push(friendId);
       friend.friendsRequestedUser?.push(userId);
@@ -309,6 +321,11 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  /**
+   * Accept a friend request.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to accept.
+   * */
   async acceptFriend(userId: string, friendId: string) {
     try
     {
@@ -318,9 +335,6 @@ console.log("Challenge data retrieved:", data);
       user.friends = user.friends || [];
       friend.friends = friend.friends || [];
 
-      if (user.friends?.includes(friendId) ) {
-        return;
-      }
       user.friends?.push(friendId);
       friend.friends?.push(userId);
 
@@ -337,6 +351,12 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  /**
+   * Reject a friend request.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the user to reject.
+   * */
+
   async rejectFriend(userId: string, friendId: string) {
     try
     {
@@ -346,8 +366,9 @@ console.log("Challenge data retrieved:", data);
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
 
-      user.userRequestedFriends = user.userRequestedFriends?.filter((id) => id !== friendId);
-      friend.friendsRequestedUser = friend.friendsRequestedUser?.filter((id) => id !== userId);
+      user.friendsRequestedUser = user.friendsRequestedUser?.filter((id) => id !== friendId);
+      friend.userRequestedFriends = friend.userRequestedFriends?.filter((id) => id !== userId);
+
       await this.createUser(userId, user);
       await this.createUser(friendId, friend);
     }
@@ -357,6 +378,10 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  /**
+   *Retrieve the friends of a user.
+   * @param userId The UID of the user.
+   */
   async getFriends(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
@@ -368,6 +393,10 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  /**
+   *Retrieve the users that the user has requested to be friends with.
+   * @param userId The UID of the user.
+   */
   async getRequestedFriends(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
@@ -379,6 +408,10 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  /**
+   *Retrieve the friends requests of a user.
+   * @param userId The UID of the user.
+   */
   async getFriendRequests(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);

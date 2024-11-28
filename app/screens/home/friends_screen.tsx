@@ -13,13 +13,7 @@ import { firestore } from '@/firebase/Firebase';
 import { documentId } from 'firebase/firestore';
 
   
-  const { width, height } = Dimensions.get('window');
-  
- 
-
-  
-  
-  
+const { width, height } = Dimensions.get('window');
 
 // Search Bar 
 const SearchBar = ({ onSearch }: { onSearch: (text: string) => void }) => (
@@ -58,9 +52,13 @@ const UserListItem = ({ name, username, avatar, onAdd }: any) => (
 );
 
 
-
-
-// Friends Screen
+/**
+ * Screen that allowos the user to search for friends, add them and manage friend requests
+ * @param navigation
+ * @param firestoreCtrl
+ * 
+ * @returns Friends Screen Component
+ */
 export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
   const [searchText, setSearchText] = useState('');
   const [users, setUsers] = useState<DBUser[]>([]);
@@ -72,6 +70,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
 
+  // Fetch users, friends and requests
  useEffect(() => {
     const fetchUsers = async () => {
         try {
@@ -100,7 +99,6 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       const fetchRequests = async () => {
         try {
           const request = await firestoreCtrl.getFriendRequests(uid);
-
           setRequests(request);
         } catch (error) {
           console.error('Error fetching requests: ', error);
@@ -114,11 +112,12 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
   
     const filteredUsers = (searchText && users.length > 0)
     ? users.filter((user) => {
-        return user.uid && user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
+        return user.uid && user.uid != uid && user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
         })
     : [];
 
 
+    // Filter requests in regard to the search text
     const FriendListItem = ({ name, avatar, onPress }: any) => (
         <TouchableOpacity style={styles.friendItem} onPress={onPress}>
           {avatar ? (
@@ -132,6 +131,8 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
         </TouchableOpacity>
       );
 
+
+      // Friend Request Item
       const FriendRequestItem = ({ name, avatar, onAccept, onDecline }: any) => (
         <ThemedView style={styles.requestItem}>
           {avatar ? (
@@ -143,20 +144,22 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
           )}
           <ThemedText style={styles.name}>{name}</ThemedText>
           <View style={styles.requestButtons}>
-             {/* Accept Button with Icon */}
+
+          {/* Accept Button with Icon */}
           <TouchableOpacity style={styles.acceptButton} onPress={onAccept}>
-            <Icon name="check" size={20} color="#fff" />
+            <Icon name="check" size={30} color="#fff" />
           </TouchableOpacity>
     
           {/* Decline Button with Icon */}
           <TouchableOpacity style={styles.declineButton} onPress={onDecline}>
-            <Icon name="close" size={20} color="#fff" />
+            <Icon name="close" size={30} color="#fff" />
           </TouchableOpacity>
           </View>
         </ThemedView>
       );
 
     
+  // Handle Add, Accept and Decline
   const handleFriendPress = (friendId: string) => {
      console.log(`Navigate to friend ${friendId}'s profile`);
   };
@@ -176,7 +179,6 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
   const handleDecline = (requestId: string) => {
     console.log(`Friend request ${requestId} declined`);
     firestoreCtrl.rejectFriend(uid, requestId);
-    setRequests(requests.filter((req) => req.uid !== requestId));
   };
 
   return (
@@ -364,12 +366,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
+    height : 50,
+    width : 50,
 
+    
   },
   declineButton: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
+    height : 50,
+    width : 50,
+   
   },
 
   requestButtons: {
