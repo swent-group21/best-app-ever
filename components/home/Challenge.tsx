@@ -15,11 +15,11 @@ export function Challenge({
   firestoreCtrl,
   navigation,
   testID,
+  currentUser,
 }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
-  const [currentUserId, setCurrentUserId] = useState<string>("");
   const [user, setUser] = useState<DBUser>();
 
   const challengeDate = challengeDB.date
@@ -41,15 +41,11 @@ export function Challenge({
   }, [user]);
 
   useEffect(() => {
-    // Fetch current user ID
-    const uid = auth.currentUser?.uid ?? "";
-    setCurrentUserId(uid);
-
     // Fetch likes
     firestoreCtrl
       .getLikesOf(challengeDB.challenge_id ?? "")
       .then((likes: string[]) => {
-        setIsLiked(likes.includes(uid));
+        setIsLiked(likes.includes(currentUser.uid));
         setLikes(likes);
       });
   }, [challengeDB, firestoreCtrl, likes]);
@@ -112,6 +108,7 @@ export function Challenge({
                         navigation: navigation,
                         firestoreCtrl: firestoreCtrl,
                         challenge: challengeDB,
+                        user: currentUser,
                       });
                     }}
                     size={25}
@@ -128,7 +125,7 @@ export function Challenge({
                       // Add or remove user id from like list
                       if (isLiked) {
                         const newLikeList = likes.filter(
-                          (userId) => userId !== currentUserId,
+                          (userId) => userId !== currentUser.uid,
                         );
                         setLikes(newLikeList);
                         firestoreCtrl.updateLikesOf(
@@ -136,7 +133,7 @@ export function Challenge({
                           newLikeList,
                         );
                       } else {
-                        const newLikeList = [...likes, currentUserId];
+                        const newLikeList = [...likes, currentUser.uid];
                         setLikes(newLikeList);
                         firestoreCtrl.updateLikesOf(
                           challengeDB.challenge_id ?? "",

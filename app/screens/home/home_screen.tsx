@@ -13,7 +13,10 @@ const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  const user = route.params?.user || {};
+  // const user = route.params?.user || {};
+  const user = {
+    uid: "Sw5Wu8mdFfRTtYn4zhTUkI1CSWB2",
+  };
 
   useEffect(() => {
     if (user.uid) {
@@ -30,7 +33,6 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
       fetchChallenges();
     }
   }, [user.uid, firestoreCtrl]);
-
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -59,7 +61,7 @@ export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
               key={index}
               challengeDB={challenge}
               testID={`challenge-id-${index}`}
-              // Include other props as needed
+              currentUser={user}
             />
           ))
         )}

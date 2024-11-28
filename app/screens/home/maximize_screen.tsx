@@ -43,6 +43,7 @@ export default function MaximizeScreen({ route }: any) {
 
   useEffect(() => {
     // Fetch current user name and ID
+    console.log("User: ", user);
     setCurrentUserId(user.uid);
     setCurrentUserName(user.name);
 
