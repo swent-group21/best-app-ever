@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -26,8 +26,6 @@ export default function MaximizeScreen({ route }: any) {
   }: { navigation: any; firestoreCtrl: FirestoreCtrl; challenge: DBChallenge } =
     route.params;
 
-  // console.log("-> Maximized challenge: ", { challenge });
-
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<DBComment[]>([]);
   const [postUser, setPostUser] = React.useState<DBUser>();
@@ -36,30 +34,33 @@ export default function MaximizeScreen({ route }: any) {
     string | undefined
   >(undefined);
 
-  // Fetch post user data
-  const postUid = challenge.uid;
-  firestoreCtrl.getUser(postUid).then((user: any) => {
-    setPostUser(user);
-  });
-
-  // Fetch current user name
-  const currentUserId = auth.currentUser?.uid ?? "";
-  firestoreCtrl.getName(currentUserId).then((name) => setCurrentUserName(name));
-
-  // Fetch comments
-  firestoreCtrl
-    .getCommentsOf(challenge.challenge_id ?? "")
-    .then((comments: DBComment[]) => {
-      // Sort comments by date
-      const sortedComments = comments.sort(
-        (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
-      );
-      setCommentList(sortedComments);
+  useEffect(() => {
+    // Fetch post user data
+    const postUid = challenge.uid;
+    firestoreCtrl.getUser(postUid).then((user: any) => {
+      setPostUser(user);
     });
 
-  // Set post data
-  const postUserName = postUser?.name ?? undefined;
-  const postLocation = challenge.location ?? undefined;
+    // Fetch current user name
+    const currentUserId = auth.currentUser?.uid ?? "";
+    firestoreCtrl
+      .getName(currentUserId)
+      .then((name) => setCurrentUserName(name));
+
+    // Fetch comments
+    firestoreCtrl
+      .getCommentsOf(challenge.challenge_id ?? "")
+      .then((comments: DBComment[]) => {
+        // Sort comments by date
+        const sortedComments = comments.sort(
+          (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
+        );
+        setCommentList(sortedComments);
+      });
+
+    console.log("-> Maximized challenge: ", { challenge });
+  }, [challenge, firestoreCtrl]);
+
   // @ts-ignore - date is not of the correct type
   const postDate = challenge.date ? challenge.date.toDate() : new Date();
   const postTitle =
@@ -104,7 +105,7 @@ export default function MaximizeScreen({ route }: any) {
             {/* User name and location */}
             <ThemedView style={styles.userInfo} colorType="transparent">
               <ThemedText colorType="white" type="smallSemiBold">
-                {postUserName}
+                {postUser?.name}
               </ThemedText>
               <ThemedText colorType="white" type="small">
                 {"on " +
@@ -135,18 +136,34 @@ export default function MaximizeScreen({ route }: any) {
           <ThemedText>No image to display</ThemedText>
         )}
 
-        {/* Location */}
-
-        {/* Like button */}
-        <ThemedView>
-          <ThemedIconButton
-            name="heart"
-            onPress={() => {
-              setIsLiked(!isLiked);
-            }}
-            size={60}
-            color={isLiked ? "red" : "white"}
-          />
+        {/* Like section */}
+        <ThemedView style={styles.likeSection} colorType="transparent">
+          {/* Like button and count */}
+          <ThemedView
+            style={styles.likeButtonContainer}
+            colorType="transparent"
+          >
+            <ThemedIconButton
+              name={isLiked ? "heart" : "heart-outline"}
+              onPress={() => {
+                setIsLiked(!isLiked);
+              }}
+              size={35}
+              color={isLiked ? "red" : "white"}
+            />
+            <ThemedText colorType="white" style={styles.likeCountText}>
+              {postLikes.length} {postLikes.length <= 1 ? "like" : "likes"}
+            </ThemedText>
+          </ThemedView>
+          {/* Description */}
+          <ThemedView
+            style={styles.descriptionContainer}
+            colorType="transparent"
+          >
+            <ThemedText style={styles.descriptionText} colorType="white">
+              {postDescription}
+            </ThemedText>
+          </ThemedView>
         </ThemedView>
 
         {/* Comment input */}
@@ -238,14 +255,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
 
-  commentInput: {
-    height: height * 0.05,
-    width: width * 0.85,
-    padding: 8,
-    borderWidth: 2,
-    borderRadius: 15,
-  },
-
   scroll: {
     height: "100%",
     width: "100%",
@@ -259,10 +268,49 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  commentInput: {
+    height: height * 0.05,
+    width: width * 0.85,
+    padding: 8,
+    borderWidth: 2,
+    borderRadius: 15,
+  },
+
   commentColumn: {
     width: "95%",
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-between",
+  },
+
+  likeSection: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "90%",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+
+  likeButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 10,
+  },
+
+  likeCountText: {
+    marginLeft: 5,
+  },
+
+  descriptionContainer: {
+    flex: 1,
+  },
+
+  descriptionText: {
+    flexShrink: 1,
+    flexWrap: "wrap",
+  },
+
+  spacer: {
+    width: width * 0.5,
   },
 });

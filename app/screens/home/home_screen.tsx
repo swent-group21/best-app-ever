@@ -33,7 +33,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
       fetchChallenges();
     }
-  }, [uid]);
+  }, [uid, firestoreCtrl]);
 
   return (
     <ThemedView style={styles.bigContainer}>
