@@ -7,8 +7,13 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBComment,
+  DBUser,
+} from "@/firebase/FirestoreCtrl";
 import { auth } from "@/firebase/Firebase";
+import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,7 +29,7 @@ export default function MaximizeScreen({ route }: any) {
   console.log("-> Maximized challenge: ", { challenge });
 
   const [commentText, setCommentText] = React.useState("");
-  const [commentList, setCommentList] = React.useState<CommentType[]>([]);
+  const [commentList, setCommentList] = React.useState<DBComment[]>([]);
   const [postUser, setPostUser] = React.useState<DBUser>();
   const [isLiked, setIsLiked] = React.useState(false);
   const [currentUserName, setCurrentUserName] = React.useState<
@@ -41,6 +46,13 @@ export default function MaximizeScreen({ route }: any) {
   const currentUserId = auth.currentUser?.uid ?? "";
   firestoreCtrl.getName(currentUserId).then((name) => setCurrentUserName(name));
 
+  // Fetch comments
+  firestoreCtrl
+    .getCommentsOf(challenge.challenge_id ?? "")
+    .then((comments: DBComment[]) => {
+      setCommentList(comments);
+    });
+
   // Set post data
   const postUserName = postUser?.name ?? undefined;
   const postLocation = challenge.location ?? undefined;
@@ -52,7 +64,6 @@ export default function MaximizeScreen({ route }: any) {
       : challenge.challenge_name;
   const postImage = challenge.image_id ?? "";
   const postDescription = challenge.description ?? "";
-  const postComments = challenge.comments ?? [];
   const postLikes = challenge.likes ?? [];
 
   return (
@@ -148,15 +159,21 @@ export default function MaximizeScreen({ route }: any) {
             size={25}
             colorType="white"
             onPress={() => {
-              commentText.length > 0 &&
-                setCommentList([
-                  ...commentList,
-                  {
-                    comment: commentText,
-                    user: currentUserName ?? "Anonymous",
-                    date: new Date(),
-                  } as CommentType,
-                ]);
+              if (commentText.length > 0) {
+                const newComment: DBComment = {
+                  comment_text: commentText,
+                  user_name: currentUserName ?? "",
+                  created_at: Timestamp.now(),
+                  post_id: challenge.challenge_id ?? "",
+                };
+                setCommentList([...commentList, newComment]);
+                firestoreCtrl
+                  .addComment(newComment)
+                  .then(() => console.log("Comment added"))
+                  .catch((error) =>
+                    console.error("Error adding comment: ", error),
+                  );
+              }
               setCommentText("");
             }}
           />
@@ -169,9 +186,9 @@ export default function MaximizeScreen({ route }: any) {
           ) : (
             commentList.map((eachComment, i) => (
               <SingleComment
-                comment={eachComment.comment}
-                user={eachComment.user}
-                createdAt={new Date().toLocaleString()}
+                comment={eachComment.comment_text}
+                user={eachComment.user_name}
+                createdAt={eachComment.created_at.toDate().toLocaleDateString()}
                 key={i}
               />
             ))

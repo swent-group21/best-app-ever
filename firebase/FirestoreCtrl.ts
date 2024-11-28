@@ -1,4 +1,4 @@
-import { limit } from "firebase/firestore";
+import { limit, Timestamp } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -32,14 +32,14 @@ export type DBChallenge = {
   image_id?: string;
   date: Date;
   location?: Location.LocationObjectCoords;
-  comments?: string[]; // Comment IDs
   likes?: string[]; // User IDs
 };
 
 export type DBComment = {
-  comment_id: string;
   comment_text: string;
-  uid: string;
+  user_name: string;
+  created_at: Timestamp;
+  post_id: string;
 };
 
 export default class FirestoreCtrl {
@@ -254,6 +254,46 @@ export default class FirestoreCtrl {
       return challenges;
     } catch (error) {
       console.error("Error getting challenges: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all comments of a specific challenge.
+   * @param challengeId The ID of the challenge to get comments for.
+   * @returns A promise that resolves to an array of comments.
+   */
+  async getCommentsOf(challengeId: string): Promise<DBComment[]> {
+    try {
+      const commentsRef = collection(firestore, "comments");
+      const q = query(commentsRef, where("post_id", "==", challengeId));
+      const querySnapshot = await getDocs(q);
+      const comments = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          comment_id: doc.id,
+          comment_text: data.comment_text,
+          user_name: data.user_name,
+          created_at: data.created_at,
+          post_id: data.post_id,
+        } as DBComment;
+      });
+      return comments;
+    } catch (error) {
+      console.error("Error getting comments: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Add a new comment to a challenge.
+   * @param commentData The comment data to add.
+   */
+  async addComment(commentData: DBComment): Promise<void> {
+    try {
+      await addDoc(collection(firestore, "comments"), commentData);
+    } catch (error) {
+      console.error("Error writing comment document: ", error);
       throw error;
     }
   }
