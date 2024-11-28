@@ -13,10 +13,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
-  // const user = route.params?.user || {};
-  const user = {
-    uid: "Sw5Wu8mdFfRTtYn4zhTUkI1CSWB2",
-  };
+  const user = route.params?.user || {};
 
   useEffect(() => {
     if (user.uid) {

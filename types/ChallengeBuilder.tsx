@@ -44,7 +44,6 @@ export const createChallenge = async (
   description: string,
   location: LocationObject | null,
   image_id?: string,
-  comments?: string[],
   likes?: string[],
 ): Promise<void> => {
   try {
@@ -68,7 +67,7 @@ export const createChallenge = async (
       uid: user.uid,
       date: date,
       image_id: image_id,
-      likes: likes,
+      likes: likes || [],
       location: locationFirebase,
     };
 
