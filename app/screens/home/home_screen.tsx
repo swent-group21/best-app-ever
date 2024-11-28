@@ -34,7 +34,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
   }, [user.uid]);
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="home-screen">
       <TopBar
         title="Commute by foot"
         leftIcon="people-outline"

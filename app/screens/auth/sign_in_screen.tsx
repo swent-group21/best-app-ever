@@ -72,6 +72,7 @@ export default function SignInScreen({ navigation, firestoreCtrl, setUser }: { n
                 logInWithEmail(email, password, firestoreCtrl, navigation, setUser);
               }}
               text="Sign In"
+              testID="sign-in-button"
               textStyle={{ fontWeight: "600" }}
               textColorType="textOverLight"
             />
