@@ -7,7 +7,11 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import FirestoreCtrl, { DBChallenge, DBComment, DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBComment,
+  DBUser,
+} from "@/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
@@ -69,7 +73,7 @@ export default function MaximizeScreen({
   }, [challenge, firestoreCtrl]);
 
   // @ts-ignore - date is not of the correct type
-  const postDate : Date = challenge.date ? challenge.date.toDate() : new Date();
+  const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
   const postTitle =
     challenge.challenge_name == ""
       ? "Secret Challenge"
@@ -114,7 +118,7 @@ export default function MaximizeScreen({
                 {postUser?.name}
               </ThemedText>
               <ThemedText colorType="white" type="small">
-                {"on " + postDate.toUTCString() }
+                {"on " + postDate.toUTCString()}
               </ThemedText>
             </ThemedView>
           </ThemedView>
@@ -137,13 +141,13 @@ export default function MaximizeScreen({
             colorType="transparent"
             testID="challenge-image"
           >
-            <Image 
+            <Image
               source={
-              (postImage) 
-                ? { uri: postImage } 
-                : require("@/assets/images/challenge1.png")
+                postImage
+                  ? { uri: postImage }
+                  : require("@/assets/images/challenge1.png")
               }
-              style={styles.image} 
+              style={styles.image}
             />
           </ThemedView>
         ) : (

@@ -52,7 +52,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   async function makeChallenge() {
     try {
       let date: Timestamp = Timestamp.now();
-      console.log("Date: ", date)
+      console.log("Date: ", date);
 
       await createChallenge(
         firestoreCtrl,

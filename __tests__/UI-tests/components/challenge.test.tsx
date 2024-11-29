@@ -34,10 +34,9 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
           created_at: mockTimestamp,
         },
       ]),
-      updateLikesOf: jest.fn().mockResolvedValue([
-        "challenge123",
-        ["12345", "67890", "user123"]
-      ])
+      updateLikesOf: jest
+        .fn()
+        .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
     };
   });
 });
@@ -53,12 +52,11 @@ const challengeDB: DBChallenge = {
 const mockFirestoreCtrl = new FirestoreCtrl();
 
 describe("Challenge Component", () => {
-
   const currentUser: DBUser = {
     uid: "user123",
     name: "Current User",
     email: "test@test.com",
-    createdAt: mockDate
+    createdAt: mockDate,
   };
 
   beforeEach(() => {
@@ -66,7 +64,7 @@ describe("Challenge Component", () => {
   });
 
   beforeAll(() => {
-      jest.setSystemTime(new Date(1466424490000));
+    jest.setSystemTime(new Date(1466424490000));
   });
 
   it("fetches user data on mount", async () => {
@@ -78,7 +76,7 @@ describe("Challenge Component", () => {
         navigation={navigation}
         testID="challenge"
         currentUser={currentUser}
-      />
+      />,
     );
 
     await waitFor(() => {
@@ -87,7 +85,6 @@ describe("Challenge Component", () => {
   });
 
   it("fetches likes data on mount and updates isLiked state", async () => {
-
     const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
@@ -96,7 +93,7 @@ describe("Challenge Component", () => {
         navigation={navigation}
         testID="challenge"
         currentUser={currentUser}
-      />
+      />,
     );
 
     await waitFor(() => {
@@ -113,7 +110,7 @@ describe("Challenge Component", () => {
         navigation={navigation}
         testID="challenge"
         currentUser={currentUser}
-      />
+      />,
     );
 
     const touchable = getByTestId("challenge-touchable");
@@ -137,7 +134,7 @@ describe("Challenge Component", () => {
         navigation={navigation}
         testID="challenge"
         currentUser={currentUser}
-      />
+      />,
     );
 
     // Open the detailed view
@@ -155,7 +152,6 @@ describe("Challenge Component", () => {
   });
 
   it("toggles like state and updates likes list", async () => {
-
     const { getByTestId, rerender } = render(
       <Challenge
         challengeDB={challengeDB}
@@ -164,7 +160,7 @@ describe("Challenge Component", () => {
         navigation={navigation}
         testID="challenge"
         currentUser={currentUser}
-      />
+      />,
     );
 
     // Open the detailed view
@@ -174,9 +170,11 @@ describe("Challenge Component", () => {
 
     // Like the challenge
     fireEvent.press(likeButton);
-                                                                                   
-    // Ensure updateLikesOf was called with the new likes list
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("challenge123", ["user123"]);
 
+    // Ensure updateLikesOf was called with the new likes list
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
+      "challenge123",
+      ["user123"],
+    );
   });
 });

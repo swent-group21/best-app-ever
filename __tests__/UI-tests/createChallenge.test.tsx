@@ -46,9 +46,8 @@ const CreateChallengeScreenTest = () => {
 };
 
 describe("CreateChallengeScreen", () => {
-
   beforeAll(() => {
-      jest.setSystemTime(new Date(1466424490000));
+    jest.setSystemTime(new Date(1466424490000));
   });
 
   it("allows creating a new challenge with no location", async () => {

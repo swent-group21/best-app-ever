@@ -29,7 +29,9 @@ export function Challenge({
   const [user, setUser] = useState<DBUser>();
 
   // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date ? challengeDB.date.toDate() : new Date();
+  let challengeDate: Date = challengeDB.date
+    ? challengeDB.date.toDate()
+    : new Date();
 
   // Fetch user data
   useEffect(() => {
@@ -75,9 +77,9 @@ export function Challenge({
             <Image
               testID="challenge-image"
               source={
-              (challengeDB.image_id) 
-                ? { uri: challengeDB.image_id } 
-                : require("@/assets/images/challenge1.png")
+                challengeDB.image_id
+                  ? { uri: challengeDB.image_id }
+                  : require("@/assets/images/challenge1.png")
               }
               style={styles.image}
             />
