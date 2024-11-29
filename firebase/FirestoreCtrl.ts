@@ -38,7 +38,7 @@ export type DBChallenge = {
   image_id?: string;
   date: Date;
   likes?: string[]; // User IDs
-  location: GeoPoint | null;
+  location?: GeoPoint | null;
 };
 
 export type DBComment = {

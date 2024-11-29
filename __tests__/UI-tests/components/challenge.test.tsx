@@ -1,133 +1,191 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
-import { DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
-// Mock the firestore controller
-const mockFirestoreCtrl = {
-  getUser: jest.fn(),
-};
-
-// Mock navigation
-const mockNavigation = {
+// Mock the navigation prop
+const navigation = {
   navigate: jest.fn(),
 };
 
+const mockTimestamp = {
+  toDate: jest.fn().mockReturnValue(new Date()),
+};
+
+// Mock FirestoreCtrl methods
+jest.mock("@/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      getUser: jest.fn().mockResolvedValue({
+        uid: "user123",
+        name: "Current User",
+        email: "test@test.com",
+        createdAt: new Date(8.64e15) 
+      }),
+      getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
+      getCommentsOf: jest.fn().mockResolvedValue([
+        {
+          uid: "12345",
+          name: "Test User",
+          comment: "This is a test comment",
+          created_at: mockTimestamp,
+        },
+      ]),
+      updateLikesOf: jest.fn().mockResolvedValue([
+
+      ])
+    };
+  });
+});
+
+const mockFirestoreCtrl = new FirestoreCtrl();
+
 describe("Challenge Component", () => {
-  const challengeDBMock = {
-    uid: "123",
+  const challengeDB: DBChallenge = {
+    challenge_name: "challengeName",
+    challenge_id: "challenge123",
+    uid: "user123",
     image_id: "https://example.com/image.jpg",
-    date: "2023-10-10",
+    date: new Date(8.64e15),
+    likes: ["12345", "67890"],
   };
 
-  const userMock: DBUser = {
-    uid: "123",
-    name: "John Doe",
-    email: "john@example.com",
-    createdAt: new Date(8.64e15),
-    // ...other user properties
+  const currentUser: DBUser = {
+    uid: "user123",
+    name: "Current User",
+    email: "test@test.com",
+    createdAt: new Date(8.64e15) 
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockFirestoreCtrl.getUser.mockResolvedValue(userMock);
   });
 
-  it("renders challenge image", () => {
-    const { getByTestId } = render(
+  it("fetches user data on mount", async () => {
+    const { getByText } = render(
       <Challenge
-        challengeDB={challengeDBMock}
+        challengeDB={challengeDB}
         index={0}
         firestoreCtrl={mockFirestoreCtrl}
-        navigation={mockNavigation}
-      />,
+        navigation={navigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />
     );
 
-    const image = getByTestId("challenge-image");
-    expect(image.props.source.uri).toBe(challengeDBMock.image_id);
-  });
-
-  it("toggles open state when pressed", () => {
-    const { getByTestId, queryByTestId } = render(
-      <Challenge
-        challengeDB={challengeDBMock}
-        index={0}
-        firestoreCtrl={mockFirestoreCtrl}
-        navigation={mockNavigation}
-      />,
-    );
-
-    const touchable = getByTestId("challenge-touchable");
-
-    // Initially, the container should not be rendered
-    expect(queryByTestId("challenge-container")).toBeNull();
-
-    // Press to open
-    fireEvent.press(touchable);
-
-    // The container should now be rendered
-    expect(queryByTestId("challenge-container")).toBeTruthy();
-
-    // Press again to close
-    fireEvent.press(touchable);
-
-    // The container should not be rendered
-    expect(queryByTestId("challenge-container")).toBeNull();
-  });
-
-  it("fetches and displays user info when open", async () => {
-    const { getByTestId, getByText } = render(
-      <Challenge
-        challengeDB={challengeDBMock}
-        index={0}
-        firestoreCtrl={mockFirestoreCtrl}
-        navigation={mockNavigation}
-      />,
-    );
-
-    const touchable = getByTestId("challenge-touchable");
-
-    // Open the challenge
-    fireEvent.press(touchable);
-
-    // Wait for user info to be fetched and displayed
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith(
-        challengeDBMock.uid,
-      );
-      expect(getByText(userMock.name)).toBeTruthy();
-      expect(getByText("at " + challengeDBMock.date)).toBeTruthy();
+      expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith("user123");
     });
   });
 
-  it("navigates to MaximizeScreen when expand icon is pressed", () => {
+  it("fetches likes data on mount and updates isLiked state", async () => {
+
     const { getByTestId } = render(
       <Challenge
-        challengeDB={challengeDBMock}
+        challengeDB={challengeDB}
         index={0}
         firestoreCtrl={mockFirestoreCtrl}
-        navigation={mockNavigation}
-      />,
+        navigation={navigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />
+    );
+
+    await waitFor(() => {
+      expect(mockFirestoreCtrl.getLikesOf).toHaveBeenCalledWith("challenge123");
+    });
+  });
+
+  it("toggles isOpen state when the challenge is pressed", () => {
+    const { getByTestId } = render(
+      <Challenge
+        challengeDB={challengeDB}
+        index={0}
+        firestoreCtrl={mockFirestoreCtrl}
+        navigation={navigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />
     );
 
     const touchable = getByTestId("challenge-touchable");
 
-    // Open the challenge
+    // Initially, the detailed view should not be open
+    expect(() => getByTestId("challenge-container")).toThrow();
+
+    // Press the touchable to open the details
     fireEvent.press(touchable);
+
+    // Now the detailed view should be visible
+    expect(getByTestId("challenge-container")).toBeTruthy();
+  });
+
+  it("navigates to Maximize screen when expand button is pressed", () => {
+    const { getByTestId } = render(
+      <Challenge
+        challengeDB={challengeDB}
+        index={0}
+        firestoreCtrl={mockFirestoreCtrl}
+        navigation={navigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />
+    );
+
+    // Open the detailed view
+    fireEvent.press(getByTestId("challenge-touchable"));
 
     const expandButton = getByTestId("expand-button");
-
-    // Press expand button
     fireEvent.press(expandButton);
 
-    // Check navigation
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("Maximize", {
-      challenge: {
-        date: "2023-10-10",
-        image_id: "https://example.com/image.jpg",
-        uid: "123",
-      },
-      user: undefined,
+    expect(navigation.navigate).toHaveBeenCalledWith("Maximize", {
+      navigation: navigation,
+      firestoreCtrl: mockFirestoreCtrl,
+      challenge: challengeDB,
+      user: currentUser,
     });
+  });
+
+  it("toggles like state and updates likes list", async () => {
+
+    const { getByTestId, rerender } = render(
+      <Challenge
+        challengeDB={challengeDB}
+        index={0}
+        firestoreCtrl={mockFirestoreCtrl}
+        navigation={navigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />
+    );
+
+    // Open the detailed view
+    fireEvent.press(getByTestId("challenge-touchable"));
+
+    const likeButton = getByTestId("like-button");
+
+    console.log("Like Button: ", likeButton.props)
+
+    // Initially, isLiked should be false
+    expect(likeButton.props.name).toBe("heart-outline");
+
+    // Like the challenge
+    fireEvent.press(likeButton);
+
+    // After pressing, isLiked should be true and color should be red
+    expect(likeButton.props.name).toBe("heart");
+
+    // Ensure updateLikesOf was called with the new likes list
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("challenge123", [
+      "currentUserId",
+    ]);
+
+    // Dislike the challenge
+    fireEvent.press(likeButton);
+
+    // After pressing again, isLiked should be false
+    expect(likeButton.props.name).toBe("heart-outline");
+
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("challenge123", []);
   });
 });

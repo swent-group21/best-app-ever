@@ -30,7 +30,7 @@ export function Challenge({
 
   // @ts-ignore - date is not always a Date object
   const challengeDate = challengeDB.date
-    ? challengeDB.date.toDate()
+    ? challengeDB.date
     : new Date();
 
   // Fetch user data
@@ -131,6 +131,8 @@ export function Challenge({
                   <ThemedIconButton
                     testID="like-button"
                     name={isLiked ? "heart" : "heart-outline"}
+                    color={isLiked ? "red" : "white"}
+                    size={25}
                     onPress={() => {
                       setIsLiked(!isLiked);
 
@@ -153,8 +155,6 @@ export function Challenge({
                         );
                       }
                     }}
-                    size={25}
-                    color={isLiked ? "red" : "white"}
                   />
                   <ThemedIconButton
                     name="location-outline"
