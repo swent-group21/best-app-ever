@@ -6,7 +6,7 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Icon } from "react-native-elements";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
@@ -46,14 +46,18 @@ export default function ProfileScreen({
   const [image, setImage] = React.useState<string | null>(user.image_id ? user.image_id : null);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error("Error picking image: ", error);
     }
   };
 
@@ -82,7 +86,7 @@ export default function ProfileScreen({
             leftIcon="arrow-back"
             leftAction={() => {upload(); navigation.goBack();}}
           />
-          <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
+          <TouchableOpacity onPress={pickImage} testID="image-picker" style={styles.smallContainer}>
             {!image ? (
               <ThemedIconButton
                 name="person-circle-outline"
@@ -91,7 +95,7 @@ export default function ProfileScreen({
                 onPress={pickImage}
               />
             ) : (
-              <Image source={{ uri: image }} style={styles.image} />
+              <Image source={{ uri: image }} style={styles.image}/>
             )}
           </TouchableOpacity>
           <ThemedView style={styles.smallContainer}>
@@ -148,7 +152,8 @@ export default function ProfileScreen({
             textColorType="white"
             darkColor="transparent"
             lightColor="transparent"
-            onPress={() => navigation.reset({ index: 0, routes: [{ name: "WelcomeFinal" }] })}
+            testID="sign-in-button"
+            onPress={() => logOut(navigation)}
           />
         </ThemedView>
       )}
@@ -156,7 +161,7 @@ export default function ProfileScreen({
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   bigContainer: {
     flex: 1,
     alignItems: "center",
@@ -180,7 +185,7 @@ const styles = {
   },
   columnInfo: {
     flexDirection: "column",
-    alignItems: "left",
+    alignItems: "flex-start",
   },
   logOut: {
     width: "100%",
@@ -195,7 +200,7 @@ const styles = {
     alignItems: "center",
   },
   action: {
-    alignItems: "left",
+    alignItems: "flex-start",
     borderRadius: 10,
     borderColor: "transparent",
     borderWidth: 1,
@@ -221,7 +226,8 @@ const styles = {
   notLoggedIn: {
     width: "100%",
     alignItems: "center",
+    textAlign: "center",
     fontSize: 20,
     fontWeight: "bold",
   },
-};
+});
