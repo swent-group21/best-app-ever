@@ -10,7 +10,11 @@ import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { DBChallenge } from "@/firebase/FirestoreCtrl";
+import {
+  DBChallenge,
+  DBGroup,
+  DBChallengeDescription,
+} from "@/firebase/FirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,10 +40,39 @@ const mockChallenges: DBChallenge[] = [
   },
 ];
 
+const mockGroups: DBGroup[] = [
+  {
+    group_id: "1",
+    group_name: "Group 1",
+    description: "Description 1",
+    members: ["12345"],
+    creationDate: new Date(),
+  },
+  {
+    group_id: "2",
+    group_name: "Group 2",
+    description: "Description 2",
+    members: ["12345"],
+    creationDate: new Date(),
+  },
+];
+
+const mockChallengeDescription: DBChallengeDescription = {
+  title: "Challenge Title",
+  description: "Challenge Description",
+  endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+};
+
 // Mock getChallengesByUserId method
 mockFirestoreCtrl.getChallengesByUserId = jest
   .fn()
   .mockResolvedValue(mockChallenges);
+
+mockFirestoreCtrl.getGroupsByUserId = jest.fn().mockResolvedValue(mockGroups);
+
+mockFirestoreCtrl.getChallengeDescription = jest
+  .fn()
+  .mockResolvedValue(mockChallengeDescription);
 
 //Mock User
 const mockUser = {
@@ -87,5 +120,25 @@ describe("HomeScreen", () => {
       expect(getByTestId("challenge-id-0")).toBeTruthy();
       expect(getByTestId("challenge-id-1")).toBeTruthy();
     });
+  });
+
+  it("renders description fetched from Firestore", async () => {
+    const { getByTestId } = render(<HomeScreenTest />);
+
+    // Wait for the description to be fetched and rendered
+    await waitFor(() => {
+      expect(getByTestId("description-id")).toBeTruthy();
+    });
+  });
+
+  it("renders description fetched from Firestore", async () => {
+    const { getByTestId } = render(<HomeScreenTest />);
+
+    // Wait for the description to be fetched and rendered
+    await waitFor(() => {
+      expect(getByTestId("group-id-0")).toBeTruthy();
+      expect(getByTestId("group-id-1")).toBeTruthy();
+    });
+    expect(getByTestId("create-group-button")).toBeTruthy();
   });
 });

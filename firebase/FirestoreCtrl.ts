@@ -1,4 +1,5 @@
-import { limit, GeoPoint } from "firebase/firestore";
+import { FieldPath, limit, documentId, GeoPoint } from "firebase/firestore";
+
 import {
   firestore,
   doc,
@@ -22,6 +23,7 @@ export type DBUser = {
   address?: string;
   image_id?: string;
   createdAt: Date;
+  groups?: string[];
 };
 
 export type DBChallenge = {
@@ -43,6 +45,13 @@ export type DBComment = {
   uid: string;
 };
 
+export type DBGroup = {
+  group_id: string;
+  group_name: string;
+  description?: string;
+  members: string[];
+  creationDate?: Date;
+};
 export type DBChallengeDescription = {
   title: string;
   description: string;
@@ -208,6 +217,7 @@ export default class FirestoreCtrl {
   /**
    * Set the profile picture of a user by their UID.
    */
+
   async setProfilePicture(
     id: string,
     imageUri: string,
@@ -311,8 +321,86 @@ export default class FirestoreCtrl {
   }
 
   /**
+   * Retrieves all groups assigned to a specific user.
+   *
+   * @param uid The UID of the user whose groups are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getGroupsByUserId(uid: string): Promise<DBGroup[]> {
+    try {
+      const userRef = doc(firestore, "users", uid);
+      const userDoc = await getDoc(userRef);
+
+      const userData = userDoc.data() as DBUser;
+
+      console.log("userGroups [" + uid + "]", userData.groups);
+
+      // Retrieve all groups using the group IDs
+      const groupsRef = collection(firestore, "groups");
+
+      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+
+      const groupSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBGroup
+      const dbGroups: DBGroup[] = groupSnapshots.docs.map(
+        (doc) =>
+          ({
+            group_id: doc.id,
+            ...doc.data(),
+          }) as DBGroup,
+      );
+
+      return dbGroups;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all members assigned to a specific group.
+   *
+   * @param uid The UID of the group whose members are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getUsersInGroup(gid: string): Promise<DBUser[]> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const groupDoc = await getDoc(groupRef);
+
+      const userData = groupDoc.data() as DBGroup;
+
+      if (!userData.members || userData.members.length === 0) {
+        return [];
+      }
+
+      // Retrieve all users using the user IDs
+      const usersRef = collection(firestore, "users");
+      const q = query(usersRef, where("uid", "in", userData.members));
+
+      const usersSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBUser
+      const dbUsers: DBUser[] = usersSnapshots.docs.map(
+        (doc) =>
+          ({
+            uid: doc.id,
+            ...doc.data(),
+          }) as DBUser,
+      );
+
+      return dbUsers;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
    * Retrieves the current challenge description from Firestore
-   
+   *
+   * @returns A promise that resolves to the description of the current challenge.
    */
 
   async getChallengeDescription(): Promise<DBChallengeDescription> {

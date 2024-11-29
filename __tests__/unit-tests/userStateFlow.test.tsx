@@ -5,6 +5,7 @@ import SignInScreen from "@/app/screens/auth/sign_in_screen";
 import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 import SetUsername from "@/app/screens/auth/set_up_screen";
 import SignUp from "@/app/screens/auth/sign_up_screen";

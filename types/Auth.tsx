@@ -43,6 +43,7 @@ export const logInWithEmail = async (
                 name: response.user.displayName || "",
                 email: response.user.email || "",
                 createdAt: new Date(),
+                groups: [],
               })
               .then(() => {
                 alert("User did not exist. Please set up your profile.");
@@ -91,6 +92,7 @@ export const signUpWithEmail = async (
           name: userName,
           email: email,
           createdAt: new Date(),
+          groups: [],
         };
 
         // Creates user in firestore
@@ -137,11 +139,13 @@ export const signInAsGuest = async (
         })
         .catch((error) => {
           alert("Failed to create user: " + error);
+
           console.error("Failed to create user: ", error);
         });
     })
     .catch((error) => {
       alert("Failed to sign in as guest: " + error);
+
       console.error("Failed to sign in as guest: ", error);
     });
 };
@@ -156,6 +160,7 @@ export const logOut = async (navigation: any) => {
     })
     .catch((error) => {
       alert("Failed to log out: " + error);
+
       console.error("Failed to log out: ", error);
     });
 };

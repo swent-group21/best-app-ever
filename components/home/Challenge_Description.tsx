@@ -14,6 +14,7 @@ const { width, height } = Dimensions.get("window");
 interface ChallengeDescriptionProps {
   dBChallengeDescription: DBChallengeDescription;
   onTimerFinished: () => void;
+  testID?: string;
 }
 
 /**
@@ -22,9 +23,10 @@ interface ChallengeDescriptionProps {
 export function ChallengeDescription({
   dBChallengeDescription,
   onTimerFinished,
+  testID,
 }: ChallengeDescriptionProps) {
   return (
-    <ThemedView style={styles.challenge}>
+    <ThemedView style={styles.challenge} testID={testID}>
       <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
         {dBChallengeDescription.title}
       </ThemedText>
