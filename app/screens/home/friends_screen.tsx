@@ -66,10 +66,11 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       fetchRequests();
     });
 
-    const filteredUsers = users.filter((user) => {
-        return user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
-      }
-    );
+    const filteredUsers = (searchText && users.length > 0)
+    ? users.filter((user) => {
+        return user.uid && user.uid != uid && user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
+        })
+    : [];
 
     // Handle Add, Accept and Decline
     const handleFriendPress = (friendId: string) => {
