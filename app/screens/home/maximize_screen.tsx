@@ -16,21 +16,23 @@ import { auth } from "@/firebase/Firebase";
 import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
-export default function MaximizeScreen({ route }: any) {
-  // Get screen parameters
-  const {
-    navigation,
-    firestoreCtrl,
-    challenge,
-    user,
-  }: {
-    navigation: any;
-    firestoreCtrl: FirestoreCtrl;
-    challenge: DBChallenge;
-    user: DBUser;
-  } = route.params;
+const { width, height } = Dimensions.get("window");
 
+export default function MaximizeScreen({
+  user,
+  navigation,
+  route,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  route: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
+
+  const challenge = route.params?.challenge;
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<DBComment[]>([]);
   const [postUser, setPostUser] = React.useState<DBUser>();

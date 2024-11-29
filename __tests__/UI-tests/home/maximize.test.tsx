@@ -8,6 +8,7 @@ import {
 import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
 const mockTimestamp = {
   toDate: jest.fn().mockReturnValue(new Date()),
@@ -34,6 +35,13 @@ const mockFirestoreCtrl = {
 const mockNavigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
+
+// Mock the user object
+const mockUser = {
+  uid: "12345",
+  name: "Test User",
+  email: "test@example.com",
+  createdAt: new Date(),
 };
 
 // Create a stack navigator for testing
@@ -67,7 +75,14 @@ const MaximizeScreenTest = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="MaximizeScreen">
-          {(props) => <MaximizeScreen route={route} />}
+          {(props) => (
+            <MaximizeScreen
+              {...props}
+              user={mockUser}
+              route={route}
+              firestoreCtrl={mockFirestoreCtrl}
+            />
+          )}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

@@ -147,11 +147,16 @@ export default class FirestoreCtrl {
   /**
    * Set the name of a user by their UID.
    */
-  async setName(id: string, name: string) {
+  async setName(
+    id: string,
+    name: string,
+    setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+  ) {
     try {
       const user = await this.getUser(id);
       user.name = name;
       await this.createUser(id, user);
+      setUser(user);
     } catch (error) {
       console.error("Error setting name: ", error);
       throw error;
@@ -174,11 +179,16 @@ export default class FirestoreCtrl {
   /**
    * Set the profile picture of a user by their UID.
    */
-  async setProfilePicture(id: string, imageUri: string) {
+  async setProfilePicture(
+    id: string,
+    imageUri: string,
+    setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+  ) {
     try {
       const user = await this.getUser(id);
       user.image_id = await this.uploadImageFromUri(imageUri);
       await this.createUser(id, user);
+      setUser(user);
     } catch (error) {
       console.error("Error setting profile picture: ", error);
       throw error;

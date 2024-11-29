@@ -7,10 +7,19 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SignUp({ navigation, firestoreCtrl }: any) {
+export default function SignUp({
+  navigation,
+  firestoreCtrl,
+  setUser,
+}: {
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+}) {
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -23,7 +32,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
   const passwordPlaceholder = "**********";
 
   return (
-    <ThemedView style={styles.signUpScreen}>
+    <ThemedView style={styles.signUpScreen} testID="sign-up-screen">
       {/* Background oval shape */}
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
@@ -114,6 +123,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
               password,
               firestoreCtrl,
               navigation,
+              setUser,
             );
           }}
           text="Join Us!"
