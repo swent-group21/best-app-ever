@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   challenge: {
     width: width - 20,
-    height: height,
+    height: height * 0.3,
     borderRadius: 15,
     backgroundColor: Colors.light.transparent,
   },
