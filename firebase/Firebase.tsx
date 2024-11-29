@@ -30,6 +30,8 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
+import { Timestamp } from "firebase-admin/firestore";
+
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -82,4 +84,5 @@ export {
   signInAnonymously,
   updateEmail,
   signOut,
+  Timestamp,
 };

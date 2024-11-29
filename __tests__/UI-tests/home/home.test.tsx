@@ -9,12 +9,12 @@ import {
 import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import {
+import FirestoreCtrl, {
   DBChallenge,
   DBGroup,
   DBChallengeDescription,
 } from "@/firebase/FirestoreCtrl";
+import { Timestamp } from "@/firebase/Firebase";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +60,7 @@ const mockGroups: DBGroup[] = [
 const mockChallengeDescription: DBChallengeDescription = {
   title: "Challenge Title",
   description: "Challenge Description",
+  timeStamp: new Timestamp(0, 0),
   endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
 };
 

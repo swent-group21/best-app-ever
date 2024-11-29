@@ -1,5 +1,4 @@
-import { FieldPath, limit, documentId, GeoPoint, FirestoreDataConverter, Timestamp } from "firebase/firestore";
-
+import { FieldPath, limit, documentId, GeoPoint, FirestoreDataConverter } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -11,6 +10,7 @@ import {
   collection,
   query,
   where,
+  Timestamp,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { LocationObject, LocationObjectCoords } from "expo-location";

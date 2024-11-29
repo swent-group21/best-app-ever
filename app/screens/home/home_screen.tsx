@@ -8,16 +8,14 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import { Colors } from "@/constants/Colors";
-import { color } from "react-native-elements/dist/helpers";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
   DBGroup,
+  DBChallengeDescription
 } from "@/firebase/FirestoreCtrl";
+import { Timestamp } from "@/firebase/Firebase";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
-import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
