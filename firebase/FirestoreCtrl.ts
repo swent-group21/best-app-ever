@@ -42,6 +42,12 @@ export type DBComment = {
   post_id: string;
 };
 
+export type DBChallengeDescription = {
+  title: string;
+  description: string;
+  endDate: Date;
+};
+
 export default class FirestoreCtrl {
   /**
    * Creates or updates a user document in Firestore.
@@ -332,6 +338,29 @@ export default class FirestoreCtrl {
       return challenge.likes || [];
     } catch (error) {
       console.error("Error getting likes: ", error);
+      throw error;
+    }
+
+  /**
+   * Retrieves the current challenge description from Firestore
+   */
+  async getChallengeDescription(): Promise<DBChallengeDescription> {
+    try {
+      const challengeDescrpitionRef = collection(
+        firestore,
+        "challenge_description",
+      );
+      const q = query(challengeDescrpitionRef);
+      const querySnapshot = await getDocs(q);
+      const challengeDescription = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+        } as DBChallengeDescription;
+      });
+      return challengeDescription[0];
+    } catch (error) {
+      console.error("Error getting challenge description: ", error);
       throw error;
     }
   }

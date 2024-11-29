@@ -1,4 +1,3 @@
-
 //import React from "react";
 //import { render } from "@testing-library/react-native";
 //import ProfileScreen from "@/app/screens/home/profile_screen";
@@ -32,6 +31,7 @@ describe("ProfileScreen", () => {
 //    signOut: jest.fn(),
 //  },
 });
+
 
 describe("ProfileScreen - Image Picker", () => {
   test("always passes", () => {
@@ -95,4 +95,5 @@ describe("ProfileScreen - Change Email", () => {
 //    expect(getByText("Email")).toBeTruthy();
 //    expect(getByText("tristan@gmail.com")).toBeTruthy();
 //  });
+
 });
