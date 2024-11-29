@@ -43,7 +43,7 @@ export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCan
       {status === 'FRIEND' ? (
         <ThemedText style={styles.friendCheck}>✓</ThemedText>
       ) : (
-        <TouchableOpacity style={styles.addButton} onPress={handlePress}>
+        <TouchableOpacity style={styles.addButton} onPress={handlePress} testID={`add-button-${name}`}>
           <ThemedText style={styles.addButtonText}>{status}</ThemedText>
         </TouchableOpacity>
       )}
