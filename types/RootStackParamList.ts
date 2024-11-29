@@ -7,9 +7,9 @@ export type RootStackParamList = {
   SignIn: undefined;
   ForgotPassword: undefined;
   SetUser: undefined;
-
   Home: undefined;
   Camera: undefined;
+  SetUsername: undefined;
   Maximize: {
     challenge: DBChallenge;
   };

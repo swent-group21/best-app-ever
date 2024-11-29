@@ -1,5 +1,10 @@
-import { FieldPath, limit, documentId, GeoPoint } from "firebase/firestore";
-
+import {
+  FieldPath,
+  limit,
+  documentId,
+  GeoPoint,
+  Timestamp,
+} from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -13,7 +18,6 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { LocationObject, LocationObjectCoords } from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -32,17 +36,16 @@ export type DBChallenge = {
   description?: string;
   uid: string;
   image_id?: string;
-  comment_id?: string;
   date: Date;
+  likes?: string[]; // User IDs
   location: GeoPoint | null;
 };
 
 export type DBComment = {
-  comment_id: string;
-  prev_id: string;
-  next_id?: string;
   comment_text: string;
-  uid: string;
+  user_name: string;
+  created_at: Timestamp;
+  post_id: string;
 };
 
 export type DBGroup = {
@@ -321,6 +324,33 @@ export default class FirestoreCtrl {
   }
 
   /**
+   * Retrieves all comments of a specific challenge.
+   * @param challengeId The ID of the challenge to get comments for.
+   * @returns A promise that resolves to an array of comments.
+   */
+  async getCommentsOf(challengeId: string): Promise<DBComment[]> {
+    try {
+      const commentsRef = collection(firestore, "comments");
+      const q = query(commentsRef, where("post_id", "==", challengeId));
+      const querySnapshot = await getDocs(q);
+      const comments = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          comment_id: doc.id,
+          comment_text: data.comment_text,
+          user_name: data.user_name,
+          created_at: data.created_at,
+          post_id: data.post_id,
+        } as DBComment;
+      });
+      return comments;
+    } catch (error) {
+      console.error("Error getting comments: ", error);
+      throw error;
+    }
+  }
+
+  /**
    * Retrieves all groups assigned to a specific user.
    *
    * @param uid The UID of the user whose groups are to be fetched.
@@ -334,6 +364,9 @@ export default class FirestoreCtrl {
       const userData = userDoc.data() as DBUser;
 
       console.log("userGroups [" + uid + "]", userData.groups);
+      if (!userData.groups || userData.groups.length === 0) {
+        return [];
+      }
 
       // Retrieve all groups using the group IDs
       const groupsRef = collection(firestore, "groups");
@@ -398,11 +431,52 @@ export default class FirestoreCtrl {
   }
 
   /**
-   * Retrieves the current challenge description from Firestore
-   *
-   * @returns A promise that resolves to the description of the current challenge.
+   * Add a new comment to a challenge.
+   * @param commentData The comment data to add.
    */
+  async addComment(commentData: DBComment): Promise<void> {
+    try {
+      await addDoc(collection(firestore, "comments"), commentData);
+    } catch (error) {
+      console.error("Error writing comment document: ", error);
+      throw error;
+    }
+  }
 
+  /**
+   * Updates the likes of a challenge.
+   * @param challengeId The ID of the challenge to update likes for.
+   * @param likes The new list of likes to set.
+   * @returns A promise that resolves when the likes are updated.
+   */
+  async updateLikesOf(challengeId: string, likes: string[]): Promise<void> {
+    try {
+      const challengeRef = doc(firestore, "challenges", challengeId);
+      await setDoc(challengeRef, { likes }, { merge: true });
+    } catch (error) {
+      console.error("Error updating likes: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the likes of a challenge.
+   * @param challengeId The ID of the challenge to get likes for.
+   * @returns A promise that resolves to an array of user IDs.
+   */
+  async getLikesOf(challengeId: string): Promise<string[]> {
+    try {
+      const challenge = await this.getChallenge(challengeId);
+      return challenge.likes || [];
+    } catch (error) {
+      console.error("Error getting likes: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the current challenge description from Firestore
+   */
   async getChallengeDescription(): Promise<DBChallengeDescription> {
     try {
       const challengeDescrpitionRef = collection(
