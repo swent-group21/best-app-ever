@@ -65,9 +65,11 @@ export const logInWithEmail = async (
         }
       } else {
         alert("Failed to log in. Please check your credentials.");
+        console.error("Failed to log in. Please check your credentials.");
       }
     } catch (e) {
       alert("Failed to log in: " + e);
+      console.error("Failed to log in: ", e);
     }
   }
 };
@@ -100,13 +102,16 @@ export const signUpWithEmail = async (
           })
           .catch((error) => {
             alert("Failed to create user: " + error);
+            console.error("Failed to create user: ", error);
           });
       })
       .catch((error) => {
         alert("Failed to create user: " + error);
+        console.error("Failed to create user: ", error);
       });
   } else {
     alert("Please fill in all fields.");
+    console.error("Please fill in all fields.");
   }
 };
 
@@ -132,10 +137,12 @@ export const signInAsGuest = async (
         })
         .catch((error) => {
           alert("Failed to create user: " + error);
+          console.error("Failed to create user: ", error);
         });
     })
     .catch((error) => {
       alert("Failed to sign in as guest: " + error);
+      console.error("Failed to sign in as guest: ", error);
     });
 }
 
@@ -149,6 +156,7 @@ export const logOut = async (navigation: any) => {
     })
     .catch((error) => {
       alert("Failed to log out: " + error);
+      console.error("Failed to log out: ", error);
     });
 }
 
@@ -160,26 +168,36 @@ export const resetPassword = async (email: string) => {
       })
       .catch((error) => {
         alert("Failed to send password reset email: " + error);
+        console.error("Failed to send password reset email: ", error);
       });
   } else {
     alert("Please enter your email.");
+    console.error("Please enter your email.");
   }
 };
 
 export const resetEmail = async (email: string) => {
   if (email) {
-    if (auth.currentUser) {
-      updateEmail(auth.currentUser, email)
-        .then(() => {
-          alert("Email updated.");
-        })
-        .catch((error) => {
-          alert("Failed to update email: " + error);
-        });
+    if (isValidEmail(email)) {
+      if (auth.currentUser) {
+        updateEmail(auth.currentUser, email)
+          .then(() => {
+            alert("Email updated.");
+          })
+          .catch((error) => {
+            alert("Failed to update email: " + error);
+            console.error("Failed to update email: ", error);
+          });
+      } else {
+        alert("No user is currently signed in.");
+        console.error("No user is currently signed in.");
+      }
     } else {
-      alert("No user is currently signed in.");
+      alert("Please enter a valid email.");
+      console.error("Please enter a valid email.");
     }
   } else {
     alert("Please enter your email.");
+    console.error("Please enter your email.");
   }
 }
