@@ -66,7 +66,11 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       fetchRequests();
     });
 
-    
+    const filteredUsers = users.filter((user) => {
+        return user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
+      }
+    );
+
     // Handle Add, Accept and Decline
     const handleFriendPress = (friendId: string) => {
       console.log(`Navigate to friend ${friendId}'s profile`);
@@ -81,7 +85,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       <SearchBar onSearch={(text) => setSearchText(text)} />
 
       {/* List of filtered users */}
-      <ListOfFilteredUsers searchText={searchText} uid = {uid} firestoreCtrl= {firestoreCtrl} />
+      <ListOfFilteredUsers searchText={searchText} uid = {uid} firestoreCtrl= {firestoreCtrl} filteredUsers = {filteredUsers}/>
 
       {/* List of friends */}
       <Text style={styles.friendsTitle}> Your friends </Text>

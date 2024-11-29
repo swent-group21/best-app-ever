@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/theme/ThemedText';
 import {UserListItem} from '@/components/friends/UserListItems';
 import { ThemedView } from '@/components/theme/ThemedView';
 
-export default function ListOfFilteredUsers({filteredUsers, searchText, firestoreCtrl, userId, uid}: any) {
+export default function ListOfFilteredUsers({filteredUsers, searchText, firestoreCtrl, uid}: any) {
   const handleAdd = (userId : string) => {
         console.log(`Add user ${userId} as friend`);
         console.log('other UID', userId);
@@ -24,7 +24,7 @@ export default function ListOfFilteredUsers({filteredUsers, searchText, firestor
                   avatar={item.image_id }
                   onAdd={() => {
                     console.log('Add user', item.uid); 
-                    handleAdd(userId)} }
+                    handleAdd(item.uid)} }
                 />
               )}
             />
