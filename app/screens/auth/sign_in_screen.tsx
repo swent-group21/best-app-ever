@@ -12,11 +12,20 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedText } from "@/components/theme/ThemedText";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SignInScreen({ navigation, firestoreCtrl }: any) {
+export default function SignInScreen({
+  navigation,
+  firestoreCtrl,
+  setUser,
+}: {
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -48,6 +57,7 @@ export default function SignInScreen({ navigation, firestoreCtrl }: any) {
             <ThemedTextInput
               style={styles.input}
               type="email"
+              testID="email-input"
               onChangeText={(text) => setEmail(text)}
               viewWidth={"90%"}
               title="Email"
@@ -57,6 +67,7 @@ export default function SignInScreen({ navigation, firestoreCtrl }: any) {
             <ThemedTextInput
               style={styles.input}
               type="password"
+              testID="password-input"
               onChangeText={(text) => setPassword(text)}
               viewWidth={"90%"}
               title="Password"
@@ -66,9 +77,16 @@ export default function SignInScreen({ navigation, firestoreCtrl }: any) {
             <ThemedTextButton
               style={styles.buttonSignIn}
               onPress={() => {
-                logInWithEmail(email, password, firestoreCtrl, navigation);
+                logInWithEmail(
+                  email,
+                  password,
+                  firestoreCtrl,
+                  navigation,
+                  setUser,
+                );
               }}
               text="Sign In"
+              testID="sign-in-button"
               textStyle={{ fontWeight: "600" }}
               textColorType="textOverLight"
             />

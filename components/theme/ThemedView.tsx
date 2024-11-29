@@ -1,4 +1,4 @@
-import { View, type ViewProps } from "react-native";
+import { FlexAlignType, View, type ViewProps } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
 
@@ -13,6 +13,7 @@ export function ThemedView({
   lightColor,
   darkColor,
   colorType,
+
   ...otherProps
 }: ThemedViewProps) {
   const backgroundColor = useThemeColor(

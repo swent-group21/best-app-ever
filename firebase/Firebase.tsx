@@ -8,6 +8,9 @@ import {
   User,
   sendPasswordResetEmail,
   getReactNativePersistence,
+  signInAnonymously,
+  updateEmail,
+  signOut,
 } from "firebase/auth";
 //@ts-ignore
 import { getStorage } from "firebase/storage";
@@ -76,4 +79,7 @@ export {
   Firestore,
   storage,
   onSnapshot,
+  signInAnonymously,
+  updateEmail,
+  signOut,
 };

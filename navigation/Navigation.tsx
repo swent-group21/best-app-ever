@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/RootStackParamList";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -18,22 +18,24 @@ import ProfileScreen from "@/app/screens/home/profile_screen";
 import MapScreen from "@/app/screens/map/map_screen";
 import FriendsScreen from "@/app/screens/home/friends_screen";
 
-const { Navigator, Screen, Group } = createStackNavigator<RootStackParamList>();
+const { Navigator, Screen, Group } =
+  createNativeStackNavigator<RootStackParamList>();
 
 interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
   user?: DBUser | null;
+  setUser?: React.Dispatch<React.SetStateAction<DBUser | null>>;
   firestoreCtrl: FirestoreCtrl;
 }
 
 export const Nav: React.FC<AppStackProps> = ({
   isLoggedIn,
   user,
+  setUser,
   firestoreCtrl,
 }) => {
   return (
     <Navigator
-      firestoreCtrl={firestoreCtrl}
       initialRouteName={isLoggedIn}
       screenOptions={{
         headerShown: false,
@@ -49,65 +51,105 @@ export const Nav: React.FC<AppStackProps> = ({
       <Group>
         <Screen name="Welcome" options={{ title: "Login to Strive" }}>
           {(props: any) => (
-            <WelcomeScreens {...props} firestoreCtrl={firestoreCtrl} />
+            <WelcomeScreens
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
-        <Screen name="WelcomeConcept" options={{ title: "Final Screen" }}>
+
+        <Screen name="WelcomeFinal" options={{ title: "Final Screen" }}>
           {(props: any) => (
-            <WelcomeFinalScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <WelcomeFinalScreen
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="SignUp">
-          {(props: any) => <SignUp {...props} firestoreCtrl={firestoreCtrl} />}
+          {(props: any) => (
+            <SignUp
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
+          )}
         </Screen>
+
         <Screen name="SignIn">
           {(props: any) => (
-            <SignInScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <SignInScreen
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="ForgotPassword">
           {(props: any) => (
             <ForgotPasswordScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
+
         <Screen name="SetUser">
           {(props: any) => (
-            <SetUsername {...props} firestoreCtrl={firestoreCtrl} />
-          )}
-        </Screen>
-      </Group>
-      <Group>
-        <Screen name="Home">
-          {(props: any) => (
-            <HomeScreen
+            <SetUsername
               {...props}
-              user={{ user }}
+              user={user}
+              setUser={setUser}
               firestoreCtrl={firestoreCtrl}
             />
           )}
         </Screen>
-        <Screen name="Camera">
-          {(props: any) => <Camera {...props} firestoreCtrl={firestoreCtrl} />}
-        </Screen>
-        <Screen name="MaximizeScreen">
+      </Group>
+
+      <Group>
+        <Screen name="Home">
           {(props: any) => (
-            <MaximizeScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <HomeScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
+
+        <Screen name="Camera">
+          {(props: any) => (
+            <Camera {...props} user={user} firestoreCtrl={firestoreCtrl} />
+          )}
+        </Screen>
+
+        <Screen name="Maximize">
+          {(props: any) => (
+            <MaximizeScreen
+              {...props}
+              user={user}
+              firestoreCtrl={firestoreCtrl}
+            />
+          )}
+        </Screen>
+
         <Screen name="CreateChallenge">
           {(props: any) => (
-            <CreateChallengeScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <CreateChallengeScreen
+              {...props}
+              user={user}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="Profile">
           {(props: any) => (
             <ProfileScreen
               {...props}
-              user={{ user }}
+              user={user}
               firestoreCtrl={firestoreCtrl}
             />
           )}
         </Screen>
+
 
         <Screen name="Friends">
           {(props: any) => (
@@ -119,11 +161,15 @@ export const Nav: React.FC<AppStackProps> = ({
           )}
         </Screen>
       
+
+
         <Screen name="MapScreen">
           {(props: any) => (
-            <MapScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <MapScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
+
+
 
 
 

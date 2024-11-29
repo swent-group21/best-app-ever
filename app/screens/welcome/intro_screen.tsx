@@ -6,7 +6,7 @@ import { StyleSheet, Dimensions, Image } from "react-native";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeIntroScreen({ navigation }: any) {
+export default function WelcomeIntroScreen() {
   // Logo image uri
   const uri = "@/assets/images/";
   return (
@@ -39,7 +39,7 @@ export default function WelcomeIntroScreen({ navigation }: any) {
       </ThemedText>
 
       {/* Logo */}
-      <ThemedView style={styles.imageContainer}>
+      <ThemedView testID="test-image" style={styles.imageContainer}>
         <Image style={styles.image} source={require(`${uri}icon_trans.png`)} />
       </ThemedView>
     </ThemedView>

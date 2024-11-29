@@ -1,16 +1,25 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { isValidEmail, signUpWithEmail } from "@/types/Auth";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { BottomBar } from "@/components/navigation/BottomBar";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SignUp({ navigation, firestoreCtrl }: any) {
+export default function SignUp({
+  navigation,
+  firestoreCtrl,
+  setUser,
+}: {
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+}) {
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -23,7 +32,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
   const passwordPlaceholder = "**********";
 
   return (
-    <ThemedView style={styles.signUpScreen}>
+    <ThemedView style={styles.signUpScreen} testID="sign-up-screen">
       {/* Background oval shape */}
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
@@ -46,6 +55,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
       >
         {/* Name */}
         <ThemedTextInput
+          testID="name-input"
           onChangeText={setName}
           style={styles.input}
           placeholder={namePlaceholder}
@@ -54,6 +64,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
 
         {/* Surname */}
         <ThemedTextInput
+          testID="surname-input"
           onChangeText={setSurname}
           style={styles.input}
           placeholder={surnamePlaceholder}
@@ -62,6 +73,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
 
         {/* Email */}
         <ThemedTextInput
+          testID="email-input"
           onChangeText={setEmail}
           type="email"
           style={
@@ -75,6 +87,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
 
         {/* Password */}
         <ThemedTextInput
+          testID="password-input"
           onChangeText={setPassword}
           type="password"
           style={
@@ -88,6 +101,7 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
 
         {/* Confirm Password */}
         <ThemedTextInput
+          testID="confirm-password-input"
           onChangeText={setConfirmPassword}
           type="password"
           style={
@@ -98,21 +112,25 @@ export default function SignUp({ navigation, firestoreCtrl }: any) {
           placeholder={passwordPlaceholder}
           title="Confirm Password *"
         />
-      </ThemedScrollView>
 
-      {/* Bottom bar */}
-      <BottomBar
-        rightIcon="arrow-forward"
-        rightAction={() =>
-          signUpWithEmail(
-            name + surname,
-            email,
-            password,
-            firestoreCtrl,
-            navigation,
-          )
-        }
-      />
+        <ThemedTextButton
+          testID="sign-up-button"
+          style={styles.buttonSignUp}
+          onPress={() => {
+            signUpWithEmail(
+              name + surname,
+              email,
+              password,
+              firestoreCtrl,
+              navigation,
+              setUser,
+            );
+          }}
+          text="Join Us!"
+          textStyle={{ fontWeight: "600" }}
+          textColorType="textOverLight"
+        />
+      </ThemedScrollView>
     </ThemedView>
   );
 }
@@ -156,5 +174,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     borderColor: "red",
+  },
+
+  buttonSignUp: {
+    alignItems: "center",
+    alignSelf: "center",
+    width: "80%",
+    borderRadius: 15,
+    padding: 8,
   },
 });

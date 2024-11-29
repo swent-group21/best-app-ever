@@ -1,16 +1,28 @@
+import { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+
 export type RootStackParamList = {
-  WelcomeScreens: undefined;
-  WelcomeFinalScreen: undefined;
-  HomeScreen: undefined;
+  Welcome: undefined;
+  WelcomeFinal: undefined;
   SignUp: undefined;
-  SignInScreen: undefined;
-  ForgotPasswordScreen: undefined;
+  SignIn: undefined;
+  ForgotPassword: undefined;
+  SetUser: undefined;
+
+  Home: undefined;
   Camera: undefined;
+
   SetUsername: undefined;
   MaximizeScreen: undefined;
   FriendsScreen: undefined;
   CreateChallengeScreen: {
+
+  Maximize: {
+    challenge: DBChallenge;
+  };
+  CreateChallenge: {
+
     picture_id: string;
   };
+  Profile: undefined;
   MapScreen: undefined;
 };

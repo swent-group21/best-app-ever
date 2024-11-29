@@ -1,4 +1,5 @@
-import { limit } from "firebase/firestore";
+import { FieldPath, limit, documentId, GeoPoint } from "firebase/firestore";
+
 import {
   firestore,
   doc,
@@ -12,7 +13,7 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as Location from "expo-location";
+import { LocationObject, LocationObjectCoords } from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -25,6 +26,7 @@ export type DBUser = {
   friends?: string[];
   userRequestedFriends? : string[];
   friendsRequestedUser? : string[];
+  groups?: string[];
 
 };
 
@@ -36,7 +38,7 @@ export type DBChallenge = {
   image_id?: string;
   comment_id?: string;
   date: Date;
-  location?: Location.LocationObjectCoords;
+  location: GeoPoint | null;
 };
 
 export type DBComment = {
@@ -45,6 +47,19 @@ export type DBComment = {
   next_id?: string;
   comment_text: string;
   uid: string;
+};
+
+export type DBGroup = {
+  group_id: string;
+  group_name: string;
+  description?: string;
+  members: string[];
+  creationDate?: Date;
+};
+export type DBChallengeDescription = {
+  title: string;
+  description: string;
+  endDate: Date;
 };
 
 export default class FirestoreCtrl {
@@ -118,14 +133,21 @@ console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
-      const downloadUrl = await getDownloadURL(storageRef);
-      console.log("DownloadUrl", downloadUrl);
-      return downloadUrl;
+      return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
       console.log("Error uploading image: ", error);
       throw error;
     }
+  }
+
+  /**
+   * Get the url of an image
+   */
+  async getImageUrl(id_picture: string) {
+    const storageRef = ref(getStorage(), "images/" + id_picture);
+    const url = await getDownloadURL(storageRef);
+    return url;
   }
 
   /**
@@ -144,11 +166,16 @@ console.log("StorageRef:", storageRef);
   /**
    * Set the name of a user by their UID.
    */
-  async setName(id: string, name: string) {
+  async setName(
+    id: string,
+    name: string,
+    setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+  ) {
     try {
       const user = await this.getUser(id);
       user.name = name;
       await this.createUser(id, user);
+      setUser(user);
     } catch (error) {
       console.error("Error setting name: ", error);
       throw error;
@@ -171,11 +198,17 @@ console.log("StorageRef:", storageRef);
   /**
    * Set the profile picture of a user by their UID.
    */
-  async setProfilePicture(id: string, imageUri: string) {
+
+  async setProfilePicture(
+    id: string,
+    imageUri: string,
+    setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+  ) {
     try {
       const user = await this.getUser(id);
       user.image_id = await this.uploadImageFromUri(imageUri);
       await this.createUser(id, user);
+      setUser(user);
     } catch (error) {
       console.error("Error setting profile picture: ", error);
       throw error;
@@ -267,6 +300,7 @@ console.log("Challenge data retrieved:", data);
       throw error;
     }
   }
+
 
   /** 
    * Retrieves all users from Firestore.
@@ -404,11 +438,47 @@ console.log("Challenge data retrieved:", data);
       return friends;
     } catch (error) {
       console.error("Error getting requested friends: ", error);
+
+  /**
+   * Retrieves all groups assigned to a specific user.
+   *
+   * @param uid The UID of the user whose groups are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getGroupsByUserId(uid: string): Promise<DBGroup[]> {
+    try {
+      const userRef = doc(firestore, "users", uid);
+      const userDoc = await getDoc(userRef);
+
+      const userData = userDoc.data() as DBUser;
+
+      console.log("userGroups [" + uid + "]", userData.groups);
+
+      // Retrieve all groups using the group IDs
+      const groupsRef = collection(firestore, "groups");
+
+      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+
+      const groupSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBGroup
+      const dbGroups: DBGroup[] = groupSnapshots.docs.map(
+        (doc) =>
+          ({
+            group_id: doc.id,
+            ...doc.data(),
+          }) as DBGroup,
+      );
+
+      return dbGroups;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
       throw error;
     }
   }
 
   /**
+
    *Retrieve the friends requests of a user.
    * @param userId The UID of the user.
    */
@@ -451,9 +521,46 @@ console.log("Challenge data retrieved:", data);
       return user.friends?.includes(friendId);
     } catch (error) {
       console.error("Error checking if friend: ", error);
+
+   * Retrieves all members assigned to a specific group.
+   *
+   * @param uid The UID of the group whose members are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getUsersInGroup(gid: string): Promise<DBUser[]> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const groupDoc = await getDoc(groupRef);
+
+      const userData = groupDoc.data() as DBGroup;
+
+      if (!userData.members || userData.members.length === 0) {
+        return [];
+      }
+
+      // Retrieve all users using the user IDs
+      const usersRef = collection(firestore, "users");
+      const q = query(usersRef, where("uid", "in", userData.members));
+
+      const usersSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBUser
+      const dbUsers: DBUser[] = usersSnapshots.docs.map(
+        (doc) =>
+          ({
+            uid: doc.id,
+            ...doc.data(),
+          }) as DBUser,
+      );
+
+      return dbUsers;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
+
       throw error;
     }
   }
+
 
   async isRequested(userId: string, friendId: string) {
     try {
@@ -461,6 +568,33 @@ console.log("Challenge data retrieved:", data);
       return user.userRequestedFriends?.includes(friendId);
     } catch (error) {
       console.error("Error checking if requested: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the current challenge description from Firestore
+   *
+   * @returns A promise that resolves to the description of the current challenge.
+   */
+
+  async getChallengeDescription(): Promise<DBChallengeDescription> {
+    try {
+      const challengeDescrpitionRef = collection(
+        firestore,
+        "challenge_description",
+      );
+      const q = query(challengeDescrpitionRef);
+      const querySnapshot = await getDocs(q);
+      const challengeDescription = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+        } as DBChallengeDescription;
+      });
+      return challengeDescription[0];
+    } catch (error) {
+      console.error("Error getting challenge description: ", error);
       throw error;
     }
   }

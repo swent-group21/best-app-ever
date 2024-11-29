@@ -6,23 +6,29 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment, CommentType } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { getAuth } from "firebase/auth";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
+export default function MaximizeScreen({
+  user,
+  navigation,
+  route,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  route: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);
 
-  const userName = "Sandraa"; // derived from the name of the user
-  const userLocation = "Plage de Vidy"; // derived from the location of the user
   const userTime = "18:26"; // derived from the time the user posted the challenge
 
-  const auth = getAuth();
-  const user = auth.currentUser?.uid;
-  const infoUser = firestoreCtrl.getUser(user ?? "");
+  const challenge = route.params?.challenge || {};
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -58,10 +64,10 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
             {/* User name and location */}
             <ThemedView style={styles.userInfo} colorType="transparent">
               <ThemedText colorType="white" type="smallSemiBold">
-                {userName}
+                {user.name}
               </ThemedText>
               <ThemedText colorType="white" type="small">
-                {"in " + userLocation + " at " + userTime}
+                {"in " + challenge.location + " at " + challenge.date}
               </ThemedText>
             </ThemedView>
           </ThemedView>
@@ -78,7 +84,11 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
         </ThemedView>
 
         {/* Image */}
-        <ThemedView style={styles.container} colorType="transparent">
+        <ThemedView
+          testID="max-image"
+          style={styles.container}
+          colorType="transparent"
+        >
           <Image
             source={require("@/assets/images/challenge2.png")}
             style={styles.image}
@@ -88,6 +98,7 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
         {/* Like button */}
         <ThemedView>
           <ThemedIconButton
+            testID="like-button"
             name="heart"
             onPress={() => {
               setIsLiked(!isLiked);
@@ -100,6 +111,7 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
         {/* Comment input */}
         <ThemedView style={styles.row} colorType="transparent">
           <ThemedTextInput
+            testID="comment-input"
             style={styles.commentInput}
             value={commentText}
             onChangeText={(text) => {
@@ -107,6 +119,7 @@ export default function MaximizeScreen({ navigation, firestoreCtrl }: any) {
             }}
           />
           <ThemedIconButton
+            testID="send-button"
             name="send"
             size={25}
             colorType="white"

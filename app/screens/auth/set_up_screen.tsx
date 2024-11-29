@@ -8,14 +8,23 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import * as ImagePicker from "expo-image-picker";
-import { getUID } from "@/types/Auth";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername({ navigation, firestoreCtrl }: any) {
+export default function SetUsername({
+  user,
+  navigation,
+  firestoreCtrl,
+  setUser,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+}) {
   const [username, setUsername] = React.useState("");
-
   const [image, setImage] = React.useState<string | null>(null);
   const pickImage = async () => {
     console.log("Loading image");
@@ -36,9 +45,9 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
     } else {
       try {
         if (image) {
-          await firestoreCtrl.setProfilePicture(getUID(), image);
+          await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
         }
-        await firestoreCtrl.setName(getUID(), username);
+        await firestoreCtrl.setName(user.uid, username, setUser);
       } catch (error) {
         console.error("Error setting up profile: ", error);
         alert("Error setting up profile: " + error);
@@ -79,7 +88,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
                 size={300}
                 color="white"
                 onPress={pickImage}
-                testID="profilePicIcon"
+                testID="profile-icon-button"
               />
             ) : (
               <Image
@@ -108,6 +117,7 @@ export default function SetUsername({ navigation, firestoreCtrl }: any) {
 
       {/* Bottom bar */}
       <BottomBar
+        testID="bottom-bar-right-icon"
         rightIcon="arrow-forward"
         rightAction={async () => {
           await upload();

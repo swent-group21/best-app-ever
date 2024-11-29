@@ -1,14 +1,23 @@
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { auth } from "@/firebase/Firebase";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
+import { signInAsGuest } from "@/types/Auth";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
+export default function WelcomeFinalScreen({
+  setUser,
+  navigation,
+  firestoreCtrl,
+}: {
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
       {/* Background shapes */}
@@ -46,13 +55,7 @@ export default function WelcomeFinalScreen({ navigation, firestoreCtrl }: any) {
 
         {/* Continue as guest button */}
         <ThemedTextButton
-          onPress={() => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Home" }],
-            });
-            auth.signOut();
-          }}
+          onPress={() => signInAsGuest(firestoreCtrl, navigation, setUser)}
           text="Continue as guest"
           colorType="transparent"
           textColorType="textPrimary"
