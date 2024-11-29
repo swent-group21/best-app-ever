@@ -7,6 +7,11 @@ import { StyleSheet } from 'react-native';
 
 const { height, width} = Dimensions.get('window');
 
+/**
+ * List of friends component that displays the list of the current user's friends
+ * @param friends : list of friends
+ * @param handleFriendPress : function to handle the press on a friend item
+ */
 export default function ListOfFriends({ friends, handleFriendPress }: any) {
   return (
     <FlatList

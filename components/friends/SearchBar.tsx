@@ -3,6 +3,11 @@ import { StyleSheet } from 'react-native';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedTextInput } from '@/components/theme/ThemedTextInput';
 
+/**
+ * Search bar component
+ * @param onSearch : function to call when the user types in the search bar
+ * @returns SearchBar Component
+ */
 
 export const SearchBar = ({ onSearch }: { onSearch: (text: string) => void }) => (
     <ThemedView style={styles.searchContainer}>

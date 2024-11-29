@@ -12,8 +12,8 @@ import ListOfFilteredUsers from '@/components/friends/ListOfFilteredUsers';
   
 /**
  * Screen that allowos the user to search for friends, add them and manage friend requests
- * @param navigation
- * @param firestoreCtrl
+ * @param navigation : navigation prop
+ * @param firestoreCtrl : firestore controller
  * 
  * @returns Friends Screen Component
  */

@@ -4,6 +4,14 @@ import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+/**
+ * Friend Request Item component
+ * @param name : name of the user
+ * @param avatar : avatar of the user
+ * @param onAccept : function to accept a friend request
+ * @param onDecline : function to decline a friend request
+ * @returns FriendRequestItem Component
+ */
 export const FriendRequestItem = ({ name, avatar, onAccept, onDecline }: any) => (
   <ThemedView style={styles.requestItem} testID="friend-request-item">
     {avatar ? (

@@ -109,6 +109,6 @@ describe('UserListItem', () => {
       />
     );
 
-    expect(getByText('J')).toBeTruthy(); // Vérifie que l'initiale est affichée
+    expect(getByText('J')).toBeTruthy();
   });
 });

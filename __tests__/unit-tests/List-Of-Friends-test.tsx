@@ -19,7 +19,6 @@ describe('ListOfFriends', () => {
       <ListOfFriends friends={mockFriends} handleFriendPress={mockHandleFriendPress} />
     );
 
-    // Verify that each friend is rendered
     expect(getByText('John Doe')).toBeTruthy();
     expect(getByText('Jane Smith')).toBeTruthy();
 

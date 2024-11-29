@@ -2,6 +2,13 @@ import React from "react"
 import { FlatList } from "react-native"
 import {FriendRequestItem} from "@/components/friends/FriendRequestItem"
 
+
+/** 
+ * Request List with all users that have sent a friend request to the current user
+ * @param requests : list of users that have sent a friend request
+ * @param firestoreCtrl : firestore controller
+ * @param uid : current user's id
+ */
 export default function RequestList(requests : any, firestoreCtrl : any, uid : any) {
     const handleAccept = (requestId: string) => {
         console.log(`Friend request ${requestId} accepted`);

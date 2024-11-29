@@ -3,9 +3,21 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { ThemedView } from '@/components/theme/ThemedView';
 
+
+/**
+ * User list item component 
+ * @param name : name of the user
+ * @param avatar : avatar of the user
+ * @param isFriend : boolean indicating if the user is a friend
+ * @param isRequested : boolean indicating if the user has been requested
+ * @param onAdd : function to add a friend
+ * @param onCancelRequest : function to cancel a friend request
+ * @returns UserListItem Component
+ */
 export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCancelRequest }: any) => {
   const [status, setStatus] = useState('ADD');
 
+  // Set the status of the user based on the friend and requested status
   useEffect(() => {
     if (isFriend) {
       setStatus('FRIEND');
@@ -16,6 +28,7 @@ export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCan
     }
   }, [isFriend, isRequested]);
 
+  // Handle the press event based on the status
   const handlePress = () => {
     if (status === 'ADD') {
       onAdd();
@@ -32,6 +45,7 @@ export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCan
         <Image source={{ uri: avatar }} style={styles.avatar} />
       ) : (
         <ThemedView style={[styles.avatar, styles.defaultAvatar]}>
+          {/* Display the first letter of the user's name */}
           <ThemedText style={styles.avatarText}>{name.charAt(0).toUpperCase()}</ThemedText>
         </ThemedView>
       )}

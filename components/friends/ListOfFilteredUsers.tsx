@@ -5,9 +5,18 @@ import { UserListItem } from '@/components/friends/UserListItems';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { StyleSheet } from 'react-native';
 
+/**
+ * List of filtered users component
+ * @param filteredUsers : list of users to display
+ * @param searchText : text to search for
+ * @param firestoreCtrl : firestore controller
+ * @param uid : user id of the current user
+ * @returns ListOfFilteredUsers Component
+ */
 export default function ListOfFilteredUsers({ filteredUsers, searchText, firestoreCtrl, uid }: any) {
   const [userStatuses, setUserStatuses] = useState<{ [key: string]: { isFriend: boolean; isRequested: boolean } }>({});
 
+  // Fetch user statuses with respect to the current user (friend, requested, or not)
   const fetchUserStatuses = async () => {
     const statuses: { [key: string]: { isFriend: boolean; isRequested: boolean } } = {};
     for (const user of filteredUsers) {
@@ -18,12 +27,14 @@ export default function ListOfFilteredUsers({ filteredUsers, searchText, firesto
     setUserStatuses(statuses);
   };
 
+  // Fetch user statuses when the filtered users change
   useEffect(() => {
     if (filteredUsers.length > 0) {
       fetchUserStatuses();
     }
   }, [filteredUsers]);
 
+  // Handle add friend request
   const handleAdd = async (userId: string) => {
     try {
       await firestoreCtrl.addFriend(uid, userId);
@@ -37,6 +48,7 @@ export default function ListOfFilteredUsers({ filteredUsers, searchText, firesto
     }
   };
 
+  // Handle remove friend request
   const handleRemove = async (userId: string) => {
     try {
       await firestoreCtrl.removeFriendRequest(uid, userId);
