@@ -1,4 +1,4 @@
-import { limit } from "firebase/firestore";
+import { limit, GeoPoint } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -12,7 +12,7 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as Location from "expo-location";
+import { LocationObject, LocationObjectCoords } from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -32,7 +32,7 @@ export type DBChallenge = {
   image_id?: string;
   comment_id?: string;
   date: Date;
-  location?: Location.LocationObjectCoords;
+  location: GeoPoint | null;
 };
 
 export type DBComment = {
@@ -115,14 +115,21 @@ export default class FirestoreCtrl {
 
       await uploadBytes(storageRef, blob);
 
-      const downloadUrl = await getDownloadURL(storageRef);
-      console.log("DownloadUrl", downloadUrl);
-      return downloadUrl;
+      return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
       console.log("Error uploading image: ", error);
       throw error;
     }
+  }
+
+  /**
+   * Get the url of an image
+   */
+  async getImageUrl(id_picture: string) {
+    const storageRef = ref(getStorage(), "images/" + id_picture);
+    const url = await getDownloadURL(storageRef);
+    return url;
   }
 
   /**

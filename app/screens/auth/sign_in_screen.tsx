@@ -48,6 +48,7 @@ export default function SignInScreen({ navigation, firestoreCtrl }: any) {
             <ThemedTextInput
               style={styles.input}
               type="email"
+              testID="email-input"
               onChangeText={(text) => setEmail(text)}
               viewWidth={"90%"}
               title="Email"
@@ -57,6 +58,7 @@ export default function SignInScreen({ navigation, firestoreCtrl }: any) {
             <ThemedTextInput
               style={styles.input}
               type="password"
+              testID="password-input"
               onChangeText={(text) => setPassword(text)}
               viewWidth={"90%"}
               title="Password"

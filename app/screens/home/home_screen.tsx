@@ -6,7 +6,6 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge } from "@/firebase/FirestoreCtrl";
-import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
@@ -28,6 +27,8 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
+  const user = route.params?.user || {};
+
 
   // Fetch the current challenge description
   useEffect(() => {
@@ -53,11 +54,12 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
   // Fetch the list of challenges
   useEffect(() => {
-    console.log("UID", uid);
-    if (uid) {
+    if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(
+            user.uid,
+          );
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -66,7 +68,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
       fetchChallenges();
     }
-  }, [uid]);
+  }, [user.uid]);
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -76,7 +78,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         rightIcon="person-circle-outline"
         rightAction={() => {
           navigation.navigate("Profile");
-
         }}
       />
 

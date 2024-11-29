@@ -29,6 +29,7 @@ export function ThemedTextButton({
   textType,
   colorType,
   textColorType = "backgroundPrimary",
+  testID,
 }: ThemedTextButtonProps) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
@@ -39,6 +40,7 @@ export function ThemedTextButton({
     <TouchableOpacity
       style={[style, { backgroundColor: color }]}
       onPress={onPress}
+      {...(testID && { testID })}
     >
       <ThemedText style={[textStyle]} colorType={textColorType} type={textType}>
         {text}
