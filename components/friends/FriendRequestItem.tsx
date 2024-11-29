@@ -1,8 +1,8 @@
-import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ThemedText } from '@/components/theme/ThemedText';
-import { ThemedView } from '@/components/theme/ThemedView';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React from "react";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 /**
  * Friend Request Item component
@@ -12,7 +12,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
  * @param onDecline : function to decline a friend request
  * @returns FriendRequestItem Component
  */
-export const FriendRequestItem = ({ name, avatar, onAccept, onDecline }: any) => (
+export const FriendRequestItem = ({
+  name,
+  avatar,
+  onAccept,
+  onDecline,
+}: any) => (
   <ThemedView style={styles.requestItem} testID="friend-request-item">
     {avatar ? (
       <Image
@@ -71,39 +76,39 @@ const styles = StyleSheet.create({
     width: 50,
   },
   requestButtons: {
-    alignItems: 'center',
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-start',
-    marginLeft: 'auto',
+    alignItems: "center",
+    flexDirection: "row-reverse",
+    justifyContent: "flex-start",
+    marginLeft: "auto",
   },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     marginRight: 10,
   },
   defaultAvatar: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#800080',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#800080",
   },
   avatarText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   requestItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    backgroundColor: 'transparent',
+    borderBottomColor: "#333",
+    backgroundColor: "transparent",
   },
   name: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

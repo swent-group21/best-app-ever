@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
-import { ThemedText } from '@/components/theme/ThemedText';
-import { UserListItem } from '@/components/friends/UserListItems';
-import { ThemedView } from '@/components/theme/ThemedView';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { UserListItem } from "@/components/friends/UserListItems";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { StyleSheet } from "react-native";
 
 /**
  * List of filtered users component
@@ -13,12 +13,21 @@ import { StyleSheet } from 'react-native';
  * @param uid : user id of the current user
  * @returns ListOfFilteredUsers Component
  */
-export default function ListOfFilteredUsers({ filteredUsers, searchText, firestoreCtrl, uid }: any) {
-  const [userStatuses, setUserStatuses] = useState<{ [key: string]: { isFriend: boolean; isRequested: boolean } }>({});
+export default function ListOfFilteredUsers({
+  filteredUsers,
+  searchText,
+  firestoreCtrl,
+  uid,
+}: any) {
+  const [userStatuses, setUserStatuses] = useState<{
+    [key: string]: { isFriend: boolean; isRequested: boolean };
+  }>({});
 
   // Fetch user statuses with respect to the current user (friend, requested, or not)
   const fetchUserStatuses = async () => {
-    const statuses: { [key: string]: { isFriend: boolean; isRequested: boolean } } = {};
+    const statuses: {
+      [key: string]: { isFriend: boolean; isRequested: boolean };
+    } = {};
     for (const user of filteredUsers) {
       const isFriend = await firestoreCtrl.isFriend(uid, user.uid);
       const isRequested = await firestoreCtrl.isRequested(uid, user.uid);
@@ -38,13 +47,13 @@ export default function ListOfFilteredUsers({ filteredUsers, searchText, firesto
   const handleAdd = async (userId: string) => {
     try {
       await firestoreCtrl.addFriend(uid, userId);
-      console.log('Friend request sent');
+      console.log("Friend request sent");
       setUserStatuses((prev) => ({
         ...prev,
         [userId]: { ...prev[userId], isRequested: true },
       }));
     } catch (error) {
-      console.error('Error adding friend:', error);
+      console.error("Error adding friend:", error);
     }
   };
 
@@ -52,24 +61,27 @@ export default function ListOfFilteredUsers({ filteredUsers, searchText, firesto
   const handleRemove = async (userId: string) => {
     try {
       await firestoreCtrl.removeFriendRequest(uid, userId);
-      console.log('Friend request canceled');
+      console.log("Friend request canceled");
       setUserStatuses((prev) => ({
         ...prev,
         [userId]: { ...prev[userId], isRequested: false },
       }));
     } catch (error) {
-      console.error('Error canceling friend request:', error);
+      console.error("Error canceling friend request:", error);
     }
   };
 
   return (
-    <ThemedView style={{ padding: 10, backgroundColor: 'transparent' }}>
+    <ThemedView style={{ padding: 10, backgroundColor: "transparent" }}>
       {filteredUsers.length > 0 ? (
         <FlatList
           data={filteredUsers}
           keyExtractor={(item) => item.uid}
           renderItem={({ item }) => {
-            const { isFriend, isRequested } = userStatuses[item.uid] || { isFriend: false, isRequested: false };
+            const { isFriend, isRequested } = userStatuses[item.uid] || {
+              isFriend: false,
+              isRequested: false,
+            };
 
             return (
               <UserListItem
@@ -84,18 +96,18 @@ export default function ListOfFilteredUsers({ filteredUsers, searchText, firesto
           }}
         />
       ) : (
-        searchText.length > 0 && <ThemedText style={styles.noResults}>No user found</ThemedText>
+        searchText.length > 0 && (
+          <ThemedText style={styles.noResults}>No user found</ThemedText>
+        )
       )}
     </ThemedView>
   );
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   noResults: {
-    color: '#aaa',
-    textAlign: 'center',
+    color: "#aaa",
+    textAlign: "center",
     marginVertical: 20,
   },
 });
-
-

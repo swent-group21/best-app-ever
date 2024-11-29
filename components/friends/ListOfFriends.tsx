@@ -1,11 +1,11 @@
-import React from 'react';
-import { FlatList } from 'react-native';
-import { FriendListItem } from '@/components/friends/FriendListItem';
-import { ThemedText } from '@/components/theme/ThemedText';
-import { Dimensions } from 'react-native';
-import { StyleSheet } from 'react-native';
+import React from "react";
+import { FlatList } from "react-native";
+import { FriendListItem } from "@/components/friends/FriendListItem";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 
-const { height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get("window");
 
 /**
  * List of friends component that displays the list of the current user's friends
@@ -30,21 +30,21 @@ export default function ListOfFriends({ friends, handleFriendPress }: any) {
       horizontal
       showsHorizontalScrollIndicator={false}
       ListEmptyComponent={
-        <ThemedText style={styles.noFriends}>You don't have any friends yet</ThemedText>
+        <ThemedText style={styles.noFriends}>
+          You don't have any friends yet
+        </ThemedText>
       }
       testID="list-of-friends"
     />
   );
 }
 
-
-const styles= StyleSheet.create({
-    noFriends: {
-        color: '#aaa',
-        textAlign: 'center',
-        marginVertical: 20,
-        alignSelf: 'center',
-        marginLeft : width * 0.2,
-      },
-    
+const styles = StyleSheet.create({
+  noFriends: {
+    color: "#aaa",
+    textAlign: "center",
+    marginVertical: 20,
+    alignSelf: "center",
+    marginLeft: width * 0.2,
+  },
 });

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { ThemedText } from '@/components/theme/ThemedText';
-import { ThemedView } from '@/components/theme/ThemedView';
+import React from "react";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
 
 /**
  * Friend List Item component
@@ -14,7 +14,8 @@ export const FriendListItem = ({ name, avatar, onPress }: any) => (
   <TouchableOpacity
     style={styles.friendItem}
     onPress={onPress}
-    testID={`friend-item-${name}`}  >
+    testID={`friend-item-${name}`}
+  >
     {avatar ? (
       <Image
         source={{ uri: avatar }}
@@ -40,28 +41,28 @@ export const FriendListItem = ({ name, avatar, onPress }: any) => (
 
 const styles = StyleSheet.create({
   friendItem: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 10,
   },
   friendAvatar: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
   },
   friendName: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
     marginTop: 5,
   },
   defaultAvatar: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#800080',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#800080",
   },
   avatarText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

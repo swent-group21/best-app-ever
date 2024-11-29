@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { ThemedText } from '@/components/theme/ThemedText';
-import { ThemedView } from '@/components/theme/ThemedView';
-
+import React, { useState, useEffect } from "react";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
 
 /**
- * User list item component 
+ * User list item component
  * @param name : name of the user
  * @param avatar : avatar of the user
  * @param isFriend : boolean indicating if the user is a friend
@@ -14,28 +13,35 @@ import { ThemedView } from '@/components/theme/ThemedView';
  * @param onCancelRequest : function to cancel a friend request
  * @returns UserListItem Component
  */
-export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCancelRequest }: any) => {
-  const [status, setStatus] = useState('ADD');
+export const UserListItem = ({
+  name,
+  avatar,
+  isFriend,
+  isRequested,
+  onAdd,
+  onCancelRequest,
+}: any) => {
+  const [status, setStatus] = useState("ADD");
 
   // Set the status of the user based on the friend and requested status
   useEffect(() => {
     if (isFriend) {
-      setStatus('FRIEND');
+      setStatus("FRIEND");
     } else if (isRequested) {
-      setStatus('REQUESTED');
+      setStatus("REQUESTED");
     } else {
-      setStatus('ADD');
+      setStatus("ADD");
     }
   }, [isFriend, isRequested]);
 
   // Handle the press event based on the status
   const handlePress = () => {
-    if (status === 'ADD') {
+    if (status === "ADD") {
       onAdd();
-      setStatus('REQUESTED');
-    } else if (status === 'REQUESTED') {
+      setStatus("REQUESTED");
+    } else if (status === "REQUESTED") {
       onCancelRequest();
-      setStatus('ADD');
+      setStatus("ADD");
     }
   };
 
@@ -46,7 +52,9 @@ export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCan
       ) : (
         <ThemedView style={[styles.avatar, styles.defaultAvatar]}>
           {/* Display the first letter of the user's name */}
-          <ThemedText style={styles.avatarText}>{name.charAt(0).toUpperCase()}</ThemedText>
+          <ThemedText style={styles.avatarText}>
+            {name.charAt(0).toUpperCase()}
+          </ThemedText>
         </ThemedView>
       )}
 
@@ -54,10 +62,14 @@ export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCan
         <ThemedText style={styles.name}>{name}</ThemedText>
       </ThemedView>
 
-      {status === 'FRIEND' ? (
+      {status === "FRIEND" ? (
         <ThemedText style={styles.friendCheck}>✓</ThemedText>
       ) : (
-        <TouchableOpacity style={styles.addButton} onPress={handlePress} testID={`add-button-${name}`}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handlePress}
+          testID={`add-button-${name}`}
+        >
           <ThemedText style={styles.addButtonText}>{status}</ThemedText>
         </TouchableOpacity>
       )}
@@ -67,54 +79,54 @@ export const UserListItem = ({ name, avatar, isFriend, isRequested, onAdd, onCan
 
 const styles = StyleSheet.create({
   addButton: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 5,
-    marginLeft: 'auto',
+    marginLeft: "auto",
   },
   addButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   friendCheck: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 'auto',
+    fontWeight: "bold",
+    marginLeft: "auto",
   },
   listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    backgroundColor: '#000',
+    borderBottomColor: "#333",
+    backgroundColor: "#000",
   },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     marginRight: 10,
   },
   avatarText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   defaultAvatar: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#800080',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#800080",
   },
   textContainer: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   name: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

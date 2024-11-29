@@ -1,49 +1,53 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { FriendListItem } from '@/components/friends/FriendListItem';
+import React from "react";
+import { render, fireEvent } from "@testing-library/react-native";
+import { FriendListItem } from "@/components/friends/FriendListItem";
 
-describe('FriendListItem Component', () => {
+describe("FriendListItem Component", () => {
   const mockOnPress = jest.fn();
 
-  it('renders with a custom avatar', () => {
+  it("renders with a custom avatar", () => {
     const { getByTestId } = render(
       <FriendListItem
         name="John Doe"
         avatar="https://example.com/avatar.jpg"
         onPress={mockOnPress}
-      />
+      />,
     );
 
-    const avatarImage = getByTestId('friend-avatar-image');
-    expect(avatarImage.props.source.uri).toBe('https://example.com/avatar.jpg');
+    const avatarImage = getByTestId("friend-avatar-image");
+    expect(avatarImage.props.source.uri).toBe("https://example.com/avatar.jpg");
   });
 
-  it('renders with a default avatar when no avatar is provided', () => {
+  it("renders with a default avatar when no avatar is provided", () => {
     const { getByTestId, getByText } = render(
-      <FriendListItem name="Jane Smith" avatar={null} onPress={mockOnPress} />
+      <FriendListItem name="Jane Smith" avatar={null} onPress={mockOnPress} />,
     );
 
-    const defaultAvatar = getByTestId('friend-default-avatar');
-    const initialText = getByText('J');
+    const defaultAvatar = getByTestId("friend-default-avatar");
+    const initialText = getByText("J");
     expect(defaultAvatar).toBeTruthy();
     expect(initialText).toBeTruthy();
   });
 
-  it('displays the friend\'s name correctly', () => {
+  it("displays the friend's name correctly", () => {
     const { getByText } = render(
-      <FriendListItem name="Alice Johnson" avatar={null} onPress={mockOnPress} />
+      <FriendListItem
+        name="Alice Johnson"
+        avatar={null}
+        onPress={mockOnPress}
+      />,
     );
 
-    const friendName = getByText('Alice Johnson');
+    const friendName = getByText("Alice Johnson");
     expect(friendName).toBeTruthy();
   });
 
-  it('calls the onPress handler when clicked', () => {
+  it("calls the onPress handler when clicked", () => {
     const { getByTestId } = render(
-      <FriendListItem name="Bob Brown" avatar={null} onPress={mockOnPress} />
+      <FriendListItem name="Bob Brown" avatar={null} onPress={mockOnPress} />,
     );
 
-    const touchable = getByTestId('friend-list-item');
+    const touchable = getByTestId("friend-list-item");
     fireEvent.press(touchable);
 
     expect(mockOnPress).toHaveBeenCalledTimes(1);

@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { ThemedView } from '@/components/theme/ThemedView';
-import { ThemedTextInput } from '@/components/theme/ThemedTextInput';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 /**
  * Search bar component
@@ -9,29 +9,31 @@ import { ThemedTextInput } from '@/components/theme/ThemedTextInput';
  * @returns SearchBar Component
  */
 
-export const SearchBar = ({ onSearch }: { onSearch: (text: string) => void }) => (
-    <ThemedView style={styles.searchContainer}>
-      <ThemedTextInput
-        style={styles.searchInput}
-        placeholder="Search for a user..."
-        placeholderTextColor="#aaa"
-        onChangeText={onSearch}
-      />
-    </ThemedView>
-  );
+export const SearchBar = ({
+  onSearch,
+}: {
+  onSearch: (text: string) => void;
+}) => (
+  <ThemedView style={styles.searchContainer}>
+    <ThemedTextInput
+      style={styles.searchInput}
+      placeholder="Search for a user..."
+      placeholderTextColor="#aaa"
+      onChangeText={onSearch}
+    />
+  </ThemedView>
+);
 
 const styles = StyleSheet.create({
-    searchContainer: {
-        padding: 10,
-        backgroundColor: 'transparent', 
-      
-      },
-      searchInput: {
-        backgroundColor: '#222', 
-        color: '#fff', 
-        borderRadius: 8,
-        padding: 10,
-        fontSize: 16,
-      },
+  searchContainer: {
+    padding: 10,
+    backgroundColor: "transparent",
+  },
+  searchInput: {
+    backgroundColor: "#222",
+    color: "#fff",
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+  },
 });
-

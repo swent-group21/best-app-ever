@@ -24,10 +24,9 @@ export type DBUser = {
   image_id?: string;
   createdAt: Date;
   friends?: string[];
-  userRequestedFriends? : string[];
-  friendsRequestedUser? : string[];
+  userRequestedFriends?: string[];
+  friendsRequestedUser?: string[];
   groups?: string[];
-
 };
 
 export type DBChallenge = {
@@ -251,7 +250,7 @@ export default class FirestoreCtrl {
         collection(firestore, "challenges"),
         challengeData,
       );
-    console.log("Challenge id: ", docRef.id);
+      console.log("Challenge id: ", docRef.id);
     } catch (error) {
       console.error("Error writting challenge document: ", error);
       throw error;
@@ -328,8 +327,7 @@ export default class FirestoreCtrl {
     }
   }
 
-
-  /** 
+  /**
    * Retrieves all users from Firestore.
    * @returns A promise that resolves to an array of users.
    * */
@@ -344,7 +342,7 @@ export default class FirestoreCtrl {
           ...data,
         } as DBUser;
       });
-      
+
       return users;
     } catch (error) {
       console.error("Error getting all users: ", error);
@@ -356,27 +354,25 @@ export default class FirestoreCtrl {
    * Add a friend to the user's friend list.
    * @param userId The UID of the user.
    * @param friendId The UID of the friend to add.
-   */ 
+   */
 
   async addFriend(userId: string, friendId: string) {
-    try
-    {
+    try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
 
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
-     // if (user.friends?.includes(friendId) || user.userRequestedFriends?.includes(friendId) || user.friendsRequestedUser?.includes(friendId)) {
-     //   return;
-     // }
+      // if (user.friends?.includes(friendId) || user.userRequestedFriends?.includes(friendId) || user.friendsRequestedUser?.includes(friendId)) {
+      //   return;
+      // }
 
       user.userRequestedFriends?.push(friendId);
       friend.friendsRequestedUser?.push(userId);
 
       await this.createUser(userId, user);
       await this.createUser(friendId, friend);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error adding friend: ", error);
       throw error;
     }
@@ -388,8 +384,7 @@ export default class FirestoreCtrl {
    * @param friendId The UID of the friend to accept.
    * */
   async acceptFriend(userId: string, friendId: string) {
-    try
-    {
+    try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
 
@@ -399,14 +394,16 @@ export default class FirestoreCtrl {
       user.friends?.push(friendId);
       friend.friends?.push(userId);
 
-      user.friendsRequestedUser = user.friendsRequestedUser?.filter((id) => id !== friendId);
-      friend.userRequestedFriends = friend.userRequestedFriends?.filter((id) => id !== userId);
-      
+      user.friendsRequestedUser = user.friendsRequestedUser?.filter(
+        (id) => id !== friendId,
+      );
+      friend.userRequestedFriends = friend.userRequestedFriends?.filter(
+        (id) => id !== userId,
+      );
 
       await this.createUser(userId, user);
       await this.createUser(friendId, friend);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error accepting friend: ", error);
       throw error;
     }
@@ -419,21 +416,23 @@ export default class FirestoreCtrl {
    * */
 
   async rejectFriend(userId: string, friendId: string) {
-    try
-    {
+    try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
 
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
 
-      user.friendsRequestedUser = user.friendsRequestedUser?.filter((id) => id !== friendId);
-      friend.userRequestedFriends = friend.userRequestedFriends?.filter((id) => id !== userId);
+      user.friendsRequestedUser = user.friendsRequestedUser?.filter(
+        (id) => id !== friendId,
+      );
+      friend.userRequestedFriends = friend.userRequestedFriends?.filter(
+        (id) => id !== userId,
+      );
 
       await this.createUser(userId, user);
       await this.createUser(friendId, friend);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error rejecting friend: ", error);
       throw error;
     }
@@ -446,7 +445,9 @@ export default class FirestoreCtrl {
   async getFriends(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
-      const friends = await Promise.all(user.friends?.map(async (id) => await this.getUser(id)) || []);
+      const friends = await Promise.all(
+        user.friends?.map(async (id) => await this.getUser(id)) || [],
+      );
       return friends;
     } catch (error) {
       console.error("Error getting friends: ", error);
@@ -461,7 +462,10 @@ export default class FirestoreCtrl {
   async getRequestedFriends(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
-      const friends = await Promise.all(user.userRequestedFriends?.map(async (id) => await this.getUser(id)) || []);
+      const friends = await Promise.all(
+        user.userRequestedFriends?.map(async (id) => await this.getUser(id)) ||
+          [],
+      );
       return friends;
     } catch (error) {
       console.error("Error getting requested friends: ", error);
@@ -517,7 +521,10 @@ export default class FirestoreCtrl {
   async getFriendRequests(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
-      const friends = await Promise.all(user.friendsRequestedUser?.map(async (id) => await this.getUser(id)) || []);
+      const friends = await Promise.all(
+        user.friendsRequestedUser?.map(async (id) => await this.getUser(id)) ||
+          [],
+      );
       return friends;
     } catch (error) {
       console.error("Error getting friends requested user: ", error);
@@ -526,22 +533,23 @@ export default class FirestoreCtrl {
   }
 
   async removeFriendRequest(userId: string, friendId: string) {
-
-    try
-    {
+    try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
 
       user.friendsRequestedUser = user.friendsRequestedUser || [];
       friend.userRequestedFriends = friend.userRequestedFriends || [];
 
-      user.userRequestedFriends = user.userRequestedFriends?.filter((id) => id !== friendId);
-      friend.friendsRequestedUser = friend.friendsRequestedUser?.filter((id) => id !== userId);
+      user.userRequestedFriends = user.userRequestedFriends?.filter(
+        (id) => id !== friendId,
+      );
+      friend.friendsRequestedUser = friend.friendsRequestedUser?.filter(
+        (id) => id !== userId,
+      );
 
       await this.createUser(userId, user);
       await this.createUser(friendId, friend);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error unadding friend: ", error);
       throw error;
     }
@@ -556,7 +564,7 @@ export default class FirestoreCtrl {
     }
   }
 
-   /* Retrieves all members assigned to a specific group.
+  /* Retrieves all members assigned to a specific group.
    *
    * @param uid The UID of the group whose members are to be fetched.
    * @returns A promise that resolves to an array of groups.
@@ -571,7 +579,6 @@ export default class FirestoreCtrl {
       if (!userData.members || userData.members.length === 0) {
         return [];
       }
-
 
       // Retrieve all users using the user IDs
       const usersRef = collection(firestore, "users");
@@ -595,7 +602,6 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
-
 
   async isRequested(userId: string, friendId: string) {
     try {
@@ -633,5 +639,4 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
-
 }

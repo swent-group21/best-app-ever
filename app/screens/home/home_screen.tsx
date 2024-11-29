@@ -106,13 +106,9 @@ export default function HomeScreen({
       <TopBar
         title="Strive"
         leftIcon="people-outline"
-
-        
-
-       
-        leftAction={() => {navigation.navigate("Friends")}}
-
-
+        leftAction={() => {
+          navigation.navigate("Friends");
+        }}
         rightIcon={
           userIsGuest || !user.image_id
             ? "person-circle-outline"
@@ -121,7 +117,6 @@ export default function HomeScreen({
         rightAction={() => {
           navigation.navigate("Profile");
         }}
-
       />
 
       {/* Groups */}
