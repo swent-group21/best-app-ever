@@ -1,4 +1,4 @@
-import { limit, orderBy, Timestamp, GeoPoint } from "firebase/firestore";
+import { FieldPath, limit, documentId, GeoPoint, limit, Timestamp } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -22,6 +22,7 @@ export type DBUser = {
   address?: string;
   image_id?: string;
   createdAt: Date;
+  groups?: string[];
 };
 
 export type DBChallenge = {
@@ -42,6 +43,13 @@ export type DBComment = {
   post_id: string;
 };
 
+export type DBGroup = {
+  group_id: string;
+  group_name: string;
+  description?: string;
+  members: string[];
+  creationDate?: Date;
+};
 export type DBChallengeDescription = {
   title: string;
   description: string;
@@ -110,14 +118,41 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture);
-      console.log("StorageRef:", storageRef);
+      //console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
-      console.log("Error uploading image: ", error);
+      //console.log("Error uploading image: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Upload an image url to Firestore storage.
+   */
+  async uploadImageFromUrl(imageUri: string) {
+    try {
+      if (!imageUri) {
+        throw new Error("No image URI provided.");
+      }
+
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+
+      const id_picture = (Math.random() + 1).toString(36).substring(2);
+      const storageRef = ref(getStorage(), "images/" + id_picture);
+      //console.log("StorageRef:", storageRef);
+
+      await uploadBytes(storageRef, blob);
+
+      const downloadUrl = await getDownloadURL(storageRef);
+      //console.log("DownloadUrl", downloadUrl);
+      return downloadUrl;
+    } catch (error) {
+      console.error("Error uploading image: ", error);
       throw error;
     }
   }
@@ -156,6 +191,7 @@ export default class FirestoreCtrl {
       const user = await this.getUser(id);
       user.name = name;
       await this.createUser(id, user);
+      console.log("User: ", user);
       setUser(user);
     } catch (error) {
       console.error("Error setting name: ", error);
@@ -179,6 +215,7 @@ export default class FirestoreCtrl {
   /**
    * Set the profile picture of a user by their UID.
    */
+
   async setProfilePicture(
     id: string,
     imageUri: string,
@@ -186,7 +223,7 @@ export default class FirestoreCtrl {
   ) {
     try {
       const user = await this.getUser(id);
-      user.image_id = await this.uploadImageFromUri(imageUri);
+      user.image_id = await this.uploadImageFromUrl(imageUri);
       await this.createUser(id, user);
       setUser(user);
     } catch (error) {
@@ -304,6 +341,83 @@ export default class FirestoreCtrl {
       return comments;
     } catch (error) {
       console.error("Error getting comments: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all groups assigned to a specific user.
+   *
+   * @param uid The UID of the user whose groups are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getGroupsByUserId(uid: string): Promise<DBGroup[]> {
+    try {
+      const userRef = doc(firestore, "users", uid);
+      const userDoc = await getDoc(userRef);
+
+      const userData = userDoc.data() as DBUser;
+
+      console.log("userGroups [" + uid + "]", userData.groups);
+
+      // Retrieve all groups using the group IDs
+      const groupsRef = collection(firestore, "groups");
+
+      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+
+      const groupSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBGroup
+      const dbGroups: DBGroup[] = groupSnapshots.docs.map(
+        (doc) =>
+          ({
+            group_id: doc.id,
+            ...doc.data(),
+          }) as DBGroup,
+      );
+
+      return dbGroups;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all members assigned to a specific group.
+   *
+   * @param uid The UID of the group whose members are to be fetched.
+   * @returns A promise that resolves to an array of groups.
+   */
+  async getUsersInGroup(gid: string): Promise<DBUser[]> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const groupDoc = await getDoc(groupRef);
+
+      const userData = groupDoc.data() as DBGroup;
+
+      if (!userData.members || userData.members.length === 0) {
+        return [];
+      }
+
+      // Retrieve all users using the user IDs
+      const usersRef = collection(firestore, "users");
+      const q = query(usersRef, where("uid", "in", userData.members));
+
+      const usersSnapshots = await getDocs(q);
+
+      // Map the results into an array of DBUser
+      const dbUsers: DBUser[] = usersSnapshots.docs.map(
+        (doc) =>
+          ({
+            uid: doc.id,
+            ...doc.data(),
+          }) as DBUser,
+      );
+
+      return dbUsers;
+    } catch (error) {
+      console.error("Error getting groups by user ID: ", error);
       throw error;
     }
   }

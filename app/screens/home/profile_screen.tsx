@@ -5,53 +5,97 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { Dimensions } from "react-native";
+import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
+import { Dimensions, StyleSheet } from "react-native";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Icon } from "react-native-elements";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
 
 export default function ProfileScreen({
   user,
+  setUser,
   navigation,
   firestoreCtrl,
 }: {
   user: DBUser;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(
-    user ? true : false,
+  const userIsGuest = user.name === "Guest";
+
+  React.useEffect(() => {
+    const fetchProfilePicture = async () => {
+      const profilePicture = await firestoreCtrl.getProfilePicture(user.uid);
+      setImage(profilePicture || null);
+    };
+    fetchProfilePicture();
+  }, [user.uid]);
+
+  const [name, setName] = React.useState<string>(user.name);
+
+  React.useEffect(() => {
+    setName(user.name);
+  }, [user.name]);
+
+  const [image, setImage] = React.useState<string | null>(
+    user.image_id ? user.image_id : null,
   );
-  const [image, setImage] = React.useState<string | null>(null);
 
   const pickImage = async () => {
-    console.log("Loading image");
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+    try {
+      let result = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error("Error picking image: ", error);
+    }
+  };
+
+  const upload = async () => {
+    if ((await user.name) === "") {
+      alert("Please enter a username.");
+    } else {
+      try {
+        await firestoreCtrl.setName(user.uid, name, setUser);
+        if (image) {
+          await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
+        }
+      } catch (error) {
+        console.error("Error changing profile: ", error);
+        alert("Error changing profile: " + error);
+      }
     }
   };
 
   return (
     <ThemedView style={styles.bigContainer} testID="profile-screen">
-      {isLoggedIn && (
+      {!userIsGuest && (
         <>
           <TopBar
             title="Your profile"
             leftIcon="arrow-back"
-            leftAction={navigation.goBack}
+            leftAction={() => {
+              upload();
+              navigation.goBack();
+            }}
           />
-          <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
+          <TouchableOpacity
+            onPress={pickImage}
+            testID="image-picker"
+            style={styles.smallContainer}
+          >
             {!image ? (
               <ThemedIconButton
                 name="person-circle-outline"
@@ -64,7 +108,11 @@ export default function ProfileScreen({
             )}
           </TouchableOpacity>
           <ThemedView style={styles.smallContainer}>
-            <ThemedText style={styles.username}>{user.name}</ThemedText>
+            <ThemedTextInput
+              style={styles.username}
+              value={name}
+              onChangeText={setName}
+            />
           </ThemedView>
           <ThemedView style={styles.actionsContainer}>
             <ThemedView style={styles.row}>
@@ -107,7 +155,7 @@ export default function ProfileScreen({
         </>
       )}
 
-      {!isLoggedIn && (
+      {userIsGuest && (
         <ThemedView style={styles.smallContainer}>
           <ThemedText style={styles.notLoggedIn}>
             You are not logged in !
@@ -117,7 +165,8 @@ export default function ProfileScreen({
             textColorType="white"
             darkColor="transparent"
             lightColor="transparent"
-            onPress={() => navigation.navigate("WelcomeFinal")}
+            testID="sign-in-button"
+            onPress={() => logOut(navigation)}
           />
         </ThemedView>
       )}
@@ -125,7 +174,7 @@ export default function ProfileScreen({
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   bigContainer: {
     flex: 1,
     alignItems: "center",
@@ -141,14 +190,15 @@ const styles = {
     marginBottom: 40,
   },
   username: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
     marginBottom: 20,
     color: "white",
+    textAlign: "center",
   },
   columnInfo: {
     flexDirection: "column",
-    alignItems: "left",
+    alignItems: "flex-start",
   },
   logOut: {
     width: "100%",
@@ -163,7 +213,7 @@ const styles = {
     alignItems: "center",
   },
   action: {
-    alignItems: "left",
+    alignItems: "flex-start",
     borderRadius: 10,
     borderColor: "transparent",
     borderWidth: 1,
@@ -189,7 +239,8 @@ const styles = {
   notLoggedIn: {
     width: "100%",
     alignItems: "center",
+    textAlign: "center",
     fontSize: 20,
     fontWeight: "bold",
   },
-};
+});

@@ -27,6 +27,7 @@ const defaultLocation = {
  *
  * @returns The MapScreen component
  */
+
 export default function MapScreen({
   user,
   navigation,
