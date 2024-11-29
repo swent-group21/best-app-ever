@@ -39,7 +39,7 @@ export default function WelcomeIntroScreen({ navigation }: any) {
       </ThemedText>
 
       {/* Logo */}
-      <ThemedView style={styles.imageContainer}>
+      <ThemedView testID="test-image" style={styles.imageContainer}>
         <Image style={styles.image} source={require(`${uri}icon_trans.png`)} />
       </ThemedView>
     </ThemedView>

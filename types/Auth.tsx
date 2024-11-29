@@ -50,7 +50,7 @@ export const logInWithEmail = async (
         if (user) {
           navigation.reset({
             index: 0,
-            routes: [{ name: "Home" }],
+            routes: [{ name: "Home", params: { user: user } }],
           });
         }
       } else {

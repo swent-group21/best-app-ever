@@ -7,7 +7,6 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge, DBGroup } from "@/firebase/FirestoreCtrl";
-import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Colors } from "@/constants/Colors";
@@ -17,20 +16,20 @@ import { color } from "react-native-elements/dist/helpers";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
+export default function HomeScreen({ navigation, route, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
 
-  const auth = getAuth();
-  const uid = auth.currentUser?.uid;
+  const user = route.params?.user || {};
 
   useEffect(() => {
-    console.log("UID", uid);
-    if (uid) {
+    if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
-          console.log("Challenges [" + uid + "]", challengesData);
+          const challengesData = await firestoreCtrl.getChallengesByUserId(
+            user.uid,
+          );
+          console.log("Challenges", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -39,7 +38,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
 
       fetchChallenges();
     }
-  }, [uid]);
+  }, [user.uid]);
 
   useEffect(() => {
     console.log("UID", uid);
@@ -64,7 +63,9 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         title="Commute by foot"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
-        rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
+        rightAction={() => {
+          navigation.navigate("Profile");
+        }}
       />
 
       <ThemedScrollView
@@ -119,6 +120,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
               firestoreCtrl={firestoreCtrl}
               key={index}
               challengeDB={challenge}
+              testID={`challenge-id-${index}`}
               // Include other props as needed
             />
           ))
@@ -126,6 +128,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
       </ThemedScrollView>
 
       <BottomBar
+        testID="bottom-bar"
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
