@@ -1,4 +1,10 @@
-import { FieldPath, limit, documentId, GeoPoint, Timestamp } from "firebase/firestore";
+import {
+  FieldPath,
+  limit,
+  documentId,
+  GeoPoint,
+  Timestamp,
+} from "firebase/firestore";
 import {
   firestore,
   doc,

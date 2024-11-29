@@ -149,7 +149,7 @@
 //   });
 // });
 
-describe("User State Flow", () => {
+describe("Home test", () => {
   it("placeholder", async () => {
     expect(true).toBe(true);
   });
