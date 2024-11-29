@@ -7,8 +7,7 @@ export const FriendListItem = ({ name, avatar, onPress }: any) => (
   <TouchableOpacity
     style={styles.friendItem}
     onPress={onPress}
-    testID="friend-list-item"
-  >
+    testID={`friend-item-${name}`}  >
     {avatar ? (
       <Image
         source={{ uri: avatar }}

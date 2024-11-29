@@ -3,6 +3,7 @@ import { FlatList } from 'react-native';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { UserListItem } from '@/components/friends/UserListItems';
 import { ThemedView } from '@/components/theme/ThemedView';
+import { StyleSheet } from 'react-native';
 
 export default function ListOfFilteredUsers({ filteredUsers, searchText, firestoreCtrl, uid }: any) {
   const [userStatuses, setUserStatuses] = useState<{ [key: string]: { isFriend: boolean; isRequested: boolean } }>({});
@@ -77,12 +78,12 @@ export default function ListOfFilteredUsers({ filteredUsers, searchText, firesto
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({ 
   noResults: {
     color: '#aaa',
     textAlign: 'center',
     marginVertical: 20,
   },
-};
+});
 
 
