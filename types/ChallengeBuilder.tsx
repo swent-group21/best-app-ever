@@ -70,7 +70,7 @@ export const createChallenge = async (
       // Add other fields as needed
     };
 
-    if (image_id){
+    if (image_id) {
       const image_url = await firestoreCtrl.getImageUrl(image_id);
       newChallenge.image_id = image_url;
     }

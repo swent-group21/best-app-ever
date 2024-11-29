@@ -56,10 +56,7 @@ export function Challenge({
             />
 
             {isOpen && (
-              <ThemedView 
-                testID="challenge-container"
-                style={styles.container}
-              >
+              <ThemedView testID="challenge-container" style={styles.container}>
                 <ThemedView
                   style={[styles.user, { justifyContent: "space-between" }]}
                 >

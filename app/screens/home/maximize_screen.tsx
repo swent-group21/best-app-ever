@@ -89,10 +89,7 @@ export default function MaximizeScreen({
           style={styles.container}
           colorType="transparent"
         >
-          <Image
-              source={{ uri: challenge.image_id }}
-            style={styles.image}
-          />
+          <Image source={{ uri: challenge.image_id }} style={styles.image} />
         </ThemedView>
 
         {/* Like button */}
