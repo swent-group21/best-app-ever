@@ -63,7 +63,7 @@ export default function HomeScreen({
       const fetchChallenges = async () => {
         try {
           const challengesData = await firestoreCtrl.getKChallenges(100);
-          console.log("Challenges [" + user.uid + "]", challengesData);
+          // console.log("Challenges [" + user.uid + "]", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);

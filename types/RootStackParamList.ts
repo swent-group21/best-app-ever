@@ -7,7 +7,6 @@ export type RootStackParamList = {
   SignIn: undefined;
   ForgotPassword: undefined;
   SetUser: undefined;
-
   Home: undefined;
   Camera: undefined;
   SetUsername: undefined;
@@ -19,7 +18,4 @@ export type RootStackParamList = {
   };
   Profile: undefined;
   MapScreen: undefined;
-  Profile: {
-    user: DBUser;
-  };
 };

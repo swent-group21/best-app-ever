@@ -7,12 +7,7 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import FirestoreCtrl, {
-  DBChallenge,
-  DBComment,
-  DBUser,
-} from "@/firebase/FirestoreCtrl";
-import { auth } from "@/firebase/Firebase";
+import FirestoreCtrl, { DBComment, DBUser } from "@/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");

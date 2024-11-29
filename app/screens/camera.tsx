@@ -107,7 +107,7 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
 
   // Change the camera flash mode
   function toggleFlashMode() {
-    setFlashMode((current: any) => (current === "off" ? "on" : "off"));
+    setFlashMode((current: string) => (current === "off" ? "on" : "off"));
     setIsFlashEnabled(flashMode === "on" ? true : false);
   }
 

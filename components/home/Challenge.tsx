@@ -4,8 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { DBUser } from "@/firebase/FirestoreCtrl";
-import { auth } from "@/firebase/Firebase";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -16,12 +15,20 @@ export function Challenge({
   navigation,
   testID,
   currentUser,
-}: any) {
+}: {
+  challengeDB: DBChallenge;
+  index: number;
+  firestoreCtrl: FirestoreCtrl;
+  navigation: any;
+  testID: string;
+  currentUser: DBUser;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
 
+  // @ts-ignore - date is not always a Date object
   const challengeDate = challengeDB.date
     ? challengeDB.date.toDate()
     : new Date();
