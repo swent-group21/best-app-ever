@@ -55,8 +55,7 @@ export type DBGroup = {
 export type DBChallengeDescription = {
   title: string;
   description: string;
-  timeStamp: Timestamp;
-  endDate?: Date;
+  endDate: Date|Timestamp;
 };
 
 export default class FirestoreCtrl {

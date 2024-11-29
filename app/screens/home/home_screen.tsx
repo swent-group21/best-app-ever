@@ -41,7 +41,6 @@ export default function HomeScreen({
     title: "Challenge Title",
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-    timeStamp: Timestamp.fromDate(new Date(2024, 1, 1, 0, 0, 0, 0)),
   });
 
   // Fetch the current challenge description
@@ -54,10 +53,8 @@ export default function HomeScreen({
         const formattedChallenge = {
           title: currentChallengeData.title,
           description: currentChallengeData.description,
-          timeStamp: currentChallengeData.timeStamp,
-          endDate: currentChallengeData.timeStamp.toDate(),
+          endDate: currentChallengeData.endDate instanceof Timestamp ? currentChallengeData.endDate.toDate() : currentChallengeData.endDate,
         };
-  
         setTitleChallenge(formattedChallenge);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);

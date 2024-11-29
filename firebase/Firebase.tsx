@@ -28,9 +28,8 @@ import {
   where,
   Firestore,
   onSnapshot,
+  Timestamp,
 } from "firebase/firestore";
-
-import { Timestamp } from "firebase-admin/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 

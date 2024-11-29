@@ -14,7 +14,6 @@ import FirestoreCtrl, {
   DBGroup,
   DBChallengeDescription,
 } from "@/firebase/FirestoreCtrl";
-import { Timestamp } from "@/firebase/Firebase";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,7 +59,6 @@ const mockGroups: DBGroup[] = [
 const mockChallengeDescription: DBChallengeDescription = {
   title: "Challenge Title",
   description: "Challenge Description",
-  timeStamp: new Timestamp(0, 0),
   endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
 };
 
