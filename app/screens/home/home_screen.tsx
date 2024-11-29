@@ -7,7 +7,6 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { DBChallenge, DBGroup } from "@/firebase/FirestoreCtrl";
-import { getAuth } from "firebase/auth";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Colors } from "@/constants/Colors";
@@ -20,6 +19,8 @@ const { width, height } = Dimensions.get("window");
 export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: DBUser; navigation: any; firestoreCtrl: FirestoreCtrl }) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
+
+  const user = route.params?.user || {};
 
   useEffect(() => {
     if (user.uid) {
@@ -62,7 +63,9 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
         title="Commute by foot"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
-        rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
+        rightAction={() => {
+          navigation.navigate("Profile");
+        }}
       />
 
       <ThemedScrollView

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions, Switch } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { createChallenge } from "@/types/ChallengeBuilder";
@@ -8,39 +8,57 @@ import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 
-import * as Location from "expo-location";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+  LocationObject,
+} from "expo-location";
+
+import { GeoPoint } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
-const CreateChallengeScreen = ({
-  navigation,
-  image_id,
-  firestoreCtrl,
-  group_id
-}: any) => {
+const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [challenge_name, setChallengeName] = useState("");
   const [description, setDescription] = useState("");
+
   const image_id = route.params?.image_id;
   console.log("image_id: ", image_id);
-  const [permission, requestPermission] = Location.useForegroundPermissions();
 
-  // Switch values
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const [location, setLocation] = useState<LocationObject | null>(null);
+
+  const [isEnabled, setIsEnabled] = useState(true);
+  const toggleSwitch = () => {
+    setIsEnabled((previousState) => !previousState);
+  };
+
+  useEffect(() => {
+    async function getCurrentLocation() {
+      let { status } = await requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        setIsEnabled(false);
+        return;
+      }
+
+      let location = await getCurrentPositionAsync();
+
+      setLocation(location);
+    }
+
+    getCurrentLocation();
+  }, []);
 
   async function makeChallenge() {
     try {
       let date = new Date();
-      let currentLocation = undefined;
-      if (isEnabled && permission && permission.status === "granted") {
-        currentLocation = (await Location.getCurrentPositionAsync()).coords;
-      }
+
       await createChallenge(
         firestoreCtrl,
         challenge_name,
         date,
         description,
-        currentLocation,
+        isEnabled ? location : null,
         image_id,
       );
       navigation.reset({
@@ -80,13 +98,13 @@ const CreateChallengeScreen = ({
         <ThemedTextInput
           style={styles.input}
           placeholder="Description"
-          onChangeText={(text) => setChallengeName(text)}
+          onChangeText={(text) => setDescription(text)}
           viewWidth={"90%"}
           title="Description"
           testID="Description-Input"
         />
 
-        <ThemedView style={styles.containerRow} testID="switch-button">
+        <ThemedView style={styles.containerRow}>
           <Switch
             style={styles.switch}
             trackColor={{
@@ -97,11 +115,9 @@ const CreateChallengeScreen = ({
             ios_backgroundColor={Colors.light.tint}
             onValueChange={() => {
               toggleSwitch();
-              if (isEnabled) {
-                requestPermission();
-              }
             }}
             value={isEnabled}
+            testID="switch-button"
           />
 
           <ThemedText
