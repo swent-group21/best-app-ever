@@ -4,12 +4,19 @@ import { render, fireEvent } from "@testing-library/react-native";
 import WelcomeScreens from "@/app/screens/welcome/welcome_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+
+const mockFirestoreCtrl = new FirestoreCtrl();
 
 describe("WelcomeScreens", () => {
   it("renders the initial screen correctly", () => {
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens />
+        <WelcomeScreens 
+          setUser={jest.fn()}
+          navigation={{}} 
+          firestoreCtrl={mockFirestoreCtrl}
+        />
       </NavigationContainer>,
     );
 
@@ -20,7 +27,11 @@ describe("WelcomeScreens", () => {
   it("allows swiping through screens", () => {
     const { getByTestId, getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens />
+        <WelcomeScreens 
+          setUser={jest.fn()}
+          navigation={{}} 
+          firestoreCtrl={mockFirestoreCtrl}
+        />
       </NavigationContainer>,
     );
 

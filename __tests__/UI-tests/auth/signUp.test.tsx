@@ -4,11 +4,15 @@ import SignUp from "@/app/screens/auth/sign_up_screen";
 import { signUpWithEmail } from "@/types/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
 // Create a mock FirestoreCtrl object
-const mockFirestoreCtrl = {};
+const mockFirestoreCtrl = new FirestoreCtrl();
+
+// Mock setUser function
+const setUser = jest.fn();
 
 // Create a test component to wrap SignUp with navigation
 const SignUpTest = () => {
@@ -19,7 +23,7 @@ const SignUpTest = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="SignUp">
-          {(props) => <SignUp {...props} firestoreCtrl={mockFirestoreCtrl} />}
+          {(props) => <SignUp {...props} setUser={setUser} firestoreCtrl={mockFirestoreCtrl} />}
         </Stack.Screen>
         {/* Add other screens if necessary */}
       </Stack.Navigator>
@@ -49,6 +53,7 @@ describe("SignUpScreen", () => {
       "password123",
       mockFirestoreCtrl,
       expect.any(Object), // navigation prop
+      setUser
     );
   });
 });

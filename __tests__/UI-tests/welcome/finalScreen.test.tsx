@@ -3,12 +3,24 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import WelcomeFinalScreen from "@/app/screens/welcome/final_screen";
 import { NavigationContainer } from "@react-navigation/native";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import WelcomeScreens from "@/app/screens/welcome/welcome_screen";
+
+const mockFirestoreCtrl = new FirestoreCtrl();
+
+jest.mock("@/types/Auth", () => ({
+  signInAsGuest: jest.fn(),
+}));
 
 describe("WelcomeFinalScreen", () => {
   it("renders the screen correctly", () => {
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen />
+        <WelcomeScreens 
+          setUser={jest.fn()}
+          navigation={{}} 
+          firestoreCtrl={mockFirestoreCtrl}
+        /> 
       </NavigationContainer>,
     );
 
@@ -25,7 +37,11 @@ describe("WelcomeFinalScreen", () => {
     const navigate = jest.fn();
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen navigation={{ navigate }} />
+        <WelcomeFinalScreen 
+          setUser={jest.fn()}
+          navigation={{ navigate }} 
+          firestoreCtrl={mockFirestoreCtrl}
+        />
       </NavigationContainer>,
     );
 
@@ -37,7 +53,11 @@ describe("WelcomeFinalScreen", () => {
     const navigate = jest.fn();
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen navigation={{ navigate }} />
+        <WelcomeFinalScreen 
+          setUser={jest.fn()}
+          navigation={{ navigate }} 
+          firestoreCtrl={mockFirestoreCtrl}
+        />
       </NavigationContainer>,
     );
 
@@ -46,17 +66,19 @@ describe("WelcomeFinalScreen", () => {
   });
 
   it("navigates to Home screen on 'Continue as guest' button press", () => {
+    const signInAsGuest = require("@/types/Auth").signInAsGuest;
     const reset = jest.fn();
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen navigation={{ reset }} />
+        <WelcomeFinalScreen 
+          setUser={jest.fn()}
+          navigation={{ reset }} 
+          firestoreCtrl={mockFirestoreCtrl}
+        />
       </NavigationContainer>,
     );
 
     fireEvent.press(getByText("Continue as guest"));
-    expect(reset).toHaveBeenCalledWith({
-      index: 0,
-      routes: [{ name: "Home" }],
-    });
+    expect(signInAsGuest).toHaveBeenCalled();
   });
 });

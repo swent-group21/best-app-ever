@@ -39,6 +39,14 @@ mockFirestoreCtrl.getChallengesByUserId = jest
   .fn()
   .mockResolvedValue(mockChallenges);
 
+//Mock User
+const mockUser = {
+  uid: "12345",
+  email: "test@example.com",
+  name: "Test User",
+  createdAt: new Date(),
+};
+
 // Create a test component to wrap HomeScreen with navigation
 const HomeScreenTest = () => {
   return (
@@ -52,7 +60,7 @@ const HomeScreenTest = () => {
           initialParams={{ user: { uid: "12345" } }} // Add this line
         >
           {(props) => (
-            <HomeScreen {...props} firestoreCtrl={mockFirestoreCtrl} />
+            <HomeScreen {...props} user={mockUser} firestoreCtrl={mockFirestoreCtrl} />
           )}
         </Stack.Screen>
         <Stack.Screen name="Camera">

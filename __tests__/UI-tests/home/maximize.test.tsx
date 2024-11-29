@@ -8,15 +8,30 @@ import {
 import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
 // Mock the FirestoreCtrl methods used in MaximizeScreen
-const mockFirestoreCtrl = {
-  getUser: jest.fn().mockResolvedValue({
-    uid: "12345",
-    name: "Test User",
-    email: "test@example.com",
-  }),
-  // Add any other methods as needed
+jest.mock("@/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      getUser: jest.fn().mockResolvedValue({
+        uid: "12345",
+        name: "Test User",
+        email: "test@example.com",
+      }),
+      // Add any other methods as needed
+    };
+  });
+});
+
+const mockFirestoreCtrl = new FirestoreCtrl();
+
+// Mock the user object
+const mockUser = {
+  uid: "12345",
+  name: "Test User",
+  email: "test@example.com",
+  createdAt: new Date(),
 };
 
 // Create a stack navigator for testing
@@ -44,6 +59,7 @@ const MaximizeScreenTest = () => {
           {(props) => (
             <MaximizeScreen
               {...props}
+              user={mockUser}
               route={route}
               firestoreCtrl={mockFirestoreCtrl}
             />
