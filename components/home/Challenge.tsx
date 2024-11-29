@@ -44,17 +44,22 @@ export function Challenge({
         style={{ backgroundColor: "transparent" }}
       >
         <TouchableOpacity
+          testID="challenge-touchable"
           onPress={() => setIsOpen(!isOpen)}
           activeOpacity={0.8}
         >
           <ThemedView style={[styles.challenge]}>
             <Image
-              source={require("@/assets/images/challenge2.png")}
+              testID="challenge-image"
+              source={{ uri: challengeDB.image_id }}
               style={styles.image}
             />
 
             {isOpen && (
-              <ThemedView style={styles.container}>
+              <ThemedView 
+                testID="challenge-container"
+                style={styles.container}
+              >
                 <ThemedView
                   style={[styles.user, { justifyContent: "space-between" }]}
                 >
@@ -85,9 +90,10 @@ export function Challenge({
                     </ThemedView>
                   </ThemedView>
                   <ThemedIconButton
+                    testID="expand-button"
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaximizeScreen", {
+                      navigation.navigate("Maximize", {
                         challenge: challengeDB,
                         user: user,
                       });
@@ -99,6 +105,7 @@ export function Challenge({
                 </ThemedView>
                 <ThemedView style={styles.bottomBar}>
                   <ThemedIconButton
+                    testID="like-button"
                     name={isLiked ? "heart" : "heart-outline"}
                     onPress={() => {
                       setIsLiked(!isLiked);

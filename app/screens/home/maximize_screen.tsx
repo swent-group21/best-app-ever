@@ -90,7 +90,7 @@ export default function MaximizeScreen({
           colorType="transparent"
         >
           <Image
-            source={require("@/assets/images/challenge2.png")}
+              source={{ uri: challenge.image_id }}
             style={styles.image}
           />
         </ThemedView>
