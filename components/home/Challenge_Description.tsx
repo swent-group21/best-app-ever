@@ -2,6 +2,8 @@ import React from "react";
 import { ThemedView } from "../theme/ThemedView";
 import { ThemedText } from "../theme/ThemedText";
 import Timer from "./timer";
+import { View, ViewStyle } from "react-native";
+
 
 import { Dimensions } from "react-native";
 import { Colors } from "../../constants/Colors";
@@ -44,7 +46,7 @@ const styles = {
     height: 0.2 * height,
     borderRadius: 15,
     backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center" as ViewStyle["justifyContent"],
+    alignItems: "center" as ViewStyle["alignItems"],
   },
 };

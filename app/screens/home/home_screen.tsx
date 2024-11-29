@@ -85,7 +85,7 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-{/* Current Challenge Description  */}
+      {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={TitleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
@@ -100,7 +100,6 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
               key={index}
               challengeDB={challenge}
               testID={`challenge-id-${index}`}
-              // Include other props as needed
             />
           ))
         )}
