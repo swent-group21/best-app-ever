@@ -43,6 +43,7 @@ export default function WelcomeScreens({
         <WelcomeIntroScreen />
         <WelcomeConceptScreen />
         <WelcomePersonalScreen />
+
         <WelcomeFinalScreen
           setUser={setUser}
           navigation={navigation}
