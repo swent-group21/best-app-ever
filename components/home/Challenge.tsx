@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,11 +14,26 @@ export function Challenge({
   firestoreCtrl,
   navigation,
   testID,
-}: any) {
+  currentUser,
+}: {
+  challengeDB: DBChallenge;
+  index: number;
+  firestoreCtrl: FirestoreCtrl;
+  navigation: any;
+  testID: string;
+  currentUser: DBUser;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
 
+  // @ts-ignore - date is not always a Date object
+  const challengeDate = challengeDB.date
+    ? challengeDB.date.toDate()
+    : new Date();
+
+  // Fetch user data
   useEffect(() => {
     if (challengeDB.uid) {
       const fetchUser = async () => {
@@ -32,6 +47,16 @@ export function Challenge({
       fetchUser();
     }
   }, [user]);
+
+  // Fetch likes data
+  useEffect(() => {
+    firestoreCtrl
+      .getLikesOf(challengeDB.challenge_id ?? "")
+      .then((likes: string[]) => {
+        setIsLiked(likes.includes(currentUser.uid));
+        setLikes(likes);
+      });
+  }, [challengeDB, firestoreCtrl, likes]);
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -80,16 +105,18 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"at " + challengeDB.date}
+                        {"on " + challengeDate.toLocaleDateString()}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
                   <ThemedIconButton
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaximizeScreen", {
+                      navigation.navigate("Maximize", {
+                        navigation: navigation,
+                        firestoreCtrl: firestoreCtrl,
                         challenge: challengeDB,
-                        user: user,
+                        user: currentUser,
                       });
                     }}
                     size={25}
@@ -102,6 +129,25 @@ export function Challenge({
                     name={isLiked ? "heart" : "heart-outline"}
                     onPress={() => {
                       setIsLiked(!isLiked);
+
+                      // Add or remove user id from like list
+                      if (isLiked) {
+                        const newLikeList = likes.filter(
+                          (userId) => userId !== currentUser.uid,
+                        );
+                        setLikes(newLikeList);
+                        firestoreCtrl.updateLikesOf(
+                          challengeDB.challenge_id ?? "",
+                          newLikeList,
+                        );
+                      } else {
+                        const newLikeList = [...likes, currentUser.uid];
+                        setLikes(newLikeList);
+                        firestoreCtrl.updateLikesOf(
+                          challengeDB.challenge_id ?? "",
+                          newLikeList,
+                        );
+                      }
                     }}
                     size={25}
                     color={isLiked ? "red" : "white"}
@@ -137,7 +183,7 @@ const styles = StyleSheet.create({
   },
   challenge: {
     width: width - 20,
-    height: height,
+    height: height / 3,
     borderRadius: 15,
     backgroundColor: Colors.light.transparent,
   },
