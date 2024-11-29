@@ -46,7 +46,6 @@ export default function ProfileScreen({
   const [image, setImage] = React.useState<string | null>(user.image_id ? user.image_id : null);
 
   const pickImage = async () => {
-    console.log("Loading image");
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -63,7 +62,6 @@ export default function ProfileScreen({
       alert("Please enter a username.");
     } else {
       try {
-        console.log("Changing profile");
         await firestoreCtrl.setName(user.uid, await name, setUser);
         if (image) {
           await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
