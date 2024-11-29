@@ -76,7 +76,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         rightIcon="person-circle-outline"
         rightAction={() => {
           navigation.navigate("Profile");
-         
+
         }}
       />
 
@@ -86,7 +86,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-        {/* Current Challenge Description  */}
+{/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={TitleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
@@ -100,12 +100,15 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
               firestoreCtrl={firestoreCtrl}
               key={index}
               challengeDB={challenge}
+              testID={`challenge-id-${index}`}
+              // Include other props as needed
             />
           ))
         )}
       </ThemedScrollView>
 
       <BottomBar
+        testID="bottom-bar"
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
