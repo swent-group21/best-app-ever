@@ -37,13 +37,13 @@ export default function ProfileScreen({
     fetchProfilePicture();
   }, [user.uid]);
 
-  const [name, setName] = React.useState<string>("");
+  const [name, setName] = React.useState<string>(user.name);
   
   React.useEffect(() => {
     setName(user.name);
   }, [user.name]);
 
-  const [image, setImage] = React.useState<string | null>(null);
+  const [image, setImage] = React.useState<string | null>(user.image_id ? user.image_id : null);
 
   const pickImage = async () => {
     console.log("Loading image");
@@ -63,10 +63,11 @@ export default function ProfileScreen({
       alert("Please enter a username.");
     } else {
       try {
+        console.log("Changing profile");
+        await firestoreCtrl.setName(user.uid, await name, setUser);
         if (image) {
           await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
         }
-        await firestoreCtrl.setName(user.uid, await user.name, setUser);
       } catch (error) {
         console.error("Error changing profile: ", error);
         alert("Error changing profile: " + error);

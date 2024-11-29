@@ -79,7 +79,7 @@ export default function HomeScreen({
       <TopBar
         title="Strive"
         leftIcon="people-outline"
-        rightIcon={userIsGuest ? "person-circle-outline" : user.image_id}
+        rightIcon={userIsGuest || !user.image_id ? "person-circle-outline" : user.image_id}
         rightAction={() => {
           navigation.navigate("Profile");
         }}
