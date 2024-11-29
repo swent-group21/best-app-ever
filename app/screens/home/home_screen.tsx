@@ -14,7 +14,7 @@ import { color } from "react-native-elements/dist/helpers";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
-const { height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 
 {/*
@@ -36,7 +36,6 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
 
   // Fetch the current challenge description
   useEffect(() => {
-    console.log("UID", user.uid);
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =
@@ -72,15 +71,14 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
 
       fetchChallenges();
     }
-  }, [uid]);
+  }, [user.id]);
 
   useEffect(() => {
-    console.log("UID", uid);
-    if (uid) {
+    if (/*user.id*/ true) {
       const fetchGroups = async () => {
         try {
-          const groupsData = await firestoreCtrl.getGroupsByUserId(uid);
-          console.log("Groups [" + uid + "]", groupsData);
+          const groupsData = await firestoreCtrl.getGroupsByUserId(/*user.id*/ "ycG9QhTsKzPTap1r1v5zGSs0N433");
+          console.log("Groups [" + user.id + "]", groupsData);
           setGroups(groupsData);
         } catch (error) {
           console.error("Error fetching groups: ", error);
@@ -89,7 +87,7 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
 
       fetchGroups();
     }
-  }, [uid]);
+  }, [user.id]);
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -102,6 +100,7 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
         }}
       />
 
+      {/* Groups */}
       <ThemedScrollView
         style={styles.groupsContainer}
         //colorType="transparent"
@@ -113,31 +112,24 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
             navigation={navigation}
             firestoreCtrl={firestoreCtrl}
             key={index}
+            testID={`group-id-${index}`}
             // Include other props as needed
           />
         ))}
 
-        <ThemedView style={styles.createGroupContainer}>
-          
+        <ThemedView style={styles.createGroupContainer} testID="create-group-button">
             <ThemedTextButton 
-                style={styles.createGroup} 
+                style={styles.createGroupButton} 
                 onPress={() => {}}
                 text="+"
                 textStyle={styles.createGroupText}
                 textColorType="textOverLight"
                 colorType= "backgroundSecondary"
-            >
-              <ThemedText 
-                  //style={styles.createGroup} 
-                  colorType="textOverLight"
-              >
-                Create a new group
-            </ThemedText>
-
-            </ThemedTextButton>
+            ></ThemedTextButton>
         </ThemedView>
 
       </ThemedScrollView>
+
 
       {/* Challenges */}
       <ThemedScrollView
@@ -145,10 +137,13 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
+
+
       {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={TitleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
+          testID={`description-id`}
         />
         {challenges.length === 0 ? (
           <ThemedText>No challenge to display</ThemedText>
@@ -194,7 +189,7 @@ const styles = StyleSheet.create({
 
   groupsContainer: {
     width: width - 20,
-    height: 0.2 * height,
+    height: 0.18 * height,
     borderRadius: 15,
     backgroundColor: "transparent",
   },
@@ -221,30 +216,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  createGroup: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "100%",
-    height: "100%",
-    borderRadius: 15,
-    padding: 8,
-    //gap: 6,
-    color:"transparent",
-    fontSize: 5,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor : "transparent",
-    
+  createGroupButton: {
+    width: "95%",
+    height: "95%",
+    borderRadius: 60,  
   },
-
 
   createGroupText: {
     flex: 1,
-    width: "100%",
-    alignSelf: "center",
     textAlign: "center",
-    textAlignVertical: "center",
     fontSize: 60,
-    fontWeight: "normal",
   }
 });

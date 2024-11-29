@@ -14,6 +14,7 @@ export function Group({
   index,
   firestoreCtrl,
   navigation,
+  testID,
 }: any) {
 
   // Display loading state or handle absence of challenge data
@@ -21,7 +22,7 @@ export function Group({
     return <ThemedText>Loading Group...</ThemedText>;
   } else {
     return (
-        <ThemedView style={styles.container}>
+        <ThemedView style={styles.container} testID={testID}>
             <ThemedTextButton 
                 style={styles.heading} 
                 onPress={() => {}}

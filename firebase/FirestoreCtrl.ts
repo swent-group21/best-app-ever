@@ -349,10 +349,15 @@ export default class FirestoreCtrl {
       
     } catch (error) {
       console.error("Error getting groups by user ID: ", error);
+      throw error;
+    }
+  }
 
       
+  /**
    * Retrieves the current challenge description from Firestore
-   
+   * 
+   * @returns A promise that resolves to the description of the current challenge.
    */
 
   async getChallengeDescription(): Promise<DBChallengeDescription> {
