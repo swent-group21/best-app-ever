@@ -11,17 +11,52 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Colors } from "@/constants/Colors";
 import { color } from "react-native-elements/dist/helpers";
+import { ChallengeDescription } from "@/components/home/Challenge_Description";
+import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
+
+const { height } = Dimensions.get("window");
 
 
-// Get the screen dimensions
-const { width, height } = Dimensions.get("window");
-
-export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: DBUser; navigation: any; firestoreCtrl: FirestoreCtrl }) {
+{/*
+  The HomeScreen component displays the current challenge description and the list of challenges.
+  It fetches the current challenge description and the list of challenges from Firestore.
+  The current challenge description is displayed at the top of the screen.
+*/}
+export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
+  const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
+    title: "Challenge Title",
+    description: "Challenge Description",
+    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+  });
 
   const user = route.params?.user || {};
 
+
+  // Fetch the current challenge description
+  useEffect(() => {
+    console.log("UID", user.uid);
+    const fetchCurrentChallenge = async () => {
+      try {
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+
+        const formattedChallenge = {
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
+          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+        };
+
+        setTitleChallenge(formattedChallenge);
+      } catch (error) {
+        console.error("Error fetching current challenge: ", error);
+      }
+    };
+    fetchCurrentChallenge();
+  });
+
+  // Fetch the list of challenges
   useEffect(() => {
     if (user.uid) {
       const fetchChallenges = async () => {
@@ -29,7 +64,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
           const challengesData = await firestoreCtrl.getChallengesByUserId(
             user.uid,
           );
-          console.log("Challenges", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -60,7 +94,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
       <TopBar
-        title="Commute by foot"
+        title="Strive"
         leftIcon="people-outline"
         rightIcon="person-circle-outline"
         rightAction={() => {
@@ -111,6 +145,11 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
+      {/* Current Challenge Description  */}
+        <ChallengeDescription
+          dBChallengeDescription={TitleChallenge}
+          onTimerFinished={() => console.log("Timer Finished")}
+        />
         {challenges.length === 0 ? (
           <ThemedText>No challenge to display</ThemedText>
         ) : (
@@ -121,7 +160,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: 
               key={index}
               challengeDB={challenge}
               testID={`challenge-id-${index}`}
-              // Include other props as needed
             />
           ))
         )}

@@ -1,4 +1,3 @@
-
 //import React from "react";
 //import { render } from "@testing-library/react-native";
 //import ProfileScreen from "@/app/screens/home/profile_screen";
@@ -33,6 +32,7 @@ describe("ProfileScreen", () => {
 //  },
 });
 
+
 describe("ProfileScreen - Image Picker", () => {
   test("always passes", () => {
     expect(true).toBe(true);
@@ -60,6 +60,7 @@ describe("ProfileScreen - Image Picker", () => {
 //    expect(selectedImage.props.source.uri).toBe("test-image-uri");
 //  });
 });
+
 
 describe("ProfileScreen - Log Out", () => {
   test("always passes", () => {
@@ -94,4 +95,5 @@ describe("ProfileScreen - Change Email", () => {
 //    expect(getByText("Email")).toBeTruthy();
 //    expect(getByText("tristan@gmail.com")).toBeTruthy();
 //  });
+
 });
