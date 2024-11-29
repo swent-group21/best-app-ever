@@ -129,14 +129,40 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture);
-console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
-      console.log("Error uploading image: ", error);
+      //console.log("Error uploading image: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Upload an image url to Firestore storage.
+   */
+  async uploadImageFromUrl(imageUri: string) {
+    try {
+      if (!imageUri) {
+        throw new Error("No image URI provided.");
+      }
+
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+
+      const id_picture = (Math.random() + 1).toString(36).substring(2);
+      const storageRef = ref(getStorage(), "images/" + id_picture);
+      //console.log("StorageRef:", storageRef);
+
+      await uploadBytes(storageRef, blob);
+
+      const downloadUrl = await getDownloadURL(storageRef);
+      //console.log("DownloadUrl", downloadUrl);
+      return downloadUrl;
+    } catch (error) {
+      console.error("Error uploading image: ", error);
       throw error;
     }
   }
@@ -175,6 +201,7 @@ console.log("StorageRef:", storageRef);
       const user = await this.getUser(id);
       user.name = name;
       await this.createUser(id, user);
+      console.log("User: ", user);
       setUser(user);
     } catch (error) {
       console.error("Error setting name: ", error);
@@ -206,7 +233,7 @@ console.log("StorageRef:", storageRef);
   ) {
     try {
       const user = await this.getUser(id);
-      user.image_id = await this.uploadImageFromUri(imageUri);
+      user.image_id = await this.uploadImageFromUrl(imageUri);
       await this.createUser(id, user);
       setUser(user);
     } catch (error) {

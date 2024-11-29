@@ -145,6 +145,7 @@ export const Nav: React.FC<AppStackProps> = ({
             <ProfileScreen
               {...props}
               user={user}
+              setUser={setUser}
               firestoreCtrl={firestoreCtrl}
             />
           )}
