@@ -5,8 +5,8 @@
 //import * as ImagePicker from "expo-image-picker";
 
 // Test if the screen renders correctly
-
 describe("ProfileScreen", () => {
+
   test("always passes", () => {
     expect(true).toBe(true);
   });
@@ -31,6 +31,7 @@ describe("ProfileScreen", () => {
   //    signOut: jest.fn(),
   //  },
 });
+
 
 describe("ProfileScreen - Image Picker", () => {
   test("always passes", () => {
@@ -59,6 +60,7 @@ describe("ProfileScreen - Image Picker", () => {
   //    expect(selectedImage.props.source.uri).toBe("test-image-uri");
   //  });
 });
+
 
 describe("ProfileScreen - Log Out", () => {
   test("always passes", () => {
@@ -93,4 +95,5 @@ describe("ProfileScreen - Change Email", () => {
   //    expect(getByText("Email")).toBeTruthy();
   //    expect(getByText("tristan@gmail.com")).toBeTruthy();
   //  });
+
 });

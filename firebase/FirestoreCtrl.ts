@@ -1,4 +1,4 @@
-import { limit } from "firebase/firestore";
+import { limit, GeoPoint } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -12,7 +12,7 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as Location from "expo-location";
+import { LocationObject, LocationObjectCoords } from "expo-location";
 
 export type DBUser = {
   uid: string;
@@ -32,7 +32,7 @@ export type DBChallenge = {
   image_id?: string;
   comment_id?: string;
   date: Date;
-  location?: Location.LocationObjectCoords;
+  location: GeoPoint | null;
 };
 
 export type DBComment = {
@@ -41,6 +41,12 @@ export type DBComment = {
   next_id?: string;
   comment_text: string;
   uid: string;
+};
+
+export type DBChallengeDescription = {
+  title: string;
+  description: string;
+  endDate: Date;
 };
 
 export default class FirestoreCtrl {
@@ -272,6 +278,32 @@ export default class FirestoreCtrl {
       return challenges;
     } catch (error) {
       console.error("Error getting challenges: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the current challenge description from Firestore
+   
+   */
+
+  async getChallengeDescription(): Promise<DBChallengeDescription> {
+    try {
+      const challengeDescrpitionRef = collection(
+        firestore,
+        "challenge_description",
+      );
+      const q = query(challengeDescrpitionRef);
+      const querySnapshot = await getDocs(q);
+      const challengeDescription = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+        } as DBChallengeDescription;
+      });
+      return challengeDescription[0];
+    } catch (error) {
+      console.error("Error getting challenge description: ", error);
       throw error;
     }
   }
