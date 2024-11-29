@@ -34,7 +34,7 @@ export default function ProfileScreen({user, navigation, firestoreCtrl}: {user: 
   };
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="profile-screen">
       {isLoggedIn && (
         <>
           <TopBar

@@ -24,7 +24,7 @@ export default function SignUp({ navigation, firestoreCtrl, setUser }: { navigat
   const passwordPlaceholder = "**********";
 
   return (
-    <ThemedView style={styles.signUpScreen}>
+    <ThemedView style={styles.signUpScreen} testID="sign-up-screen">
       {/* Background oval shape */}
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
