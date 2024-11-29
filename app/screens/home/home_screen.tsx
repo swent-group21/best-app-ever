@@ -35,7 +35,6 @@ export default function HomeScreen({
 
   // Fetch the current challenge description
   useEffect(() => {
-    console.log("UID", user.uid);
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =

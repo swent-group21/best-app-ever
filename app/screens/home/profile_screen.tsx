@@ -11,22 +11,38 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Icon } from "react-native-elements";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
 
 export default function ProfileScreen({
   user,
+  setUser,
   navigation,
   firestoreCtrl,
 }: {
   user: DBUser;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(
-    user ? true : false,
-  );
+  const userIsGuest = user.name === "Guest";
+
+  React.useEffect(() => {
+    const fetchProfilePicture = async () => {
+      const profilePicture = await firestoreCtrl.getProfilePicture(user.uid);
+      setImage(profilePicture || null);
+    };
+    fetchProfilePicture();
+  }, [user.uid]);
+
+  const [name, setName] = React.useState<string>("");
+  
+  React.useEffect(() => {
+    setName(user.name);
+  }, [user.name]);
+
   const [image, setImage] = React.useState<string | null>(null);
 
   const pickImage = async () => {
@@ -42,14 +58,30 @@ export default function ProfileScreen({
     }
   };
 
+  const upload = async () => {
+    if (await user.name === "") {
+      alert("Please enter a username.");
+    } else {
+      try {
+        if (image) {
+          await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
+        }
+        await firestoreCtrl.setName(user.uid, await user.name, setUser);
+      } catch (error) {
+        console.error("Error changing profile: ", error);
+        alert("Error changing profile: " + error);
+      }
+    }
+  };
+
   return (
     <ThemedView style={styles.bigContainer} testID="profile-screen">
-      {isLoggedIn && (
+      {!userIsGuest && (
         <>
           <TopBar
             title="Your profile"
             leftIcon="arrow-back"
-            leftAction={navigation.goBack}
+            leftAction={() => {upload(); navigation.goBack();}}
           />
           <TouchableOpacity onPress={pickImage} style={styles.smallContainer}>
             {!image ? (
@@ -64,7 +96,7 @@ export default function ProfileScreen({
             )}
           </TouchableOpacity>
           <ThemedView style={styles.smallContainer}>
-            <ThemedText style={styles.username}>{user.name}</ThemedText>
+            <ThemedTextInput style={styles.username} value={name} onChangeText={setName} />
           </ThemedView>
           <ThemedView style={styles.actionsContainer}>
             <ThemedView style={styles.row}>
@@ -107,7 +139,7 @@ export default function ProfileScreen({
         </>
       )}
 
-      {!isLoggedIn && (
+      {userIsGuest && (
         <ThemedView style={styles.smallContainer}>
           <ThemedText style={styles.notLoggedIn}>
             You are not logged in !
@@ -117,7 +149,7 @@ export default function ProfileScreen({
             textColorType="white"
             darkColor="transparent"
             lightColor="transparent"
-            onPress={() => navigation.navigate("WelcomeFinal")}
+            onPress={() => navigation.reset({ index: 0, routes: [{ name: "WelcomeFinal" }] })}
           />
         </ThemedView>
       )}
@@ -141,10 +173,11 @@ const styles = {
     marginBottom: 40,
   },
   username: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
     marginBottom: 20,
     color: "white",
+    textAlign: "center",
   },
   columnInfo: {
     flexDirection: "column",
