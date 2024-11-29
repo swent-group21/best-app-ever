@@ -17,6 +17,7 @@ import FirestoreCtrl, {
 } from "@/firebase/FirestoreCtrl";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
+import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -42,28 +43,31 @@ export default function HomeScreen({
     title: "Challenge Title",
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+    timeStamp: Timestamp.fromDate(new Date(2024, 1, 1, 0, 0, 0, 0)),
   });
 
   // Fetch the current challenge description
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
-
+        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+  
+        // Convert the Timestamp to a Date
         const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+          title: currentChallengeData.title,
+          description: currentChallengeData.description,
+          timeStamp: currentChallengeData.timeStamp,
+          endDate: currentChallengeData.timeStamp.toDate(),
         };
-
+  
         setTitleChallenge(formattedChallenge);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
+  
     fetchCurrentChallenge();
-  });
+  }, []);
 
   // Fetch the list of challenges
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { FieldPath, limit, documentId, GeoPoint } from "firebase/firestore";
+import { FieldPath, limit, documentId, GeoPoint, FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
 import {
   firestore,
@@ -55,7 +55,8 @@ export type DBGroup = {
 export type DBChallengeDescription = {
   title: string;
   description: string;
-  endDate: Date;
+  timeStamp: Timestamp;
+  endDate?: Date;
 };
 
 export default class FirestoreCtrl {
