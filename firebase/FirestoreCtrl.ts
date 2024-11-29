@@ -358,6 +358,9 @@ export default class FirestoreCtrl {
       const userData = userDoc.data() as DBUser;
 
       console.log("userGroups [" + uid + "]", userData.groups);
+      if (!userData.groups || userData.groups.length === 0) {
+        return [];
+      }
 
       // Retrieve all groups using the group IDs
       const groupsRef = collection(firestore, "groups");
