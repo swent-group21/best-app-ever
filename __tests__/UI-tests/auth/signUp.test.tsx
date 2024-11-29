@@ -23,7 +23,13 @@ const SignUpTest = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="SignUp">
-          {(props) => <SignUp {...props} setUser={setUser} firestoreCtrl={mockFirestoreCtrl} />}
+          {(props) => (
+            <SignUp
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={mockFirestoreCtrl}
+            />
+          )}
         </Stack.Screen>
         {/* Add other screens if necessary */}
       </Stack.Navigator>
@@ -53,7 +59,7 @@ describe("SignUpScreen", () => {
       "password123",
       mockFirestoreCtrl,
       expect.any(Object), // navigation prop
-      setUser
+      setUser,
     );
   });
 });

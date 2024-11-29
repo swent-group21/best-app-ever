@@ -8,11 +8,18 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
-
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({ user, navigation, firestoreCtrl }: { user: DBUser; navigation: any; firestoreCtrl: FirestoreCtrl }) {
+export default function HomeScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
 
   useEffect(() => {

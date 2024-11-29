@@ -16,11 +16,11 @@ describe("WelcomeFinalScreen", () => {
   it("renders the screen correctly", () => {
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens 
+        <WelcomeScreens
           setUser={jest.fn()}
-          navigation={{}} 
+          navigation={{}}
           firestoreCtrl={mockFirestoreCtrl}
-        /> 
+        />
       </NavigationContainer>,
     );
 
@@ -37,9 +37,9 @@ describe("WelcomeFinalScreen", () => {
     const navigate = jest.fn();
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen 
+        <WelcomeFinalScreen
           setUser={jest.fn()}
-          navigation={{ navigate }} 
+          navigation={{ navigate }}
           firestoreCtrl={mockFirestoreCtrl}
         />
       </NavigationContainer>,
@@ -53,9 +53,9 @@ describe("WelcomeFinalScreen", () => {
     const navigate = jest.fn();
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen 
+        <WelcomeFinalScreen
           setUser={jest.fn()}
-          navigation={{ navigate }} 
+          navigation={{ navigate }}
           firestoreCtrl={mockFirestoreCtrl}
         />
       </NavigationContainer>,
@@ -70,9 +70,9 @@ describe("WelcomeFinalScreen", () => {
     const reset = jest.fn();
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeFinalScreen 
+        <WelcomeFinalScreen
           setUser={jest.fn()}
-          navigation={{ reset }} 
+          navigation={{ reset }}
           firestoreCtrl={mockFirestoreCtrl}
         />
       </NavigationContainer>,

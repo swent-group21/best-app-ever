@@ -13,7 +13,17 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername({ user, navigation, firestoreCtrl, setUser }: {user: DBUser, navigation: any; firestoreCtrl: FirestoreCtrl, setUser: React.Dispatch<React.SetStateAction<DBUser | null>>}) {
+export default function SetUsername({
+  user,
+  navigation,
+  firestoreCtrl,
+  setUser,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+}) {
   const [username, setUsername] = React.useState("");
   const [image, setImage] = React.useState<string | null>(null);
   const pickImage = async () => {

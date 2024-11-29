@@ -9,7 +9,15 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeFinalScreen({ setUser, navigation, firestoreCtrl }: { setUser: React.Dispatch<React.SetStateAction<DBUser | null>>, navigation: any, firestoreCtrl: FirestoreCtrl }) {
+export default function WelcomeFinalScreen({
+  setUser,
+  navigation,
+  firestoreCtrl,
+}: {
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
       {/* Background shapes */}

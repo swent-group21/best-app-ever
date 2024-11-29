@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 // Create a mock FirestoreCtrl object
 const mockFirestoreCtrl = new FirestoreCtrl();
 
-// Mock setUser 
+// Mock setUser
 const setUser = jest.fn();
 
 // Create a test component to wrap SignInScreen with navigation
@@ -30,7 +30,11 @@ const SignInTest = () => {
       >
         <Stack.Screen name="SignIn">
           {(props) => (
-            <SignInScreen {...props} setUser={setUser} firestoreCtrl={mockFirestoreCtrl} />
+            <SignInScreen
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={mockFirestoreCtrl}
+            />
           )}
         </Stack.Screen>
         <Stack.Screen name="ForgotPassword">
@@ -62,7 +66,7 @@ describe("SignInScreen", () => {
       "password123",
       mockFirestoreCtrl,
       expect.any(Object), // navigation prop
-      setUser
+      setUser,
     );
   });
 

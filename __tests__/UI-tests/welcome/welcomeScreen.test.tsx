@@ -12,9 +12,9 @@ describe("WelcomeScreens", () => {
   it("renders the initial screen correctly", () => {
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens 
+        <WelcomeScreens
           setUser={jest.fn()}
-          navigation={{}} 
+          navigation={{}}
           firestoreCtrl={mockFirestoreCtrl}
         />
       </NavigationContainer>,
@@ -27,9 +27,9 @@ describe("WelcomeScreens", () => {
   it("allows swiping through screens", () => {
     const { getByTestId, getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens 
+        <WelcomeScreens
           setUser={jest.fn()}
-          navigation={{}} 
+          navigation={{}}
           firestoreCtrl={mockFirestoreCtrl}
         />
       </NavigationContainer>,

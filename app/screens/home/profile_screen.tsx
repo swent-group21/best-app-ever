@@ -15,9 +15,18 @@ import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
 
-export default function ProfileScreen({user, navigation, firestoreCtrl}: {user: DBUser, navigation: any, firestoreCtrl: FirestoreCtrl}) {
-  
-  const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>( user ? true : false );
+export default function ProfileScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
+  const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(
+    user ? true : false,
+  );
   const [image, setImage] = React.useState<string | null>(null);
 
   const pickImage = async () => {

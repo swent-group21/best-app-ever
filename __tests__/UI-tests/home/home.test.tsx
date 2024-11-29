@@ -60,7 +60,11 @@ const HomeScreenTest = () => {
           initialParams={{ user: { uid: "12345" } }} // Add this line
         >
           {(props) => (
-            <HomeScreen {...props} user={mockUser} firestoreCtrl={mockFirestoreCtrl} />
+            <HomeScreen
+              {...props}
+              user={mockUser}
+              firestoreCtrl={mockFirestoreCtrl}
+            />
           )}
         </Stack.Screen>
         <Stack.Screen name="Camera">

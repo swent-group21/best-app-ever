@@ -11,7 +11,15 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default function WelcomeScreens({ setUser, navigation, firestoreCtrl }: { setUser: React.Dispatch<React.SetStateAction<DBUser | null>>, navigation: any, firestoreCtrl: FirestoreCtrl }) {
+export default function WelcomeScreens({
+  setUser,
+  navigation,
+  firestoreCtrl,
+}: {
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const color = useThemeColor({}, "textPrimary");
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -35,7 +43,11 @@ export default function WelcomeScreens({ setUser, navigation, firestoreCtrl }: {
         <WelcomeIntroScreen />
         <WelcomeConceptScreen />
         <WelcomePersonalScreen />
-        <WelcomeFinalScreen setUser={setUser} navigation={navigation} firestoreCtrl={firestoreCtrl}/>
+        <WelcomeFinalScreen
+          setUser={setUser}
+          navigation={navigation}
+          firestoreCtrl={firestoreCtrl}
+        />
       </ScrollView>
 
       {/* Render the dots, only if not on the last screen */}

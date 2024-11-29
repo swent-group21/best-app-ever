@@ -144,7 +144,7 @@ export const signInAsGuest = async (
       alert("Failed to sign in as guest: " + error);
       console.error("Failed to sign in as guest: ", error);
     });
-}
+};
 
 export const logOut = async (navigation: any) => {
   signOut(auth)
@@ -158,7 +158,7 @@ export const logOut = async (navigation: any) => {
       alert("Failed to log out: " + error);
       console.error("Failed to log out: ", error);
     });
-}
+};
 
 export const resetPassword = async (email: string) => {
   if (email) {
@@ -200,4 +200,4 @@ export const resetEmail = async (email: string) => {
     alert("Please enter your email.");
     console.error("Please enter your email.");
   }
-}
+};

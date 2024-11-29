@@ -1,4 +1,4 @@
-import { logInWithEmail, signUpWithEmail } from "@/types/Auth";  
+import { logInWithEmail, signUpWithEmail } from "@/types/Auth";
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import SignInScreen from "@/app/screens/auth/sign_in_screen";
@@ -14,44 +14,48 @@ import MaximizeScreen from "@/app/screens/home/maximize_screen";
 const Stack = createNativeStackNavigator();
 
 jest.mock("@/types/Auth", () => ({
-    logInWithEmail: jest.fn((email, password, firestoreCtrl, navigation, setUser) => {
-        setUser({
-            uid: "123",
-            email: email,
-            name: "Test User",
-            createdAt: new Date(),
-        });
-        navigation.navigate("Home");
-    }),
-    signUpWithEmail: jest.fn((name, email, password, firestoreCtrl, navigation, setUser) => {
-        setUser({
-            uid: "123",
-            email: email,
-            name: name,
-            createdAt: new Date(),
-        });
-        navigation.navigate("Home");
-      }),
-      isValidEmail: jest.fn((email) => true),
-  }));
+  logInWithEmail: jest.fn(
+    (email, password, firestoreCtrl, navigation, setUser) => {
+      setUser({
+        uid: "123",
+        email: email,
+        name: "Test User",
+        createdAt: new Date(),
+      });
+      navigation.navigate("Home");
+    },
+  ),
+  signUpWithEmail: jest.fn(
+    (name, email, password, firestoreCtrl, navigation, setUser) => {
+      setUser({
+        uid: "123",
+        email: email,
+        name: name,
+        createdAt: new Date(),
+      });
+      navigation.navigate("Home");
+    },
+  ),
+  isValidEmail: jest.fn((email) => true),
+}));
 
-// Mock FirestoreCtrl 
+// Mock FirestoreCtrl
 jest.mock("@/firebase/FirestoreCtrl", () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            setProfilePicture: jest.fn((id, image_uri, setUser) => {
-                setUser({
-                    image_id: image_uri,
-                });
-            }),
-            setName : jest.fn((id, name, setUser) => {
-                setUser({
-                    name: name,
-                });
-            }),
-            // Add any other methods as needed
-        };
-    });
+  return jest.fn().mockImplementation(() => {
+    return {
+      setProfilePicture: jest.fn((id, image_uri, setUser) => {
+        setUser({
+          image_id: image_uri,
+        });
+      }),
+      setName: jest.fn((id, name, setUser) => {
+        setUser({
+          name: name,
+        });
+      }),
+      // Add any other methods as needed
+    };
+  });
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
 
@@ -66,14 +70,17 @@ var mockUser = {
 
 // Mock setUser
 const mockSetUser = jest.fn((user) => {
-    mockUser = user;
+  mockUser = user;
 });
 
 // Create a test component to wrap SignInScreen and HomeScreen with navigation
 const SignInTest = ({ setUser }: { setUser: jest.Mock }) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName="SignIn"
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen name="SignIn">
           {(props) => (
             <SignInScreen
@@ -85,10 +92,10 @@ const SignInTest = ({ setUser }: { setUser: jest.Mock }) => {
         </Stack.Screen>
         <Stack.Screen name="Home">
           {(props) => (
-            <HomeScreen 
-              {...props} 
-              firestoreCtrl={mockFirestoreCtrl} 
-              user={mockUser} 
+            <HomeScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockUser}
             />
           )}
         </Stack.Screen>
@@ -99,31 +106,34 @@ const SignInTest = ({ setUser }: { setUser: jest.Mock }) => {
 
 // Create a test component to wrap SignUpScreen and HomeScreen with navigation
 const SignUpTest = ({ setUser }: { setUser: jest.Mock }) => {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="SignUp" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="SignUp">
-                    {(props) => (
-                    <SignUp
-                        {...props}
-                        firestoreCtrl={mockFirestoreCtrl}
-                        setUser={setUser}
-                    />
-                    )}
-                </Stack.Screen>
-                <Stack.Screen name="Home">
-                    {(props) => (
-                    <HomeScreen 
-                        {...props} 
-                        firestoreCtrl={mockFirestoreCtrl} 
-                        user={mockUser} 
-                    />
-                    )}
-                </Stack.Screen>
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-}
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="SignUp"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="SignUp">
+          {(props) => (
+            <SignUp
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              setUser={setUser}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Home">
+          {(props) => (
+            <HomeScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockUser}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 // Create a test component to wrap SetUsernameScreen and HomeScreen with navigation
 // const SetUsernameTest = ({ setUser }: { setUser: jest.Mock }) => {
@@ -142,10 +152,10 @@ const SignUpTest = ({ setUser }: { setUser: jest.Mock }) => {
 //                 </Stack.Screen>
 //                 <Stack.Screen name="Home">
 //                     {(props) => (
-//                     <HomeScreen 
-//                         {...props} 
-//                         firestoreCtrl={mockFirestoreCtrl} 
-//                         user={mockUser} 
+//                     <HomeScreen
+//                         {...props}
+//                         firestoreCtrl={mockFirestoreCtrl}
+//                         user={mockUser}
 //                     />
 //                     )}
 //                 </Stack.Screen>
@@ -183,71 +193,84 @@ const SignUpTest = ({ setUser }: { setUser: jest.Mock }) => {
 // }
 
 describe("SignInScreen Tests", () => {
-    it("authenticates and passes the user to HomeScreen", async () => {
-      // Render the test app
-      const { getByTestId } = render(<SignInTest setUser={mockSetUser} />);
-  
-      // Simulate user interactions
-      fireEvent.changeText(getByTestId("email-input"), "test@example.com");
-      fireEvent.changeText(getByTestId("password-input"), "password123");
-  
-      fireEvent.press(getByTestId("sign-in-button"));
-  
-      // Verify logInWithEmail was called
-      expect(logInWithEmail).toHaveBeenCalledWith("test@example.com", "password123", mockFirestoreCtrl, expect.any(Object), mockSetUser);
-  
-      // Wait for the navigation to HomeScreen
-      await waitFor(() => {
-        expect(getByTestId("home-screen")).toBeTruthy();
-      });
+  it("authenticates and passes the user to HomeScreen", async () => {
+    // Render the test app
+    const { getByTestId } = render(<SignInTest setUser={mockSetUser} />);
 
-      // Verify the user was passed to HomeScreen
-      expect(mockUser).toEqual({
-        uid: "123",
-        email: "test@example.com",
-        name: "Test User",
-        createdAt: expect.any(Date),
+    // Simulate user interactions
+    fireEvent.changeText(getByTestId("email-input"), "test@example.com");
+    fireEvent.changeText(getByTestId("password-input"), "password123");
+
+    fireEvent.press(getByTestId("sign-in-button"));
+
+    // Verify logInWithEmail was called
+    expect(logInWithEmail).toHaveBeenCalledWith(
+      "test@example.com",
+      "password123",
+      mockFirestoreCtrl,
+      expect.any(Object),
+      mockSetUser,
+    );
+
+    // Wait for the navigation to HomeScreen
+    await waitFor(() => {
+      expect(getByTestId("home-screen")).toBeTruthy();
     });
-  })
+
+    // Verify the user was passed to HomeScreen
+    expect(mockUser).toEqual({
+      uid: "123",
+      email: "test@example.com",
+      name: "Test User",
+      createdAt: expect.any(Date),
+    });
+  });
 });
 
 describe("SignUpScreen Tests", () => {
-    it("authenticates and passes the user to HomeScreen", async () => {
-      // Render the test app
-      const { getByTestId } = render(<SignUpTest setUser={mockSetUser} />);
-  
-      // Simulate user interactions
-      fireEvent.changeText(getByTestId("name-input"), "Test");
-      fireEvent.changeText(getByTestId("surname-input"), "User");
-      fireEvent.changeText(getByTestId("email-input"), "test@example.com");
-      fireEvent.changeText(getByTestId("password-input"), "password123");
-      fireEvent.changeText(getByTestId("confirm-password-input"), "password123");
+  it("authenticates and passes the user to HomeScreen", async () => {
+    // Render the test app
+    const { getByTestId } = render(<SignUpTest setUser={mockSetUser} />);
 
-      fireEvent.press(getByTestId("sign-up-button"));
+    // Simulate user interactions
+    fireEvent.changeText(getByTestId("name-input"), "Test");
+    fireEvent.changeText(getByTestId("surname-input"), "User");
+    fireEvent.changeText(getByTestId("email-input"), "test@example.com");
+    fireEvent.changeText(getByTestId("password-input"), "password123");
+    fireEvent.changeText(getByTestId("confirm-password-input"), "password123");
 
-      // Verify signUpWithEmail was called
-      expect(signUpWithEmail).toHaveBeenCalledWith("TestUser", "test@example.com", "password123", mockFirestoreCtrl, expect.any(Object), mockSetUser);
+    fireEvent.press(getByTestId("sign-up-button"));
 
-        // Wait for the navigation to HomeScreen
-        await waitFor(() => {
-            expect(getByTestId("home-screen")).toBeTruthy();
-        });
+    // Verify signUpWithEmail was called
+    expect(signUpWithEmail).toHaveBeenCalledWith(
+      "TestUser",
+      "test@example.com",
+      "password123",
+      mockFirestoreCtrl,
+      expect.any(Object),
+      mockSetUser,
+    );
 
-        // Verify the user was passed to HomeScreen
-        expect(mockUser).toEqual({
-            uid: "123",
-            email: "test@example.com",
-            name: "TestUser",
-            createdAt: expect.any(Date),
-        });
-    })
+    // Wait for the navigation to HomeScreen
+    await waitFor(() => {
+      expect(getByTestId("home-screen")).toBeTruthy();
+    });
+
+    // Verify the user was passed to HomeScreen
+    expect(mockUser).toEqual({
+      uid: "123",
+      email: "test@example.com",
+      name: "TestUser",
+      createdAt: expect.any(Date),
+    });
+  });
 });
 
 describe("SetUsernameScreen Tests", () => {
-    it("authenticates and passes the user to HomeScreen", async () => {
+  it("authenticates and passes the user to HomeScreen", async () => {
     //   // Render the test app
     //   const { getByTestId } = render(<SetUsernameTest setUser={mockSetUser} />);
-  
+
     //   // Simulate user interactions
     //   fireEvent.changeText(getByTestId("usernameInput"), "TestUser2");
     //   fireEvent.press(getByTestId("profilePicButton"));
@@ -267,38 +290,38 @@ describe("SetUsernameScreen Tests", () => {
     //         name: "TestUser2",
     //         createdAt: expect.any(Date),
     //     });
-        expect(true).toBe(true);
-    });
+    expect(true).toBe(true);
+  });
 });
-      
+
 describe("Consisteency between screens", () => {
-    it("authenticates and passes the user to HomeScreen", async () => {
-        // // Render the test app
-        // const { getByTestId } = render(<HomeTest setUser={mockSetUser} />);
-    
-        // // Verify the user was passed to HomeScreen
-        // expect(mockUser).toEqual({
-        //     uid: "123",
-        //     email: "test@example.com",
-        //     name: "TestUser",
-        //     createdAt: expect.any(Date),
-        // });
+  it("authenticates and passes the user to HomeScreen", async () => {
+    // // Render the test app
+    // const { getByTestId } = render(<HomeTest setUser={mockSetUser} />);
 
-        // // Simulate user interactions
-        // fireEvent.press(getByTestId("profile-button"));
+    // // Verify the user was passed to HomeScreen
+    // expect(mockUser).toEqual({
+    //     uid: "123",
+    //     email: "test@example.com",
+    //     name: "TestUser",
+    //     createdAt: expect.any(Date),
+    // });
 
-        // // Wait for the navigation to ProfileScreen
-        // await waitFor(() => {
-        //     expect(getByTestId("profile-screen")).toBeTruthy();
-        // });
+    // // Simulate user interactions
+    // fireEvent.press(getByTestId("profile-button"));
 
-        // // Verify the user was passed to ProfileScreen
-        // expect(mockUser).toEqual({
-        //     uid: "123",
-        //     email: "test@example.com",
-        //     name: "TestUser",
-        //     createdAt: expect.any(Date),
-        // });
-        expect(true).toBe(true);
-    });
+    // // Wait for the navigation to ProfileScreen
+    // await waitFor(() => {
+    //     expect(getByTestId("profile-screen")).toBeTruthy();
+    // });
+
+    // // Verify the user was passed to ProfileScreen
+    // expect(mockUser).toEqual({
+    //     uid: "123",
+    //     email: "test@example.com",
+    //     name: "TestUser",
+    //     createdAt: expect.any(Date),
+    // });
+    expect(true).toBe(true);
+  });
 });
