@@ -1,4 +1,4 @@
-import { FieldPath, limit, documentId, GeoPoint, limit, Timestamp } from "firebase/firestore";
+import { FieldPath, limit, documentId, GeoPoint, Timestamp } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -12,7 +12,6 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { LocationObject, LocationObjectCoords } from "expo-location";
 
 export type DBUser = {
   uid: string;
