@@ -86,7 +86,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       <SearchBar onSearch={(text) => setSearchText(text)} />
 
       {/* List of filtered users */}
-      <ListOfFilteredUsers searchText={searchText} uid = {uid} firestoreCtrl= {firestoreCtrl} filteredUsers = {filteredUsers}/>
+      <ListOfFilteredUsers searchText={searchText} uid = {uid} firestoreCtrl= {firestoreCtrl} filteredUsers = {filteredUsers} />
 
       {/* List of friends */}
       <Text style={styles.friendsTitle}> Your friends </Text>

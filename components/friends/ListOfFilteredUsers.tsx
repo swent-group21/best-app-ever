@@ -1,49 +1,88 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { ThemedText } from '@/components/theme/ThemedText';
-import {UserListItem} from '@/components/friends/UserListItems';
+import { UserListItem } from '@/components/friends/UserListItems';
 import { ThemedView } from '@/components/theme/ThemedView';
 
-export default function ListOfFilteredUsers({filteredUsers, searchText, firestoreCtrl, uid}: any) {
-  const handleAdd = (userId : string) => {
-        console.log(`Add user ${userId} as friend`);
-        console.log('other UID', userId);
-    
-        firestoreCtrl.addFriend(uid, userId);
-      };
- return (
-    <ThemedView style={{padding: 10, backgroundColor : 'transparent'}}>
-        {filteredUsers.length > 0 ? (
-            <FlatList
-              data={filteredUsers}
-              keyExtractor={(item) => item.uid}
-              renderItem={({ item, index }) => (
-                <UserListItem
-                  name={item.name}
-                  key= {index}
-                  avatar={item.image_id }
-                  onAdd={() => {
-                    console.log('Add user', item.uid); 
-                    handleAdd(item.uid)} }
-                />
-              )}
-            />
-          ) : (
-            searchText.length > 0 && (
-              <ThemedText style={styles.noResults}>No user found</ThemedText>
-            )
-          )}
-        </ThemedView>
+export default function ListOfFilteredUsers({ filteredUsers, searchText, firestoreCtrl, uid }: any) {
+  const [userStatuses, setUserStatuses] = useState<{ [key: string]: { isFriend: boolean; isRequested: boolean } }>({});
 
- )
+  const fetchUserStatuses = async () => {
+    const statuses: { [key: string]: { isFriend: boolean; isRequested: boolean } } = {};
+    for (const user of filteredUsers) {
+      const isFriend = await firestoreCtrl.isFriend(uid, user.uid);
+      const isRequested = await firestoreCtrl.isRequested(uid, user.uid);
+      statuses[user.uid] = { isFriend, isRequested };
+    }
+    setUserStatuses(statuses);
+  };
 
+  useEffect(() => {
+    if (filteredUsers.length > 0) {
+      fetchUserStatuses();
+    }
+  }, [filteredUsers]);
+
+  const handleAdd = async (userId: string) => {
+    try {
+      await firestoreCtrl.addFriend(uid, userId);
+      console.log('Friend request sent');
+      setUserStatuses((prev) => ({
+        ...prev,
+        [userId]: { ...prev[userId], isRequested: true },
+      }));
+    } catch (error) {
+      console.error('Error adding friend:', error);
+    }
+  };
+
+  const handleRemove = async (userId: string) => {
+    try {
+      await firestoreCtrl.removeFriendRequest(uid, userId);
+      console.log('Friend request canceled');
+      setUserStatuses((prev) => ({
+        ...prev,
+        [userId]: { ...prev[userId], isRequested: false },
+      }));
+    } catch (error) {
+      console.error('Error canceling friend request:', error);
+    }
+  };
+
+  return (
+    <ThemedView style={{ padding: 10, backgroundColor: 'transparent' }}>
+      {filteredUsers.length > 0 ? (
+        <FlatList
+          data={filteredUsers}
+          keyExtractor={(item) => item.uid}
+          renderItem={({ item }) => {
+            const { isFriend, isRequested } = userStatuses[item.uid] || { isFriend: false, isRequested: false };
+
+            return (
+              <UserListItem
+                name={item.name}
+                avatar={item.image_id}
+                isFriend={isFriend}
+                isRequested={isRequested}
+                onAdd={() => handleAdd(item.uid)}
+                onCancelRequest={() => handleRemove(item.uid)}
+              />
+            );
+          }}
+        />
+      ) : (
+        searchText.length > 0 && <ThemedText style={styles.noResults}>No user found</ThemedText>
+      )}
+    </ThemedView>
+  );
 }
-
 
 const styles = {
-    noResults: {
-        color: '#aaa',
-        textAlign: 'center',
-        marginVertical: 20,
-      },
-}
+  noResults: {
+    color: '#aaa',
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+};
+
+

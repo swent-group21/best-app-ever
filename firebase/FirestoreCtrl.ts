@@ -423,5 +423,46 @@ console.log("Challenge data retrieved:", data);
     }
   }
 
+  async removeFriendRequest(userId: string, friendId: string) {
+
+    try
+    {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.friendsRequestedUser = user.friendsRequestedUser || [];
+      friend.userRequestedFriends = friend.userRequestedFriends || [];
+
+      user.userRequestedFriends = user.userRequestedFriends?.filter((id) => id !== friendId);
+      friend.friendsRequestedUser = friend.friendsRequestedUser?.filter((id) => id !== userId);
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    }
+    catch (error) {
+      console.error("Error unadding friend: ", error);
+      throw error;
+    }
+  }
+
+  async isFriend(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      return user.friends?.includes(friendId);
+    } catch (error) {
+      console.error("Error checking if friend: ", error);
+      throw error;
+    }
+  }
+
+  async isRequested(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      return user.userRequestedFriends?.includes(friendId);
+    } catch (error) {
+      console.error("Error checking if requested: ", error);
+      throw error;
+    }
+  }
 
 }
