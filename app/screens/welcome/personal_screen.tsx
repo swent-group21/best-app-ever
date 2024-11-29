@@ -28,6 +28,10 @@ export default function WelcomeConceptScreen() {
         Create and share your memories with your friends{"\n"}Get rewarded for
         your creativity
       </ThemedText>
+      <Image
+        source={require("@/assets/images/challenge1.png")}
+        style={styles.image}
+      />
     </ThemedView>
   );
 }
@@ -67,5 +71,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingTop: height * 0.12,
     paddingBottom: height * 0.05,
+  },
+
+  image: {
+    width: width * 0.9,
+    height: height * 0.3,
+    alignSelf: "center",
+    borderRadius: 15,
   },
 });
