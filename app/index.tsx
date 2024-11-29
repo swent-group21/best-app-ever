@@ -14,7 +14,6 @@ function App() {
 
   return (
     <NavigationIndependentTree>
-
       <Nav
         isLoggedIn={isLoggedIn}
         user={user}

@@ -136,7 +136,6 @@ const SignUpTest = ({ setUser }: { setUser: jest.Mock }) => {
   );
 };
 
-
 // Create a test component to wrap SetUsernameScreen and HomeScreen with navigation
 // const SetUsernameTest = ({ setUser }: { setUser: jest.Mock }) => {
 //     return (

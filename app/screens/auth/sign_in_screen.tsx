@@ -17,7 +17,6 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-
 export default function SignInScreen({
   navigation,
   firestoreCtrl,
@@ -78,7 +77,6 @@ export default function SignInScreen({
             <ThemedTextButton
               style={styles.buttonSignIn}
               onPress={() => {
-
                 logInWithEmail(
                   email,
                   password,

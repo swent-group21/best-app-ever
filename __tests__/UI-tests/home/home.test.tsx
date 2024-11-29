@@ -10,7 +10,11 @@ import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { DBChallenge, DBGroup, DBChallengeDescription } from "@/firebase/FirestoreCtrl";
+import {
+  DBChallenge,
+  DBGroup,
+  DBChallengeDescription,
+} from "@/firebase/FirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
@@ -64,9 +68,7 @@ mockFirestoreCtrl.getChallengesByUserId = jest
   .fn()
   .mockResolvedValue(mockChallenges);
 
-mockFirestoreCtrl.getGroupsByUserId = jest
-  .fn()
-  .mockResolvedValue(mockGroups);
+mockFirestoreCtrl.getGroupsByUserId = jest.fn().mockResolvedValue(mockGroups);
 
 mockFirestoreCtrl.getChallengeDescription = jest
   .fn()
@@ -135,7 +137,8 @@ describe("HomeScreen", () => {
     // Wait for the description to be fetched and rendered
     await waitFor(() => {
       expect(getByTestId("group-id-0")).toBeTruthy();
-      expect(getByTestId("group-id-1")).toBeTruthy();});
-      expect(getByTestId("create-group-button")).toBeTruthy();
+      expect(getByTestId("group-id-1")).toBeTruthy();
+    });
+    expect(getByTestId("create-group-button")).toBeTruthy();
   });
 });

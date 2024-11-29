@@ -9,7 +9,6 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-
 export default function WelcomeFinalScreen({
   setUser,
   navigation,

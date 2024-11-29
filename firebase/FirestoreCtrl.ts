@@ -51,8 +51,7 @@ export type DBGroup = {
   description?: string;
   members: string[];
   creationDate?: Date;
-  
-}
+};
 export type DBChallengeDescription = {
   title: string;
   description: string;
@@ -295,7 +294,7 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves all groups assigned to a specific user.
-   * 
+   *
    * @param uid The UID of the user whose groups are to be fetched.
    * @returns A promise that resolves to an array of groups.
    */
@@ -316,13 +315,15 @@ export default class FirestoreCtrl {
       const groupSnapshots = await getDocs(q);
 
       // Map the results into an array of DBGroup
-      const dbGroups: DBGroup[] = groupSnapshots.docs.map(doc => ({
-        group_id: doc.id,
-        ...doc.data()
-      } as DBGroup));
+      const dbGroups: DBGroup[] = groupSnapshots.docs.map(
+        (doc) =>
+          ({
+            group_id: doc.id,
+            ...doc.data(),
+          }) as DBGroup,
+      );
 
       return dbGroups;
-
     } catch (error) {
       console.error("Error getting groups by user ID: ", error);
       throw error;
@@ -331,7 +332,7 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves all groups assigned to a specific user.
-   * 
+   *
    * @param uid The UID of the user whose groups are to be fetched.
    * @returns A promise that resolves to an array of groups.
    */
@@ -349,23 +350,24 @@ export default class FirestoreCtrl {
       const usersSnapshots = await getDocs(q);
 
       // Map the results into an array of DBUser
-      const dbUsers: DBUser[] = usersSnapshots.docs.map(doc => ({
-        uid: doc.id,
-        ...doc.data()
-      } as DBUser));
+      const dbUsers: DBUser[] = usersSnapshots.docs.map(
+        (doc) =>
+          ({
+            uid: doc.id,
+            ...doc.data(),
+          }) as DBUser,
+      );
 
       return dbUsers;
-      
     } catch (error) {
       console.error("Error getting groups by user ID: ", error);
       throw error;
     }
   }
 
-      
   /**
    * Retrieves the current challenge description from Firestore
-   * 
+   *
    * @returns A promise that resolves to the description of the current challenge.
    */
 

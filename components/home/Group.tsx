@@ -16,23 +16,20 @@ export function Group({
   navigation,
   testID,
 }: any) {
-
   // Display loading state or handle absence of challenge data
   if (!groupDB) {
     return <ThemedText>Loading Group...</ThemedText>;
   } else {
     return (
-        <ThemedView style={styles.container} testID={testID}>
-            <ThemedTextButton 
-                style={styles.heading} 
-                onPress={() => {}}
-                text={groupDB.name}
-                textStyle={styles.titleText}
-                textColorType="textOverLight"
-            >
-
-            </ThemedTextButton>
-        </ThemedView>
+      <ThemedView style={styles.container} testID={testID}>
+        <ThemedTextButton
+          style={styles.heading}
+          onPress={() => {}}
+          text={groupDB.name}
+          textStyle={styles.titleText}
+          textColorType="textOverLight"
+        ></ThemedTextButton>
+      </ThemedView>
     );
   }
 }
@@ -47,18 +44,18 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 8,
     //gap: 6,
-    color:"transparent",
+    color: "transparent",
     fontSize: 5,
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor : "transparent",
+    backgroundColor: "transparent",
   },
   container: {
     flex: 1,
     justifyContent: "flex-start",
     backgroundColor: Colors.dark.backgroundPrimary,
     width: width * 0.23,
-    height:width * 0.2,
+    height: width * 0.2,
     borderRadius: 20,
     margin: 10,
     alignItems: "center",
@@ -73,5 +70,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  
 });

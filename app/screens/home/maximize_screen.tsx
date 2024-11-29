@@ -11,7 +11,6 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-
 export default function MaximizeScreen({
   user,
   navigation,

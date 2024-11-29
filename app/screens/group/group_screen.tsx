@@ -37,7 +37,6 @@ export default function GroupScreen({ user, navigation, firestoreCtrl }: any) {
     }
   }, [uid]);
 
-  
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -45,7 +44,10 @@ export default function GroupScreen({ user, navigation, firestoreCtrl }: any) {
         leftIcon="arrow-backward"
         rightIcon="person-circle-outline"
         leftAction={() => navigation.navigate("Home")}
-        rightAction={() => {navigation.navigate("Profile"); console.log(auth.currentUser)}}
+        rightAction={() => {
+          navigation.navigate("Profile");
+          console.log(auth.currentUser);
+        }}
       />
 
       <ThemedScrollView
@@ -62,7 +64,6 @@ export default function GroupScreen({ user, navigation, firestoreCtrl }: any) {
             // Include other props as needed
           />
         ))}
-
       </ThemedScrollView>
 
       {/* Challenges */}

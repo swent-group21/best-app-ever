@@ -15,7 +15,6 @@ import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
 
-
 export default function ProfileScreen({
   user,
   navigation,

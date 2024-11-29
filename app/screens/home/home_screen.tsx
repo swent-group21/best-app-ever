@@ -10,18 +10,23 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Colors } from "@/constants/Colors";
 import { color } from "react-native-elements/dist/helpers";
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBUser,
+  DBGroup,
+} from "@/firebase/FirestoreCtrl";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-
-{/*
+{
+  /*
   The HomeScreen component displays the current challenge description and the list of challenges.
   It fetches the current challenge description and the list of challenges from Firestore.
   The current challenge description is displayed at the top of the screen.
-*/}
+*/
+}
 export default function HomeScreen({
   user,
   navigation,
@@ -76,14 +81,14 @@ export default function HomeScreen({
 
       fetchChallenges();
     }
-  }, [user.id]);
+  }, [user.uid]);
 
   useEffect(() => {
-    if (/*user.id*/ true) {
+    if (user.uid) {
       const fetchGroups = async () => {
         try {
-          const groupsData = await firestoreCtrl.getGroupsByUserId(/*user.id*/ "ycG9QhTsKzPTap1r1v5zGSs0N433");
-          console.log("Groups [" + user.id + "]", groupsData);
+          const groupsData = await firestoreCtrl.getGroupsByUserId(user.uid);
+          console.log("Groups [" + user.uid + "]", groupsData);
           setGroups(groupsData);
         } catch (error) {
           console.error("Error fetching groups: ", error);
@@ -92,7 +97,7 @@ export default function HomeScreen({
 
       fetchGroups();
     }
-  }, [user.id]);
+  }, [user.uid]);
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -122,19 +127,20 @@ export default function HomeScreen({
           />
         ))}
 
-        <ThemedView style={styles.createGroupContainer} testID="create-group-button">
-            <ThemedTextButton 
-                style={styles.createGroupButton} 
-                onPress={() => {}}
-                text="+"
-                textStyle={styles.createGroupText}
-                textColorType="textOverLight"
-                colorType= "backgroundSecondary"
-            ></ThemedTextButton>
+        <ThemedView
+          style={styles.createGroupContainer}
+          testID="create-group-button"
+        >
+          <ThemedTextButton
+            style={styles.createGroupButton}
+            onPress={() => {}}
+            text="+"
+            textStyle={styles.createGroupText}
+            textColorType="textOverLight"
+            colorType="backgroundSecondary"
+          ></ThemedTextButton>
         </ThemedView>
-
       </ThemedScrollView>
-
 
       {/* Challenges */}
       <ThemedScrollView
@@ -142,9 +148,7 @@ export default function HomeScreen({
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-
-
-      {/* Current Challenge Description  */}
+        {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={TitleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
@@ -215,7 +219,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "transparent",
     width: width * 0.23,
-    height:width * 0.2,
+    height: width * 0.2,
     borderRadius: 20,
     margin: 10,
     alignItems: "center",
@@ -224,12 +228,12 @@ const styles = StyleSheet.create({
   createGroupButton: {
     width: "95%",
     height: "95%",
-    borderRadius: 60,  
+    borderRadius: 60,
   },
 
   createGroupText: {
     flex: 1,
     textAlign: "center",
     fontSize: 60,
-  }
+  },
 });

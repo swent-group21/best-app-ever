@@ -70,7 +70,6 @@ export const Nav: React.FC<AppStackProps> = ({
 
         <Screen name="SignUp">
           {(props: any) => (
-            
             <SignUp
               {...props}
               setUser={setUser}
@@ -81,7 +80,6 @@ export const Nav: React.FC<AppStackProps> = ({
 
         <Screen name="SignIn">
           {(props: any) => (
-
             <SignInScreen
               {...props}
               setUser={setUser}
@@ -98,7 +96,6 @@ export const Nav: React.FC<AppStackProps> = ({
 
         <Screen name="SetUser">
           {(props: any) => (
-
             <SetUsername
               {...props}
               user={user}

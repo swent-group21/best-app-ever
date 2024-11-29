@@ -4,7 +4,6 @@ import { ThemedText } from "../theme/ThemedText";
 import Timer from "./timer";
 import { View, ViewStyle } from "react-native";
 
-
 import { Dimensions } from "react-native";
 import { Colors } from "../../constants/Colors";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
@@ -18,7 +17,7 @@ interface ChallengeDescriptionProps {
   testID?: string;
 }
 
-/** 
+/**
  * The ChallengeDescription component displays the current challenge description.
  */
 export function ChallengeDescription({

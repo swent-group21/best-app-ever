@@ -11,7 +11,6 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-
 export default function WelcomeScreens({
   setUser,
   navigation,
