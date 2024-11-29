@@ -9,11 +9,15 @@ import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
+// Define the ChallengeDescriptionProps type
 interface ChallengeDescriptionProps {
   dBChallengeDescription: DBChallengeDescription;
   onTimerFinished: () => void;
 }
 
+/** 
+ * The ChallengeDescription component displays the current challenge description.
+ */
 export function ChallengeDescription({
   dBChallengeDescription,
   onTimerFinished,

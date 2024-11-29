@@ -11,9 +11,13 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
-// Get the screen dimensions
-const { width, height } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
+{/*
+  The HomeScreen component displays the current challenge description and the list of challenges.
+  It fetches the current challenge description and the list of challenges from Firestore.
+  The current challenge description is displayed at the top of the screen.
+*/}
 export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
@@ -25,6 +29,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
 
+  // Fetch the current challenge description
   useEffect(() => {
     console.log("UID", uid);
     const fetchCurrentChallenge = async () => {
@@ -32,7 +37,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
 
-        // Transformation des données
         const formattedChallenge = {
           title: currentChallengeData.Title,
           description: currentChallengeData.Description,
@@ -47,13 +51,13 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
     fetchCurrentChallenge();
   });
 
+  // Fetch the list of challenges
   useEffect(() => {
     console.log("UID", uid);
     if (uid) {
       const fetchChallenges = async () => {
         try {
           const challengesData = await firestoreCtrl.getChallengesByUserId(uid);
-          console.log("Challenges [" + uid + "]", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -72,7 +76,7 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
         rightIcon="person-circle-outline"
         rightAction={() => {
           navigation.navigate("Profile");
-          console.log(auth.currentUser);
+         
         }}
       />
 
@@ -96,7 +100,6 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
               firestoreCtrl={firestoreCtrl}
               key={index}
               challengeDB={challenge}
-              // Include other props as needed
             />
           ))
         )}
