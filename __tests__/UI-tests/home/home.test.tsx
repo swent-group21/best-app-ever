@@ -9,7 +9,8 @@ import {
 import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl, {
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import {
   DBChallenge,
   DBGroup,
   DBChallengeDescription,
