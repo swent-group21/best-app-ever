@@ -26,6 +26,8 @@ export default function HomeScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
+  const userIsGuest = user.name === "Guest";
+
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
     title: "Challenge Title",
@@ -77,7 +79,7 @@ export default function HomeScreen({
       <TopBar
         title="Strive"
         leftIcon="people-outline"
-        rightIcon="person-circle-outline"
+        rightIcon={userIsGuest ? "person-circle-outline" : user.image_id}
         rightAction={() => {
           navigation.navigate("Profile");
         }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { Colors } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -26,16 +26,30 @@ export function TopBar({
   colorType = "white",
 }: TopbarProps) {
   const color = useThemeColor({}, colorType);
+
+  const isImageUrl = (icon?: string) =>
+    icon?.startsWith("http://") || icon?.startsWith("https://");
+
   return (
     <View style={styles.container} testID="topBar">
       {leftIcon ? (
-        <ThemedIconButton
-          name={leftIcon}
-          onPress={leftAction}
-          size={30}
-          color={color}
-          testID={`topLeftIcon-${leftIcon}`}
-        />
+        isImageUrl(leftIcon) ? (
+          <TouchableOpacity onPress={leftAction}>
+            <Image
+              source={{ uri: leftIcon }}
+              style={styles.iconImage}
+              testID={`topLeftImage-${leftIcon}`}
+            />
+          </TouchableOpacity>
+        ) : (
+          <ThemedIconButton
+            name={leftIcon}
+            onPress={leftAction}
+            size={30}
+            color={color}
+            testID={`topLeftIcon-${leftIcon}`}
+          />
+        )
       ) : (
         <View style={styles.placeholder} />
       )}
@@ -49,13 +63,23 @@ export function TopBar({
         </ThemedText>
       )}
       {rightIcon ? (
-        <ThemedIconButton
-          name={rightIcon}
-          onPress={rightAction}
-          size={30}
-          color={color}
-          testID={`topRightIcon-${rightIcon}`}
-        />
+        isImageUrl(rightIcon) ? (
+          <TouchableOpacity onPress={rightAction}>
+            <Image
+              source={{ uri: rightIcon }}
+              style={styles.iconImage}
+              testID={`topRightImage-${rightIcon}`}
+            />
+          </TouchableOpacity>
+        ) : (
+          <ThemedIconButton
+            name={rightIcon}
+            onPress={rightAction}
+            size={30}
+            color={color}
+            testID={`topRightIcon-${rightIcon}`}
+          />
+        )
       ) : (
         <View style={styles.placeholder} />
       )}
@@ -79,5 +103,10 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     width: 30,
+  },
+  iconImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
 });
