@@ -17,7 +17,7 @@ const { height } = Dimensions.get("window");
   It fetches the current challenge description and the list of challenges from Firestore.
   The current challenge description is displayed at the top of the screen.
 */}
-export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
+export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
     title: "Challenge Title",
@@ -25,14 +25,12 @@ export default function HomeScreen({ user, navigation, firestoreCtrl }: any) {
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
 
-  const auth = getAuth();
-  const uid = auth.currentUser?.uid;
   const user = route.params?.user || {};
 
 
   // Fetch the current challenge description
   useEffect(() => {
-    console.log("UID", uid);
+    console.log("UID", user.uid);
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =
