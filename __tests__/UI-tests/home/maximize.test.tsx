@@ -35,6 +35,7 @@ const mockFirestoreCtrl = {
 const mockNavigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
+};
 
 // Mock the user object
 const mockUser = {
