@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { Colors } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";

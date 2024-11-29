@@ -38,12 +38,14 @@ export default function ProfileScreen({
   }, [user.uid]);
 
   const [name, setName] = React.useState<string>(user.name);
-  
+
   React.useEffect(() => {
     setName(user.name);
   }, [user.name]);
 
-  const [image, setImage] = React.useState<string | null>(user.image_id ? user.image_id : null);
+  const [image, setImage] = React.useState<string | null>(
+    user.image_id ? user.image_id : null,
+  );
 
   const pickImage = async () => {
     try {
@@ -62,7 +64,7 @@ export default function ProfileScreen({
   };
 
   const upload = async () => {
-    if (await user.name === "") {
+    if ((await user.name) === "") {
       alert("Please enter a username.");
     } else {
       try {
@@ -84,9 +86,16 @@ export default function ProfileScreen({
           <TopBar
             title="Your profile"
             leftIcon="arrow-back"
-            leftAction={() => {upload(); navigation.goBack();}}
+            leftAction={() => {
+              upload();
+              navigation.goBack();
+            }}
           />
-          <TouchableOpacity onPress={pickImage} testID="image-picker" style={styles.smallContainer}>
+          <TouchableOpacity
+            onPress={pickImage}
+            testID="image-picker"
+            style={styles.smallContainer}
+          >
             {!image ? (
               <ThemedIconButton
                 name="person-circle-outline"
@@ -95,11 +104,15 @@ export default function ProfileScreen({
                 onPress={pickImage}
               />
             ) : (
-              <Image source={{ uri: image }} style={styles.image}/>
+              <Image source={{ uri: image }} style={styles.image} />
             )}
           </TouchableOpacity>
           <ThemedView style={styles.smallContainer}>
-            <ThemedTextInput style={styles.username} value={name} onChangeText={setName} />
+            <ThemedTextInput
+              style={styles.username}
+              value={name}
+              onChangeText={setName}
+            />
           </ThemedView>
           <ThemedView style={styles.actionsContainer}>
             <ThemedView style={styles.row}>
