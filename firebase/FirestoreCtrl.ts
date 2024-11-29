@@ -340,6 +340,7 @@ export default class FirestoreCtrl {
       console.error("Error getting likes: ", error);
       throw error;
     }
+  }
 
   /**
    * Retrieves the current challenge description from Firestore
