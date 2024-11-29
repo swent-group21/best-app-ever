@@ -12,11 +12,13 @@ import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { height } = Dimensions.get("window");
 
-{/*
+{
+  /*
   The HomeScreen component displays the current challenge description and the list of challenges.
   It fetches the current challenge description and the list of challenges from Firestore.
   The current challenge description is displayed at the top of the screen.
-*/}
+*/
+}
 export default function HomeScreen({
   user,
   navigation,
@@ -89,8 +91,7 @@ export default function HomeScreen({
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-
-      {/* Current Challenge Description  */}
+        {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={TitleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
