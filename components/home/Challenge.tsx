@@ -79,7 +79,7 @@ export function Challenge({
               source={
                 challengeDB.image_id
                   ? { uri: challengeDB.image_id }
-                  : require("@/assets/images/challenge1.png")
+                  : require("@/assets/images/no-image.svg")
               }
               style={styles.image}
             />

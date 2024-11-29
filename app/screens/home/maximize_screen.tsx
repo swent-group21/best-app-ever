@@ -135,7 +135,6 @@ export default function MaximizeScreen({
         </ThemedView>
 
         {/* Image */}
-        {postImage != "" ? (
           <ThemedView
             style={styles.container}
             colorType="transparent"
@@ -145,14 +144,11 @@ export default function MaximizeScreen({
               source={
                 postImage
                   ? { uri: postImage }
-                  : require("@/assets/images/challenge1.png")
+                  : require("@/assets/images/no-image.svg")
               }
               style={styles.image}
             />
           </ThemedView>
-        ) : (
-          <ThemedText>No image to display</ThemedText>
-        )}
 
         {/* Like section */}
         <ThemedView style={styles.likeSection} colorType="transparent">
