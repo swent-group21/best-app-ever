@@ -67,7 +67,6 @@ const MaximizeScreenTest = () => {
         challenge_name: "Challenge 1",
         description: "Description 1",
         uid: "12345",
-        created_at: mockTimestamp,
         likes: ["12345", "67890"],
       },
       firestoreCtrl: mockFirestoreCtrl,

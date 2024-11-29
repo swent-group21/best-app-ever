@@ -28,8 +28,8 @@ export function Challenge({
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
 
-  // @ts-ignore - date is not always a Date object
-  const challengeDate = challengeDB.date
+  // @ts-ignore - date is a Timestamp object
+  let challengeDate: Date = challengeDB.date
     ? challengeDB.date.toDate()
     : new Date();
 
@@ -56,7 +56,7 @@ export function Challenge({
         setIsLiked(likes.includes(currentUser.uid));
         setLikes(likes);
       });
-  }, [challengeDB, firestoreCtrl, likes]);
+  }, [challengeDB.challenge_id]);
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -69,17 +69,23 @@ export function Challenge({
         style={{ backgroundColor: "transparent" }}
       >
         <TouchableOpacity
+          testID="challenge-touchable"
           onPress={() => setIsOpen(!isOpen)}
           activeOpacity={0.8}
         >
           <ThemedView style={[styles.challenge]}>
             <Image
-              source={require("@/assets/images/challenge2.png")}
+              testID="challenge-image"
+              source={
+                challengeDB.image_id
+                  ? { uri: challengeDB.image_id }
+                  : require("@/assets/images/no-image.svg")
+              }
               style={styles.image}
             />
 
             {isOpen && (
-              <ThemedView style={styles.container}>
+              <ThemedView testID="challenge-container" style={styles.container}>
                 <ThemedView
                   style={[styles.user, { justifyContent: "space-between" }]}
                 >
@@ -105,11 +111,12 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"on " + challengeDate.toLocaleDateString()}
+                        {"on " + challengeDate.toUTCString()}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
                   <ThemedIconButton
+                    testID="expand-button"
                     name="chevron-expand-outline"
                     onPress={() => {
                       navigation.navigate("Maximize", {
@@ -126,31 +133,25 @@ export function Challenge({
                 </ThemedView>
                 <ThemedView style={styles.bottomBar}>
                   <ThemedIconButton
+                    testID="like-button"
                     name={isLiked ? "heart" : "heart-outline"}
-                    onPress={() => {
-                      setIsLiked(!isLiked);
-
-                      // Add or remove user id from like list
-                      if (isLiked) {
-                        const newLikeList = likes.filter(
-                          (userId) => userId !== currentUser.uid,
-                        );
-                        setLikes(newLikeList);
-                        firestoreCtrl.updateLikesOf(
-                          challengeDB.challenge_id ?? "",
-                          newLikeList,
-                        );
-                      } else {
-                        const newLikeList = [...likes, currentUser.uid];
-                        setLikes(newLikeList);
-                        firestoreCtrl.updateLikesOf(
-                          challengeDB.challenge_id ?? "",
-                          newLikeList,
-                        );
-                      }
-                    }}
-                    size={25}
                     color={isLiked ? "red" : "white"}
+                    size={25}
+                    onPress={() => {
+                      const newIsLiked = !isLiked;
+                      setIsLiked(newIsLiked);
+
+                      const newLikeList = newIsLiked
+                        ? [...likes, currentUser.uid] // Liking
+                        : likes.filter((userId) => userId !== currentUser.uid); // Unliking
+
+                      setLikes(newLikeList);
+
+                      firestoreCtrl.updateLikesOf(
+                        challengeDB.challenge_id ?? "",
+                        newLikeList,
+                      );
+                    }}
                   />
                   <ThemedIconButton
                     name="location-outline"
