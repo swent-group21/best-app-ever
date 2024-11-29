@@ -262,7 +262,7 @@ console.log("StorageRef:", storageRef);
       const querySnapshot = await getDocs(q);
       const challenges = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-console.log("Challenge data retrieved:", data);
+        console.log("Challenge data retrieved:", data);
         return {
           ...data,
           challenge_id: doc.id,
@@ -438,7 +438,9 @@ console.log("Challenge data retrieved:", data);
       return friends;
     } catch (error) {
       console.error("Error getting requested friends: ", error);
-
+      throw error;
+    }
+  }
   /**
    * Retrieves all groups assigned to a specific user.
    *
@@ -454,6 +456,9 @@ console.log("Challenge data retrieved:", data);
 
       console.log("userGroups [" + uid + "]", userData.groups);
 
+      if (!userData.groups || userData.groups.length === 0) {
+        return [];
+      }
       // Retrieve all groups using the group IDs
       const groupsRef = collection(firestore, "groups");
 
@@ -521,8 +526,10 @@ console.log("Challenge data retrieved:", data);
       return user.friends?.includes(friendId);
     } catch (error) {
       console.error("Error checking if friend: ", error);
+    }
+  }
 
-   * Retrieves all members assigned to a specific group.
+   /* Retrieves all members assigned to a specific group.
    *
    * @param uid The UID of the group whose members are to be fetched.
    * @returns A promise that resolves to an array of groups.
@@ -537,6 +544,7 @@ console.log("Challenge data retrieved:", data);
       if (!userData.members || userData.members.length === 0) {
         return [];
       }
+
 
       // Retrieve all users using the user IDs
       const usersRef = collection(firestore, "users");

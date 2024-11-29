@@ -24,7 +24,7 @@ describe('FriendListItem Component', () => {
     );
 
     const defaultAvatar = getByTestId('friend-default-avatar');
-    const initialText = getByText('J'); // First letter of the name
+    const initialText = getByText('J');
     expect(defaultAvatar).toBeTruthy();
     expect(initialText).toBeTruthy();
   });

@@ -120,7 +120,7 @@ export const Nav: React.FC<AppStackProps> = ({
           )}
         </Screen>
 
-        <Screen name="Maximize">
+        <Screen name="MaximizeScreen">
           {(props: any) => (
             <MaximizeScreen
               {...props}
