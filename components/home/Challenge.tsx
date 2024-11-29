@@ -26,6 +26,7 @@ export function Challenge({
     ? challengeDB.date.toDate()
     : new Date();
 
+  // Fetch user data
   useEffect(() => {
     if (challengeDB.uid) {
       const fetchUser = async () => {
@@ -40,8 +41,8 @@ export function Challenge({
     }
   }, [user]);
 
+  // Fetch likes data
   useEffect(() => {
-    // Fetch likes
     firestoreCtrl
       .getLikesOf(challengeDB.challenge_id ?? "")
       .then((likes: string[]) => {
