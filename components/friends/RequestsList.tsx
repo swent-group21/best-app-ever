@@ -1,6 +1,6 @@
 import React from "react"
 import { FlatList } from "react-native"
-import {FriendRequestItem} from "./FriendRequestItem"
+import {FriendRequestItem} from "@/components/friends/FriendRequestItem"
 
 export default function RequestList(requests : any, firestoreCtrl : any, uid : any) {
     const handleAccept = (requestId: string) => {

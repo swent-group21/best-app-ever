@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { TopBar } from '@/components/navigation/TopBar';
 import { ThemedView } from '@/components/theme/ThemedView';
 import { ThemedText } from '@/components/theme/ThemedText';
 import { DBUser } from '@/firebase/FirestoreCtrl';
-import { Dimensions } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { SearchBar } from '@/components/friends/SearchBar';
-import { UserListItem } from '@/components/friends/UserListItems';
-import { FriendListItem } from '@/components/friends/FriendListItem';
-import { FriendRequestItem } from '@/components/friends/FriendRequestItem';
 import ListOfFriends from '@/components/friends/ListOfFriends';
 import RequestList from '@/components/friends/RequestsList';
 import ListOfFilteredUsers from '@/components/friends/ListOfFilteredUsers';
@@ -70,28 +66,12 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       fetchRequests();
     });
 
-
-  // Filter users in regard to the search text
-    const filteredUsers = (searchText && users.length > 0)
-    ? users.filter((user) => {
-        return user.uid && user.uid != uid && user.name && user.name.toLowerCase().includes(searchText.toLowerCase());
-        })
-    : [];
-      
     
-  // Handle Add, Accept and Decline
-  const handleFriendPress = (friendId: string) => {
-     console.log(`Navigate to friend ${friendId}'s profile`);
-  };
+    // Handle Add, Accept and Decline
+    const handleFriendPress = (friendId: string) => {
+      console.log(`Navigate to friend ${friendId}'s profile`);
+    };
 
-  const handleAdd = (userId: string) => {
-    console.log(`Add user ${userId} as friend`);
-    console.log('other UID', userId);
-
-    firestoreCtrl.addFriend(uid, userId);
-  };
-
-  
 
   return (
     <ThemedView style={styles.container}>
@@ -101,7 +81,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl}: any) {
       <SearchBar onSearch={(text) => setSearchText(text)} />
 
       {/* List of filtered users */}
-      <ListOfFilteredUsers users={users} handleAddFriend={handleAdd} filteredUsers={filteredUsers} searchText={searchText} handleAdd={handleAdd} />
+      <ListOfFilteredUsers searchText={searchText} uid = {uid} firestoreCtrl= {firestoreCtrl} />
 
       {/* List of friends */}
       <Text style={styles.friendsTitle}> Your friends </Text>
@@ -168,7 +148,5 @@ const styles = StyleSheet.create({
     borderBottomColor: '#333',
     
   },
-  
-
 });
 

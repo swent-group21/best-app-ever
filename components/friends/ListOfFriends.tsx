@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { FriendListItem } from './FriendListItem';
-import { ThemedText } from '../theme/ThemedText';
+import { FriendListItem } from '@/components/friends/FriendListItem';
+import { ThemedText } from '@/components/theme/ThemedText';
 import { Dimensions } from 'react-native';
 
 const { height, width} = Dimensions.get('window');

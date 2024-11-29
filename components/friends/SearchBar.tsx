@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { ThemedView } from '../theme/ThemedView';
-import { ThemedTextInput } from '../theme/ThemedTextInput';
+import { ThemedView } from '@/components/theme/ThemedView';
+import { ThemedTextInput } from '@/components/theme/ThemedTextInput';
 
 
 export const SearchBar = ({ onSearch }: { onSearch: (text: string) => void }) => (

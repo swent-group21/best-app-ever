@@ -4,7 +4,13 @@ import { ThemedText } from '@/components/theme/ThemedText';
 import {UserListItem} from '@/components/friends/UserListItems';
 import { ThemedView } from '@/components/theme/ThemedView';
 
-export default function ListOfFilteredUsers({ users, handleAddFriend, filteredUsers, handleAdd, searchText}: any) {
+export default function ListOfFilteredUsers({filteredUsers, searchText, firestoreCtrl, userId, uid}: any) {
+  const handleAdd = (userId : string) => {
+        console.log(`Add user ${userId} as friend`);
+        console.log('other UID', userId);
+    
+        firestoreCtrl.addFriend(uid, userId);
+      };
  return (
     <ThemedView style={{padding: 10, backgroundColor : 'transparent'}}>
         {filteredUsers.length > 0 ? (
@@ -18,7 +24,7 @@ export default function ListOfFilteredUsers({ users, handleAddFriend, filteredUs
                   avatar={item.image_id }
                   onAdd={() => {
                     console.log('Add user', item.uid); 
-                    handleAdd(item.uid)} }
+                    handleAdd(userId)} }
                 />
               )}
             />
@@ -30,6 +36,7 @@ export default function ListOfFilteredUsers({ users, handleAddFriend, filteredUs
         </ThemedView>
 
  )
+
 }
 
 
