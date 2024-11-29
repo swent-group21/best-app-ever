@@ -10,26 +10,26 @@ describe("ProfileScreen", () => {
   test("always passes", () => {
     expect(true).toBe(true);
   });
-//  it("renders the profile screen correctly", () => {
-//    const { getByText } = render(
-//      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
-//    );
-//
-//    expect(getByText("Your profile")).toBeTruthy(); // Verify the title renders
-//    expect(getByText("Change your email")).toBeTruthy(); // Verify email button renders
-//    expect(getByText("Change your password")).toBeTruthy(); // Verify password button renders
-//    expect(getByText("Log Out")).toBeTruthy(); // Verify logout button renders
-//  });
-//});
-//
-//jest.mock("expo-image-picker", () => ({
-//  launchImageLibraryAsync: jest.fn(() => ({
-//    canceled: false,
-//    assets: [{ uri: "test-image-uri" }],
-//  })),
-//  auth: {
-//    signOut: jest.fn(),
-//  },
+  //  it("renders the profile screen correctly", () => {
+  //    const { getByText } = render(
+  //      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
+  //    );
+  //
+  //    expect(getByText("Your profile")).toBeTruthy(); // Verify the title renders
+  //    expect(getByText("Change your email")).toBeTruthy(); // Verify email button renders
+  //    expect(getByText("Change your password")).toBeTruthy(); // Verify password button renders
+  //    expect(getByText("Log Out")).toBeTruthy(); // Verify logout button renders
+  //  });
+  //});
+  //
+  //jest.mock("expo-image-picker", () => ({
+  //  launchImageLibraryAsync: jest.fn(() => ({
+  //    canceled: false,
+  //    assets: [{ uri: "test-image-uri" }],
+  //  })),
+  //  auth: {
+  //    signOut: jest.fn(),
+  //  },
 });
 
 
@@ -37,28 +37,28 @@ describe("ProfileScreen - Image Picker", () => {
   test("always passes", () => {
     expect(true).toBe(true);
   });
-//  it("opens the image picker when the profile image is clicked", async () => {
-//    const { getByTestId } = render(
-//      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
-//    );
-//    const imagePickerButton = getByTestId("image-picker");
-//
-//    await fireEvent.press(imagePickerButton);
-//
-//    expect(ImagePicker.launchImageLibraryAsync).toHaveBeenCalled();
-//  });
-//
-//  it("displays the selected image", async () => {
-//    const { getByTestId, getByRole } = render(
-//      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
-//    );
-//    const imagePickerButton = getByTestId("image-picker");
-//
-//    await fireEvent.press(imagePickerButton);
-//
-//    const selectedImage = getByRole("image");
-//    expect(selectedImage.props.source.uri).toBe("test-image-uri");
-//  });
+  //  it("opens the image picker when the profile image is clicked", async () => {
+  //    const { getByTestId } = render(
+  //      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
+  //    );
+  //    const imagePickerButton = getByTestId("image-picker");
+  //
+  //    await fireEvent.press(imagePickerButton);
+  //
+  //    expect(ImagePicker.launchImageLibraryAsync).toHaveBeenCalled();
+  //  });
+  //
+  //  it("displays the selected image", async () => {
+  //    const { getByTestId, getByRole } = render(
+  //      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
+  //    );
+  //    const imagePickerButton = getByTestId("image-picker");
+  //
+  //    await fireEvent.press(imagePickerButton);
+  //
+  //    const selectedImage = getByRole("image");
+  //    expect(selectedImage.props.source.uri).toBe("test-image-uri");
+  //  });
 });
 
 
@@ -66,34 +66,34 @@ describe("ProfileScreen - Log Out", () => {
   test("always passes", () => {
     expect(true).toBe(true);
   });
-//  it("calls signOut when the log out button is pressed", async () => {
-//    const mockSignOut = jest.fn();
-//    const { getByText } = render(
-//      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
-//    );
-//
-//    const logOutButton = getByText("Log Out");
-//
-//    await fireEvent.press(logOutButton);
-//
-//    expect(mockSignOut).toHaveBeenCalled();
-//  });
+  //  it("calls signOut when the log out button is pressed", async () => {
+  //    const mockSignOut = jest.fn();
+  //    const { getByText } = render(
+  //      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
+  //    );
+  //
+  //    const logOutButton = getByText("Log Out");
+  //
+  //    await fireEvent.press(logOutButton);
+  //
+  //    expect(mockSignOut).toHaveBeenCalled();
+  //  });
 });
 
 describe("ProfileScreen - Change Email", () => {
   test("always passes", () => {
     expect(true).toBe(true);
   });
-//  it("displays the email alert when the 'Change your email' button is pressed", () => {
-//    const { getByText } = render(
-//      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
-//    );
-//
-//    const changeEmailButton = getByText("Change your email");
-//    fireEvent.press(changeEmailButton);
-//
-//    expect(getByText("Email")).toBeTruthy();
-//    expect(getByText("tristan@gmail.com")).toBeTruthy();
-//  });
+  //  it("displays the email alert when the 'Change your email' button is pressed", () => {
+  //    const { getByText } = render(
+  //      <ProfileScreen user={{}} navigation={{}} firestoreCtrl={{}} />,
+  //    );
+  //
+  //    const changeEmailButton = getByText("Change your email");
+  //    fireEvent.press(changeEmailButton);
+  //
+  //    expect(getByText("Email")).toBeTruthy();
+  //    expect(getByText("tristan@gmail.com")).toBeTruthy();
+  //  });
 
 });

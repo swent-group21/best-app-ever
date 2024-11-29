@@ -5,8 +5,8 @@ import { Challenge } from "@/components/home/Challenge";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import { DBChallenge } from "@/firebase/FirestoreCtrl";
 import { ThemedText } from "@/components/theme/ThemedText";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
@@ -17,16 +17,21 @@ const { height } = Dimensions.get("window");
   It fetches the current challenge description and the list of challenges from Firestore.
   The current challenge description is displayed at the top of the screen.
 */}
-export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
+export default function HomeScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
     title: "Challenge Title",
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
-
-  const user = route.params?.user || {};
-
 
   // Fetch the current challenge description
   useEffect(() => {
@@ -69,7 +74,7 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
   }, [user.uid]);
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="home-screen">
       <TopBar
         title="Strive"
         leftIcon="people-outline"

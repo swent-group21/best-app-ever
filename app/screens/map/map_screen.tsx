@@ -9,7 +9,7 @@ import {
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
-import { DBChallenge } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 // import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 /**
@@ -27,7 +27,15 @@ const defaultLocation = {
  *
  * @returns The MapScreen component
  */
-export default function MapScreen({ navigation, firestoreCtrl }: any) {
+export default function MapScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserPosition] = useState<LocationObject | undefined>(
     undefined,

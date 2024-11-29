@@ -23,12 +23,14 @@ const { Navigator, Screen, Group } =
 interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
   user?: DBUser | null;
+  setUser?: React.Dispatch<React.SetStateAction<DBUser | null>>;
   firestoreCtrl: FirestoreCtrl;
 }
 
 export const Nav: React.FC<AppStackProps> = ({
   isLoggedIn,
   user,
+  setUser,
   firestoreCtrl,
 }) => {
   return (
@@ -48,61 +50,100 @@ export const Nav: React.FC<AppStackProps> = ({
       <Group>
         <Screen name="Welcome" options={{ title: "Login to Strive" }}>
           {(props: any) => (
-            <WelcomeScreens {...props} firestoreCtrl={firestoreCtrl} />
+            <WelcomeScreens
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="WelcomeFinal" options={{ title: "Final Screen" }}>
           {(props: any) => (
-            <WelcomeFinalScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <WelcomeFinalScreen
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="SignUp">
-          {(props: any) => <SignUp {...props} firestoreCtrl={firestoreCtrl} />}
+          {(props: any) => (
+            <SignUp
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
+          )}
         </Screen>
+
         <Screen name="SignIn">
           {(props: any) => (
-            <SignInScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <SignInScreen
+              {...props}
+              setUser={setUser}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="ForgotPassword">
           {(props: any) => (
             <ForgotPasswordScreen {...props} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
+
         <Screen name="SetUser">
           {(props: any) => (
-            <SetUsername {...props} firestoreCtrl={firestoreCtrl} />
-          )}
-        </Screen>
-      </Group>
-      <Group>
-        <Screen name="Home">
-          {(props: any) => (
-            <HomeScreen
+            <SetUsername
               {...props}
-              user={{ user }}
+              user={user}
+              setUser={setUser}
               firestoreCtrl={firestoreCtrl}
             />
           )}
         </Screen>
-        <Screen name="Camera">
-          {(props: any) => <Camera {...props} firestoreCtrl={firestoreCtrl} />}
+      </Group>
+
+      <Group>
+        <Screen name="Home">
+          {(props: any) => (
+            <HomeScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
+          )}
         </Screen>
+
+        <Screen name="Camera">
+          {(props: any) => (
+            <Camera {...props} user={user} firestoreCtrl={firestoreCtrl} />
+          )}
+        </Screen>
+
         <Screen name="Maximize">
           {(props: any) => (
-            <MaximizeScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <MaximizeScreen
+              {...props}
+              user={user}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="CreateChallenge">
           {(props: any) => (
-            <CreateChallengeScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <CreateChallengeScreen
+              {...props}
+              user={user}
+              firestoreCtrl={firestoreCtrl}
+            />
           )}
         </Screen>
+
         <Screen name="Profile">
           {(props: any) => (
             <ProfileScreen
               {...props}
-              user={{ user }}
+              user={user}
               firestoreCtrl={firestoreCtrl}
             />
           )}
@@ -110,7 +151,7 @@ export const Nav: React.FC<AppStackProps> = ({
 
         <Screen name="MapScreen">
           {(props: any) => (
-            <MapScreen {...props} firestoreCtrl={firestoreCtrl} />
+            <MapScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
       </Group>

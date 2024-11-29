@@ -1,5 +1,4 @@
 import React from "react";
-import { View, Text } from "react-native";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -9,11 +8,9 @@ import { Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Dimensions } from "react-native";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { Alert } from "react-native";
 import { Icon } from "react-native-elements";
-import { auth } from "@/firebase/Firebase";
-import { updateEmail, sendPasswordResetEmail } from "firebase/auth";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
@@ -22,24 +19,16 @@ export default function ProfileScreen({
   user,
   navigation,
   firestoreCtrl,
-}: any) {
-  const currentUser = auth.currentUser;
-  const username = currentUser?.displayName;
-  const email = currentUser?.email;
-  //const username = "test";
-  const [image, setImage] = React.useState<string | null>(null);
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [isLoggedIn, setIsLoggedIn] = React.useState<Boolean>(
-    auth.currentUser ? true : false,
+    user ? true : false,
   );
+  const [image, setImage] = React.useState<string | null>(null);
 
-  const signOut = async () => {
-    try {
-      await auth.signOut();
-      setIsLoggedIn(false);
-    } catch (error) {
-      console.error("Error signing out: ", error);
-    }
-  };
   const pickImage = async () => {
     console.log("Loading image");
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,7 +43,7 @@ export default function ProfileScreen({
   };
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="profile-screen">
       {isLoggedIn && (
         <>
           <TopBar
@@ -75,7 +64,7 @@ export default function ProfileScreen({
             )}
           </TouchableOpacity>
           <ThemedView style={styles.smallContainer}>
-            <ThemedText style={styles.username}>{username}</ThemedText>
+            <ThemedText style={styles.username}>{user.name}</ThemedText>
           </ThemedView>
           <ThemedView style={styles.actionsContainer}>
             <ThemedView style={styles.row}>
@@ -84,7 +73,7 @@ export default function ProfileScreen({
                 textColorType="white"
                 darkColor="transparent"
                 lightColor="transparent"
-                onPress={() => alert("Change email")}
+                onPress={() => resetEmail(user.email)}
                 style={styles.action}
               >
                 {" "}
@@ -99,9 +88,7 @@ export default function ProfileScreen({
                 darkColor="transparent"
                 lightColor="transparent"
                 style={styles.action}
-                onPress={() => {
-                  if (email) sendPasswordResetEmail(auth, email);
-                }}
+                onPress={() => resetPassword(user.email)}
               ></ThemedTextButton>
               <Icon name="key" color="white" size={30} />
             </ThemedView>
@@ -111,10 +98,7 @@ export default function ProfileScreen({
                 textColorType="white"
                 darkColor="transparent"
                 lightColor="transparent"
-                onPress={() => {
-                  signOut;
-                  navigation.navigate("SignIn");
-                }}
+                onPress={() => logOut(navigation)}
                 style={styles.action}
               ></ThemedTextButton>
               <Icon name="logout" color="white" size={30} />
@@ -133,7 +117,7 @@ export default function ProfileScreen({
             textColorType="white"
             darkColor="transparent"
             lightColor="transparent"
-            onPress={() => navigation.navigate("SignIn")}
+            onPress={() => navigation.navigate("WelcomeFinal")}
           />
         </ThemedView>
       )}
@@ -146,31 +130,26 @@ const styles = {
     flex: 1,
     alignItems: "center",
   },
-
   smallContainer: {
     width: "100%",
     alignItems: "center",
   },
-
   image: {
     width: 220,
     height: 220,
     borderRadius: 100,
     marginBottom: 40,
   },
-
   username: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
     color: "white",
   },
-
   columnInfo: {
     flexDirection: "column",
     alignItems: "left",
   },
-
   logOut: {
     width: "100%",
     alignItems: "center",
@@ -179,7 +158,6 @@ const styles = {
     borderColor: "red",
     borderWidth: 1,
   },
-
   logOutView: {
     top: 0,
     alignItems: "center",
@@ -190,10 +168,8 @@ const styles = {
     borderColor: "transparent",
     borderWidth: 1,
     padding: 12,
-
     flexDirection: "row",
   },
-
   actionsContainer: {
     borderRadius: 10,
     width: "95%",
@@ -210,7 +186,6 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-
   notLoggedIn: {
     width: "100%",
     alignItems: "center",
