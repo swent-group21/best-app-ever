@@ -331,9 +331,9 @@ export default class FirestoreCtrl {
   }
 
   /**
-   * Retrieves all groups assigned to a specific user.
+   * Retrieves all members assigned to a specific group.
    *
-   * @param uid The UID of the user whose groups are to be fetched.
+   * @param uid The UID of the group whose members are to be fetched.
    * @returns A promise that resolves to an array of groups.
    */
   async getUsersInGroup(gid: string): Promise<DBUser[]> {
@@ -342,6 +342,10 @@ export default class FirestoreCtrl {
       const groupDoc = await getDoc(groupRef);
 
       const userData = groupDoc.data() as DBGroup;
+
+      if (!userData.members || userData.members.length === 0) {
+        return [];
+      }
 
       // Retrieve all users using the user IDs
       const usersRef = collection(firestore, "users");

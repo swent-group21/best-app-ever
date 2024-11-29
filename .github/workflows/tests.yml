@@ -41,4 +41,4 @@ jobs:
 
       - name: "Checks code formatting"
         if: success() || failure()
-        run: npx prettier --write --check . # It's not possible to automatically fix the code formatting
+        run: npx prettier --check . # It's not possible to automatically fix the code formatting
