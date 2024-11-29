@@ -28,10 +28,8 @@ export function Challenge({
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
 
-  // @ts-ignore - date is not always a Date object
-  const challengeDate = challengeDB.date
-    ? challengeDB.date
-    : new Date();
+  // @ts-ignore - date is a Timestamp object
+  let challengeDate: Date = challengeDB.date ? challengeDB.date.toDate() : new Date();
 
   // Fetch user data
   useEffect(() => {
@@ -56,7 +54,7 @@ export function Challenge({
         setIsLiked(likes.includes(currentUser.uid));
         setLikes(likes);
       });
-  }, [challengeDB, firestoreCtrl, likes]);
+  }, [challengeDB.challenge_id]);
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -76,7 +74,11 @@ export function Challenge({
           <ThemedView style={[styles.challenge]}>
             <Image
               testID="challenge-image"
-              source={{ uri: challengeDB.image_id }}
+              source={
+              (challengeDB.image_id) 
+                ? { uri: challengeDB.image_id } 
+                : require("@/assets/images/challenge1.png")
+              }
               style={styles.image}
             />
 
@@ -107,7 +109,7 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"on " + challengeDate.toLocaleDateString()}
+                        {"on " + challengeDate.toUTCString()}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
@@ -134,26 +136,19 @@ export function Challenge({
                     color={isLiked ? "red" : "white"}
                     size={25}
                     onPress={() => {
-                      setIsLiked(!isLiked);
+                      const newIsLiked = !isLiked;
+                      setIsLiked(newIsLiked);
 
-                      // Add or remove user id from like list
-                      if (isLiked) {
-                        const newLikeList = likes.filter(
-                          (userId) => userId !== currentUser.uid,
-                        );
-                        setLikes(newLikeList);
-                        firestoreCtrl.updateLikesOf(
-                          challengeDB.challenge_id ?? "",
-                          newLikeList,
-                        );
-                      } else {
-                        const newLikeList = [...likes, currentUser.uid];
-                        setLikes(newLikeList);
-                        firestoreCtrl.updateLikesOf(
-                          challengeDB.challenge_id ?? "",
-                          newLikeList,
-                        );
-                      }
+                      const newLikeList = newIsLiked
+                        ? [...likes, currentUser.uid] // Liking
+                        : likes.filter((userId) => userId !== currentUser.uid); // Unliking
+
+                      setLikes(newLikeList);
+
+                      firestoreCtrl.updateLikesOf(
+                        challengeDB.challenge_id ?? "",
+                        newLikeList,
+                      );
                     }}
                   />
                   <ThemedIconButton

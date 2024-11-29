@@ -7,7 +7,7 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { SingleComment } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import FirestoreCtrl, { DBComment, DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBComment, DBUser } from "@/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
@@ -23,7 +23,7 @@ export default function MaximizeScreen({
   route: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const challenge = route.params?.challenge;
+  const challenge: DBChallenge = route.params?.challenge;
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<DBComment[]>([]);
   const [postUser, setPostUser] = React.useState<DBUser>();
@@ -69,7 +69,7 @@ export default function MaximizeScreen({
   }, [challenge, firestoreCtrl]);
 
   // @ts-ignore - date is not of the correct type
-  const postDate = challenge.date ? challenge.date.toDate() : new Date();
+  const postDate : Date = challenge.date ? challenge.date.toDate() : new Date();
   const postTitle =
     challenge.challenge_name == ""
       ? "Secret Challenge"
@@ -114,10 +114,7 @@ export default function MaximizeScreen({
                 {postUser?.name}
               </ThemedText>
               <ThemedText colorType="white" type="small">
-                {"on " +
-                  postDate.toLocaleDateString() +
-                  ", at " +
-                  postDate.toLocaleTimeString()}
+                {"on " + postDate.toUTCString() }
               </ThemedText>
             </ThemedView>
           </ThemedView>
@@ -134,19 +131,20 @@ export default function MaximizeScreen({
         </ThemedView>
 
         {/* Image */}
-        <ThemedView
-          testID="max-image"
-          style={styles.container}
-          colorType="transparent"
-        >
-        </ThemedView>
         {postImage != "" ? (
           <ThemedView
             style={styles.container}
             colorType="transparent"
             testID="challenge-image"
           >
-            <Image source={{ uri: postImage }} style={styles.image} />
+            <Image 
+              source={
+              (postImage) 
+                ? { uri: postImage } 
+                : require("@/assets/images/challenge1.png")
+              }
+              style={styles.image} 
+            />
           </ThemedView>
         ) : (
           <ThemedText>No image to display</ThemedText>

@@ -14,7 +14,7 @@ import {
   LocationObject,
 } from "expo-location";
 
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint, Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -51,14 +51,15 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
   async function makeChallenge() {
     try {
-      let date = new Date();
+      let date: Timestamp = Timestamp.now();
+      console.log("Date: ", date)
 
       await createChallenge(
         firestoreCtrl,
         challenge_name,
-        date,
         description,
         isEnabled ? location : null,
+        date,
         image_id,
       );
       navigation.reset({
