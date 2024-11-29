@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
 import { Dimensions, StyleSheet } from "react-native";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Icon } from "react-native-elements";
@@ -47,8 +47,8 @@ export default function ProfileScreen({
 
   const pickImage = async () => {
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+      let result = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
@@ -66,7 +66,7 @@ export default function ProfileScreen({
       alert("Please enter a username.");
     } else {
       try {
-        await firestoreCtrl.setName(user.uid, await name, setUser);
+        await firestoreCtrl.setName(user.uid, name, setUser);
         if (image) {
           await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
         }
