@@ -11,8 +11,18 @@ import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function MaximizeScreen({ user, navigation, route, firestoreCtrl }: {user: DBUser, navigation: any, route: any, firestoreCtrl: FirestoreCtrl}) {
 
+export default function MaximizeScreen({
+  user,
+  navigation,
+  route,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  route: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [commentText, setCommentText] = React.useState("");
   const [commentList, setCommentList] = React.useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = React.useState(false);

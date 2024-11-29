@@ -14,7 +14,13 @@ function App() {
 
   return (
     <NavigationIndependentTree>
-      <Nav isLoggedIn={isLoggedIn} user={user} firestoreCtrl={firestoreCtrl} setUser={setUser} />
+
+      <Nav
+        isLoggedIn={isLoggedIn}
+        user={user}
+        firestoreCtrl={firestoreCtrl}
+        setUser={setUser}
+      />
     </NavigationIndependentTree>
   );
 }

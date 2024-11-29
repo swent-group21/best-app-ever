@@ -158,7 +158,11 @@ export default class FirestoreCtrl {
   /**
    * Set the name of a user by their UID.
    */
-  async setName(id: string, name: string, setUser: React.Dispatch<React.SetStateAction<DBUser | null>>) {
+  async setName(
+    id: string,
+    name: string,
+    setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+  ) {
     try {
       const user = await this.getUser(id);
       user.name = name;
@@ -186,7 +190,12 @@ export default class FirestoreCtrl {
   /**
    * Set the profile picture of a user by their UID.
    */
-  async setProfilePicture(id: string, imageUri: string, setUser: React.Dispatch<React.SetStateAction<DBUser | null>>) {
+
+  async setProfilePicture(
+    id: string,
+    imageUri: string,
+    setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
+  ) {
     try {
       const user = await this.getUser(id);
       user.image_id = await this.uploadImageFromUri(imageUri);

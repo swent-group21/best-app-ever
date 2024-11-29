@@ -6,11 +6,11 @@ import { Group } from "@/components/home/Group";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import { DBChallenge, DBGroup } from "@/firebase/FirestoreCtrl";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { Colors } from "@/constants/Colors";
 import { color } from "react-native-elements/dist/helpers";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
@@ -22,7 +22,15 @@ const { width, height } = Dimensions.get("window");
   It fetches the current challenge description and the list of challenges from Firestore.
   The current challenge description is displayed at the top of the screen.
 */}
-export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
+export default function HomeScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
   const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
@@ -30,9 +38,6 @@ export default function HomeScreen({ route, navigation, firestoreCtrl }: any) {
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
-
-  const user = route.params?.user || {};
-
 
   // Fetch the current challenge description
   useEffect(() => {

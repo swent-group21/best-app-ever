@@ -27,7 +27,16 @@ const defaultLocation = {
  *
  * @returns The MapScreen component
  */
-export default function MapScreen({ user, navigation, firestoreCtrl }: { user: DBUser; navigation: any; firestoreCtrl: FirestoreCtrl }) {
+
+export default function MapScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserPosition] = useState<LocationObject | undefined>(
     undefined,
