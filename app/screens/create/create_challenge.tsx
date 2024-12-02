@@ -117,14 +117,16 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
             />
         </ThemedView>
 
-        <ThemedTextInput
-          style={styles.input}
-          placeholder="Caption"
-          onChangeText={(text) => setCaption(text)}
-          viewWidth={"90%"}
-          title="Caption"
-          testID="Caption-Input"
-        />
+        <ThemedView style={styles.inputContainer}>
+          <ThemedTextInput
+            style={styles.input}
+            placeholder="Caption"
+            onChangeText={(text) => setCaption(text)}
+            viewWidth={"90%"}
+            title="Caption"
+            testID="Caption-Input"
+          />
+        </ThemedView>
 
         <ThemedView style={styles.containerRow}>
           <Switch
@@ -174,16 +176,15 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "transparent",
     gap: height * 0.027,
-    paddingTop: 25,
+    paddingTop: 15,
+
   },
 
   containerRow: {
-    width: "90%",
     backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "baseline",
-    padding: 15,
+    paddingLeft: 25,
   },
 
   title: {
@@ -193,6 +194,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textAlignVertical: "bottom",
   },
+
   input: {
     alignSelf: "center",
     width: "100%",
@@ -201,9 +203,17 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 
+  inputContainer: {
+    width: "95%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "baseline",
+    paddingTop: 7,
+  },
+
   switch: {
     alignSelf: "flex-start",
-    width: "15%",
+    width: "10%",
     borderWidth: 2,
     borderRadius: 15,
   },
