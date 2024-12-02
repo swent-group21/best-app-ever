@@ -26,6 +26,7 @@ export const buildChallenge = async (
       uid: challenge.uid,
       date: challenge.date,
       location: challenge.location,
+      challenge_description: challenge.challenge_description,
     };
 
     return challengeData;
@@ -42,6 +43,7 @@ export const createChallenge = async (
   challenge_name: string,
   description: string,
   location: LocationObject | null,
+  challenge_description: string,
   date?: Timestamp,
   image_id?: string,
   likes?: string[],
@@ -68,6 +70,7 @@ export const createChallenge = async (
       image_id: image_id,
       likes: likes || [],
       location: locationFirebase,
+      challenge_description: challenge_description,
     };
 
     if (image_id) {

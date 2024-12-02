@@ -47,6 +47,7 @@ const challengeDB: DBChallenge = {
   uid: "user123",
   image_id: "https://example.com/image.jpg",
   likes: ["12345", "67890"],
+  challenge_description: "This is a test challenge",
 };
 
 const mockFirestoreCtrl = new FirestoreCtrl();

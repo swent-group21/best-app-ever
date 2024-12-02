@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Dimensions, Switch } from "react-native";
+import { StyleSheet, Dimensions, Switch, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { createChallenge } from "@/types/ChallengeBuilder";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
@@ -26,6 +26,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   console.log("image_id: ", image_id);
 
   const [location, setLocation] = useState<LocationObject | null>(null);
+  const [descriptionTitle, setDescriptionTitle] = useState("");
 
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => {
@@ -49,6 +50,20 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
     getCurrentLocation();
   }, []);
 
+  useEffect(() => {
+    async function fetchDescriptionTitle() {
+      try {
+        const description = await firestoreCtrl.getChallengeDescription();
+        setDescriptionTitle(description.title);
+      } catch (error) {
+        console.log("Error fetching description id");
+        return error;
+      }
+    }
+
+    fetchDescriptionTitle();
+  }, []);
+
   async function makeChallenge() {
     try {
       let date: Timestamp = Timestamp.now();
@@ -59,8 +74,10 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         challenge_name,
         description,
         isEnabled ? location : null,
+        descriptionTitle,
         date,
         image_id,
+
       );
       navigation.reset({
         index: 0,
@@ -87,6 +104,21 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         style={styles.containerCol}
         automaticallyAdjustKeyboardInsets={true}
       >
+        <ThemedView
+            style={styles.imageContainer}
+            colorType="transparent"
+            testID="challenge-image"
+          >
+            <Image
+              source={
+                image_id
+                  ? { uri: image_id }
+                  : require("@/assets/images/no-image.svg")
+              }
+              style={styles.image}
+            />
+        </ThemedView>
+
         <ThemedTextInput
           style={styles.input}
           placeholder="Challenge Name"
@@ -145,6 +177,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
+
   },
 
   containerCol: {
@@ -152,6 +185,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "transparent",
     gap: height * 0.027,
+    paddingTop: 25,
   },
 
   containerRow: {
@@ -164,11 +198,11 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    flex: 1,
+    flex: 0.45,
     width: "85%",
     alignSelf: "center",
     textAlign: "left",
-    textAlignVertical: "center",
+    textAlignVertical: "bottom",
   },
   input: {
     alignSelf: "center",
@@ -207,6 +241,14 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+
+  imageContainer: {
+    height: height * 0.4,
+    width: width * 0.9,
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "white",
   },
 });
 

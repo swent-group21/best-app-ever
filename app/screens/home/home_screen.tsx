@@ -40,7 +40,7 @@ export default function HomeScreen({
 
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
-  const [TitleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
+  const [titleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
     title: "Challenge Title",
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
@@ -72,7 +72,7 @@ export default function HomeScreen({
     if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getKChallenges(100);
+          const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title);
           // console.log("Challenges [" + user.uid + "]", challengesData);
           setChallenges(challengesData);
         } catch (error) {
@@ -155,7 +155,7 @@ export default function HomeScreen({
       >
         {/* Current Challenge Description  */}
         <ChallengeDescription
-          dBChallengeDescription={TitleChallenge}
+          dBChallengeDescription={titleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
           testID={`description-id`}
         />
