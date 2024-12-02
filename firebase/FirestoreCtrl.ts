@@ -32,8 +32,7 @@ export type DBUser = {
 
 export type DBChallenge = {
   challenge_id?: string; // Add this line
-  challenge_name: string;
-  description?: string;
+  caption?: string;
   uid: string;
   image_id?: string;
   date?: Timestamp;

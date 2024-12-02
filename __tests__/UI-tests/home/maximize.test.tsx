@@ -64,8 +64,7 @@ const MaximizeScreenTest = () => {
       },
       challenge: {
         challenge_id: "1",
-        challenge_name: "Challenge 1",
-        description: "Description 1",
+        caption: "Challenge 1",
         uid: "12345",
         likes: ["12345", "67890"],
       },
@@ -99,7 +98,6 @@ describe("MaximizeScreen", () => {
     const { findByText, findByTestId } = render(<MaximizeScreenTest />);
 
     await waitFor(() => {
-      expect(findByText("Description 1")).toBeTruthy();
       expect(findByText("Test User")).toBeTruthy();
       expect(findByTestId("challenge-image")).toBeTruthy();
       expect(findByTestId("like-button")).toBeTruthy();

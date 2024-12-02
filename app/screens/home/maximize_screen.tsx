@@ -74,17 +74,16 @@ export default function MaximizeScreen({
 
   // @ts-ignore - date is not of the correct type
   const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
-  const postTitle =
-    challenge.challenge_name == ""
+  const postCaption =
+    challenge.caption == ""
       ? "Secret Challenge"
-      : challenge.challenge_name;
+      : challenge.caption;
   const postImage = challenge.image_id ?? "";
-  const postDescription = challenge.description ?? "";
 
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
-        title={postTitle}
+        title={postCaption}
         leftIcon="arrow-back-outline"
         leftAction={() => navigation.goBack()}
       />
@@ -190,15 +189,6 @@ export default function MaximizeScreen({
               testID="like-count"
             >
               {likeList.length} {likeList.length <= 1 ? "like" : "likes"}
-            </ThemedText>
-          </ThemedView>
-          {/* Description */}
-          <ThemedView
-            style={styles.descriptionContainer}
-            colorType="transparent"
-          >
-            <ThemedText style={styles.descriptionText} colorType="white">
-              {postDescription}
             </ThemedText>
           </ThemedView>
         </ThemedView>
@@ -345,16 +335,7 @@ const styles = StyleSheet.create({
   likeCountText: {
     marginLeft: 5,
   },
-
-  descriptionContainer: {
-    flex: 1,
-  },
-
-  descriptionText: {
-    flexShrink: 1,
-    flexWrap: "wrap",
-  },
-
+  
   spacer: {
     width: width * 0.5,
   },

@@ -21,8 +21,7 @@ export const buildChallenge = async (
     //const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
 
     const challengeData: DBChallenge = {
-      challenge_name: challenge.challenge_name,
-      description: challenge.description,
+      caption: challenge.caption,
       uid: challenge.uid,
       date: challenge.date,
       location: challenge.location,
@@ -40,8 +39,7 @@ export const buildChallenge = async (
  */
 export const createChallenge = async (
   firestoreCtrl: FirestoreCtrl,
-  challenge_name: string,
-  description: string,
+  caption: string,
   location: LocationObject | null,
   challenge_description: string,
   date?: Timestamp,
@@ -64,8 +62,7 @@ export const createChallenge = async (
         : new GeoPoint(location.coords.latitude, location.coords.longitude);
 
     const newChallenge: DBChallenge = {
-      challenge_name: challenge_name,
-      description: description || "",
+      caption: caption || "",
       uid: user.uid,
       image_id: image_id,
       likes: likes || [],

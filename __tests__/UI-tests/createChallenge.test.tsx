@@ -73,12 +73,8 @@ describe("CreateChallengeScreen", () => {
 
     // Fill in the form
     fireEvent.changeText(
-      getByPlaceholderText("Challenge Name"),
-      "Test Challenge",
-    );
-    fireEvent.changeText(
-      getByPlaceholderText("Description"),
-      "Test Description",
+      getByPlaceholderText("Caption"),
+      "Test Caption",
     );
 
     const switchButton = getByTestId("switch-button");

@@ -19,8 +19,7 @@ import { GeoPoint, Timestamp } from "firebase/firestore";
 const { width, height } = Dimensions.get("window");
 
 const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
-  const [challenge_name, setChallengeName] = useState("");
-  const [description, setDescription] = useState("");
+  const [caption, setCaption] = useState("");
 
   const image_id = route.params?.image_id;
   console.log("image_id: ", image_id);
@@ -71,8 +70,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
       await createChallenge(
         firestoreCtrl,
-        challenge_name,
-        description,
+        caption,
         isEnabled ? location : null,
         descriptionTitle,
         date,
@@ -121,20 +119,11 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
         <ThemedTextInput
           style={styles.input}
-          placeholder="Challenge Name"
-          onChangeText={(text) => setChallengeName(text)}
+          placeholder="Caption"
+          onChangeText={(text) => setCaption(text)}
           viewWidth={"90%"}
-          title="Challenge Name"
-          testID="Challenge-Name-Input"
-        />
-
-        <ThemedTextInput
-          style={styles.input}
-          placeholder="Description"
-          onChangeText={(text) => setDescription(text)}
-          viewWidth={"90%"}
-          title="Description"
-          testID="Description-Input"
+          title="Caption"
+          testID="Caption-Input"
         />
 
         <ThemedView style={styles.containerRow}>
