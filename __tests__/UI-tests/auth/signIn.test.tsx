@@ -5,12 +5,12 @@ import {
   waitFor,
   screen,
 } from "@testing-library/react-native";
-import SignInScreen from "@/app/screens/auth/sign_in_screen";
-import { logInWithEmail } from "@/types/Auth";
+import SignInScreen from "@/src/app/screens/auth/sign_in_screen";
+import { logInWithEmail } from "@/src/types/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Text } from "react-native";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 

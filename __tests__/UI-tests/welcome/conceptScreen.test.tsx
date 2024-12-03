@@ -1,7 +1,7 @@
 // concept_screen.test.tsx
 import React from "react";
 import { render } from "@testing-library/react-native";
-import WelcomeConceptScreen from "@/app/screens/welcome/concept_screen";
+import WelcomeConceptScreen from "@/src/app/screens/welcome/concept_screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 describe("WelcomeConceptScreen", () => {

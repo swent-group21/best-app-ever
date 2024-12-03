@@ -1,12 +1,12 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import ProfileScreen from "@/app/screens/home/profile_screen";
+import ProfileScreen from "@/src/app/screens/home/profile_screen";
 import { fireEvent, waitFor } from "@testing-library/react-native";
 import { launchImageLibraryAsync } from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { resetEmail, resetPassword, logOut } from "@/types/Auth";
+import { resetEmail, resetPassword, logOut } from "@/src/types/Auth";
 
 const Stack = createNativeStackNavigator();
 

@@ -1,7 +1,7 @@
 // personal_screen.test.tsx
 import React from "react";
 import { render } from "@testing-library/react-native";
-import WelcomeConceptScreen from "@/app/screens/welcome/personal_screen";
+import WelcomeConceptScreen from "@/src/app/screens/welcome/personal_screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 describe("WelcomePersonalScreen", () => {

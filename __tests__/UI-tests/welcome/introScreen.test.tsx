@@ -1,7 +1,7 @@
 // intro_screen.test.tsx
 import React from "react";
 import { render } from "@testing-library/react-native";
-import WelcomeIntroScreen from "@/app/screens/welcome/intro_screen";
+import WelcomeIntroScreen from "@/src/app/screens/welcome/intro_screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 describe("WelcomeIntroScreen", () => {

@@ -1,10 +1,10 @@
 // welcome_screen.test.tsx
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import WelcomeScreens from "@/app/screens/welcome/welcome_screen";
+import WelcomeScreens from "@/src/app/screens/welcome/welcome_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { Dimensions } from "react-native";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
 
 const mockFirestoreCtrl = new FirestoreCtrl();
 

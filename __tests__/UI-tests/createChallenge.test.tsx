@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import CreateChallengeScreen from "@/app/screens/create/create_challenge";
+import CreateChallengeScreen from "@/src/app/screens/create/create_challenge";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { createChallenge } from "@/types/ChallengeBuilder";
+import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
+import { createChallenge } from "@/src/types/ChallengeBuilder";
 import { Timestamp } from "firebase/firestore";
 
 jest.mock("@/types/ChallengeBuilder");

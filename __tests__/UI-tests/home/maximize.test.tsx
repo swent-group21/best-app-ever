@@ -5,10 +5,10 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-import MaximizeScreen from "@/app/screens/home/maximize_screen";
+import MaximizeScreen from "@/src/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
 
 const mockTimestamp = {
   toDate: jest.fn().mockReturnValue(new Date()),

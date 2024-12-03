@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import SignUp from "@/app/screens/auth/sign_up_screen";
-import { signUpWithEmail } from "@/types/Auth";
+import SignUp from "@/src/app/screens/auth/sign_up_screen";
+import { signUpWithEmail } from "@/src/types/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
