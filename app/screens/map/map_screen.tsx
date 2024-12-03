@@ -32,14 +32,19 @@ export default function MapScreen({
   user,
   navigation,
   firestoreCtrl,
+  route,
 }: {
   user: DBUser;
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
+  route: any;
 }) {
+  // Sets the first location to the location provided in the route parameters, if available.
+  const firstLocation =
+    route.params != undefined ? route.params.location : undefined;
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserPosition] = useState<LocationObject | undefined>(
-    undefined,
+    firstLocation,
   );
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
@@ -49,6 +54,10 @@ export default function MapScreen({
    * Asks for permission to access the user's location and sets the location state to the user's current location.
    */
   useEffect(() => {
+    /**
+     * Gets the user's current location and sets the location state to the user's current location.
+     * This function is called only if no first location was provided when calling the MapScreen component.
+     */
     async function getCurrentLocation() {
       try {
         const { status } = await requestForegroundPermissionsAsync();
@@ -66,7 +75,9 @@ export default function MapScreen({
       }
     }
 
-    getCurrentLocation();
+    if (firstLocation === undefined) {
+      getCurrentLocation();
+    }
   }, []);
 
   /**
