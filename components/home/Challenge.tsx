@@ -57,7 +57,7 @@ export function Challenge({
         setIsLiked(likes.includes(currentUser.uid));
         setLikes(likes);
       });
-  }, [challengeDB.challenge_id]);
+  });
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {

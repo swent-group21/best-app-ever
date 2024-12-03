@@ -100,7 +100,7 @@ export default function MapScreen({
     };
 
     fetchChallenges();
-  }, []);
+  });
 
   /**
    * Renders a loading message while the location is being fetched.
