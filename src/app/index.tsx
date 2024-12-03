@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Nav } from "./navigation/Navigation";
-import FirestoreCtrl, { DBUser } from "./firebase/FirestoreCtrl";
+import { Nav } from "../navigation/Navigation";
+import FirestoreCtrl, { DBUser } from "../firebase/FirestoreCtrl";
 import { NavigationIndependentTree } from "@react-navigation/native";
-import "@/gesture-handler";
+import "../../gesture-handler";
 import { registerRootComponent } from "expo";
 
 function App() {
