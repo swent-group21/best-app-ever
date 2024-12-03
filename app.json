@@ -23,7 +23,12 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.strive"
+      "package": "com.strive",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCEhgdrq6tfUEErN326j50qTIeV3uxzmDQ"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
