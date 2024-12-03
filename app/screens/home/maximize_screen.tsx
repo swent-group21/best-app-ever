@@ -13,6 +13,7 @@ import FirestoreCtrl, {
   DBUser,
 } from "@/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
+import { LocationObject } from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
@@ -112,7 +113,7 @@ export default function MaximizeScreen({
               colorType="white"
             />
 
-            {/* User name and location */}
+            {/* User name and date */}
             <ThemedView style={styles.userInfo} colorType="transparent">
               <ThemedText colorType="white" type="smallSemiBold">
                 {postUser?.name}
@@ -124,31 +125,43 @@ export default function MaximizeScreen({
           </ThemedView>
 
           {/* Location button */}
-          <ThemedIconButton
-            name="location-outline"
-            onPress={() => {
-              /* location button */
-            }}
-            size={25}
-            colorType="white"
-          />
+          {challenge.location && (
+            <ThemedIconButton
+              name="location-outline"
+              onPress={() => {
+                navigation.navigate("MapScreen", {
+                  navigation: navigation,
+                  user: user,
+                  firestoreCtrl: firestoreCtrl,
+                  location: {
+                    coords: {
+                      latitude: challenge.location?.latitude,
+                      longitude: challenge.location?.longitude,
+                    },
+                  } as LocationObject,
+                });
+              }}
+              size={25}
+              colorType="white"
+            />
+          )}
         </ThemedView>
 
         {/* Image */}
-          <ThemedView
-            style={styles.container}
-            colorType="transparent"
-            testID="challenge-image"
-          >
-            <Image
-              source={
-                postImage
-                  ? { uri: postImage }
-                  : require("@/assets/images/no-image.svg")
-              }
-              style={styles.image}
-            />
-          </ThemedView>
+        <ThemedView
+          style={styles.container}
+          colorType="transparent"
+          testID="challenge-image"
+        >
+          <Image
+            source={
+              postImage
+                ? { uri: postImage }
+                : require("@/assets/images/no-image.svg")
+            }
+            style={styles.image}
+          />
+        </ThemedView>
 
         {/* Like section */}
         <ThemedView style={styles.likeSection} colorType="transparent">
