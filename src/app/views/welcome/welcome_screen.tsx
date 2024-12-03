@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Dimensions } from "react-native";
 
-import WelcomeIntroScreen from "../welcome/intro_screen";
-import WelcomeConceptScreen from "../welcome/concept_screen";
-import WelcomePersonalScreen from "../welcome/personal_screen";
-import WelcomeFinalScreen from "../welcome/final_screen";
+import WelcomeIntroScreen from "./intro_screen";
+import WelcomeConceptScreen from "./concept_screen";
+import WelcomePersonalScreen from "./personal_screen";
+import WelcomeFinalScreen from "./final_screen";
 import { useThemeColor } from "../../../hooks/useThemeColor";
 import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 

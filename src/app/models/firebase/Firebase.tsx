@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   User,
   sendPasswordResetEmail,
+  // @ts-ignore
   getReactNativePersistence,
   signInAnonymously,
   updateEmail,

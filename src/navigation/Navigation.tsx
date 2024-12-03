@@ -5,18 +5,18 @@ import { DBUser } from "../app/models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "../app/models/firebase/FirestoreCtrl";
 
 // Screens
-import WelcomeScreens from "../app/screens/welcome/welcome_screen";
-import WelcomeFinalScreen from "../app/screens/welcome/final_screen";
-import HomeScreen from "../app/screens/home/home_screen";
-import SignUp from "../app/screens/auth/sign_up_screen";
-import SignInScreen from "../app/screens/auth/sign_in_screen";
-import ForgotPasswordScreen from "../app/screens/auth/forgot_password_screen";
-import Camera from "../app/screens/camera/CameraContainer";
-import SetUsername from "../app/screens/auth/set_up_screen";
-import MaximizeScreen from "../app/screens/home/maximize_screen";
-import CreateChallengeScreen from "../app/screens/create/create_challenge";
-import ProfileScreen from "../app/screens/home/profile_screen";
-import MapScreen from "../app/screens/map/map_screen";
+import WelcomeScreens from "../app/views/welcome/welcome_screen";
+import WelcomeFinalScreen from "../app/views/welcome/final_screen";
+import HomeScreen from "../app/views/home/home_screen";
+import SignUp from "../app/views/auth/sign_up_screen";
+import SignInScreen from "../app/views/auth/sign_in_screen";
+import ForgotPasswordScreen from "../app/views/auth/forgot_password_screen";
+import Camera from "../app/views/camera/CameraContainer";
+import SetUsername from "../app/views/auth/set_up_screen";
+import MaximizeScreen from "../app/views/home/maximize_screen";
+import CreateChallengeScreen from "../app/views/create/create_challenge";
+import ProfileScreen from "../app/views/home/profile_screen";
+import MapScreen from "../app/views/map/map_screen";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();

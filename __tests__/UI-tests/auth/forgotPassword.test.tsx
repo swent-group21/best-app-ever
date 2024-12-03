@@ -1,8 +1,8 @@
 // forgot_password_screen.test.tsx
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import ForgotPasswordScreen from "@/src/app/screens/auth/forgot_password_screen";
-import { resetPassword } from "@/src/types/Auth";
+import ForgotPasswordScreen from "../../../src/app/views/auth/forgot_password_screen";
+import { resetPassword } from "../../../src/app/models/types/Auth";
 
 describe("ForgotPasswordScreen", () => {
   it('calls resetPassword with email when "Reset Password" button is pressed', () => {

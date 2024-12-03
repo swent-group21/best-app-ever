@@ -8,7 +8,7 @@ import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
 import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
-import SetUsernameViewModel from "../../../app/viewmodels/auth/SetUsernameViewModel";
+import SetUsernameViewModel from "../../viewmodels/auth/SetUsernameViewModel";
 
 const { width, height } = Dimensions.get("window");
 

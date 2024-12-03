@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { isValidEmail, signUpWithEmail } from "../../models/types/Auth";
 import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
+import { Alert } from "react-native";
 
 export default function useSignUpViewModel(navigation: any, setUser: any, firestoreCtrl:any) {
   const [name, setName] = useState("");
@@ -16,7 +17,7 @@ export default function useSignUpViewModel(navigation: any, setUser: any, firest
 
   const handleSignUp = async () => {
     if (!name || !surname || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
-      alert("Please fill all fields correctly.");
+      Alert.alert("Please fill all fields correctly.");
       return;
     }
 

@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import SignUp from "@/src/app/screens/auth/sign_up_screen";
-import { signUpWithEmail } from "@/src/types/Auth";
+import SignUp from "../../../src/app/views/auth/sign_up_screen";
+import { signUpWithEmail } from "../../../src/app/models/types/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
+import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +19,7 @@ const SignUpTest = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        id = {undefined}
         initialRouteName="SignUp"
         screenOptions={{ headerShown: false }}
       >
