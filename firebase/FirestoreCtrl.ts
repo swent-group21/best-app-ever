@@ -1,8 +1,4 @@
-import {
-  limit,
-  documentId,
-  GeoPoint,
-} from "firebase/firestore";
+import { limit, documentId, GeoPoint } from "firebase/firestore";
 import {
   firestore,
   doc,

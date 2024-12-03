@@ -48,7 +48,8 @@ export default function HomeScreen({
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
         setTitleChallenge(currentChallengeData);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);

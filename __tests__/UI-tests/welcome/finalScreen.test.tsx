@@ -37,7 +37,7 @@ const mockUser = {
   uid: "123",
   email: "test@example.com",
   name: "TestUser",
-  createdAt: new Date(), 
+  createdAt: new Date(),
 };
 
 // Mock setUser
@@ -51,20 +51,44 @@ const FinalScreenTest = () => (
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="WelcomeFinal">
-        {(props) => <WelcomeFinalScreen {...props} firestoreCtrl={mockFirestoreCtrl} setUser={mockSetuser} />}
+        {(props) => (
+          <WelcomeFinalScreen
+            {...props}
+            firestoreCtrl={mockFirestoreCtrl}
+            setUser={mockSetuser}
+          />
+        )}
       </Stack.Screen>
 
       <Stack.Screen name="SignIn">
-        {(props) => <SignInScreen {...props} firestoreCtrl={mockFirestoreCtrl} setUser={mockSetuser} />} 
+        {(props) => (
+          <SignInScreen
+            {...props}
+            firestoreCtrl={mockFirestoreCtrl}
+            setUser={mockSetuser}
+          />
+        )}
       </Stack.Screen>
 
       <Stack.Screen name="SignUp">
-        {(props) => <SignUp {...props} firestoreCtrl={mockFirestoreCtrl} setUser={mockSetuser} />}
+        {(props) => (
+          <SignUp
+            {...props}
+            firestoreCtrl={mockFirestoreCtrl}
+            setUser={mockSetuser}
+          />
+        )}
       </Stack.Screen>
 
       <Stack.Screen name="Home">
-        {(props) => <HomeScreen {...props} firestoreCtrl={mockFirestoreCtrl} user={mockUser} />}
-      </Stack.Screen>  
+        {(props) => (
+          <HomeScreen
+            {...props}
+            firestoreCtrl={mockFirestoreCtrl}
+            user={mockUser}
+          />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
 );
@@ -93,7 +117,9 @@ describe("FinalScreen", () => {
     fireEvent.press(screen.getByTestId("sign-in-button"));
 
     // Wait for the navigation to complete
-    await waitFor(() => expect(screen.getByTestId("sign-in-screen")).toBeDefined());
+    await waitFor(() =>
+      expect(screen.getByTestId("sign-in-screen")).toBeDefined(),
+    );
   });
 
   it("should navigate to SignUp screen when Sign Up button is pressed", async () => {
@@ -103,7 +129,9 @@ describe("FinalScreen", () => {
     fireEvent.press(screen.getByTestId("sign-up-button"));
 
     // Wait for the navigation to complete
-    await waitFor(() => expect(screen.getByTestId("sign-up-screen")).toBeDefined());
+    await waitFor(() =>
+      expect(screen.getByTestId("sign-up-screen")).toBeDefined(),
+    );
   });
 
   it("should call signInAsGuest when Continue as guest button is pressed", async () => {

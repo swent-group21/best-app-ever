@@ -1,10 +1,10 @@
 // set_up_screen.test.tsx
 import React from "react";
 import {
- render,
- fireEvent,
- waitFor,
- screen,
+  render,
+  fireEvent,
+  waitFor,
+  screen,
 } from "@testing-library/react-native";
 import SetUsername from "@/app/screens/auth/set_up_screen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -46,34 +46,34 @@ const mockUser = {
 
 // Create a test component to wrap SetUsername with navigation
 const SetUsernameTest = () => {
- return (
-   <NavigationContainer>
-     <Stack.Navigator
-       initialRouteName="SetUser"
-       screenOptions={{ headerShown: false }}
-     >
-       <Stack.Screen name="SetUser">
-        {(props) => (
-          <SetUsername
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="SetUser"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="SetUser">
+          {(props) => (
+            <SetUsername
               {...props}
               firestoreCtrl={mockFirestoreCtrl}
               setUser={jest.fn()}
               user={mockUser}
-          />
-        )}
-       </Stack.Screen>
-       <Stack.Screen name="Home">
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Home">
           {(props) => (
-          <HomeScreen
+            <HomeScreen
               {...props}
               firestoreCtrl={mockFirestoreCtrl}
               user={mockUser}
-          />
+            />
           )}
-      </Stack.Screen>
-     </Stack.Navigator>
-   </NavigationContainer>
- );
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 describe("SetUsernameScreen", () => {
@@ -110,7 +110,7 @@ describe("SetUsernameScreen", () => {
   it("should allow the user to pick an image", async () => {
     const mockLaunchImageLibraryAsync = jest.spyOn(
       require("expo-image-picker"),
-      "launchImageLibraryAsync"
+      "launchImageLibraryAsync",
     );
     mockLaunchImageLibraryAsync.mockResolvedValueOnce({
       canceled: false,
@@ -125,7 +125,7 @@ describe("SetUsernameScreen", () => {
     await waitFor(() => {
       expect(screen.getByTestId("profilePicImage")).toBeDefined();
       expect(screen.getByTestId("profilePicImage").props.source.uri).toBe(
-        "mockImageUri"
+        "mockImageUri",
       );
     });
   });
@@ -133,12 +133,12 @@ describe("SetUsernameScreen", () => {
   it("should alert if username is not entered on upload", async () => {
     const alertMock = jest.fn();
     window.alert = alertMock; // Mock window.alert
-  
+
     render(<SetUsernameTest />);
     const bottomBarIcon = screen.getByTestId("bottom-right-icon-arrow-forward");
-  
+
     fireEvent.press(bottomBarIcon);
-  
+
     await waitFor(() => {
       expect(alertMock).toHaveBeenCalledWith("Please enter a username.");
     });
@@ -159,7 +159,7 @@ describe("SetUsernameScreen", () => {
       expect(mockFirestoreCtrl.setName).toHaveBeenCalledWith(
         "",
         "testUsername",
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(mockFirestoreCtrl.setProfilePicture).not.toHaveBeenCalled();
     });
@@ -179,5 +179,5 @@ describe("SetUsernameScreen", () => {
     await waitFor(() => {
       expect(screen.getByTestId("home-screen")).toBeTruthy();
     });
-});
+  });
 });

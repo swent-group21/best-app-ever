@@ -181,61 +181,67 @@ const SignUpTest = ({ setUser }: { setUser: jest.Mock }) => {
 
 // Create a test component to wrap SetUsernameScreen and HomeScreen with navigation
 const SetUsernameTest = ({ setUser }: { setUser: jest.Mock }) => {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="SetUser" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="SetUser">
-                    {(props) => (
-                    <SetUsername
-                        {...props}
-                        firestoreCtrl={mockFirestoreCtrl}
-                        setUser={setUser}
-                        user={mockUserFull}
-                    />
-                    )}
-                </Stack.Screen>
-                <Stack.Screen name="Home">
-                    {(props) => (
-                    <HomeScreen
-                        {...props}
-                        firestoreCtrl={mockFirestoreCtrl}
-                        user={mockUserFull}
-                    />
-                    )}
-                </Stack.Screen>
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-}
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="SetUser"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="SetUser">
+          {(props) => (
+            <SetUsername
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              setUser={setUser}
+              user={mockUserFull}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Home">
+          {(props) => (
+            <HomeScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockUserFull}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 // Create a test component to wrap HomeScreen with navigation
 const HomeTest = ({ setUser }: { setUser: jest.Mock }) => {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Home">
-                    {(props) => (
-                    <HomeScreen
-                        {...props}
-                        firestoreCtrl={mockFirestoreCtrl}
-                        user={mockUserConsistency}
-                    />
-                    )}
-                </Stack.Screen>
-                <Stack.Screen name="Profile">
-                    {(props) => (
-                    <ProfileScreen
-                        {...props}
-                        firestoreCtrl={mockFirestoreCtrl}
-                        user={mockUserConsistency}
-                        setUser={setUser}
-                    />
-                    )}
-                </Stack.Screen>
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-}
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Home">
+          {(props) => (
+            <HomeScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockUserConsistency}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Profile">
+          {(props) => (
+            <ProfileScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockUserConsistency}
+              setUser={setUser}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 describe("SignInScreen Tests", () => {
   it("authenticates and passes the user to HomeScreen", async () => {
@@ -313,31 +319,37 @@ describe("SignUpScreen Tests", () => {
 
 describe("SetUsernameScreen Tests", () => {
   it("authenticates and passes the user to HomeScreen", async () => {
-      // Render the test app
-      const { getByTestId } = render(<SetUsernameTest setUser={mockSetUserFull} />);
+    // Render the test app
+    const { getByTestId } = render(
+      <SetUsernameTest setUser={mockSetUserFull} />,
+    );
 
-      // Simulate user interactions
-      fireEvent.changeText(getByTestId("usernameInput"), "TestUser2");
-      fireEvent.press(getByTestId("bottom-right-icon-arrow-forward"));
+    // Simulate user interactions
+    fireEvent.changeText(getByTestId("usernameInput"), "TestUser2");
+    fireEvent.press(getByTestId("bottom-right-icon-arrow-forward"));
 
-        // Verify setName was called
-        await waitFor(() => {
-          expect(mockFirestoreCtrl.setName).toHaveBeenCalledWith("123", "TestUser2", mockSetUserFull);
-        });
+    // Verify setName was called
+    await waitFor(() => {
+      expect(mockFirestoreCtrl.setName).toHaveBeenCalledWith(
+        "123",
+        "TestUser2",
+        mockSetUserFull,
+      );
+    });
 
-        // Wait for the navigation to HomeScreen
-        await waitFor(() => {
-            expect(getByTestId("home-screen")).toBeTruthy();
-        });
+    // Wait for the navigation to HomeScreen
+    await waitFor(() => {
+      expect(getByTestId("home-screen")).toBeTruthy();
+    });
 
-        // Verify the user was passed to HomeScreen
-        expect(mockUserFull).toEqual({
-            uid: "123",
-            email: "test@example.com",
-            name: "TestUser2",
-            image_id: "uri",
-            createdAt: expect.any(Date),
-        });
+    // Verify the user was passed to HomeScreen
+    expect(mockUserFull).toEqual({
+      uid: "123",
+      email: "test@example.com",
+      name: "TestUser2",
+      image_id: "uri",
+      createdAt: expect.any(Date),
+    });
   });
 });
 
@@ -348,11 +360,11 @@ describe("Consistency between screens", () => {
 
     // Verify the user was passed to HomeScreen
     expect(mockUserConsistency).toEqual({
-        uid: "123",
-        email: "test@example.com",
-        name: "TestUser",
-        image_id: "uri",
-        createdAt: expect.any(Date),
+      uid: "123",
+      email: "test@example.com",
+      name: "TestUser",
+      image_id: "uri",
+      createdAt: expect.any(Date),
     });
 
     // Simulate user interactions
@@ -360,16 +372,16 @@ describe("Consistency between screens", () => {
 
     // Wait for the navigation to ProfileScreen
     await waitFor(() => {
-        expect(getByTestId("profile-screen")).toBeTruthy();
+      expect(getByTestId("profile-screen")).toBeTruthy();
     });
 
     // Verify the user was passed to ProfileScreen
     expect(mockUserConsistency).toEqual({
-        uid: "123",
-        email: "test@example.com",
-        name: "TestUser",
-        image_id: "uri",
-        createdAt: expect.any(Date),
+      uid: "123",
+      email: "test@example.com",
+      name: "TestUser",
+      image_id: "uri",
+      createdAt: expect.any(Date),
     });
   });
 });
