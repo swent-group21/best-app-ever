@@ -70,10 +70,10 @@ export const createChallenge = async (
       challenge_description: challenge_description,
     };
 
-    if (image_id) {
+    /*if (image_id) {
       const image_url = await firestoreCtrl.getImageUrl(image_id);
       newChallenge.image_id = image_url;
-    }
+    }*/
 
     if (date) {
       newChallenge.date = date;

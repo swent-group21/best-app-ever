@@ -54,9 +54,9 @@ export default function HomeScreen({
           await firestoreCtrl.getChallengeDescription();
 
         const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+          title: currentChallengeData.title,
+          description: currentChallengeData.description,
+          endDate: new Date(currentChallengeData.endDate.seconds * 1000), // Conversion Timestamp -> Date
         };
 
         setTitleChallenge(formattedChallenge);

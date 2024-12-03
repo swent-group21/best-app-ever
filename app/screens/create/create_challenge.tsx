@@ -35,7 +35,21 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
   };
-  const postImage = route.params?.image_id ?? "";
+  const [postImage, setPostImage] = useState<string>("");
+
+  
+
+  async function getImage(image_id: string) {
+    try {
+      const url = await firestoreCtrl.getImageUrl(image_id);
+      setPostImage(url);
+    } catch (error) {
+      console.log("Error fetching image");
+      throw error;
+    }
+  }
+  getImage(route.params?.image_id);
+
 
 
   useEffect(() => {
@@ -54,6 +68,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
     getCurrentLocation();
   }, []);
+
 
   useEffect(() => {
     async function fetchDescriptionTitle() {
@@ -77,11 +92,14 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
     fetchDescriptionTitle();
   }, []);
+  
 
   async function makeChallenge() {
     try {
       let date: Timestamp = Timestamp.now();
       console.log("Date: ", date);
+
+      //const postImage = await getImage(route.params?.image_id);
 
       await createChallenge(
         firestoreCtrl,
@@ -255,8 +273,8 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: width * 0.9,
+    height: height * 0.4,
     borderRadius: 15,
   },
 
@@ -266,6 +284,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     borderColor: "white",
+    backgroundColor : "transparent",
   },
 
 });
