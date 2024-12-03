@@ -1,19 +1,18 @@
 import React from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import * as ImagePicker from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { TopBar } from "@/components/navigation/TopBar";
+import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import SetUsernameViewModel from "@/app/viewmodels/auth/SetUsernameViewModel";
 
-// Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function SetUsername({
+export default function SetUsernameScreen({
   user,
   navigation,
   firestoreCtrl,
@@ -24,59 +23,35 @@ export default function SetUsername({
   firestoreCtrl: FirestoreCtrl;
   setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
 }) {
-  const [username, setUsername] = React.useState("");
-  const [image, setImage] = React.useState<string | null>(null);
-  const pickImage = async () => {
-    console.log("Loading image");
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const upload = async () => {
-    if (username === "") {
-      alert("Please enter a username.");
-    } else {
-      try {
-        if (image) {
-          await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
-        }
-        await firestoreCtrl.setName(user.uid, username, setUser);
-      } catch (error) {
-        console.error("Error setting up profile: ", error);
-        alert("Error setting up profile: " + error);
-      }
-    }
-  };
+  const {
+    username,
+    image,
+    errorMessage,
+    handleUsernameChange,
+    pickImage,
+    upload,
+  } = SetUsernameViewModel(user, firestoreCtrl, setUser);
 
   return (
     <ThemedView style={styles.screenContainer}>
-      {/* Background shape */}
+      {/* Forme d'arrière-plan */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
-      {/* Top bar */}
+      {/* Barre supérieure */}
       <TopBar
         leftIcon="arrow-back"
         leftAction={() => navigation.goBack()}
         title="Set up your profile"
       />
 
-      {/* Screen content */}
+      {/* Contenu principal */}
       <ThemedScrollView
         style={styles.mainContainer}
         automaticallyAdjustKeyboardInsets={true}
         colorType="transparent"
       >
-        {/* Input fields */}
         <ThemedView style={styles.smallContainer} colorType="transparent">
-          {/* Profile picture */}
-
+          {/* Photo de profil */}
           <TouchableOpacity
             onPress={pickImage}
             style={styles.smallContainer}
@@ -99,9 +74,9 @@ export default function SetUsername({
             )}
           </TouchableOpacity>
 
-          {/* Username input */}
+          {/* Champ de saisie pour le nom d'utilisateur */}
           <ThemedTextInput
-            onChangeText={setUsername}
+            onChangeText={handleUsernameChange}
             value={username}
             style={styles.input}
             viewWidth="80%"
@@ -110,12 +85,17 @@ export default function SetUsername({
           />
         </ThemedView>
 
+        {/* Message d'erreur */}
+        {errorMessage && (
+          <ThemedText style={styles.errorMessage}>{errorMessage}</ThemedText>
+        )}
+
         <ThemedText style={styles.title} type="subtitle">
-          What will we see of you ?
+          What will we see of you?
         </ThemedText>
       </ThemedScrollView>
 
-      {/* Bottom bar */}
+      {/* Barre inférieure */}
       <BottomBar
         testID="bottom-bar-right-icon"
         rightIcon="arrow-forward"
@@ -163,10 +143,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
   },
+
   image: {
     width: 220,
     height: 220,
     borderRadius: 100,
     marginBottom: 40,
+  },
+
+  errorMessage: {
+    color: "red",
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: "center",
   },
 });
