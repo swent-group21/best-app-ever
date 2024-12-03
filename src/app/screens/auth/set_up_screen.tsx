@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { TopBar } from "@/components/navigation/TopBar";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
-import SetUsernameViewModel from "@/app/viewmodels/auth/SetUsernameViewModel";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { TopBar } from "../../../components/navigation/TopBar";
+import { BottomBar } from "../../../components/navigation/BottomBar";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
+import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import SetUsernameViewModel from "../../../app/viewmodels/auth/SetUsernameViewModel";
 
 const { width, height } = Dimensions.get("window");
 

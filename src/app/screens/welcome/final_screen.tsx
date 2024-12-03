@@ -1,12 +1,11 @@
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ThemedView } from "../../../components/theme/ThemedView";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { signInAsGuest } from "../../../types/Auth";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
 import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import WelcomeFinalViewModel from "../../../app/viewmodels/welcome/FinalScreenViewModel";
 
-// Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeFinalScreen({
@@ -18,6 +17,9 @@ export default function WelcomeFinalScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
+  const { navigateToSignIn, navigateToSignUp, continueAsGuest } =
+    WelcomeFinalViewModel({ firestoreCtrl, navigation, setUser });
+
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
       {/* Background shapes */}
@@ -35,27 +37,22 @@ export default function WelcomeFinalScreen({
 
       {/* Buttons */}
       <ThemedView style={styles.buttonContainer} colorType="transparent">
-        {/* Sign in button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => navigation.navigate("SignIn")}
+          onPress={navigateToSignIn}
           text="Sign In"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
         />
-
-        {/* Sign up button */}
         <ThemedTextButton
           style={styles.buttonAccount}
-          onPress={() => navigation.navigate("SignUp")}
+          onPress={navigateToSignUp}
           text="Sign Up"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
         />
-
-        {/* Continue as guest button */}
         <ThemedTextButton
-          onPress={() => signInAsGuest(firestoreCtrl, navigation, setUser)}
+          onPress={continueAsGuest}
           text="Continue as guest"
           colorType="transparent"
           textColorType="textPrimary"

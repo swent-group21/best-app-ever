@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import ForgotPasswordViewModel from "@/app/viewmodels/auth/ForgotPasswordViewModel";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
+import ForgotPasswordViewModel from "../../viewmodels/auth/ForgotPasswordViewModel";
 
 const { width, height } = Dimensions.get("window");
 
