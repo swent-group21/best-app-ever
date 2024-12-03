@@ -19,8 +19,9 @@ const mockFirestoreCtrl = new FirestoreCtrl();
 describe("MapScreen Component", () => {
   test("always passes", () => {
     expect(true).toBe(true);
-  })});
-  /*
+  });
+});
+/*
   beforeAll(() => {
    jest.mock("expo-location", () => ({
      getCurrentPositionAsync: jest.fn(() =>

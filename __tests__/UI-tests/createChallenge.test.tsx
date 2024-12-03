@@ -74,10 +74,7 @@ describe("CreateChallengeScreen", () => {
     expect(getByTestId("challenge-image")).toBeTruthy();
 
     // Fill in the form
-    fireEvent.changeText(
-      getByPlaceholderText("Caption"),
-      "Test Caption",
-    );
+    fireEvent.changeText(getByPlaceholderText("Caption"), "Test Caption");
 
     const switchButton = getByTestId("switch-button");
     expect(switchButton.props.value).toBe(true);

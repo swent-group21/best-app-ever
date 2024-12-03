@@ -498,17 +498,21 @@ export default class FirestoreCtrl {
     }
   }
 
-
   /**
    * Retrieves the posts of a specific challenge.
-   * 
+   *
    * @param challengeTitle The title of the challenge to get posts for.
    * @returns A promise that resolves to an array of posts.
    */
-  async getPostsByChallengeTitle(challengeTitle: string): Promise<DBChallenge[]> {
+  async getPostsByChallengeTitle(
+    challengeTitle: string,
+  ): Promise<DBChallenge[]> {
     try {
       const postsRef = collection(firestore, "challenges");
-      const q = query(postsRef, where("challenge_description", "==", challengeTitle));
+      const q = query(
+        postsRef,
+        where("challenge_description", "==", challengeTitle),
+      );
       const querySnapshot = await getDocs(q);
       const posts = querySnapshot.docs.map((doc) => {
         const data = doc.data();

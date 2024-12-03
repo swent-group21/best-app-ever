@@ -25,19 +25,18 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   //console.log("image_id: ", image_id);
 
   const [location, setLocation] = useState<LocationObject | null>(null);
-  const [descriptionTitle, setDescriptionTitle] = useState<DBChallengeDescription>({
-    title: "Challenge Title",
-    description: "Challenge Description",
-    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-  });;
+  const [descriptionTitle, setDescriptionTitle] =
+    useState<DBChallengeDescription>({
+      title: "Challenge Title",
+      description: "Challenge Description",
+      endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+    });
 
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
   };
   const [postImage, setPostImage] = useState<string>("");
-
-  
 
   async function getImage(image_id: string) {
     try {
@@ -49,8 +48,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
     }
   }
   getImage(route.params?.image_id);
-
-
 
   useEffect(() => {
     async function getCurrentLocation() {
@@ -68,7 +65,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
     getCurrentLocation();
   }, []);
-
 
   useEffect(() => {
     async function fetchDescriptionTitle() {
@@ -92,7 +88,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
 
     fetchDescriptionTitle();
   }, []);
-  
 
   async function makeChallenge() {
     try {
@@ -108,7 +103,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         descriptionTitle.title ?? "",
         date,
         postImage,
-
       );
       navigation.reset({
         index: 0,
@@ -137,19 +131,19 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         colorType="transparent"
         //contentContainerStyle={styles.contentContainer}
       >
-        <ThemedView 
-            style={styles.imageContainer}
-            colorType="transparent"
-            testID="challenge-image"
-          >
-            <Image
-              source={
-                postImage
-                  ? { uri: postImage }
-                  : require("@/assets/images/no-image.svg")
-              }
-              style={styles.image}
-            />
+        <ThemedView
+          style={styles.imageContainer}
+          colorType="transparent"
+          testID="challenge-image"
+        >
+          <Image
+            source={
+              postImage
+                ? { uri: postImage }
+                : require("@/assets/images/no-image.svg")
+            }
+            style={styles.image}
+          />
         </ThemedView>
 
         <ThemedView style={styles.inputContainer}>
@@ -203,7 +197,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-
   },
 
   containerCol: {
@@ -212,7 +205,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     gap: height * 0.027,
     paddingTop: 27,
-
   },
 
   containerRow: {
@@ -284,9 +276,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     borderColor: "white",
-    backgroundColor : "transparent",
+    backgroundColor: "transparent",
   },
-
 });
 
 export default CreateChallengeScreen;

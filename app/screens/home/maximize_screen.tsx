@@ -75,9 +75,7 @@ export default function MaximizeScreen({
   // @ts-ignore - date is not of the correct type
   const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
   const postCaption =
-    challenge.caption == ""
-      ? "Secret Challenge"
-      : challenge.caption;
+    challenge.caption == "" ? "Secret Challenge" : challenge.caption;
   const postImage = challenge.image_id ?? "";
 
   return (
@@ -134,20 +132,20 @@ export default function MaximizeScreen({
         </ThemedView>
 
         {/* Image */}
-          <ThemedView
-            style={styles.container}
-            colorType="transparent"
-            testID="challenge-image"
-          >
-            <Image
-              source={
-                postImage
-                  ? { uri: postImage }
-                  : require("@/assets/images/no-image.svg")
-              }
-              style={styles.image}
-            />
-          </ThemedView>
+        <ThemedView
+          style={styles.container}
+          colorType="transparent"
+          testID="challenge-image"
+        >
+          <Image
+            source={
+              postImage
+                ? { uri: postImage }
+                : require("@/assets/images/no-image.svg")
+            }
+            style={styles.image}
+          />
+        </ThemedView>
 
         {/* Like section */}
         <ThemedView style={styles.likeSection} colorType="transparent">
@@ -335,7 +333,7 @@ const styles = StyleSheet.create({
   likeCountText: {
     marginLeft: 5,
   },
-  
+
   spacer: {
     width: width * 0.5,
   },

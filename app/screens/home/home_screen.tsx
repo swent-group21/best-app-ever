@@ -88,7 +88,8 @@ export default function HomeScreen({
 
   const fetchChallenges = async () => {
     try {
-      const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title)
+      const challengesData = await firestoreCtrl
+        .getPostsByChallengeTitle(titleChallenge.title)
         .then((challenge: DBChallenge[]) => {
           // Sort challenges by date
           const sortedChallenges = challenge.sort(
@@ -102,9 +103,7 @@ export default function HomeScreen({
   };
 
   fetchCurrentChallenge();
-  fetchChallenges();	
-
-
+  fetchChallenges();
 
   // Fetch the list of challenges
   useEffect(() => {
@@ -129,7 +128,6 @@ export default function HomeScreen({
       fetchGroups();
     }
   }, [user.uid]);
-
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -197,7 +195,7 @@ export default function HomeScreen({
             <Challenge
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
-              index = {index}
+              index={index}
               key={index}
               challengeDB={challenge}
               testID={`challenge-id-${index}`}

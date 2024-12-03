@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, Dimensions, Image, View } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  View,
+} from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -34,14 +40,16 @@ export function Challenge({
     ? challengeDB.date.toDate()
     : new Date();
 
-
   // Fetch user data
   useEffect(() => {
     if (challengeDB.uid) {
       const fetchUser = async () => {
         try {
           const userData = await firestoreCtrl.getUser(challengeDB.uid);
-          if (userData.image_id?.startsWith("http") || userData.image_id?.startsWith("https://")) {
+          if (
+            userData.image_id?.startsWith("http") ||
+            userData.image_id?.startsWith("https://")
+          ) {
             setUserPp(userData.image_id);
           }
           setUser(userData);
@@ -97,7 +105,7 @@ export function Challenge({
                 >
                   <View style={styles.user}>
                     {userPp ? (
-                      <TouchableOpacity onPress={(() => {})}>
+                      <TouchableOpacity onPress={() => {}}>
                         <Image
                           source={{ uri: userPp }}
                           style={styles.iconImage}

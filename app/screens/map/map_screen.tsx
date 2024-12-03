@@ -9,7 +9,11 @@ import {
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
-import FirestoreCtrl, { DBChallenge, DBUser, DBChallengeDescription } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBUser,
+  DBChallengeDescription,
+} from "@/firebase/FirestoreCtrl";
 // import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 /**
@@ -94,12 +98,13 @@ export default function MapScreen({
     } catch (error) {
       console.error("Error fetching current challenge: ", error);
     }
-  }
-  
+  };
 
   const fetchChallenges = async () => {
     try {
-      const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title);
+      const challengesData = await firestoreCtrl.getPostsByChallengeTitle(
+        titleChallenge.title,
+      );
       const filteredChallenges = challengesData.filter(
         (challenge: any) =>
           challenge.location !== undefined && challenge.location !== null,
@@ -111,11 +116,8 @@ export default function MapScreen({
     }
   };
 
-  
-
   fetchCurrentChallenge();
   fetchChallenges();
-
 
   useEffect(() => {
     fetchCurrentChallenge();
