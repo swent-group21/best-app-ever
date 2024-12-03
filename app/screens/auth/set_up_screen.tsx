@@ -56,7 +56,7 @@ export default function SetUsername({
   };
 
   return (
-    <ThemedView style={styles.screenContainer}>
+    <ThemedView style={styles.screenContainer} testID="set-up-screen">
       {/* Background shape */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 

@@ -1,76 +1,183 @@
 // set_up_screen.test.tsx
-//import React from "react";
-//import { Text } from "react-native";
-//import {
-//  render,
-//  fireEvent,
-//  waitFor,
-//  screen,
-//} from "@testing-library/react-native";
-//import SetUsername from "@/app/screens/auth/set_up_screen";
-//import { NavigationContainer } from "@react-navigation/native";
-//import { createNativeStackNavigator } from "@react-navigation/native-stack";
-//
-//const Stack = createNativeStackNavigator();
-//
-//// Create a test component to wrap SetUsername with navigation
-//const SetUsernameTest = () => {
-//  return (
-//    <NavigationContainer>
-//      <Stack.Navigator
-//        initialRouteName="SetUser"
-//        screenOptions={{ headerShown: false }}
-//      >
-//        <Stack.Screen name="SetUser">
-//          {(props) => <SetUsername {...props} />}
-//        </Stack.Screen>
-//        {/* Mock other screens if necessary */}
-//        <Stack.Screen name="Home">
-//          {() => <Text testID="home-screen"></Text>}
-//        </Stack.Screen>
-//        <Stack.Screen name="Camera">
-//          {() => <Text testID="camera-screen"></Text>}
-//        </Stack.Screen>
-//      </Stack.Navigator>
-//    </NavigationContainer>
-//  );
-//};
+import React from "react";
+import {
+ render,
+ fireEvent,
+ waitFor,
+ screen,
+} from "@testing-library/react-native";
+import SetUsername from "@/app/screens/auth/set_up_screen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import HomeScreen from "@/app/screens/home/home_screen";
+
+const Stack = createNativeStackNavigator();
+
+// Mock FirestoreCtrl
+jest.mock("@/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      // Add any other methods as needed
+    };
+  });
+});
+const mockFirestoreCtrl = new FirestoreCtrl();
+
+// Mock ImagePicker
+jest.mock("expo-image-picker", () => ({
+  launchImageLibraryAsync: jest.fn(async () => ({
+    cancelled: false,
+    uri: "mock-image-uri",
+  })),
+  MediaTypeOptions: {
+    Images: "Images",
+  },
+}));
+
+// Mock User
+const mockUser = {
+  uid: "",
+  email: "",
+  name: "",
+  image_id: "",
+  createdAt: new Date(),
+};
+
+// Create a test component to wrap SetUsername with navigation
+const SetUsernameTest = () => {
+ return (
+   <NavigationContainer>
+     <Stack.Navigator
+       initialRouteName="SetUser"
+       screenOptions={{ headerShown: false }}
+     >
+       <Stack.Screen name="SetUser">
+        {(props) => (
+          <SetUsername
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              setUser={jest.fn()}
+              user={mockUser}
+          />
+        )}
+       </Stack.Screen>
+       <Stack.Screen name="Home">
+          {(props) => (
+          <HomeScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockUser}
+          />
+          )}
+      </Stack.Screen>
+     </Stack.Navigator>
+   </NavigationContainer>
+ );
+};
 
 describe("SetUsernameScreen", () => {
-  test("always passes", () => {
-    expect(true).toBe(true);
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  //it("allows the user to input a username and navigate to Home", async () => {
-  //  const { getByPlaceholderText, getByTestId } = render(<SetUsernameTest />);
 
-  //  // Enter username
-  //  const usernameInput = getByPlaceholderText("ex : sandraa");
-  //  fireEvent.changeText(usernameInput, "testUsername");
+  it("should render all UI components", async () => {
+    render(<SetUsernameTest />);
 
-  //  // Press the right arrow button to navigate to Home
-  //  const rightArrowButton = getByTestId("bottomBar-rightIcon");
-  //  fireEvent.press(rightArrowButton);
+    // Verify static texts
+    expect(screen.getByText("Set up your profile")).toBeDefined();
+    expect(screen.getByText("What will we see of you ?")).toBeDefined();
 
-  //  await waitFor(() => {
-  //    expect(screen.getByTestId("home-screen")).toBeTruthy();
-  //  });
-  //  // Expect to navigate to the "Home" screen
-  //  // Since we're using NavigationContainer, we can verify it via the screen hierarchy or mock the navigation
-  //  // For simplicity, we'll assume the navigation happens without error
-  //});
+    // Verify input and buttons
+    expect(screen.getByTestId("usernameInput")).toBeDefined();
+    expect(screen.getByTestId("profilePicButton")).toBeDefined();
+    expect(screen.getByTestId("bottom-right-icon-arrow-forward")).toBeDefined();
+  });
 
-  //it("navigates to Camera when the profile icon is pressed", async () => {
-  //  const { getByTestId } = render(<SetUsernameTest />);
+  it("should allow the user to enter a username", async () => {
+    render(<SetUsernameTest />);
 
-  //  // Press the profile icon button
-  //  const profileIconButton = getByTestId("profile-icon-button");
-  //  fireEvent.press(profileIconButton);
+    const usernameInput = screen.getByTestId("usernameInput");
+    fireEvent.changeText(usernameInput, "newUsername");
 
-  //  await waitFor(() => {
-  //    expect(screen.getByTestId("camera-screen")).toBeTruthy();
-  //  });
+    console.log(usernameInput);
 
-  //  // Expect to navigate to the "Camera" screen
-  //  // Again, we assume navigation works as intended
-  //});
+    await waitFor(() => {
+      expect(screen.getByDisplayValue("newUsername")).toBeDefined();
+    });
+  });
+
+  it("should allow the user to pick an image", async () => {
+    const mockLaunchImageLibraryAsync = jest.spyOn(
+      require("expo-image-picker"),
+      "launchImageLibraryAsync"
+    );
+    mockLaunchImageLibraryAsync.mockResolvedValueOnce({
+      canceled: false,
+      assets: [{ uri: "mockImageUri" }],
+    });
+
+    render(<SetUsernameTest />);
+    const profilePicButton = screen.getByTestId("profilePicButton");
+
+    fireEvent.press(profilePicButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("profilePicImage")).toBeDefined();
+      expect(screen.getByTestId("profilePicImage").props.source.uri).toBe(
+        "mockImageUri"
+      );
+    });
+  });
+
+  it("should alert if username is not entered on upload", async () => {
+    const alertMock = jest.fn();
+    window.alert = alertMock; // Mock window.alert
+  
+    render(<SetUsernameTest />);
+    const bottomBarIcon = screen.getByTestId("bottom-right-icon-arrow-forward");
+  
+    fireEvent.press(bottomBarIcon);
+  
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith("Please enter a username.");
+    });
+  });
+
+  it("should call FirestoreCtrl methods when uploading profile", async () => {
+    mockFirestoreCtrl.setName = jest.fn().mockResolvedValueOnce(null);
+    mockFirestoreCtrl.setProfilePicture = jest.fn().mockResolvedValueOnce(null);
+
+    render(<SetUsernameTest />);
+    const usernameInput = screen.getByTestId("usernameInput");
+    const bottomBarIcon = screen.getByTestId("bottom-right-icon-arrow-forward");
+
+    fireEvent.changeText(usernameInput, "testUsername");
+    fireEvent.press(bottomBarIcon);
+
+    await waitFor(() => {
+      expect(mockFirestoreCtrl.setName).toHaveBeenCalledWith(
+        "",
+        "testUsername",
+        expect.any(Function)
+      );
+      expect(mockFirestoreCtrl.setProfilePicture).not.toHaveBeenCalled();
+    });
+  });
+
+  it("should navigate to Home after successful upload", async () => {
+    mockFirestoreCtrl.setName = jest.fn().mockResolvedValueOnce(null);
+    mockFirestoreCtrl.setProfilePicture = jest.fn().mockResolvedValueOnce(null);
+
+    render(<SetUsernameTest />);
+
+    // Simulate user interactions
+    fireEvent.changeText(screen.getByTestId("usernameInput"), "TestUser2");
+    fireEvent.press(screen.getByTestId("bottom-right-icon-arrow-forward"));
+
+    // Wait for the navigation to HomeScreen
+    await waitFor(() => {
+      expect(screen.getByTestId("home-screen")).toBeTruthy();
+    });
+});
 });
