@@ -1,42 +1,39 @@
-import { StyleSheet, Dimensions } from "react-native";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { resetPassword } from "../../../types/Auth";
-import { useState } from "react";
 import React from "react";
+import { StyleSheet, Dimensions } from "react-native";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import ForgotPasswordViewModel from "@/app/viewmodels/auth/ForgotPasswordViewModel";
 
-// Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
 export default function ForgotPasswordScreen({ navigation }: any) {
-  const [email, setEmail] = useState("");
+  const { email, errorMessage, handleEmailChange, handleResetPassword } =
+    ForgotPasswordViewModel();
 
   return (
     <ThemedView style={styles.screenContainer}>
-      {/* Background shape */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
-
-      {/* Screen content */}
       <ThemedText style={styles.titleText} colorType="textPrimary">
-        Forgot your Password ?
+        Forgot your Password?
       </ThemedText>
 
-      {/* Input fields */}
       <ThemedView style={styles.smallContainer} testID="emailInput">
-        {/* Email input */}
         <ThemedTextInput
           style={styles.input}
           type="email"
           title="Email"
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={handleEmailChange}
+          value={email}
           viewWidth={"90%"}
         />
 
-        {/* Buttons */}
+        {errorMessage && (
+          <ThemedText style={styles.errorMessage}>{errorMessage}</ThemedText>
+        )}
+
         <ThemedView style={styles.rowContainer} testID="buttonsReset">
-          {/* Cancel button */}
           <ThemedTextButton
             style={styles.buttonCancel}
             onPress={() => navigation.goBack()}
@@ -45,10 +42,10 @@ export default function ForgotPasswordScreen({ navigation }: any) {
             textColorType="textOverLight"
             testID="cancelButton"
           />
-          {/* Reset password button */}
+
           <ThemedTextButton
             style={styles.buttonResetPassword}
-            onPress={() => resetPassword(email)}
+            onPress={handleResetPassword}
             text="Reset Password"
             textType="defaultSemiBold"
             textColorType="textOverLight"
@@ -116,5 +113,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 15,
     padding: 8,
+  },
+
+  errorMessage: {
+    color: "red",
+    marginTop: 10,
+    textAlign: "center",
   },
 });
