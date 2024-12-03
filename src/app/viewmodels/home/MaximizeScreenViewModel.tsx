@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBChallenge, DBComment, DBUser } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBComment, DBUser } from "../../models/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 export function useMaximizeScreenViewModel(

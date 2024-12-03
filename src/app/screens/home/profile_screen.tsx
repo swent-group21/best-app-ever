@@ -8,7 +8,7 @@ import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
 import { TopBar } from "../../../components/navigation/TopBar";
 import { Icon } from "react-native-elements";
 import { useProfileScreenViewModel } from "../../viewmodels/home/ProfileScreenViewModel";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

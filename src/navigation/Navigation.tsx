@@ -1,8 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types/RootStackParamList";
-import { DBUser } from "../firebase/FirestoreCtrl";
-import FirestoreCtrl from "../firebase/FirestoreCtrl";
+import { RootStackParamList } from "../app/models/types/RootStackParamList";
+import { DBUser } from "../app/models/firebase/FirestoreCtrl";
+import FirestoreCtrl from "../app/models/firebase/FirestoreCtrl";
 
 // Screens
 import WelcomeScreens from "../app/screens/welcome/welcome_screen";

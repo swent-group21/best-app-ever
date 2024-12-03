@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
 export default function SetUsernameViewModel(
   user: DBUser,

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
-import { logInWithEmail } from "../../../types/Auth";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
+import { logInWithEmail } from "../../models/types/Auth";
 
 export default function SignInViewModel(
   firestoreCtrl: FirestoreCtrl,

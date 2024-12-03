@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
-import { createChallenge } from "../../../types/ChallengeBuilder";
+import { createChallenge } from "../../models/types/ChallengeBuilder";
 
 export default function CreateChallengeViewModel({
   firestoreCtrl,

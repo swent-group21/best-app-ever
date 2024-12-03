@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from "react-native";
 import { ThemedView } from "../../../components/theme/ThemedView";
 import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 import WelcomeFinalViewModel from "../../../app/viewmodels/welcome/FinalScreenViewModel";
 
 const { width, height } = Dimensions.get("window");

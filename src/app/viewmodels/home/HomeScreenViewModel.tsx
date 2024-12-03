@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
 export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl) {
   const userIsGuest = user.name === "Guest";

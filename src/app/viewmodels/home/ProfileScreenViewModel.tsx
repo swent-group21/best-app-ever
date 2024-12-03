@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
-import { logOut, resetEmail, resetPassword } from "../../../types/Auth";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
+import { logOut, resetEmail, resetPassword } from "../../models/types/Auth";
 
 export function useProfileScreenViewModel(
   user: DBUser,

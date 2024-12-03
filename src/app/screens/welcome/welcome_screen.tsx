@@ -6,7 +6,7 @@ import WelcomeConceptScreen from "../welcome/concept_screen";
 import WelcomePersonalScreen from "../welcome/personal_screen";
 import WelcomeFinalScreen from "../welcome/final_screen";
 import { useThemeColor } from "../../../hooks/useThemeColor";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;

@@ -81,7 +81,7 @@ jest.mock("expo", () => ({
 }));
 
 // Mock gesture-handler
-jest.mock("@/gesture-handler", () => {});
+jest.mock("./gesture-handler", () => {});
 
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () => ({

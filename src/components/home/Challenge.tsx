@@ -4,7 +4,7 @@ import { Colors } from "../../constants/Colors";
 import { ThemedText } from "../theme/ThemedText";
 import { ThemedView } from "../theme/ThemedView";
 import { ThemedIconButton } from "../theme/ThemedIconButton";
-import FirestoreCtrl, { DBChallenge, DBUser } from "../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser } from "../../app/models/firebase/FirestoreCtrl";
 import React from "react";
 
 const { width, height } = Dimensions.get("window");

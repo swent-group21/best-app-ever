@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { resetPassword } from "../../../types/Auth";
+import { resetPassword } from "../../models/types/Auth";
 
 export default function ForgotPasswordViewModel() {
   const [email, setEmail] = useState("");

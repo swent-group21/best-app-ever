@@ -6,7 +6,7 @@ import { View, ViewStyle } from "react-native";
 
 import { Dimensions } from "react-native";
 import { Colors } from "../../constants/Colors";
-import { DBChallengeDescription } from "../../firebase/FirestoreCtrl";
+import { DBChallengeDescription } from "../../app/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

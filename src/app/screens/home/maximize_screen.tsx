@@ -8,7 +8,7 @@ import { SingleComment } from "../../../components/posts/Comment";
 import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
 import { useMaximizeScreenViewModel } from "../../viewmodels/home/MaximizeScreenViewModel";
-import FirestoreCtrl, { DBUser, DBChallenge } from "../../../firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser, DBChallenge } from "../../models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

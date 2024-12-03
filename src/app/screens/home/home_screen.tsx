@@ -10,8 +10,8 @@ import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
 import { ChallengeDescription } from "../../../components/home/Challenge_Description";
 import { useHomeScreenViewModel } from "../../viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "../../../firebase/FirestoreCtrl";
-import FirestoreCtrl from "../../../firebase/FirestoreCtrl";
+import { DBUser } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
 
 
 const { width, height } = Dimensions.get("window");
