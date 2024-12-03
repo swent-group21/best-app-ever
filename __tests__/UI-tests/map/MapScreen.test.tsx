@@ -1,77 +1,110 @@
-//import React from "react";
-//import { render } from "@testing-library/react-native";
-//import MapScreen from "@/app/screens/map/map_screen";
-//import * as Location from "expo-location";
+/*import React from "react";
+import { render } from "@testing-library/react-native";
+import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MapScreen from "@/app/screens/map/map_screen";
+import { 
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync
+ } from "expo-location";
 
+
+
+const Stack = createNativeStackNavigator();
+
+// Mock the firestoreCtrl
+const mockFirestoreCtrl = new FirestoreCtrl();
+*/
 describe("MapScreen Component", () => {
   test("always passes", () => {
     expect(true).toBe(true);
+  })});
+  /*
+  beforeAll(() => {
+   jest.mock("expo-location", () => ({
+     getCurrentPositionAsync: jest.fn(() =>
+       Promise.resolve({
+         coords: {
+           latitude: 37.7749,
+           longitude: -122.4194,
+         },
+       }),
+     ),
+   }));
   });
-  //beforeAll(() => {
-  //  jest.mock("expo-location", () => ({
-  //    getCurrentPositionAsync: jest.fn(() =>
-  //      Promise.resolve({
-  //        coords: {
-  //          latitude: 37.7749,
-  //          longitude: -122.4194,
-  //        },
-  //      }),
-  //    ),
-  //  }));
-  //});
 
-  //it("renders the map", () => {
-  //  const { getByTestId } = render(<MapScreen />);
 
-  //  expect(getByTestId("mapView")).toBeTruthy();
-  //});
+  // Mock the user
+const mockUser: DBUser = {
+  name: "Test User",
+  uid: "321",
+  email: "test@example.com",
+  image_id: "test-image-id",
+  createdAt: new Date(),
+};
 
-  //it("requests location permissions", () => {
-  //  render(<MapScreen />);
 
-  //  expect(Location.requestForegroundPermissionsAsync).toHaveBeenCalled();
-  //});
+const MapScreenTest: React.FC<{ user: DBUser }> = ({ user }) => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="MapScreen"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Profile">
+          {(props) => (
+            <MapScreen
+              {...props}
+              user={user}
+              firestoreCtrl={mockFirestoreCtrl}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-  //it("gets the current location", () => {
-  //  render(<MapScreen />);
+// Test if the screen renders correctly
+describe("MapScreen", () => {
+  it("renders the map screen correctly", () => {
+    const { getByTestId } = render(<MapScreenTest user={mockUser} />);
 
-  //  expect(Location.getCurrentPositionAsync).toHaveBeenCalled();
-  //});
+    expect(getByTestId("mapView")).toBeTruthy(); // Verify the map renders
+    expect(requestForegroundPermissionsAsync).toHaveBeenCalled(); // Verify permissions location requests
+    expect(getCurrentPositionAsync).toHaveBeenCalled(); // Verify current location gotten$
 
-  //it("displays the default location if permission is not granted", () => {
-  //  (Location.requestForegroundPermissionsAsync as jest.Mock).mockResolvedValue(
-  //    {
-  //      status: "denied",
-  //    },
-  //  );
-
-  //  const { getByTestId } = render(<MapScreen />);
-
-  //  expect(getByTestId("mapView").props).toHaveProperty("initialRegion", {
-  //    latitude: 43.6763,
-  //    longitude: 7.0122,
-  //  });
-  //});
-
-  //it("displays markers for challenges with locations", () => {
-  //  const challenges = [
-  //    {
-  //      location: {
-  //        latitude: 37.7749,
-  //        longitude: -122.4194,
-  //      },
-  //    },
-  //  ];
-
-  //  (Location.getCurrentPositionAsync as jest.Mock).mockResolvedValue({
-  //    coords: {
-  //      latitude: 37.7749,
-  //      longitude: -122.4194,
-  //    },
-  //  });
-
-  //  const { getByTestId } = render(<MapScreen />);
-
-  //  expect(getByTestId("mapView").props).toHaveProperty("markers", challenges);
-  //});
+    (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValue({
+      status: "denied",
+    });
+    expect(getByTestId("mapView").props).toHaveProperty("initialRegion", {
+      latitude: 43.6763,
+      longitude: 7.0122,
+    }); // Verify default location renders
+  });
 });
+
+describe("MapScreen markers", () => {
+  it("displays markers for challenges with locations", () => {
+    const { getByTestId } = render(<MapScreenTest user={mockUser} />);
+
+   const challenges = [
+     {
+       location: {
+         latitude: 37.7749,
+         longitude: -122.4194,
+       },
+     },
+   ];
+
+   (getCurrentPositionAsync as jest.Mock).mockResolvedValue({
+     coords: {
+       latitude: 37.7749,
+       longitude: -122.4194,
+     },
+   });
+
+   expect(getByTestId("mapView").props).toHaveProperty("markers", challenges);
+  });
+});*/

@@ -137,7 +137,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         colorType="transparent"
         //contentContainerStyle={styles.contentContainer}
       >
-        <ThemedView
+        <ThemedView 
             style={styles.imageContainer}
             colorType="transparent"
             testID="challenge-image"

@@ -71,6 +71,8 @@ describe("CreateChallengeScreen", () => {
       <CreateChallengeScreenTest />,
     );
 
+    expect(getByTestId("challenge-image")).toBeTruthy();
+
     // Fill in the form
     fireEvent.changeText(
       getByPlaceholderText("Caption"),
