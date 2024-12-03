@@ -42,6 +42,7 @@ export default function WelcomeFinalScreen({
           text="Sign In"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
+          testID="sign-in-button"
         />
 
         {/* Sign up button */}
@@ -51,6 +52,7 @@ export default function WelcomeFinalScreen({
           text="Sign Up"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
+          testID="sign-up-button"
         />
 
         {/* Continue as guest button */}
@@ -59,6 +61,7 @@ export default function WelcomeFinalScreen({
           text="Continue as guest"
           colorType="transparent"
           textColorType="textPrimary"
+          testID="continue-as-guest-button"
         />
       </ThemedView>
     </ThemedView>
