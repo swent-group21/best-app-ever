@@ -4,8 +4,6 @@ import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { createChallenge } from "@/types/ChallengeBuilder";
-import { Timestamp } from "firebase/firestore";
 
 jest.mock("@/types/ChallengeBuilder");
 jest.mock("expo-location");

@@ -10,10 +10,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 
-const mockTimestamp = {
-  toDate: jest.fn().mockReturnValue(new Date()),
-};
-
 jest.mock("@/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
@@ -28,7 +24,7 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
           uid: "12345",
           name: "Test User",
           comment: "This is a test comment",
-          created_at: mockTimestamp,
+          created_at: new Date(),
         },
       ]),
     };

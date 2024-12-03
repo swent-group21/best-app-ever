@@ -2,15 +2,10 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
 
 // Mock the navigation prop
 const navigation = {
   navigate: jest.fn(),
-};
-
-let mockTimestamp = {
-  toDate: jest.fn().mockReturnValue(new Date()),
 };
 
 let mockDate = new Date();
@@ -23,7 +18,7 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
         uid: "user123",
         name: "Current User",
         email: "test@test.com",
-        createdAt: mockTimestamp,
+        createdAt: new Date(),
       }),
       getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
       getCommentsOf: jest.fn().mockResolvedValue([
@@ -31,7 +26,7 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
           uid: "12345",
           name: "Test User",
           comment: "This is a test comment",
-          created_at: mockTimestamp,
+          created_at: new Date(),
         },
       ]),
       updateLikesOf: jest

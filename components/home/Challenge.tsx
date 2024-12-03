@@ -17,7 +17,7 @@ export function Challenge({
   currentUser,
 }: {
   challengeDB: DBChallenge;
-  index: number;
+  index?: number;
   firestoreCtrl: FirestoreCtrl;
   navigation: any;
   testID: string;
