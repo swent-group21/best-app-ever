@@ -6,8 +6,8 @@ import {
   signInAnonymously,
   signOut,
   updateEmail,
-} from "@/src/firebase/Firebase";
-import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
+} from "../firebase/Firebase";
+import FirestoreCtrl, { DBUser } from "../firebase/FirestoreCtrl";
 
 /***
  * Function to check if the email is valid

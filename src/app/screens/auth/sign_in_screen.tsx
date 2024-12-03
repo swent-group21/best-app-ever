@@ -7,12 +7,13 @@ import {
   Platform,
 } from "react-native";
 import { useState } from "react";
-import { logInWithEmail } from "@/src/types/Auth";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { ThemedTextInput } from "@/src/components/theme/ThemedTextInput";
-import { ThemedTextButton } from "@/src/components/theme/ThemedTextButton";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
+import { logInWithEmail } from "../../../types/Auth";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import React from "react";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
-import { TopBar } from "@/src/components/navigation/TopBar";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedIconButton } from "@/src/components/theme/ThemedIconButton";
-import { SingleComment } from "@/src/components/posts/Comment";
-import { ThemedScrollView } from "@/src/components/theme/ThemedScrollView";
-import { ThemedTextInput } from "@/src/components/theme/ThemedTextInput";
+import { TopBar } from "../../../components/navigation/TopBar";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
+import { SingleComment } from "../../../components/posts/Comment";
+import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
 import FirestoreCtrl, {
   DBChallenge,
   DBComment,
   DBUser,
-} from "@/src/firebase/FirestoreCtrl";
+} from "../../../firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
@@ -144,7 +144,7 @@ export default function MaximizeScreen({
               source={
                 postImage
                   ? { uri: postImage }
-                  : require("@/assets/images/no-image.svg")
+                  : require("../../../assets/images/no-image.svg")
               }
               style={styles.image}
             />

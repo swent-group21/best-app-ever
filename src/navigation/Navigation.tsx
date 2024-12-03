@@ -1,21 +1,22 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootStackParamList } from "@/src/types/RootStackParamList";
-import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
+import { RootStackParamList } from "../types/RootStackParamList";
+import { DBUser } from "../firebase/FirestoreCtrl";
+import FirestoreCtrl from "../firebase/FirestoreCtrl";
 
 // Screens
-import WelcomeScreens from "@/src/app/screens/welcome/welcome_screen";
-import WelcomeFinalScreen from "@/src/app/screens/welcome/final_screen";
-import HomeScreen from "@/src/app/screens/home/home_screen";
-import SignUp from "@/src/app/screens/auth/sign_up_screen";
-import SignInScreen from "@/src/app/screens/auth/sign_in_screen";
-import ForgotPasswordScreen from "@/src/app/screens/auth/forgot_password_screen";
-import Camera from "@/src/app/screens/camera";
-import SetUsername from "@/src/app/screens/auth/set_up_screen";
-import MaximizeScreen from "@/src/app/screens/home/maximize_screen";
-import CreateChallengeScreen from "@/src/app/screens/create/create_challenge";
-import ProfileScreen from "@/src/app/screens/home/profile_screen";
-import MapScreen from "@/src/app/screens/map/map_screen";
+import WelcomeScreens from "../app/screens/welcome/welcome_screen";
+import WelcomeFinalScreen from "../app/screens/welcome/final_screen";
+import HomeScreen from "../app/screens/home/home_screen";
+import SignUp from "../app/screens/auth/sign_up_screen";
+import SignInScreen from "../app/screens/auth/sign_in_screen";
+import ForgotPasswordScreen from "../app/screens/auth/forgot_password_screen";
+import Camera from "../app/screens/camera";
+import SetUsername from "../app/screens/auth/set_up_screen";
+import MaximizeScreen from "../app/screens/home/maximize_screen";
+import CreateChallengeScreen from "../app/screens/create/create_challenge";
+import ProfileScreen from "../app/screens/home/profile_screen";
+import MapScreen from "../app/screens/map/map_screen";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();

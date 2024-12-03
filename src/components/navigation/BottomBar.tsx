@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
-import { ThemedIconButton } from "@/src/components/theme/ThemedIconButton";
-import { Colors } from "@/src/constants/Colors";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedIconButton } from "../theme/ThemedIconButton";
+import { Colors } from "../../constants/Colors";
+import { useThemeColor } from "../../hooks/useThemeColor";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");

@@ -1,5 +1,5 @@
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedView } from "@/src/components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedView } from "../../../components/theme/ThemedView";
 import React from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
 
@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function WelcomeIntroScreen() {
   // Logo image uri
-  const uri = "@/assets/images/";
+  const uri = "../../../assets/images/";
   return (
     <ThemedView style={styles.container}>
       {/* Background shape */}

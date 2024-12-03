@@ -1,5 +1,5 @@
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedView } from "@/src/components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedView } from "../../../components/theme/ThemedView";
 import React from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
 
@@ -29,7 +29,7 @@ export default function WelcomeConceptScreen() {
         your creativity
       </ThemedText>
       <Image
-        source={require("@/assets/images/challenge1.png")}
+        source={require("../../../assets/images/challenge1.png")}
         style={styles.image}
       />
     </ThemedView>

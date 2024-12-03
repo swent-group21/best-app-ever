@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { isValidEmail, signUpWithEmail } from "@/src/types/Auth";
-import FirestoreCtrl from "@/src/firebase/FirestoreCtrl";
+import { isValidEmail, signUpWithEmail } from "../../../types/Auth";
+import FirestoreCtrl from "../../../firebase/FirestoreCtrl";
 
-export const useSignUpViewModel = (navigation: any, setUser: any, firestoreCtrl:any) => {
+export default function useSignUpViewModel(navigation: any, setUser: any, firestoreCtrl:any) {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");

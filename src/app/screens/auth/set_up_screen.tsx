@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { TopBar } from "@/src/components/navigation/TopBar";
-import { BottomBar } from "@/src/components/navigation/BottomBar";
-import { ThemedTextInput } from "@/src/components/theme/ThemedTextInput";
-import { ThemedIconButton } from "@/src/components/theme/ThemedIconButton";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedScrollView } from "@/src/components/theme/ThemedScrollView";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { TopBar } from "../../../components/navigation/TopBar";
+import { BottomBar } from "../../../components/navigation/BottomBar";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import * as ImagePicker from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

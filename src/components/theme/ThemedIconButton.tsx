@@ -1,8 +1,8 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Icon, IconProps } from "react-native-elements";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { Colors } from "@/src/constants/Colors";
+import { useThemeColor } from "../../hooks/useThemeColor";
+import { Colors } from "../../constants/Colors";
 
 interface ThemedIconButtonProps extends IconProps {
   onPress: () => void;

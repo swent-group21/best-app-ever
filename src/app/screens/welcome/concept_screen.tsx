@@ -1,5 +1,5 @@
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedView } from "@/src/components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedView } from "../../../components/theme/ThemedView";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 

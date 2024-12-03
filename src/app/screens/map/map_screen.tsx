@@ -6,10 +6,10 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { TopBar } from "@/src/components/navigation/TopBar";
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/firebase/FirestoreCtrl";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { TopBar } from "../../../components/navigation/TopBar";
+import FirestoreCtrl, { DBChallenge, DBUser } from "../../../firebase/FirestoreCtrl";
 // import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 /**
@@ -134,7 +134,7 @@ export default function MapScreen({
               latitude: challengeWithLocation.location.latitude,
               longitude: challengeWithLocation.location.longitude,
             }}
-            image={require("@/assets/images/icon_trans.png")}
+            image={require("../../../assets/images/icon_trans.png")}
             flat={true}
             title={challengeWithLocation.challenge_name}
             description={challengeWithLocation.description}

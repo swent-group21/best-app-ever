@@ -1,10 +1,10 @@
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedTextButton } from "@/src/components/theme/ThemedTextButton";
-import { ThemedView } from "@/src/components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
+import { ThemedView } from "../../../components/theme/ThemedView";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { signInAsGuest } from "@/src/types/Auth";
-import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
+import { signInAsGuest } from "../../../types/Auth";
+import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

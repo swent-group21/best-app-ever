@@ -1,10 +1,11 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedTextInput } from "@/src/components/theme/ThemedTextInput";
-import { ThemedTextButton } from "@/src/components/theme/ThemedTextButton";
-import { resetPassword } from "@/src/types/Auth";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
+import { resetPassword } from "../../../types/Auth";
 import { useState } from "react";
+import React from "react";
 
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");

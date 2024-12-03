@@ -1,8 +1,8 @@
 import React from "react";
 import { TextInput, TextInputProps, TextStyle, View } from "react-native";
 import { ThemedText } from "./ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { Colors } from "@/src/constants/Colors";
+import { useThemeColor } from "../../hooks/useThemeColor";
+import { Colors } from "../../constants/Colors";
 
 interface ThemedTextInputProps extends TextInputProps {
   title?: string;

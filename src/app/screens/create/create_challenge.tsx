@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions, Switch } from "react-native";
-import { Colors } from "@/src/constants/Colors";
-import { createChallenge } from "@/src/types/ChallengeBuilder";
-import { ThemedTextInput } from "@/src/components/theme/ThemedTextInput";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedScrollView } from "@/src/components/theme/ThemedScrollView";
-import { BottomBar } from "@/src/components/navigation/BottomBar";
-import { ThemedView } from "@/src/components/theme/ThemedView";
+import { Colors } from "../../../constants/Colors";
+import { createChallenge } from "../../../types/ChallengeBuilder";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";  
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
+import { BottomBar } from "../../../components/navigation/BottomBar";
+import { ThemedView } from "../../../components/theme/ThemedView";
 
 import {
   requestForegroundPermissionsAsync,

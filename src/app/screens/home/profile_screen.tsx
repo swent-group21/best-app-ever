@@ -1,17 +1,17 @@
 import React from "react";
-import { ThemedIconButton } from "@/src/components/theme/ThemedIconButton";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { TopBar } from "@/src/components/navigation/TopBar";
+import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { TopBar } from "../../../components/navigation/TopBar";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
 import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
 import { Dimensions, StyleSheet } from "react-native";
-import { ThemedTextButton } from "@/src/components/theme/ThemedTextButton";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
 import { Icon } from "react-native-elements";
-import FirestoreCtrl, { DBUser } from "@/src/firebase/FirestoreCtrl";
-import { logOut, resetEmail, resetPassword } from "@/src/types/Auth";
-import { ThemedTextInput } from "@/src/components/theme/ThemedTextInput";
+import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
+import { logOut, resetEmail, resetPassword } from "../../../types/Auth";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
 
 //TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");

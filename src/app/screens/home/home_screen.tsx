@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { TopBar } from "@/src/components/navigation/TopBar";
-import { Challenge } from "@/src/components/home/Challenge";
-import { Group } from "@/src/components/home/Group";
-import { ThemedScrollView } from "@/src/components/theme/ThemedScrollView";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { BottomBar } from "@/src/components/navigation/BottomBar";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedTextButton } from "@/src/components/theme/ThemedTextButton";
-import { Colors } from "@/src/constants/Colors";
-import { color } from "react-native-elements/dist/helpers";
+import { TopBar } from "../../../components/navigation/TopBar"; 
+import { Challenge } from "../../../components/home/Challenge";
+import { Group } from "../../../components/home/Group";
+import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import { BottomBar } from "../../../components/navigation/BottomBar";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
   DBGroup,
-} from "@/src/firebase/FirestoreCtrl";
-import { ChallengeDescription } from "@/src/components/home/Challenge_Description";
-import { DBChallengeDescription } from "@/src/firebase/FirestoreCtrl";
+} from "../../../firebase/FirestoreCtrl";
+import { ChallengeDescription } from "../../../components/home/Challenge_Description";
+import { DBChallengeDescription } from "../../../firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

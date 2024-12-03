@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
-import { Colors } from "@/src/constants/Colors";
-import { ThemedText } from "@/src/components/theme/ThemedText";
-import { ThemedView } from "@/src/components/theme/ThemedView";
-import { ThemedIconButton } from "@/src/components/theme/ThemedIconButton";
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/firebase/FirestoreCtrl";
+import { Colors } from "../../constants/Colors";
+import { ThemedText } from "../theme/ThemedText";
+import { ThemedView } from "../theme/ThemedView";
+import { ThemedIconButton } from "../theme/ThemedIconButton";
+import FirestoreCtrl, { DBChallenge, DBUser } from "../../firebase/FirestoreCtrl";
+import React from "react";
 
 const { width, height } = Dimensions.get("window");
+
+
 
 export function Challenge({
   challengeDB,
@@ -79,7 +82,7 @@ export function Challenge({
               source={
                 challengeDB.image_id
                   ? { uri: challengeDB.image_id }
-                  : require("@/assets/images/no-image.svg")
+                  : require("../../assets/images/no-image.svg")
               }
               style={styles.image}
             />
