@@ -8,7 +8,7 @@ const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
 
 function Timer({ endDate, onTimerFinished, testID }:any) {
-  const targetTime = endDate.getTime();
+  const targetTime = endDate;
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(
     () => targetTime - currentTime,

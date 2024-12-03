@@ -1,19 +1,15 @@
 import React from "react";
-import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
-import { ThemedText } from "../../../components/theme/ThemedText";
+import { StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
 import { ThemedView } from "../../../components/theme/ThemedView";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { TouchableOpacity } from "react-native";
-import { Image } from "react-native";
-import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
-import { Dimensions, StyleSheet } from "react-native";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { Icon } from "react-native-elements";
-import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
-import { logOut, resetEmail, resetPassword } from "../../../types/Auth";
+import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
+import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
+import { TopBar } from "../../../components/navigation/TopBar";
+import { Icon } from "react-native-elements";
+import { useProfileScreenViewModel } from "../../viewmodels/home/ProfileScreenViewModel";
+import FirestoreCtrl, { DBUser } from "../../../firebase/FirestoreCtrl";
 
-//TODO : change the colors for light mode
 const { width, height } = Dimensions.get("window");
 
 export default function ProfileScreen({
@@ -27,149 +23,97 @@ export default function ProfileScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const userIsGuest = user.name === "Guest";
+  const {
+    userIsGuest,
+    name,
+    setName,
+    image,
+    pickImage,
+    upload,
+    handleLogOut,
+    handleChangeEmail,
+    handleChangePassword,
+  } = useProfileScreenViewModel(user, setUser, firestoreCtrl, navigation);
 
-  React.useEffect(() => {
-    const fetchProfilePicture = async () => {
-      const profilePicture = await firestoreCtrl.getProfilePicture(user.uid);
-      setImage(profilePicture || null);
-    };
-    fetchProfilePicture();
-  }, [user.uid]);
-
-  const [name, setName] = React.useState<string>(user.name);
-
-  React.useEffect(() => {
-    setName(user.name);
-  }, [user.name]);
-
-  const [image, setImage] = React.useState<string | null>(
-    user.image_id ? user.image_id : null,
-  );
-
-  const pickImage = async () => {
-    try {
-      let result = await launchImageLibraryAsync({
-        mediaTypes: MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (!result.canceled) {
-        setImage(result.assets[0].uri);
-      }
-    } catch (error) {
-      console.error("Error picking image: ", error);
-    }
-  };
-
-  const upload = async () => {
-    if ((await user.name) === "") {
-      alert("Please enter a username.");
-    } else {
-      try {
-        await firestoreCtrl.setName(user.uid, name, setUser);
-        if (image) {
-          await firestoreCtrl.setProfilePicture(user.uid, image, setUser);
-        }
-      } catch (error) {
-        console.error("Error changing profile: ", error);
-        alert("Error changing profile: " + error);
-      }
-    }
-  };
+  if (userIsGuest) {
+    return (
+      <ThemedView style={styles.bigContainer}>
+        <ThemedText style={styles.notLoggedIn}>You are not logged in!</ThemedText>
+        <ThemedTextButton
+          text="Sign In"
+          textColorType="white"
+          onPress={handleLogOut}
+          style={styles.action}
+        />
+      </ThemedView>
+    );
+  }
 
   return (
     <ThemedView style={styles.bigContainer} testID="profile-screen">
-      {!userIsGuest && (
-        <>
-          <TopBar
-            title="Your profile"
-            leftIcon="arrow-back"
-            leftAction={() => {
-              upload();
-              navigation.goBack();
-            }}
-          />
-          <TouchableOpacity
+      <TopBar
+        title="Your Profile"
+        leftIcon="arrow-back"
+        leftAction={() => {
+          upload();
+          navigation.goBack();
+        }}
+      />
+
+      <TouchableOpacity onPress={pickImage} testID="image-picker" style={styles.smallContainer}>
+        {!image ? (
+          <ThemedIconButton
+            name="person-circle-outline"
+            size={300}
+            color="white"
             onPress={pickImage}
-            testID="image-picker"
-            style={styles.smallContainer}
-          >
-            {!image ? (
-              <ThemedIconButton
-                name="person-circle-outline"
-                size={300}
-                color="white"
-                onPress={pickImage}
-              />
-            ) : (
-              <Image source={{ uri: image }} style={styles.image} />
-            )}
-          </TouchableOpacity>
-          <ThemedView style={styles.smallContainer}>
-            <ThemedTextInput
-              style={styles.username}
-              value={name}
-              onChangeText={setName}
-            />
-          </ThemedView>
-          <ThemedView style={styles.actionsContainer}>
-            <ThemedView style={styles.row}>
-              <ThemedTextButton
-                text="Change your email"
-                textColorType="white"
-                darkColor="transparent"
-                lightColor="transparent"
-                onPress={() => resetEmail(user.email)}
-                style={styles.action}
-              >
-                {" "}
-              </ThemedTextButton>
-              <Icon name="email" color="white" size={30} />
-            </ThemedView>
-
-            <ThemedView style={styles.row}>
-              <ThemedTextButton
-                text="Change your password"
-                textColorType="white"
-                darkColor="transparent"
-                lightColor="transparent"
-                style={styles.action}
-                onPress={() => resetPassword(user.email)}
-              ></ThemedTextButton>
-              <Icon name="key" color="white" size={30} />
-            </ThemedView>
-            <ThemedView style={styles.row}>
-              <ThemedTextButton
-                text="Log Out"
-                textColorType="white"
-                darkColor="transparent"
-                lightColor="transparent"
-                onPress={() => logOut(navigation)}
-                style={styles.action}
-              ></ThemedTextButton>
-              <Icon name="logout" color="white" size={30} />
-            </ThemedView>
-          </ThemedView>
-        </>
-      )}
-
-      {userIsGuest && (
-        <ThemedView style={styles.smallContainer}>
-          <ThemedText style={styles.notLoggedIn}>
-            You are not logged in !
-          </ThemedText>
-          <ThemedTextButton
-            text="Sign In"
-            textColorType="white"
-            darkColor="transparent"
-            lightColor="transparent"
-            testID="sign-in-button"
-            onPress={() => logOut(navigation)}
           />
+        ) : (
+          <Image source={{ uri: image }} style={styles.image} />
+        )}
+      </TouchableOpacity>
+
+      <ThemedTextInput
+        style={styles.username}
+        value={name}
+        onChangeText={setName}
+        placeholder="Enter your name"
+      />
+
+      <ThemedView style={styles.actionsContainer}>
+        <ThemedView style={styles.row}>
+          <ThemedTextButton
+            text="Change your email"
+            textColorType="white"
+            onPress={handleChangeEmail}
+            style={styles.action}
+            colorType="transparent"
+          />
+          <Icon name="email" color="white" size={30} />
         </ThemedView>
-      )}
+
+        <ThemedView style={styles.row}>
+          <ThemedTextButton
+            text="Change your password"
+            textColorType="white"
+            onPress={handleChangePassword}
+            style={styles.action}
+            colorType="transparent"
+          />
+          <Icon name="key" color="white" size={30} />
+        </ThemedView>
+
+        <ThemedView style={styles.row}>
+          <ThemedTextButton
+            text="Log Out"
+            textColorType="white"
+            onPress={handleLogOut}
+            style={styles.action}
+            colorType="transparent"
+          />
+          <Icon name="logout" color="white" size={30} />
+        </ThemedView>
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -182,6 +126,8 @@ const styles = StyleSheet.create({
   smallContainer: {
     width: "100%",
     alignItems: "center",
+    
+    
   },
   image: {
     width: 220,
@@ -199,6 +145,7 @@ const styles = StyleSheet.create({
   columnInfo: {
     flexDirection: "column",
     alignItems: "flex-start",
+    
   },
   logOut: {
     width: "100%",
@@ -207,6 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "red",
     borderWidth: 1,
+    
   },
   logOutView: {
     top: 0,
@@ -219,6 +167,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 12,
     flexDirection: "row",
+    backgroundColor: "#212124",
   },
   actionsContainer: {
     borderRadius: 10,
@@ -230,7 +179,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    backgroundColor: "transparent",
+    backgroundColor: "#212124",
     width: "100%",
     borderRadius: 10,
     justifyContent: "space-between",

@@ -1,64 +1,87 @@
 import { useState, useRef, useCallback, useMemo } from "react";
-import { CameraService } from "../../models/CameraService";
-import { CameraView } from "expo-camera";
-import { Gesture } from "react-native-gesture-handler";
+import { CameraType, useCameraPermissions, CameraCapturedPicture, CameraPictureOptions } from "expo-camera";
+import { FlashMode } from "expo-camera/build/Camera.types";
+import Gesture from "react-native-gesture-handler";
 import { Platform } from "react-native";
+import { Camera } from "react-native-maps";
+import { CameraView } from "expo-camera";
 
-export function useCameraViewModel() {
-  const [permissionGranted, setPermissionGranted] = useState(false);
-  const [facing, setFacing] = useState<"back" | "front">("back");
+export function useCameraViewModel(firestoreCtrl: any, navigation: any) {
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [permission, requestPermission] = useCameraPermissions();
+  const camera = useRef<CameraView>(null);
+  const [picture, setPicture] = useState<CameraCapturedPicture>();
+  const [isCameraEnabled, setIsCameraEnabled] = useState(true);
+  const [flashMode, setFlashMode] = useState<FlashMode | string>("off");
   const [isFlashEnabled, setIsFlashEnabled] = useState(false);
   const [zoom, setZoom] = useState(0);
   const [lastZoom, setLastZoom] = useState(0);
-  const [picture, setPicture] = useState<string | null>(null);
 
-  const cameraRef = useRef<CameraView>(null);
+  const cameraPictureOptions: CameraPictureOptions = { base64: true };
 
-  // Request permissions
-  const requestPermissions = async () => {
-    const granted = await CameraService.requestPermissions();
-    setPermissionGranted(granted);
+  const toggleCameraFacing = () => {
+    setFacing((current) => (current === "back" ? "front" : "back"));
   };
 
-  // Toggle camera facing
-  const toggleFacing = () => setFacing((prev) => (prev === "back" ? "front" : "back"));
+  const toggleFlashMode = () => {
+    setFlashMode((current) => (current === "off" ? "on" : "off"));
+    setIsFlashEnabled((prev) => !prev);
+  };
 
-  // Toggle flash
-  const toggleFlash = () => setIsFlashEnabled((prev) => !prev);
+  const onPinch = useCallback(
+    (event: any) => {
+      const velocity = event.velocity / 20;
+      const outFactor = lastZoom * (Platform.OS === "ios" ? 40 : 15);
 
-  // Capture picture
-  const capturePicture = async () => {
-    const captured = await CameraService.capturePicture(cameraRef, {
-      base64: true,
-    });
-    if (captured?.uri) {
-      setPicture(captured.uri);
+      let newZoom =
+        velocity > 0
+          ? zoom + event.scale * velocity * (Platform.OS === "ios" ? 0.01 : 25)
+          : zoom -
+            event.scale *
+              (outFactor || 1) *
+              Math.abs(velocity) *
+              (Platform.OS === "ios" ? 0.02 : 50);
+
+      if (newZoom < 0) newZoom = 0;
+      else if (newZoom > 0.7) newZoom = 0.7;
+
+      setZoom(newZoom);
+    },
+    [zoom, lastZoom],
+  );
+
+
+  const takePicture = async () => {
+    if (camera.current) {
+      try {
+        const capturedPicture = await camera.current?.takePictureAsync(cameraPictureOptions);
+        setPicture(capturedPicture);
+        setIsCameraEnabled(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
-  // Zoom gestures
-  const onPinch = useCallback((event: any) => {
-    const velocity = event.velocity / 20;
-    let newZoom = zoom + event.scale * velocity * (Platform.OS === "ios" ? 0.01 : 0.02);
-    newZoom = Math.max(0, Math.min(0.7, newZoom));
-    setZoom(newZoom);
-  }, [zoom]);
-
-  const onPinchEnd = useCallback(() => setLastZoom(zoom), [zoom]);
-
-  const pinchGesture = useMemo(() => Gesture.Pinch().onUpdate(onPinch).onEnd(onPinchEnd), [onPinch]);
+  const imageUrlGen = async () => {
+    const img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
+    navigation.navigate("CreateChallenge", { image_id: img_id });
+  };
 
   return {
-    permissionGranted,
     facing,
+    permission,
+    requestPermission,
+    camera,
+    picture,
+    isCameraEnabled,
+    flashMode,
     isFlashEnabled,
     zoom,
-    picture,
-    cameraRef,
-    requestPermissions,
-    toggleFacing,
-    toggleFlash,
-    capturePicture,
-    pinchGesture,
+    toggleCameraFacing,
+    toggleFlashMode,
+    takePicture,
+    imageUrlGen,
+    setIsCameraEnabled,
   };
 }
