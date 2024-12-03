@@ -28,10 +28,8 @@ export function Challenge({
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
 
-  // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date
-    ? challengeDB.date.toDate()
-    : new Date();
+  // @ts-ignore - challengeDB.date is a Date object
+  let challengeDate: Date = challengeDB.date ? challengeDB.date : new Date();
 
   // Fetch user data
   useEffect(() => {

@@ -12,7 +12,6 @@ import FirestoreCtrl, {
   DBComment,
   DBUser,
 } from "@/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -56,7 +55,7 @@ export default function MaximizeScreen({
       .then((comments: DBComment[]) => {
         // Sort comments by date
         const sortedComments = comments.sort(
-          (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
+          (a, b) => a.created_at.getTime() - b.created_at.getTime(),
         );
         setCommentList(sortedComments);
       });
@@ -73,7 +72,7 @@ export default function MaximizeScreen({
   }, [challenge, firestoreCtrl]);
 
   // @ts-ignore - date is not of the correct type
-  const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
+  const postDate: Date = challenge.date ? challenge.date : new Date();
   const postTitle =
     challenge.challenge_name == ""
       ? "Secret Challenge"
@@ -223,7 +222,7 @@ export default function MaximizeScreen({
                 const newComment: DBComment = {
                   comment_text: commentText,
                   user_name: currentUserName ?? "",
-                  created_at: Timestamp.now(),
+                  created_at: new Date(),
                   post_id: challenge.challenge_id ?? "",
                 };
                 firestoreCtrl

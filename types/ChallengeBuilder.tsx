@@ -1,5 +1,5 @@
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
-import { GeoPoint, Timestamp } from "firebase/firestore";
+import { GeoPoint } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 /**
@@ -42,7 +42,7 @@ export const createChallenge = async (
   challenge_name: string,
   description: string,
   location: LocationObject | null,
-  date?: Timestamp,
+  date?: Date,
   image_id?: string,
   likes?: string[],
 ): Promise<void> => {
