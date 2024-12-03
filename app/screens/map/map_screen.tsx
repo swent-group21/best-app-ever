@@ -138,6 +138,14 @@ export default function MapScreen({
             flat={true}
             title={challengeWithLocation.challenge_name}
             description={challengeWithLocation.description}
+            onCalloutPress={() => {
+              console.log("Challenge pressed: ", challengeWithLocation);
+              navigation.navigate("Maximize", {
+                challenge: challengeWithLocation,
+                user: user,
+                firestoreCtrl: firestoreCtrl,
+              });
+            }}
           />
         ))}
       </MapView>
