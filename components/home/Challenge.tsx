@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,11 +14,26 @@ export function Challenge({
   firestoreCtrl,
   navigation,
   testID,
-}: any) {
+  currentUser,
+}: {
+  challengeDB: DBChallenge;
+  index: number;
+  firestoreCtrl: FirestoreCtrl;
+  navigation: any;
+  testID: string;
+  currentUser: DBUser;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
 
+  // @ts-ignore - date is a Timestamp object
+  let challengeDate: Date = challengeDB.date
+    ? challengeDB.date.toDate()
+    : new Date();
+
+  // Fetch user data
   useEffect(() => {
     if (challengeDB.uid) {
       const fetchUser = async () => {
@@ -33,6 +48,16 @@ export function Challenge({
     }
   }, [user]);
 
+  // Fetch likes data
+  useEffect(() => {
+    firestoreCtrl
+      .getLikesOf(challengeDB.challenge_id ?? "")
+      .then((likes: string[]) => {
+        setIsLiked(likes.includes(currentUser.uid));
+        setLikes(likes);
+      });
+  }, [challengeDB.challenge_id]);
+
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
     return <ThemedText>Loading Challenge...</ThemedText>;
@@ -44,17 +69,23 @@ export function Challenge({
         style={{ backgroundColor: "transparent" }}
       >
         <TouchableOpacity
+          testID="challenge-touchable"
           onPress={() => setIsOpen(!isOpen)}
           activeOpacity={0.8}
         >
           <ThemedView style={[styles.challenge]}>
             <Image
-              source={require("@/assets/images/challenge2.png")}
+              testID="challenge-image"
+              source={
+                challengeDB.image_id
+                  ? { uri: challengeDB.image_id }
+                  : require("@/assets/images/no-image.svg")
+              }
               style={styles.image}
             />
 
             {isOpen && (
-              <ThemedView style={styles.container}>
+              <ThemedView testID="challenge-container" style={styles.container}>
                 <ThemedView
                   style={[styles.user, { justifyContent: "space-between" }]}
                 >
@@ -80,16 +111,19 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"at " + challengeDB.date}
+                        {"on " + challengeDate.toUTCString()}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
                   <ThemedIconButton
+                    testID="expand-button"
                     name="chevron-expand-outline"
                     onPress={() => {
-                      navigation.navigate("MaximizeScreen", {
+                      navigation.navigate("Maximize", {
+                        navigation: navigation,
+                        firestoreCtrl: firestoreCtrl,
                         challenge: challengeDB,
-                        user: user,
+                        user: currentUser,
                       });
                     }}
                     size={25}
@@ -99,12 +133,25 @@ export function Challenge({
                 </ThemedView>
                 <ThemedView style={styles.bottomBar}>
                   <ThemedIconButton
+                    testID="like-button"
                     name={isLiked ? "heart" : "heart-outline"}
-                    onPress={() => {
-                      setIsLiked(!isLiked);
-                    }}
-                    size={25}
                     color={isLiked ? "red" : "white"}
+                    size={25}
+                    onPress={() => {
+                      const newIsLiked = !isLiked;
+                      setIsLiked(newIsLiked);
+
+                      const newLikeList = newIsLiked
+                        ? [...likes, currentUser.uid] // Liking
+                        : likes.filter((userId) => userId !== currentUser.uid); // Unliking
+
+                      setLikes(newLikeList);
+
+                      firestoreCtrl.updateLikesOf(
+                        challengeDB.challenge_id ?? "",
+                        newLikeList,
+                      );
+                    }}
                   />
                   <ThemedIconButton
                     name="location-outline"
@@ -137,7 +184,7 @@ const styles = StyleSheet.create({
   },
   challenge: {
     width: width - 20,
-    height: height * 0.3,
+    height: height / 3,
     borderRadius: 15,
     backgroundColor: Colors.light.transparent,
   },

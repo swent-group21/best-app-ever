@@ -72,9 +72,8 @@ export default function HomeScreen({
     if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getChallengesByUserId(
-            user.uid,
-          );
+          const challengesData = await firestoreCtrl.getKChallenges(100);
+          // console.log("Challenges [" + user.uid + "]", challengesData);
           setChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -83,7 +82,7 @@ export default function HomeScreen({
 
       fetchChallenges();
     }
-  }, [user.uid]);
+  }, [user.uid, firestoreCtrl]);
 
   useEffect(() => {
     if (user.uid) {
@@ -173,6 +172,7 @@ export default function HomeScreen({
               key={index}
               challengeDB={challenge}
               testID={`challenge-id-${index}`}
+              currentUser={user}
             />
           ))
         )}

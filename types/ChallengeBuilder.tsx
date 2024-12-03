@@ -1,5 +1,5 @@
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint, Timestamp } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 /**
@@ -40,11 +40,11 @@ export const buildChallenge = async (
 export const createChallenge = async (
   firestoreCtrl: FirestoreCtrl,
   challenge_name: string,
-  date: Date,
   description: string,
   location: LocationObject | null,
+  date?: Timestamp,
   image_id?: string,
-  comment_id?: string,
+  likes?: string[],
 ): Promise<void> => {
   try {
     // Prepare the challenge data for Firestore
@@ -65,10 +65,19 @@ export const createChallenge = async (
       challenge_name: challenge_name,
       description: description || "",
       uid: user.uid,
-      date: date,
+      image_id: image_id,
+      likes: likes || [],
       location: locationFirebase,
-      // Add other fields as needed
     };
+
+    if (image_id) {
+      const image_url = await firestoreCtrl.getImageUrl(image_id);
+      newChallenge.image_id = image_url;
+    }
+
+    if (date) {
+      newChallenge.date = date;
+    }
 
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
