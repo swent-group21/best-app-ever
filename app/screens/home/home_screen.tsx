@@ -68,45 +68,48 @@ export default function HomeScreen({
     fetchCurrentChallenge();
   }, [firestoreCtrl]);*/
 
-  // Fetch the list of challenges
-  useEffect(() => {
-    const fetchCurrentChallenge = async () => {
-      try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
+  const fetchCurrentChallenge = async () => {
+    try {
+      const currentChallengeData =
+        await firestoreCtrl.getChallengeDescription();
 
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
-        };
-
-        setTitleChallenge(formattedChallenge);
-        //console.log("Current Challenge: ", formattedChallenge);
-      } catch (error) {
-        console.error("Error fetching current challenge: ", error);
-      }
-    };
-
-    fetchCurrentChallenge();
-
-
-    if (user.uid) {
-      const fetchChallenges = async () => {
-        try {
-          const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title)
-            .then((challenge: DBChallenge[]) => {
-              // Sort challenges by date
-              const sortedChallenges = challenge.sort(
-                (a, b) => b.date.seconds - a.date.seconds,
-              );
-              setChallenges(sortedChallenges);
-            });
-        } catch (error) {
-          console.error("Error fetching challenges: ", error);
-        }
+      const formattedChallenge = {
+        title: currentChallengeData.Title,
+        description: currentChallengeData.Description,
+        endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
       };
 
+      setTitleChallenge(formattedChallenge);
+      //console.log("Current Challenge: ", formattedChallenge);
+    } catch (error) {
+      console.error("Error fetching current challenge: ", error);
+    }
+  };
+
+  const fetchChallenges = async () => {
+    try {
+      const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title)
+        .then((challenge: DBChallenge[]) => {
+          // Sort challenges by date
+          const sortedChallenges = challenge.sort(
+            (a, b) => b.date.seconds - a.date.seconds,
+          );
+          setChallenges(sortedChallenges);
+        });
+    } catch (error) {
+      console.error("Error fetching challenges: ", error);
+    }
+  };
+
+  fetchCurrentChallenge();
+  fetchChallenges();	
+
+
+
+  // Fetch the list of challenges
+  useEffect(() => {
+    fetchCurrentChallenge();
+    if (user.uid) {
       fetchChallenges();
     }
   }, [user.uid, firestoreCtrl]);

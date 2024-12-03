@@ -49,6 +49,7 @@ export default function MapScreen({
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
+  const [description, setDescription] = useState<string>();
 
   /**
    * Asks for permission to access the user's location and sets the location state to the user's current location.
@@ -77,44 +78,49 @@ export default function MapScreen({
   /**
    * Fetches all challenges from Firestore and sets the markers state to the locations of the challenges.
    */
+  const fetchCurrentChallenge = async () => {
+    try {
+      const currentChallengeData =
+        await firestoreCtrl.getChallengeDescription();
+
+      const formattedChallenge = {
+        title: currentChallengeData.Title,
+        description: currentChallengeData.Description,
+        endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+      };
+
+      setTitleChallenge(formattedChallenge);
+      //console.log("Current Challenge: ", formattedChallenge);
+    } catch (error) {
+      console.error("Error fetching current challenge: ", error);
+    }
+  }
+  
+
+  const fetchChallenges = async () => {
+    try {
+      const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title);
+      const filteredChallenges = challengesData.filter(
+        (challenge: any) =>
+          challenge.location !== undefined && challenge.location !== null,
+      );
+      setChallengesWithLocation(filteredChallenges);
+      //console.log("Markers", filteredChallenges);
+    } catch (error) {
+      console.error("Error fetching challenges: ", error);
+    }
+  };
+
+  
+
+  fetchCurrentChallenge();
+  fetchChallenges();
+
+
   useEffect(() => {
-
-    const fetchCurrentChallenge = async () => {
-      try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
-
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
-        };
-
-        setTitleChallenge(formattedChallenge);
-        //console.log("Current Challenge: ", formattedChallenge);
-      } catch (error) {
-        console.error("Error fetching current challenge: ", error);
-      }
-    };
-
-    const fetchChallenges = async () => {
-      try {
-        console.log("Fetching challenges...");
-        const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title);
-        const filteredChallenges = challengesData.filter(
-          (challenge: any) =>
-            challenge.location !== undefined && challenge.location !== null,
-        );
-        setChallengesWithLocation(filteredChallenges);
-        console.log("Markers", filteredChallenges);
-      } catch (error) {
-        console.error("Error fetching challenges: ", error);
-      }
-    };
-
     fetchCurrentChallenge();
     fetchChallenges();
-  }, []);
+  }, [firestoreCtrl]);
 
   /**
    * Renders a loading message while the location is being fetched.
@@ -161,8 +167,8 @@ export default function MapScreen({
             }}
             image={require("@/assets/images/icon_trans.png")}
             flat={true}
-            title={challengeWithLocation.challenge_name}
-            description={challengeWithLocation.description}
+            title={challengeWithLocation.caption}
+            description={`${challengeWithLocation.date.toDate().toLocaleString()}`}
           />
         ))}
       </MapView>
