@@ -35,7 +35,7 @@ export type DBChallenge = {
   caption?: string;
   uid: string;
   image_id?: string;
-  date?: Timestamp;
+  date: Timestamp;
   likes?: string[]; // User IDs
   location?: GeoPoint | null;
   challenge_description: string;

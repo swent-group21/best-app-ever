@@ -9,7 +9,7 @@ import {
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser, DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 // import { DBChallenge } from "@/firebase/FirestoreCtrl";
 
 /**
@@ -44,6 +44,11 @@ export default function MapScreen({
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
   >([]);
+  const [titleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
+    title: "Challenge Title",
+    description: "Challenge Description",
+    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+  });
 
   /**
    * Asks for permission to access the user's location and sets the location state to the user's current location.
@@ -73,10 +78,29 @@ export default function MapScreen({
    * Fetches all challenges from Firestore and sets the markers state to the locations of the challenges.
    */
   useEffect(() => {
+
+    const fetchCurrentChallenge = async () => {
+      try {
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+
+        const formattedChallenge = {
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
+          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+        };
+
+        setTitleChallenge(formattedChallenge);
+        //console.log("Current Challenge: ", formattedChallenge);
+      } catch (error) {
+        console.error("Error fetching current challenge: ", error);
+      }
+    };
+
     const fetchChallenges = async () => {
       try {
         console.log("Fetching challenges...");
-        const challengesData = await firestoreCtrl.getKChallenges(100);
+        const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title);
         const filteredChallenges = challengesData.filter(
           (challenge: any) =>
             challenge.location !== undefined && challenge.location !== null,
@@ -88,6 +112,7 @@ export default function MapScreen({
       }
     };
 
+    fetchCurrentChallenge();
     fetchChallenges();
   }, []);
 

@@ -42,7 +42,7 @@ export const createChallenge = async (
   caption: string,
   location: LocationObject | null,
   challenge_description: string,
-  date?: Timestamp,
+  date: Timestamp,
   image_id?: string,
   likes?: string[],
 ): Promise<void> => {
@@ -68,6 +68,7 @@ export const createChallenge = async (
       likes: likes || [],
       location: locationFirebase,
       challenge_description: challenge_description,
+      date: date,
     };
 
     /*if (image_id) {
@@ -75,9 +76,9 @@ export const createChallenge = async (
       newChallenge.image_id = image_url;
     }*/
 
-    if (date) {
+    /*if (date) {
       newChallenge.date = date;
-    }
+    }*/
 
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
