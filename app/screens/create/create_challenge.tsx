@@ -15,22 +15,28 @@ import {
 } from "expo-location";
 
 import { GeoPoint, Timestamp } from "firebase/firestore";
+import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
 const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [caption, setCaption] = useState("");
 
-  const image_id = route.params?.image_id;
-  console.log("image_id: ", image_id);
+  //console.log("image_id: ", image_id);
 
   const [location, setLocation] = useState<LocationObject | null>(null);
-  const [descriptionTitle, setDescriptionTitle] = useState("");
+  const [descriptionTitle, setDescriptionTitle] = useState<DBChallengeDescription>({
+    title: "Challenge Title",
+    description: "Challenge Description",
+    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+  });;
 
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
   };
+  const postImage = route.params?.image_id ?? "";
+
 
   useEffect(() => {
     async function getCurrentLocation() {
@@ -52,8 +58,17 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   useEffect(() => {
     async function fetchDescriptionTitle() {
       try {
-        const description = await firestoreCtrl.getChallengeDescription();
-        setDescriptionTitle(description.title);
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+
+        const formattedChallenge = {
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
+          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+        };
+
+        setDescriptionTitle(formattedChallenge);
+        console.log("Description title: ", formattedChallenge.title);
       } catch (error) {
         console.log("Error fetching description id");
         return error;
@@ -72,9 +87,9 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
         firestoreCtrl,
         caption,
         isEnabled ? location : null,
-        descriptionTitle,
+        descriptionTitle.title ?? "",
         date,
-        image_id,
+        postImage,
 
       );
       navigation.reset({
@@ -101,6 +116,8 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
       <ThemedScrollView
         style={styles.containerCol}
         automaticallyAdjustKeyboardInsets={true}
+        colorType="transparent"
+        //contentContainerStyle={styles.contentContainer}
       >
         <ThemedView
             style={styles.imageContainer}
@@ -109,8 +126,8 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
           >
             <Image
               source={
-                image_id
-                  ? { uri: image_id }
+                postImage
+                  ? { uri: postImage }
                   : require("@/assets/images/no-image.svg")
               }
               style={styles.image}
@@ -176,7 +193,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "transparent",
     gap: height * 0.027,
-    paddingTop: 15,
+    paddingTop: 27,
 
   },
 
@@ -208,7 +225,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "baseline",
-    paddingTop: 7,
+    paddingTop: 13,
   },
 
   switch: {
@@ -220,7 +237,7 @@ const styles = StyleSheet.create({
 
   switchText: {
     width: "90%",
-    padding: 15,
+    paddingLeft: 15,
     alignSelf: "center",
   },
 
@@ -240,6 +257,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 15,
   },
 
   imageContainer: {
@@ -249,6 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: "white",
   },
+
 });
 
 export default CreateChallengeScreen;
