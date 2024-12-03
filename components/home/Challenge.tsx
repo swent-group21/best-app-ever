@@ -5,6 +5,7 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
+import { LocationObject } from "expo-location";
 
 const { width, height } = Dimensions.get("window");
 
@@ -153,14 +154,26 @@ export function Challenge({
                       );
                     }}
                   />
-                  <ThemedIconButton
-                    name="location-outline"
-                    onPress={() => {
-                      /* location button */
-                    }}
-                    size={25}
-                    color="white"
-                  />
+                  {challengeDB.location && (
+                    <ThemedIconButton
+                      name="location-outline"
+                      onPress={() => {
+                        navigation.navigate("MapScreen", {
+                          navigation: navigation,
+                          firestoreCtrl: firestoreCtrl,
+                          user: currentUser,
+                          location: {
+                            coords: {
+                              latitude: challengeDB.location?.latitude,
+                              longitude: challengeDB.location?.longitude,
+                            },
+                          } as LocationObject,
+                        });
+                      }}
+                      size={25}
+                      color="white"
+                    />
+                  )}
                 </ThemedView>
               </ThemedView>
             )}
