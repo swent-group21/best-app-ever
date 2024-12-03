@@ -28,6 +28,7 @@ import {
   where,
   Firestore,
   onSnapshot,
+  Timestamp,
 } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -82,4 +83,5 @@ export {
   signInAnonymously,
   updateEmail,
   signOut,
+  Timestamp,
 };

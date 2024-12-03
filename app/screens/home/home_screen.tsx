@@ -8,15 +8,13 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import { Colors } from "@/constants/Colors";
-import { color } from "react-native-elements/dist/helpers";
+import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
   DBGroup,
+  DBChallengeDescription,
 } from "@/firebase/FirestoreCtrl";
-import { ChallengeDescription } from "@/components/home/Challenge_Description";
-import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -50,22 +48,15 @@ export default function HomeScreen({
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
-
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
-        };
-
-        setTitleChallenge(formattedChallenge);
+        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        setTitleChallenge(currentChallengeData);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
+
     fetchCurrentChallenge();
-  });
+  }, []);
 
   // Fetch the list of challenges
   useEffect(() => {

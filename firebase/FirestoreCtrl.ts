@@ -1,9 +1,7 @@
 import {
-  FieldPath,
   limit,
   documentId,
   GeoPoint,
-  Timestamp,
 } from "firebase/firestore";
 import {
   firestore,
@@ -16,6 +14,7 @@ import {
   collection,
   query,
   where,
+  Timestamp,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -488,7 +487,9 @@ export default class FirestoreCtrl {
       const challengeDescription = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          ...data,
+          title: data.Title,
+          description: data.Description,
+          endDate: data.Date.toDate(),
         } as DBChallengeDescription;
       });
       return challengeDescription[0];
