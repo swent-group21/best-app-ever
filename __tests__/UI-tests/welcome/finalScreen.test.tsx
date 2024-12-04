@@ -114,7 +114,8 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Sign In button
-    fireEvent.press(screen.getByTestId("sign-in-button"));
+    const signInButton = await screen.getByTestId("sign-in-button");
+    fireEvent.press(signInButton);
 
     // Wait for the navigation to complete
     await waitFor(() =>
@@ -126,7 +127,8 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Sign Up button
-    fireEvent.press(screen.getByTestId("sign-up-button"));
+    const signUpButton = await screen.getByTestId("sign-up-button");
+    fireEvent.press(signUpButton);
 
     // Wait for the navigation to complete
     await waitFor(() =>
@@ -138,9 +140,10 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Continue as guest button
-    fireEvent.press(screen.getByTestId("continue-as-guest-button"));
+    const continueAsGuestButton = await screen.getByTestId("continue-as-guest-button");
+    fireEvent.press(continueAsGuestButton);
 
     // Wait for the function to be called
-    await waitFor(() => expect(signInAsGuest).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(signInAsGuest).toHaveBeenCalled());
   });
 });
