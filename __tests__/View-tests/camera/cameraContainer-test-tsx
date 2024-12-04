@@ -1,0 +1,120 @@
+import React from "react";
+import { render, fireEvent } from "@testing-library/react-native";
+import Camera from "../../../src/app/views/camera/CameraContainer";
+import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+
+describe("Camera UI Tests", () => {
+  const mockNavigation = {};
+  const mockFirestoreCtrl = new FirestoreCtrl();
+
+  it("renders the main container", () => {
+    const { getByTestId } = render(
+      Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+
+    const container = getByTestId("camera-container");
+    expect(container).toBeTruthy();
+  });
+
+  it("renders permission request when permission is not granted", () => {
+    const mockRequestPermission = jest.fn();
+    jest.mock("../../viewmodels/camera/CameraViewModel", () => ({
+      useCameraViewModel: () => ({
+        permission: { granted: false },
+        requestPermission: mockRequestPermission,
+      }),
+    }));
+
+    const { getByText } = render(
+    Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+    const permissionText = getByText("We need your permission to show the camera");
+    const permissionButton = getByText("Grant Permission");
+
+    expect(permissionText).toBeTruthy();
+    expect(permissionButton).toBeTruthy();
+  });
+
+  it("renders the CameraView when permission is granted and camera is enabled", () => {
+    jest.mock("../../viewmodels/camera/CameraViewModel", () => ({
+      useCameraViewModel: () => ({
+        permission: { granted: true },
+        isCameraEnabled: true,
+      }),
+    }));
+
+    const { getByTestId } = render(
+    Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+    const cameraView = getByTestId("camera-view");
+    expect(cameraView).toBeTruthy();
+  });
+
+  it("renders the captured image view when camera is disabled", () => {
+    jest.mock("../../viewmodels/camera/CameraViewModel", () => ({
+      useCameraViewModel: () => ({
+        permission: { granted: true },
+        isCameraEnabled: false,
+        picture: { uri: "test-uri" },
+      }),
+    }));
+
+    const { getByTestId } = render(
+    Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+
+    const capturedImage = getByTestId("captured-image");
+    expect(capturedImage).toBeTruthy();
+  });
+
+  it("calls toggleCameraFacing when the camera reverse button is pressed", () => {
+    const mockToggleCameraFacing = jest.fn();
+    jest.mock("../../viewmodels/camera/CameraViewModel", () => ({
+      useCameraViewModel: () => ({
+        permission: { granted: true },
+        isCameraEnabled: true,
+        toggleCameraFacing: mockToggleCameraFacing,
+      }),
+    }));
+
+    const { getByTestId } = render(
+    Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+    const cameraReverseButton = getByTestId("camera-reverse-button");
+    fireEvent.press(cameraReverseButton);
+
+    expect(mockToggleCameraFacing).toHaveBeenCalled();
+  });
+
+  it("calls toggleFlashMode when the flash button is pressed", () => {
+    const mockToggleFlashMode = jest.fn();
+    jest.mock("../../viewmodels/camera/CameraViewModel", () => ({
+      useCameraViewModel: () => ({
+        permission: { granted: true },
+        isCameraEnabled: true,
+        toggleFlashMode: mockToggleFlashMode,
+      }),
+    }));
+
+    const { getByTestId } = render(
+    Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+    const flashButton = getByTestId("flash-button");
+    fireEvent.press(flashButton);
+
+    expect(mockToggleFlashMode).toHaveBeenCalled();
+  });
+
+  it("calls takePicture when the capture button is pressed", () => {
+    const mockTakePicture = jest.fn();
+    jest.mock("../../viewmodels/camera/CameraViewModel", () => ({
+      useCameraViewModel: () => ({
+        permission: { granted: true },
+        isCameraEnabled: true,
+        takePicture: mockTakePicture,
+      }),
+    }));
+
+    const { getByTestId } = render(
+        Camera({ navigation: mockNavigation, firestoreCtrl: mockFirestoreCtrl }))
+
+    const captureButton = getByTestId("capture-button");
+    fireEvent.press(captureButton);
+
+    expect(mockTakePicture).toHaveBeenCalled();
+  });
+});

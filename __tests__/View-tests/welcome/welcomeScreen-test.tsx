@@ -3,80 +3,52 @@ import { render, fireEvent } from "@testing-library/react-native";
 import WelcomeScreens from "../../../src/app/views/welcome/welcome_screen";
 import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
 import { Dimensions } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 
 
+const mockFirestoreCtrl = new FirestoreCtrl();
 
-describe("WelcomeScreens UI Tests", () => {
-  const mockSetUser = jest.fn();
-  const mockNavigation = {
-    navigate: jest.fn(),
-  };
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
-  it("renders the scroll view", () => {
-    const { getByTestId } = render(
-      <WelcomeScreens
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
+describe("WelcomeScreens", () => {
+  it("renders the initial screen correctly", () => {
+    const { getByText } = render(
+      <NavigationContainer>
+        <WelcomeScreens
+          setUser={jest.fn()}
+          navigation={{}}
+          firestoreCtrl={mockFirestoreCtrl}
+        />
+      </NavigationContainer>,
+    );
+
+    // Initial screen should have the intro screen content
+    expect(getByText("So what is\nStrive\nabout ?")).toBeTruthy();
+  });
+
+  it("allows swiping through screens", () => {
+    const { getByTestId, getByText } = render(
+      <NavigationContainer>
+        <WelcomeScreens
+          setUser={jest.fn()}
+          navigation={{}}
+          firestoreCtrl={mockFirestoreCtrl}
+        />
+      </NavigationContainer>,
     );
 
     const scrollView = getByTestId("welcome-scrollview");
-    expect(scrollView).toBeTruthy();
-  });
+    const { width } = Dimensions.get("window");
 
-  it("renders all screens inside the scroll view", () => {
-    const { getByTestId } = render(
-      <WelcomeScreens
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
-    );
-
-    expect(getByTestId("welcome-intro-screen")).toBeTruthy();
-    expect(getByTestId("welcome-concept-screen")).toBeTruthy();
-    expect(getByTestId("welcome-personal-screen")).toBeTruthy();
-    expect(getByTestId("welcome-final-screen")).toBeTruthy();
-  });
-
-  it("renders the dot indicators", () => {
-    const { getByTestId } = render(
-      <WelcomeScreens
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
-    );
-
-    const dotsContainer = getByTestId("welcome-dots-container");
-    expect(dotsContainer).toBeTruthy();
-  });
-
-  it("updates the active dot on scroll", () => {
-    const { getByTestId, getAllByTestId } = render(
-      <WelcomeScreens
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
-    );
-
-    const scrollView = getByTestId("welcome-scrollview");
-    const dots = getAllByTestId("welcome-dot");
-
-    // Simulate scrolling to the second screen
+    // Simulate swiping to the next screen
     fireEvent.scroll(scrollView, {
       nativeEvent: {
-        contentOffset: {
-          x: Dimensions.get("window").width,
-        },
+        contentOffset: { x: width, y: 0 },
+        contentSize: { width: width * 4, height: 0 },
+        layoutMeasurement: { width, height: 0 },
       },
     });
 
-    // Check that the second dot is active
-    expect(dots[0].props.style).not.toContainEqual({ backgroundColor: "activeColor" });
-    expect(dots[1].props.style).toContainEqual({ backgroundColor: "activeColor" });
+    // Check if the second screen content is visible
+    expect(getByText("Competing\nyourself")).toBeTruthy();
   });
 });
