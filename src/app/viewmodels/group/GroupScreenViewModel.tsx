@@ -6,28 +6,6 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
 
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
-  const [groupTitleChallenge, setGroupTitleChallenge] = useState<DBChallengeDescription>({
-    title: "Challenge Title",
-    description: "Challenge Description",
-    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-  });
-
-  useEffect(() => {
-    const fetchCurrentChallenge = async () => {
-      try {
-        const currentChallengeData = await firestoreCtrl.getChallengeByGroup(group.challenge_id);
-        const formattedChallenge = {
-          title: currentChallengeData.title,
-          description: currentChallengeData.description,
-          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
-        };
-        setGroupTitleChallenge(formattedChallenge);
-      } catch (error) {
-        console.error("Error fetching current challenge: ", error);
-      }
-    };
-    fetchCurrentChallenge();
-  }, [firestoreCtrl]);
 
   useEffect(() => {
     if (user.uid) {
@@ -62,6 +40,5 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
   return {
     groupChallenges,
     otherGroups,
-    groupTitleChallenge,
   };
 }

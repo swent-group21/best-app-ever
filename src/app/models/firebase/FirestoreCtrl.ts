@@ -51,7 +51,7 @@ export type DBComment = {
 export type DBGroup = {
   gid: string;
   name: string;
-  challenge_id: string;
+  challengeTitle: string;
   members: string[];
   updateDate: Date;
 };
@@ -430,25 +430,6 @@ export default class FirestoreCtrl {
     }
   }
 
-
-  /**
-   * Retrieves the current challenge description from a group using its id
-   * 
-   * @param cid The ID of the group to get the challenge description for.
-   * @returns A promise that resolves to the challenge description.
-   */
-  async getChallengeByGroup(challenge_id: string): Promise<DBChallengeDescription> {
-    try {
-      const challengeRef = doc(firestore, "challenge_description", challenge_id);
-      const challengeDoc = await getDoc(challengeRef);
-
-      const userData = challengeDoc.data() as DBChallengeDescription;
-      return userData;
-    } catch (error) {
-      console.error("Error getting challenge by group: ", error);
-      throw error;
-    }
-  }
 
 
 
