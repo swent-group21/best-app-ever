@@ -21,6 +21,7 @@ interface TopbarProps {
   rightAction?: () => void;
   title?: string;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+  testID?: string;
 }
 
 export function TopBar({
@@ -30,6 +31,7 @@ export function TopBar({
   rightAction = () => {},
   title,
   colorType = "white",
+  testID,
 }: TopbarProps) {
   const color = useThemeColor({}, colorType);
 

@@ -23,8 +23,8 @@ export default function WelcomeFinalScreen({
   return (
     <ThemedView style={styles.container} testID="welcome-final-screen">
       {/* Background shapes */}
-      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
-      <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" />
+      <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" testID="ovalShapeOne" />
+      <ThemedView style={styles.ovalShapeTwo} colorType="backgroundSecondary" testID="ovalShapeTwo" />
 
       {/* Screen content */}
       <ThemedText

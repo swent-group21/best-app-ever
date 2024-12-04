@@ -10,39 +10,40 @@ export default function WelcomeIntroScreen() {
   // Logo image uri
   const uri = "../../../assets/images/";
   return (
-    <ThemedView style={styles.container}>
-      {/* Background shape */}
-      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
+    <ThemedView style={styles.container} testID="container">
+  {/* Background shape */}
+  <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" testID="ovalShape" />
 
-      {/* Screen content */}
-      <ThemedText
-        style={styles.title}
-        colorType="backgroundPrimary"
-        type="superTitle"
-      >
-        So what is{"\n"}Strive{"\n"}about ?
-      </ThemedText>
-      <ThemedText
-        style={styles.smallTitle}
-        colorType="textPrimary"
-        type="title"
-      >
-        Participating in Weekly challenges !
-      </ThemedText>
-      <ThemedText
-        style={styles.description}
-        colorType="textPrimary"
-        type="description"
-      >
-        Compete with your friends and people around you{"\n"}Become the goat and
-        win prizes!
-      </ThemedText>
+  {/* Screen content */}
+  <ThemedText
+    style={styles.title}
+    colorType="backgroundPrimary"
+    type="superTitle"
+  >
+    So what is{"\n"}Strive{"\n"}about ?
+  </ThemedText>
+  <ThemedText
+    style={styles.smallTitle}
+    colorType="textPrimary"
+    type="title"
+  >
+    Participating in Weekly challenges !
+  </ThemedText>
+  <ThemedText
+    style={styles.description}
+    colorType="textPrimary"
+    type="description"
+  >
+    Compete with your friends and people around you{"\n"}Become the goat and
+    win prizes!
+  </ThemedText>
 
-      {/* Logo */}
-      <ThemedView testID="test-image" style={styles.imageContainer}>
-        <Image style={styles.image} source={require(`${uri}icon_trans.png`)} />
-      </ThemedView>
-    </ThemedView>
+  {/* Logo */}
+  <ThemedView testID="test-image" style={styles.imageContainer}>
+    <Image style={styles.image} source={require(`${uri}icon_trans.png`)} />
+  </ThemedView>
+</ThemedView>
+
   );
 }
 

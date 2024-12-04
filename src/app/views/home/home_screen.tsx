@@ -37,7 +37,8 @@ export default function HomeScreen({
           userIsGuest || !user.image_id ? "person-circle-outline" : user.image_id
         }
         rightAction={() => navigation.navigate("Profile")}
-      />
+        testID="top-bar"
+/>
 
       {/* Groups */}
       <ThemedScrollView style={styles.groupsContainer} horizontal>
@@ -98,7 +99,7 @@ export default function HomeScreen({
         rightIcon="trophy-outline"
         leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
-      />
+        />
     </ThemedView>
   );
 }

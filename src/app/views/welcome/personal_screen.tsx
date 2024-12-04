@@ -6,17 +6,18 @@ import { StyleSheet, Dimensions, Image } from "react-native";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeConceptScreen() {
+export default function WelcomeConceptScreen(){
   return (
-    <ThemedView style={styles.container}>
+      <ThemedView style={styles.container} testID="container">
       {/* Background shape */}
-      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
+      <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" testID="ovalShape" />
 
       {/* Screen content */}
       <ThemedText
         style={styles.title}
         colorType="backgroundPrimary"
         type="title"
+        
       >
         Building up memories{" "}
       </ThemedText>
@@ -31,8 +32,10 @@ export default function WelcomeConceptScreen() {
       <Image
         source={require("../../../assets/images/challenge1.png")}
         style={styles.image}
+        testID="challenge-image"
       />
     </ThemedView>
+
   );
 }
 

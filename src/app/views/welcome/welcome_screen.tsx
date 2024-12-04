@@ -33,40 +33,40 @@ export default function WelcomeScreens({
   return (
     <View style={styles.container}>
       <ScrollView
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-        onScroll={handleScroll}
-        testID="welcome-scrollview"
-      >
-        <WelcomeIntroScreen />
-        <WelcomeConceptScreen />
-        <WelcomePersonalScreen />
+  horizontal
+  pagingEnabled
+  showsHorizontalScrollIndicator={false}
+  style={styles.scrollView}
+  onScroll={handleScroll}
+  testID="welcome-scrollview"
+>
+  <WelcomeIntroScreen testID="welcome-intro-screen" />
+  <WelcomeConceptScreen testID="welcome-concept-screen" />
+  <WelcomePersonalScreen testID="welcome-personal-screen" />
+  <WelcomeFinalScreen
+    testID="welcome-final-screen"
+    setUser={setUser}
+    navigation={navigation}
+    firestoreCtrl={firestoreCtrl}
+  />
+</ScrollView>
 
-        <WelcomeFinalScreen
-          setUser={setUser}
-          navigation={navigation}
-          firestoreCtrl={firestoreCtrl}
-        />
-      </ScrollView>
+{activeIndex < 3 && (
+  <View style={styles.dotContainer} testID="welcome-dots-container">
+    {[0, 1, 2, 3].map((i) => (
+      <View
+        key={i}
+        style={[
+          styles.dot,
+          { borderColor: color },
+          activeIndex === i ? { backgroundColor: color } : styles.inactiveDot,
+        ]}
+        testID="welcome-dot"
+      />
+    ))}
+  </View>
+)}
 
-      {/* Render the dots, only if not on the last screen */}
-      {activeIndex < 3 && (
-        <View style={styles.dotContainer}>
-          {[0, 1, 2, 4].map((i) => (
-            <View
-              key={i}
-              style={[
-                [styles.dot, { borderColor: color }],
-                activeIndex === i
-                  ? { backgroundColor: color }
-                  : styles.inactiveDot,
-              ]}
-            />
-          ))}
-        </View>
-      )}
     </View>
   );
 }
