@@ -4,6 +4,7 @@ import {
   useCameraPermissions,
   CameraCapturedPicture,
   CameraPictureOptions,
+  FlashMode,
 } from "expo-camera";
 import { useState, useRef, useCallback, useMemo } from "react";
 import {
@@ -18,7 +19,6 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { FlashMode } from "expo-camera";
 const { width, height } = Dimensions.get("window");
 import {
   Gesture,

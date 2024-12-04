@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  screen,
   render,
   fireEvent,
   waitFor,
@@ -133,15 +132,13 @@ describe("MaximizeScreen", () => {
     fireEvent.press(sendButton);
   });
 
-  // it("display text if no comments are available", async () => {
-  //   mockFirestoreCtrl.getCommentsOf.mockResolvedValue([]);
+  it("display text if no comments are available", async () => {
+    const { findByText } = render(<MaximizeScreenTest />);
 
-  //   const { findByText } = render(<MaximizeScreenTest />);
-
-  //   await waitFor(() => {
-  //     expect(findByText("No comments available")).toBeTruthy();
-  //   });
-  // });
+    await waitFor(() => {
+      expect(findByText("No comments available")).toBeTruthy();
+    });
+  });
 
   it("displays comments", async () => {
     const { findByText } = render(<MaximizeScreenTest />);
@@ -176,13 +173,11 @@ describe("MaximizeScreen", () => {
     });
   });
 
-  // it("displays correctly when no likes are available", async () => {
-  //   mockFirestoreCtrl.getLikesOf.mockResolvedValue([]);
+  it("displays correctly when no likes are available", async () => {
+    const { getByText } = render(<MaximizeScreenTest />);
 
-  //   const { getByText } = render(<MaximizeScreenTest />);
-
-  //   await waitFor(() => {
-  //     expect(getByText("0 like")).toBeTruthy();
-  //   });
-  // });
+    await waitFor(() => {
+      expect(getByText("0 like")).toBeTruthy();
+    });
+  });
 });

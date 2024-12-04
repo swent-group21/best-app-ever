@@ -116,15 +116,13 @@ export default class FirestoreCtrl {
       const blob = await response.blob();
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
-      const storageRef = ref(getStorage(), "images/" + id_picture);
-      //console.log("StorageRef:", storageRef);
+      const storageRef = ref(getStorage(), "images/" + id_picture)
 
       await uploadBytes(storageRef, blob);
 
       return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
-      //console.log("Error uploading image: ", error);
       throw error;
     }
   }
@@ -143,12 +141,10 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture);
-      //console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       const downloadUrl = await getDownloadURL(storageRef);
-      //console.log("DownloadUrl", downloadUrl);
       return downloadUrl;
     } catch (error) {
       console.error("Error uploading image: ", error);

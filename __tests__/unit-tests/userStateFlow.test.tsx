@@ -6,11 +6,10 @@ import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/firebase/FirestoreCtrl";
 import SetUsername from "@/app/screens/auth/set_up_screen";
 import SignUp from "@/app/screens/auth/sign_up_screen";
 import ProfileScreen from "@/app/screens/home/profile_screen";
-import MaximizeScreen from "@/app/screens/home/maximize_screen";
 
 const Stack = createNativeStackNavigator();
 
@@ -76,7 +75,7 @@ jest.mock("expo-image-picker", () => ({
 }));
 
 // Mock user Sign-in Sign-up
-var mockUser = {
+let mockUser = {
   uid: "",
   email: "",
   name: "",
@@ -90,7 +89,7 @@ const mockSetUser = jest.fn((user) => {
 });
 
 // Mock User full
-var mockUserFull = {
+let mockUserFull = {
   uid: "123",
   email: "test@example.com",
   name: "TestUser",
@@ -104,7 +103,7 @@ const mockSetUserFull = jest.fn((user) => {
 });
 
 // Mock user consistency
-var mockUserConsistency = {
+let mockUserConsistency = {
   uid: "123",
   email: "test@example.com",
   name: "TestUser",
