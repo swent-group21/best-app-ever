@@ -19,6 +19,6 @@ export type RootStackParamList = {
   Profile: undefined;
   MapScreen: undefined;
   GroupScreen: {
-    group: DBGroup;
+    currentGroup: DBGroup;
   }
 };

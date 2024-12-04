@@ -17,6 +17,7 @@ import MaximizeScreen from "../app/views/home/maximize_screen";
 import CreateChallengeScreen from "../app/views/create/create_challenge";
 import ProfileScreen from "../app/views/home/profile_screen";
 import MapScreen from "../app/views/map/map_screen";
+import GroupScreen from "../app/views/group/GroupScreen";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();
@@ -157,6 +158,11 @@ export const Nav: React.FC<AppStackProps> = ({
           )}
         </Screen>
 
+        <Screen name="GroupScreen">
+          {(props: any) => (
+            <GroupScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
+          )}
+        </Screen>
         
       </Group>
     </Navigator>

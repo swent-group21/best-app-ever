@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
 export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, group: DBGroup) {
-  const userIsGuest = user.name === "Guest";
 
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
@@ -37,8 +36,14 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
     }
   }, [user.uid, firestoreCtrl]);
 
+
+  const groupName = group.name ?? "";
+  const groupChallengeTitle = group.challengeTitle ?? "";
+
   return {
     groupChallenges,
     otherGroups,
+    groupName,
+    groupChallengeTitle,
   };
 }
