@@ -1,4 +1,4 @@
-import { DBChallenge, DBUser } from "../firebase/FirestoreCtrl";
+import { DBChallenge, DBGroup } from "../firebase/FirestoreCtrl";
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -18,4 +18,7 @@ export type RootStackParamList = {
   };
   Profile: undefined;
   MapScreen: undefined;
+  GroupScreen: {
+    group: DBGroup;
+  }
 };

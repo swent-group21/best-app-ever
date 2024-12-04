@@ -1,6 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../app/models/types/RootStackParamList";
+import { RootStackParamList } from "@/app/models/types/RootStackParamList";
 import { DBUser } from "../app/models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "../app/models/firebase/FirestoreCtrl";
 
@@ -156,6 +156,8 @@ export const Nav: React.FC<AppStackProps> = ({
             <MapScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
           )}
         </Screen>
+
+        
       </Group>
     </Navigator>
   );

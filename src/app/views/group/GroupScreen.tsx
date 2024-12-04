@@ -1,47 +1,52 @@
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { Challenge } from "../../../components/home/Challenge";
-import { GroupIcon } from "../../../components/home/GroupIcon";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ChallengeDescription } from "../../../components/home/Challenge_Description";
-import { useHomeScreenViewModel } from "../../viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "../../models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
+import { TopBar } from "@/components/navigation/TopBar";
+import { Challenge } from "@/components/home/Challenge";
+import { GroupIcon } from "@/components/home/GroupIcon";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ChallengeDescription } from "@/components/home/Challenge_Description";
+import { useGroupScreenViewModel } from "@/app/viewmodels/group/GroupScreenViewModel";
+import { DBGroup, DBUser } from "@/app/models/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/app/models/firebase/FirestoreCtrl";
 
 
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({
+export default function GroupScreen({
   user,
+  group,
   navigation,
   firestoreCtrl,
 }: {
   user: DBUser;
+  group: DBGroup
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const { userIsGuest, challenges, groups, titleChallenge } = useHomeScreenViewModel(user, firestoreCtrl);
+  const { groupChallenges, 
+    otherGroups, 
+    groupTitleChallenge 
+} = useGroupScreenViewModel(user, firestoreCtrl, group);
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
       <TopBar
-        title="Strive"
+        title={group.name}
         leftIcon="people-outline"
         leftAction={() => navigation.navigate("Friends")}
         rightIcon={
-          userIsGuest || !user.image_id ? "person-circle-outline" : user.image_id
+          !user.image_id ? "person-circle-outline" : user.image_id
         }
         rightAction={() => navigation.navigate("Profile")}
       />
 
       {/* Groups */}
       <ThemedScrollView style={styles.groupsContainer} horizontal>
-        {groups.map((group, index) => (
+        {otherGroups.map((group, index) => (
           <GroupIcon
             groupDB={group}
             navigation={navigation}
@@ -70,14 +75,14 @@ export default function HomeScreen({
         colorType="transparent"
       >
         <ChallengeDescription
-          dBChallengeDescription={titleChallenge}
+          dBChallengeDescription={groupTitleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
           testID={`description-id`}
         />
-        {challenges.length === 0 ? (
+        {groupChallenges.length === 0 ? (
           <ThemedText>No challenge to display</ThemedText>
         ) : (
-          challenges.map((challenge, index) => (
+          groupChallenges.map((challenge, index) => (
             <Challenge
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}

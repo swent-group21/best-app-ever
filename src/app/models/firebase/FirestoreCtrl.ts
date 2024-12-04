@@ -49,11 +49,11 @@ export type DBComment = {
 };
 
 export type DBGroup = {
-  group_id: string;
-  group_name: string;
-  description?: string;
+  gid: string;
+  name: string;
+  challenge_id: string;
   members: string[];
-  creationDate?: Date;
+  updateDate: Date;
 };
 export type DBChallengeDescription = {
   title: string;
@@ -379,7 +379,7 @@ export default class FirestoreCtrl {
       const dbGroups: DBGroup[] = groupSnapshots.docs.map(
         (doc) =>
           ({
-            group_id: doc.id,
+            gid: doc.id,
             ...doc.data(),
           }) as DBGroup,
       );
@@ -429,6 +429,58 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
+
+
+  /**
+   * Retrieves the current challenge description from a group using its id
+   * 
+   * @param cid The ID of the group to get the challenge description for.
+   * @returns A promise that resolves to the challenge description.
+   */
+  async getChallengeByGroup(challenge_id: string): Promise<DBChallengeDescription> {
+    try {
+      const challengeRef = doc(firestore, "challenge_description", challenge_id);
+      const challengeDoc = await getDoc(challengeRef);
+
+      const userData = challengeDoc.data() as DBChallengeDescription;
+      return userData;
+    } catch (error) {
+      console.error("Error getting challenge by group: ", error);
+      throw error;
+    }
+  }
+
+
+
+  /**
+   * Retrieves all posts of a specific group.
+   * @param groupId The ID of the group to get posts for.
+   * @returns A promise that resolves to an array of posts.
+   */
+  async getAllPostsOfGroup(groupId: string): Promise<DBChallenge[]> {
+    try {
+      const postsRef = collection(firestore, "challenges");
+      const q = query(postsRef, where("group_id", "==", groupId));
+      const querySnapshot = await getDocs(q);
+      const posts = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          challenge_id: doc.id,
+        } as DBChallenge;
+      });
+      return posts;
+    } catch (error) {
+      console.error("Error getting posts: ", error);
+      throw error;
+    }
+  }
+
+
+
+
+
+
 
   /**
    * Add a new comment to a challenge.

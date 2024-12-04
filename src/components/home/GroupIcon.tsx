@@ -10,7 +10,7 @@ import React from "react";
 
 const { width, height } = Dimensions.get("window");
 
-export function Group({
+export function GroupIcon({
   groupDB,
   index,
   firestoreCtrl,
@@ -25,7 +25,7 @@ export function Group({
       <ThemedView style={styles.container} testID={testID}>
         <ThemedTextButton
           style={styles.heading}
-          onPress={() => {}}
+          onPress={() => {navigation.navigate("GroupScreen", {group: groupDB})}}
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"
