@@ -140,7 +140,9 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Continue as guest button
-    const continueAsGuestButton = await screen.getByTestId("continue-as-guest-button");
+    const continueAsGuestButton = await screen.getByTestId(
+      "continue-as-guest-button",
+    );
     fireEvent.press(continueAsGuestButton);
 
     // Wait for the function to be called

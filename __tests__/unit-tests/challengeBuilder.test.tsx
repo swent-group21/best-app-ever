@@ -31,7 +31,7 @@ describe("buildChallenge", () => {
 
   it("should throw an error if no challenge is found", async () => {
     mockFirestoreCtrl.getChallenge = jest.fn().mockResolvedValue(null);
-  
+
     try {
       await buildChallenge("invalidChallenge", mockFirestoreCtrl);
     } catch (error) {
@@ -45,44 +45,47 @@ describe("createChallenge", () => {
 
   it("should create a challenge and call newChallenge with the correct data", async () => {
     const mockUser = { uid: "user123" }; // Mock user data
-  
+
     // Mock FirestoreCtrl methods
     mockFirestoreCtrl.getUser = jest.fn().mockResolvedValue(mockUser);
     mockFirestoreCtrl.newChallenge = jest.fn();
-  
+
     // Mock location and challenge data
     const challengeData = {
       challenge_name: "Test Challenge",
       description: "Test Description",
       date: new Date(),
     };
-  
+
     // Call createChallenge with mock data
     await createChallenge(
       mockFirestoreCtrl,
       challengeData.challenge_name,
       challengeData.description,
       null,
-      challengeData.date
+      challengeData.date,
     );
-  
+
     // Verify FirestoreCtrl methods were called correctly
     expect(mockFirestoreCtrl.getUser).toHaveBeenCalled();
     expect(mockFirestoreCtrl.newChallenge).toHaveBeenCalledWith(
-        expect.objectContaining({
-            challenge_name: "Test Challenge",
-            description: "Test Description",
-            uid: "user123",
-            date: challengeData.date,
-            location: null,
-        }));
+      expect.objectContaining({
+        challenge_name: "Test Challenge",
+        description: "Test Description",
+        uid: "user123",
+        date: challengeData.date,
+        location: null,
+      }),
+    );
   });
 
   it("should log an error when Firestore operations fail", async () => {
-    mockFirestoreCtrl.getUser = jest.fn().mockRejectedValue(new Error("Firestore error"));
+    mockFirestoreCtrl.getUser = jest
+      .fn()
+      .mockRejectedValue(new Error("Firestore error"));
 
     await expect(
-      createChallenge(mockFirestoreCtrl, "Test", "Description", null)
+      createChallenge(mockFirestoreCtrl, "Test", "Description", null),
     ).resolves.toBeUndefined(); // Function should handle the error internally
   });
 });

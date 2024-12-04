@@ -116,7 +116,7 @@ export default class FirestoreCtrl {
       const blob = await response.blob();
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
-      const storageRef = ref(getStorage(), "images/" + id_picture)
+      const storageRef = ref(getStorage(), "images/" + id_picture);
 
       await uploadBytes(storageRef, blob);
 

@@ -1,9 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
-import {
-  render,
-  waitFor,
-} from "@testing-library/react-native";
+import { render, waitFor } from "@testing-library/react-native";
 import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
