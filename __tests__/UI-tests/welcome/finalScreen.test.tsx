@@ -114,12 +114,12 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Sign In button
-    const signInButton = await screen.getByTestId("sign-in-button");
+    const signInButton = await screen.findByTestId("sign-in-button");
     fireEvent.press(signInButton);
 
     // Wait for the navigation to complete
     await waitFor(() =>
-      expect(screen.getByTestId("sign-in-screen")).toBeDefined(),
+      expect(screen.findByTestId("sign-in-screen")).toBeDefined(),
     );
   });
 
@@ -127,12 +127,12 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Sign Up button
-    const signUpButton = await screen.getByTestId("sign-up-button");
+    const signUpButton = await screen.findByTestId("sign-up-button");
     fireEvent.press(signUpButton);
 
     // Wait for the navigation to complete
     await waitFor(() =>
-      expect(screen.getByTestId("sign-up-screen")).toBeDefined(),
+      expect(screen.findByTestId("sign-up-screen")).toBeDefined(),
     );
   });
 
@@ -140,7 +140,7 @@ describe("FinalScreen", () => {
     render(<FinalScreenTest />);
 
     // Press the Continue as guest button
-    const continueAsGuestButton = await screen.getByTestId(
+    const continueAsGuestButton = await screen.findByTestId(
       "continue-as-guest-button",
     );
     fireEvent.press(continueAsGuestButton);
