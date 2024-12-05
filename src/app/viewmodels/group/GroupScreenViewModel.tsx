@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
-export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, group: DBGroup) {
+export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, currentGroup: DBGroup) {
 
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
@@ -10,7 +10,7 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
     if (user.uid) {
       const fetchGroupChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getAllPostsOfGroup(group.gid);
+          const challengesData = await firestoreCtrl.getAllPostsOfGroup(currentGroup.gid ?? "");
           setGroupChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -25,8 +25,8 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
       const fetchGroups = async () => {
         try {
           const groupsData = (await firestoreCtrl.getGroupsByUserId(user.uid))
-            .filter((group) => group.gid !== group.gid)
-            .sort((a, b) => b.updateDate.getDate() - a.updateDate.getDate());
+            .filter((group) => (currentGroup.gid === currentGroup.gid && group.updateDate !== undefined))
+            .sort((a, b) => b.updateDate.toMillis() - a.updateDate.toMillis());
           setOtherGroups(groupsData);
         } catch (error) {
           console.error("Error fetching groups: ", error);
@@ -37,8 +37,8 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
   }, [user.uid, firestoreCtrl]);
 
 
-  const groupName = group.name ?? "";
-  const groupChallengeTitle = group.challengeTitle ?? "";
+  const groupName = currentGroup.name ?? "";
+  const groupChallengeTitle = currentGroup.challengeTitle ?? "";
 
   return {
     groupChallenges,

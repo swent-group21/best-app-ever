@@ -1,0 +1,33 @@
+import FirestoreCtrl, { DBGroup, DBUser } from "../firebase/FirestoreCtrl";
+import { Timestamp } from "firebase/firestore";
+
+/**
+ * Used to create a Group and store it in Firestore DB
+ */
+export const createGroup = async (
+    firestoreCtrl: FirestoreCtrl,
+    name: string,
+    challengeTitle: string,
+    members: string[],
+    updateDate: Timestamp,
+  ): Promise<void> => {
+    try {
+      // Prepare the challenge data for Firestore
+      const user: DBUser = await firestoreCtrl.getUser();
+      console.log("createGroup uid", user.uid);
+  
+      const newGroup: DBGroup = {
+        name: name,
+        challengeTitle: challengeTitle,
+        members: members,
+        updateDate: updateDate,
+      };
+  
+  
+      // Save the group to Firestore
+      await firestoreCtrl.newGroup(newGroup);
+    } catch (error) {
+      console.error("Error creating group: ", error);
+    }
+  };
+  

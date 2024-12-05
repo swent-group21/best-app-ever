@@ -49,11 +49,11 @@ export type DBComment = {
 };
 
 export type DBGroup = {
-  gid: string;
+  gid?: string;
   name: string;
   challengeTitle: string;
   members: string[];
-  updateDate: Date;
+  updateDate: Timestamp;
 };
 export type DBChallengeDescription = {
   title: string;
@@ -350,6 +350,9 @@ export default class FirestoreCtrl {
     }
   }
 
+
+
+  
   /**
    * Retrieves all groups assigned to a specific user.
    *
@@ -430,9 +433,6 @@ export default class FirestoreCtrl {
     }
   }
 
-
-
-
   /**
    * Retrieves all posts of a specific group.
    * @param groupId The ID of the group to get posts for.
@@ -453,6 +453,22 @@ export default class FirestoreCtrl {
       return posts;
     } catch (error) {
       console.error("Error getting posts: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create a group in firestore
+   */
+  async newGroup(groupData: DBGroup): Promise<void> {
+    try {
+      const docRef = await addDoc(
+        collection(firestore, "groups"),
+        groupData,
+      );
+      console.log("Challenge id: ", docRef.id);
+    } catch (error) {
+      console.error("Error writting challenge document: ", error);
       throw error;
     }
   }
