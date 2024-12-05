@@ -1,10 +1,10 @@
 import React from "react";
 import { render, act } from "@testing-library/react-native";
-import Timer from "@/src/components/home/timer";
-import NumberCard from "@/src/components/home/number_cards";
+import Timer from "../../src/components/home/timer";
+import NumberCard from "../../src/components/home/number_cards";
 
 // Mock the NumberCard component to isolate Timer logic
-jest.mock("@/components/home/number_cards", () => {
+jest.mock("../../src/components/home/number_cards", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return ({ number, testID }: { number: number; testID: string }) => (

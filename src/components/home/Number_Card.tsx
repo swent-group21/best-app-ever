@@ -9,7 +9,7 @@ const initialCardNumber = "00";
 const initNumber = 0;
 const slice = -2;
 
-export function NumberCard({
+export default function NumberCard({
   number = initNumber,
   testID,
 }: {
