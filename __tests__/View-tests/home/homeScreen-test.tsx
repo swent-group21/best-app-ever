@@ -1,246 +1,129 @@
-// import React from "react";
-// import { render, fireEvent } from "@testing-library/react-native";
-// import HomeScreen from "../../../src/app/views/home/home_screen";
-// import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
-
-// // error when no challenges
-// describe("HomeScreen UI Tests", () => {
-//   const mockNavigation = {
-//     navigate: jest.fn(),
-//   };
-
-//   const mockFirestoreCtrl = new FirestoreCtrl();
-//   const mockUser = {
-//     uid: "12345",
-//     name: "Test User",
-//     image_id: null,
-//     email: "test@gmail.com",
-//     createdAt: new Date(),
-//   };
-
-//   it("renders the home screen container", () => {
-//     const { getByTestId } = render(
-//       <HomeScreen
-//         user={mockUser}
-//         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl}
-//       />
-//     );
-
-//     const screen = getByTestId("home-screen");
-//     expect(screen).toBeTruthy();
-//   });
-
-//   it("renders the top bar with the title", () => {
-//     const { getByText } = render(
-//       <HomeScreen
-//         user={mockUser}
-//         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl}
-//       />
-//     );
-
-//     const title = getByText("Strive");
-//     expect(title).toBeTruthy();
-//   });
-
-//   it("renders the groups section", () => {
-//     const { getByTestId } = render(
-//       <HomeScreen
-//         user={mockUser}
-//         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl}
-//       />
-//     );
-
-//     const groupsContainer = getByTestId("create-group-button");
-//     expect(groupsContainer).toBeTruthy();
-//   });
-
-//   it("renders the challenges section", () => {
-//     const { getByTestId } = render(
-//       <HomeScreen
-//         user={mockUser}
-//         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl}
-//       />
-//     );
-
-//     const challengeDescription = getByTestId("description-id");
-//     expect(challengeDescription).toBeTruthy();
-//   });
-
-
-//   it("renders a message if no challenges are available", () => {
-//     const { getByText } = render(
-//       <HomeScreen
-//         user={mockUser}
-//         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl}
-//       />
-//     );
-
-//     const noChallengesMessage = getByText("No challenge to display");
-//     expect(noChallengesMessage).toBeTruthy();
-//   });
-// });
-
 import React from "react";
-import { Text } from "react-native";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  screen,
-} from "@testing-library/react-native";
-import HomeScreen from "@../../../src/app/views/home/home_screen";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl from "@../../../src/app/models/firebase/FirestoreCtrl";
-import {
-  DBChallenge,
-  DBGroup,
-  DBChallengeDescription,
-} from "@../../../src/app/models/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
+import { render, fireEvent } from "@testing-library/react-native";
+import HomeScreen from "../../../src/app/views/home/home_screen";
+import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
 
-const Stack = createNativeStackNavigator();
+// Mock du ViewModel
+jest.mock("../../../src/app/viewmodels/home/HomeScreenViewModel", () => ({
+  useHomeScreenViewModel: jest.fn(),
+}));
 
-const mockFirestoreCtrl = new FirestoreCtrl();
+jest.mock("../../../src/app/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => ({
+    getChallengeDescription: jest.fn().mockResolvedValue({
+      Title: "Mock Challenge",
+      Description: "Mock Description",
+      endDate: new Date(2024, 1, 1),
+    }),
+    getKChallenges: jest.fn().mockResolvedValue([
+      { uid: "1", challenge_name: "Challenge 1", description: "Description 1" },
+    ]),
+    getGroupsByUserId: jest.fn().mockResolvedValue([
+      { id: "1", name: "Group 1" },
+    ]),
+    getLikesOf: jest.fn().mockResolvedValue([]),
 
-// Mock data for challenges
-const mockChallenges: DBChallenge[] = [
-  {
-    challenge_id: "1",
-    challenge_name: "Challenge 1",
-    description: "Description 1",
-    uid: "12345",
-    date: new Timestamp( 0, 0),
-    location: null,
-  },
-  {
-    challenge_id: "2",
-    challenge_name: "Challenge 2",
-    description: "Description 2",
-    uid: "12345",
-    date: new Timestamp( 0, 0),
-    location: null,
-  },
-];
+  }));
+});
 
-const mockGroups: DBGroup[] = [
-  {
-    group_id: "1",
-    group_name: "Group 1",
-    description: "Description 1",
-    members: ["12345"],
-    creationDate: new Date(),
-  },
-  {
-    group_id: "2",
-    group_name: "Group 2",
-    description: "Description 2",
-    members: ["12345"],
-    creationDate: new Date(),
-  },
-];
 
-const mockChallengeDescription: DBChallengeDescription = {
-  title: "Challenge Title",
-  description: "Challenge Description",
-  endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-};
+describe("HomeScreen UI Tests", () => {
+  const mockNavigation = { navigate: jest.fn() };
+  const mockFirestoreCtrl = new FirestoreCtrl();
+  const mockUseHomeScreenViewModel = require("../../../src/app/viewmodels/home/HomeScreenViewModel")
+    .useHomeScreenViewModel;
 
-// Mock getChallengesByUserId method
-mockFirestoreCtrl.getChallengesByUserId = jest
-  .fn()
-  .mockResolvedValue(mockChallenges);
+  beforeEach(() => {
+    jest.clearAllMocks();
 
-mockFirestoreCtrl.getGroupsByUserId = jest.fn().mockResolvedValue(mockGroups);
+    // Mock les valeurs par défaut du ViewModel
+    mockUseHomeScreenViewModel.mockReturnValue({
+      userIsGuest: false,
+      challenges: [
+        { uid: "1", challenge_name: "Challenge 1", description: "Description 1", challenge_id: "1" },
+        { uid: "2", challenge_name: "Challenge 2", description: "Description 2", challenge_id: "2" },
+      ],
+      groups: [
+        { id: "1", name: "Group 1" },
+        { id: "2", name: "Group 2" },
+      ],
+      titleChallenge: {
+        title: "Current Challenge",
+        description: "Current Challenge Description",
+        endDate: new Date(2024, 1, 1),
+      },
+    });
+  });
 
-mockFirestoreCtrl.getChallengeDescription = jest
-  .fn()
-  .mockResolvedValue(mockChallengeDescription);
+  it("renders the HomeScreen with challenges and groups", () => {
+    const { getByText, getByTestId } = render(
+      <HomeScreen
+        user={{ name: "Test User", uid: "12345", email: "test@epfl.ch", createdAt: new Date(), image_id: null }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />
+    );
 
-//Mock User
-const mockUser = {
-  uid: "12345",
-  email: "test@example.com",
-  name: "Test User",
-  createdAt: new Date(),
-};
+    // Vérifie le titre de la barre supérieure
+    expect(getByText("Strive")).toBeTruthy();
 
-// Create a test component to wrap HomeScreen with navigation
-const HomeScreenTest = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{ headerShown: false }}
-        id = {undefined}
-      >
-        <Stack.Screen
-          name="Home"
-          initialParams={{ user: { uid: "12345" } }} // Add this line
-        >
-          {(props) => (
-            <HomeScreen
-              {...props}
-              user={mockUser}
-              firestoreCtrl={mockFirestoreCtrl}
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Camera">
-          {() => <Text testID="camera-screen">Camera Screen</Text>}
-        </Stack.Screen>
-        {/* Add other screens if necessary */}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+    // Vérifie si les groupes s'affichent
+    expect(getByText("Group 1")).toBeTruthy();
+    expect(getByText("Group 2")).toBeTruthy();
 
-describe("HomeScreen", () => {
-  it("renders default text", async () => {
-    const { getByText } = render(<HomeScreenTest />);
+    // Vérifie si les défis s'affichent
+    expect(getByTestId("challenge-id-0")).toBeTruthy();
+    expect(getByTestId("challenge-id-1")).toBeTruthy();
 
+    // Vérifie le défi actuel
+    expect(getByText("Current Challenge")).toBeTruthy();
+    expect(getByText("Current Challenge Description")).toBeTruthy();
+  });
+
+
+  it("renders 'No challenge to display' when no challenges are available", () => {
+    // Mock les valeurs retournées pour simuler l'absence de défis
+    mockUseHomeScreenViewModel.mockReturnValue({
+      userIsGuest: false,
+      challenges: [],
+      groups: [],
+      titleChallenge: {
+        title: "Current Challenge",
+        description: "Current Challenge Description",
+        endDate: new Date(2024, 1, 1),
+      },
+    });
+
+    const { getByText } = render(
+      <HomeScreen
+        user={{ name: "Test User", uid: "12345", email: "test@epfl.ch", createdAt: new Date() }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />
+    );
+
+    // Vérifie que le texte pour "aucun défi" est affiché
     expect(getByText("No challenge to display")).toBeTruthy();
   });
 
-  it("renders challenges fetched from Firestore", async () => {
-    const { findByTestId } = render(<HomeScreenTest />);
-
-    // Wait for the challenges to be fetched and rendered
-    await waitFor(() => {
-      expect(findByTestId("challenge-id-0")).toBeTruthy();
-      expect(findByTestId("challenge-id-1")).toBeTruthy();
+  it("renders correctly for a guest user", () => {
+    // Mock les valeurs pour un utilisateur invité
+    mockUseHomeScreenViewModel.mockReturnValue({
+      userIsGuest: true,
+      challenges: [],
+      groups: [],
+      titleChallenge: {
+        title: "Current Challenge",
+        description: "Current Challenge Description",
+        endDate: new Date(2024, 1, 1),
+      },
     });
-  });
 
-  it("renders description fetched from Firestore", async () => {
-    const { getByTestId } = render(<HomeScreenTest />);
+    const { getByText } = render(
+      <HomeScreen user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }} navigation={mockNavigation} firestoreCtrl={mockFirestoreCtrl} />
+    );
 
-    // Wait for the description to be fetched and rendered
-    await waitFor(() => {
-      expect(getByTestId("description-id")).toBeTruthy();
-    });
-  });
-
-  it("renders description fetched from Firestore", async () => {
-    const { getByTestId } = render(<HomeScreenTest />);
-
-    // Wait for the description to be fetched and rendered
-    await waitFor(() => {
-      expect(getByTestId("group-id-0")).toBeTruthy();
-      expect(getByTestId("group-id-1")).toBeTruthy();
-    });
-    expect(getByTestId("create-group-button")).toBeTruthy();
+    // Vérifie que les défis et groupes ne sont pas affichés
+    expect(getByText("No challenge to display")).toBeTruthy();
   });
 });
-
-describe("Home test", () => {
-  it("placeholder", async () => {
-    expect(true).toBe(true);
-  });
-});
-

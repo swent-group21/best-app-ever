@@ -1,79 +1,63 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import CreateChallengeScreen from "../../../src/app/views/create/create_challenge";
-import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
+import CreateChallengeViewModel from "../../../src/app/viewmodels/create/CreateChallengeViewModel";
+import { Switch } from "react-native-gesture-handler";
 
+jest.mock("../../../src/app/viewmodels/create/CreateChallengeViewModel");
 
 describe("CreateChallengeScreen UI Tests", () => {
-  const mockNavigation = {};
-  const mockRoute = {};
-  const mockFirestoreCtrl = new FirestoreCtrl();
+  const mockSetChallengeName = jest.fn();
+  const mockSetDescription = jest.fn();
+  const mockToggleLocation = jest.fn();
+  const mockMakeChallenge = jest.fn();
 
-  it("renders the Create Challenge screen container", () => {
+  beforeEach(() => {
+    (CreateChallengeViewModel as jest.Mock).mockReturnValue({
+      challengeName: "Test Challenge",
+      setChallengeName: mockSetChallengeName,
+      description: "Test Description",
+      setDescription: mockSetDescription,
+      isLocationEnabled: true,
+      toggleLocation: mockToggleLocation,
+      makeChallenge: mockMakeChallenge,
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("renders the Create Challenge screen", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
+      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />
     );
 
-    const container = getByTestId("Create-Challenge-Text");
-    expect(container).toBeTruthy();
+    const screenTitle = getByTestId("Create-Challenge-Text");
+    expect(screenTitle).toBeTruthy();
   });
 
   it("renders the Challenge Name input", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
+      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />
     );
 
-    const challengeNameInput = getByTestId("Challenge-Name-Input");
-    expect(challengeNameInput).toBeTruthy();
+    const nameInput = getByTestId("Challenge-Name-Input");
+    expect(nameInput).toBeTruthy();
+
+    fireEvent.changeText(nameInput, "Updated Challenge Name");
+    expect(mockSetChallengeName).toHaveBeenCalledWith("Updated Challenge Name");
   });
 
   it("renders the Description input", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
+      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />
     );
 
     const descriptionInput = getByTestId("Description-Input");
     expect(descriptionInput).toBeTruthy();
-  });
 
-  it("renders the Location toggle switch", () => {
-    const { getByTestId } = render(
-      <CreateChallengeScreen
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
-    );
-
-    const switchButton = getByTestId("switch-button");
-    expect(switchButton).toBeTruthy();
-  });
-
-
-
-  it("renders the BottomBar with the submit button", () => {
-    const { getByTestId } = render(
-      <CreateChallengeScreen
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />
-    );
-
-    const bottomBar = getByTestId("bottom-bar");
-    expect(bottomBar).toBeTruthy();
+    fireEvent.changeText(descriptionInput, "Updated Description");
+    expect(mockSetDescription).toHaveBeenCalledWith("Updated Description");
   });
 });

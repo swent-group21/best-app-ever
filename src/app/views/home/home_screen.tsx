@@ -12,7 +12,6 @@ import { ChallengeDescription } from "../../../components/home/Challenge_Descrip
 import { useHomeScreenViewModel } from "../../viewmodels/home/HomeScreenViewModel";
 import { DBUser } from "../../models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
-import { useCameraViewModel } from "@/app/viewmodels/camera/CameraViewModel";
 
 
 const { width, height } = Dimensions.get("window");
