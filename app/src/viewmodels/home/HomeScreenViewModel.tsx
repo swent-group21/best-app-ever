@@ -35,38 +35,42 @@ export function useHomeScreenViewModel(
         const formattedChallenge = {
           title: currentChallengeData.Title,
           description: currentChallengeData.Description,
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
           endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
         };
         setTitleChallenge(formattedChallenge);
+        return formattedChallenge.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
-    fetchCurrentChallenge();
-  }, [firestoreCtrl]);
 
-  // Fetch the challenges
-  useEffect(() => {
-    if (user.uid) {
-      const fetchChallenges = async () => {
-        try {
-          const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title)
-            .then((challenge: DBChallenge[]) => {
-            // Sort challenges by date
-            const sortedChallenges = challenge.sort(
-              (a, b) => (a.date && b.date ) ? (b.date.seconds - a.date.seconds) : 0,
-            );
-            setChallenges(sortedChallenges);
-        });
-        } catch (error) {
-          console.error("Error fetching challenges: ", error);
-        }
-      };
-      fetchChallenges();
+
+    const fetchChallenges = async (challengeTitle: string) => {
+      try {
+        await firestoreCtrl.getPostsByChallengeTitle(challengeTitle)
+          .then((challenge: DBChallenge[]) => {
+          // Sort challenges by date
+          const sortedChallenges = challenge.sort(
+            (a, b) => (a.date && b.date ) ? (b.date.seconds - a.date.seconds) : 0,
+          );
+          setChallenges(sortedChallenges);
+      });
+      } catch (error) {
+        console.error("Error fetching challenges: ", error);
+      }
     }
+      
+
+    fetchCurrentChallenge().then((challengeTitle) => {
+      console.log("Current challenge fetched : ", challengeTitle);
+      if (user.uid) fetchChallenges(challengeTitle);
+    });
+
   }, [user.uid, firestoreCtrl]);
 
-  // Fetch the groups
+
   useEffect(() => {
     if (user.uid) {
       const fetchGroups = async () => {

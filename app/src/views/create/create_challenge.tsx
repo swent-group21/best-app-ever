@@ -58,7 +58,7 @@ export default function CreateChallengeScreen({
             source={
               postImage
                 ? { uri: postImage }
-                : require("@/assets/images/no-image.svg")
+                : require("../../../assets/images/no-image.svg")
             }
             style={styles.image}
           />
@@ -125,12 +125,9 @@ const styles = StyleSheet.create({
     paddingTop: 27,
   },
   containerRow: {
-    width: "90%",
     backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "baseline",
-    padding: 15,
     paddingLeft: 25,
   },
   title: {

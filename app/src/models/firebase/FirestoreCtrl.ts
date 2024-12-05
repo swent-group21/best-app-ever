@@ -363,7 +363,6 @@ export default class FirestoreCtrl {
 
       const userData = userDoc.data() as DBUser;
 
-      console.log("userGroups [" + uid + "]", userData.groups);
       if (!userData.groups || userData.groups.length === 0) {
         return [];
       }
@@ -371,7 +370,7 @@ export default class FirestoreCtrl {
       // Retrieve all groups using the group IDs
       const groupsRef = collection(firestore, "groups");
 
-      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+      const q = query(groupsRef, where("name", "in", userData.groups));
 
       const groupSnapshots = await getDocs(q);
 
@@ -510,10 +509,8 @@ export default class FirestoreCtrl {
   ): Promise<DBChallenge[]> {
     try {
       const postsRef = collection(firestore, "challenges");
-      const q = query(
-        postsRef,
-        where("challenge_description", "==", challengeTitle),
-      );
+      const q = query(postsRef, where("challenge_description", "==", challengeTitle));
+
       const querySnapshot = await getDocs(q);
       const posts = querySnapshot.docs.map((doc) => {
         const data = doc.data();
