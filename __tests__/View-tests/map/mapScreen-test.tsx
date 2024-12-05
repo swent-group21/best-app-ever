@@ -1,8 +1,8 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import MapScreen from "../../../src/app/views/map/map_screen";
-import { useMapScreenViewModel } from "../../../src/app/viewmodels/map/MapScreenViewModel";
-import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+import MapScreen from "../../../temp/src/views/map/map_screen";
+import { useMapScreenViewModel } from "../../../temp/src/viewmodels/map/MapScreenViewModel";
+import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
 
 jest.mock("../../../src/app/viewmodels/map/MapScreenViewModel", () => ({
   useMapScreenViewModel: jest.fn(),

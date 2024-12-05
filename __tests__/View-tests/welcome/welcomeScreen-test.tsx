@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import WelcomeScreens from "../../../src/app/views/welcome/welcome_screen";
-import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+import WelcomeScreens from "../../../temp/src/views/welcome/welcome_screen";
+import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
 import { Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 

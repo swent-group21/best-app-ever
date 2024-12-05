@@ -1,12 +1,12 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import SetUsernameScreen from "../../../src/app/views/auth/set_up_screen";
-import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+import SetUsernameScreen from "../../../temp/src/views/auth/set_up_screen";
+import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
 
 // Mock de SetUsernameViewModel
 jest.mock("../../../src/app/viewmodels/auth/SetUsernameViewModel", () => jest.fn());
 
-import SetUsernameViewModel from "../../../src/app/viewmodels/auth/SetUsernameViewModel";
+import SetUsernameViewModel from "../../../temp/src/viewmodels/auth/SetUsernameViewModel";
 
 describe("SetUsernameScreen Tests", () => {
   const mockNavigation = { navigate: jest.fn(), goBack: jest.fn() };

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import SignUp from "../../../src/app/views/auth/sign_up_screen";
-import useSignUpViewModel from "../../../src/app/viewmodels/auth/SignUpViewModel";
+import SignUp from "../../../temp/src/views/auth/sign_up_screen";
+import useSignUpViewModel from "../../../temp/src/viewmodels/auth/SignUpViewModel";
 
 jest.mock("../../../src/app/viewmodels/auth/SignUpViewModel");
 

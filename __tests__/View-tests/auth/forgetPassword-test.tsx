@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import ForgotPasswordScreen from "../../../src/app/views/auth/forgot_password_screen";
-import ForgotPasswordViewModel from "../../../src/app/viewmodels/auth/ForgotPasswordViewModel";
+import ForgotPasswordScreen from "../../../temp/src/views/auth/forgot_password_screen";
+import ForgotPasswordViewModel from "../../../temp/src/viewmodels/auth/ForgotPasswordViewModel";
 
 // Mock du ViewModel
 jest.mock("../../../src/app/viewmodels/auth/ForgotPasswordViewModel", () => jest.fn());

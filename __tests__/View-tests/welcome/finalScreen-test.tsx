@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import WelcomeFinalScreen from "../../../src/app/views/welcome/final_screen";
-import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+import WelcomeFinalScreen from "../../../temp/src/views/welcome/final_screen";
+import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
 
 describe("WelcomeFinalScreen UI Tests", () => {
   const mockNavigation = {

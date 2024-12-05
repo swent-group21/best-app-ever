@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import HomeScreen from "../../../src/app/views/home/home_screen";
-import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+import HomeScreen from "../../../temp/src/views/home/home_screen";
+import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("../../../src/app/viewmodels/home/HomeScreenViewModel", () => ({
