@@ -22,6 +22,8 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
           created_at: new Date(),
         },
       ]),
+      updateLikesOf: jest.fn(),
+      addComment: jest.fn().mockResolvedValue(true),
     };
   });
 });
@@ -103,10 +105,8 @@ describe("MaximizeScreen", () => {
   it("allows liking the image", async () => {
     const { findByTestId } = render(<MaximizeScreenTest />);
 
-    // Wait for the component to finish rendering
-    await waitFor(() => findByTestId("like-button"));
-
-    const likeButton = findByTestId("like-button");
+    // Find the like button
+    const likeButton = await findByTestId("like-button");
 
     // Press the like button
     fireEvent.press(likeButton);
@@ -115,17 +115,21 @@ describe("MaximizeScreen", () => {
   it("allows commenting on the image", async () => {
     const { findByTestId } = render(<MaximizeScreenTest />);
 
-    // Wait for the component to finish rendering
-    await waitFor(() => findByTestId("comment-input"));
+    // Find the comment input field
+    const commentInput = await findByTestId("comment-input");
 
-    const commentInput = findByTestId("comment-input");
-    const sendButton = findByTestId("send-button");
+    // Find the send button
+    const sendButton = await findByTestId("send-button");
 
     // Type a comment in the input field
     fireEvent.changeText(commentInput, "This is a test comment");
 
     // Press the send button
     fireEvent.press(sendButton);
+
+    await waitFor(() => {
+      expect(mockFirestoreCtrl.addComment).toHaveBeenCalled();
+    });
   });
 
   it("display text if no comments are available", async () => {
