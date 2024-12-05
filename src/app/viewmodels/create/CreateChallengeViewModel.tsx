@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createChallenge } from "../../models/types/ChallengeBuilder";
+import { DBGroup } from "../../models/firebase/FirestoreCtrl";
 
 export default function CreateChallengeViewModel({
   firestoreCtrl,
@@ -51,7 +52,12 @@ export default function CreateChallengeViewModel({
         date,
         imageId,
       );
-      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+      if (group_id == "" || group_id == "home") {
+        navigation.navigate("Home");
+      } else {
+        const group: DBGroup = firestoreCtrl.getGroup(group_id);
+        navigation.navigate("GroupScreen", { currentGroup: group });
+      }
     } catch (error) {
       console.error("Unable to create challenge", error);
       return error;

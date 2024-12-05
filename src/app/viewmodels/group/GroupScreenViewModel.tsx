@@ -35,7 +35,7 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
       };
       fetchGroups();
     }
-  }, [user.uid, firestoreCtrl]);
+  }, [user.uid, firestoreCtrl, currentGroup]);
 
 
   const groupName = currentGroup.name ?? "";

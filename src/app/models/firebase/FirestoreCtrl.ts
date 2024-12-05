@@ -513,6 +513,26 @@ export default class FirestoreCtrl {
     }
   }
 
+  /**
+   * Get a group from firestore
+   * @param gid The ID of the group to get.
+   * @returns A promise that resolves to the group data.
+   */
+  async getGroup(gid: string): Promise<DBGroup> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const docSnap = await getDoc(groupRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as DBGroup;
+      } else {
+        throw new Error("Group not found.");
+      }
+    } catch (error) {
+      console.log("Error getting Group: ", error);
+      throw error;
+    }
+  }
+
 
 
 

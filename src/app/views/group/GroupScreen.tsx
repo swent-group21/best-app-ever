@@ -52,7 +52,7 @@ export default function GroupScreen({
             <ThemedView style={styles.HomeContainer} testID="create-group-button">
               <ThemedTextButton
                   style={styles.HomeButton}
-                  onPress={() => navigation.reset({ index: 0, routes: [{ name: "Home" }] })}
+                  onPress={() => navigation.navigate("Home")}
                   text="Home"
                   textStyle={styles.HomeText}
                   textColorType="textOverLight"
