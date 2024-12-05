@@ -33,7 +33,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
     async function getCurrentLocation() {
       let { status } = await requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        //console.log("Permission to access location was denied");
         setIsEnabled(false);
         return;
       }

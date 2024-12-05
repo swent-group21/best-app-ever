@@ -1,7 +1,6 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
 import ProfileScreen from "@/app/screens/home/profile_screen";
-import { fireEvent, screen, act } from "@testing-library/react-native";
+import { fireEvent, screen, act, render } from "@testing-library/react-native";
 import FirestoreCtrl, { DBUser } from "@/firebase/FirestoreCtrl";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

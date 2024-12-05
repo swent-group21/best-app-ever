@@ -317,9 +317,7 @@ describe("signUpWithEmail", () => {
   it("should handle errors when creating a user in Firestore", async () => {
     // Mock alert and console.error
     jest.spyOn(global, "alert").mockImplementation(() => {});
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
 
     // Mock Firebase Auth response
     (createUserWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
@@ -358,9 +356,7 @@ describe("signUpWithEmail", () => {
 
   it("should handle errors when creating a user in Firebase Auth", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
 
     // Mock Firebase Auth failure
     (createUserWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
@@ -466,9 +462,7 @@ describe("signInAsGuest", () => {
 
   it("should handle guest sign-in failure", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
 
     // Mock Firebase sign-in failure
     (signInAnonymously as jest.Mock).mockRejectedValueOnce(

@@ -2,9 +2,7 @@ import React from "react";
 import { ThemedView } from "../theme/ThemedView";
 import { ThemedText } from "../theme/ThemedText";
 import Timer from "./timer";
-import { ViewStyle } from "react-native";
-
-import { Dimensions } from "react-native";
+import { ViewStyle, Dimensions } from "react-native";
 import { DBChallengeDescription } from "@/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");

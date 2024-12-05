@@ -9,7 +9,6 @@ import FirestoreCtrl, {
   DBGroup,
   DBChallengeDescription,
 } from "@/firebase/FirestoreCtrl";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Stack = createNativeStackNavigator();
 

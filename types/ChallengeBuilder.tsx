@@ -18,7 +18,6 @@ export const buildChallenge = async (
     }
     // Fetch additional required data like user's name
     await firestoreCtrl.getName(challenge.uid);
-    //const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
 
     const challengeData: DBChallenge = {
       challenge_name: challenge.challenge_name,
@@ -49,7 +48,6 @@ export const createChallenge = async (
   try {
     // Prepare the challenge data for Firestore
     const user: DBUser = await firestoreCtrl.getUser();
-    //console.log("createChallenge uid", user.uid);
 
     // Convert the location object to a Firestore GeoPoint
     let locationFirebase =

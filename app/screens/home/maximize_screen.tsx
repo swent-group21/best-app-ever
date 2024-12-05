@@ -67,8 +67,6 @@ export default function MaximizeScreen({
         setLikeList(likes);
         setIsLiked(likes.includes(user.uid));
       });
-
-    //console.log("-> Maximized challenge: ", { challenge });
   }, [challenge, firestoreCtrl]);
 
   // @ts-ignore - date is not of the correct type
@@ -229,7 +227,6 @@ export default function MaximizeScreen({
                   .addComment(newComment)
                   .then(() => {
                     setCommentList([...commentList, newComment]);
-                    //console.log("Comment added");
                   })
                   .catch((error) =>
                     console.error("Error adding comment: ", error),

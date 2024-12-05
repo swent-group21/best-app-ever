@@ -151,14 +151,15 @@ describe("SetUsernameScreen", () => {
   it("should call FirestoreCtrl methods when uploading profile", async () => {
     mockFirestoreCtrl.setName = jest.fn().mockResolvedValueOnce(null);
     mockFirestoreCtrl.setProfilePicture = jest.fn().mockResolvedValueOnce(null);
-    (mockFirestoreCtrl.getChallengeDescription = jest
+    mockFirestoreCtrl.getChallengeDescription = jest
       .fn()
       .mockResolvedValueOnce({
         title: "Challenge Title",
         description: "Challenge Description",
         endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-      })),
-      render(<SetUsernameTest />);
+      });
+
+    render(<SetUsernameTest />);
     const usernameInput = screen.getByTestId("usernameInput");
     const bottomBarIcon = screen.getByTestId("bottom-right-icon-arrow-forward");
 
@@ -178,14 +179,15 @@ describe("SetUsernameScreen", () => {
   it("should navigate to Home after successful upload", async () => {
     mockFirestoreCtrl.setName = jest.fn().mockResolvedValueOnce(null);
     mockFirestoreCtrl.setProfilePicture = jest.fn().mockResolvedValueOnce(null);
-    (mockFirestoreCtrl.getChallengeDescription = jest
+    mockFirestoreCtrl.getChallengeDescription = jest
       .fn()
       .mockResolvedValueOnce({
         title: "Challenge Title",
         description: "Challenge Description",
         endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-      })),
-      render(<SetUsernameTest />);
+      });
+
+    render(<SetUsernameTest />);
 
     // Simulate user interactions
     fireEvent.changeText(screen.getByTestId("usernameInput"), "TestUser2");

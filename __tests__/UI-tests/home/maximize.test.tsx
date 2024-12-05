@@ -9,7 +9,6 @@ import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
-import { Challenge } from "@/components/home/Challenge";
 
 jest.mock("@/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {

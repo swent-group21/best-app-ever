@@ -80,7 +80,6 @@ export default function HomeScreen({
       const fetchGroups = async () => {
         try {
           const groupsData = await firestoreCtrl.getGroupsByUserId(user.uid);
-          //console.log("Groups [" + user.uid + "]", groupsData);
           setGroups(groupsData);
         } catch (error) {
           console.error("Error fetching groups: ", error);
