@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, Dimensions, Switch } from "react-native";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { Colors } from "@/constants/Colors";
-import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
+import { StyleSheet, Dimensions, Switch, Image } from "react-native";
+import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
+import { ThemedText } from "../../../components/theme/ThemedText";
+import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
+import { BottomBar } from "../../../components/navigation/BottomBar";
+import { ThemedView } from "../../../components/theme/ThemedView";
+import {Colors} from "../../../constants/Colors";
+import CreateChallengeViewModel from "../../viewmodels/create/CreateChallengeViewModel";
 
 const { width, height } = Dimensions.get("window");
 
@@ -23,10 +23,9 @@ export default function CreateChallengeScreen({
   firestoreCtrl,
 }: any) {
   const {
-    challengeName,
-    setChallengeName,
-    description,
-    setDescription,
+    caption,
+    setCaption,
+    postImage,
     isLocationEnabled,
     toggleLocation,
     makeChallenge,
@@ -44,29 +43,37 @@ export default function CreateChallengeScreen({
         Create a New Challenge
       </ThemedText>
 
-      {/* Form */}
       <ThemedScrollView
         style={styles.containerCol}
         automaticallyAdjustKeyboardInsets={true}
+        colorType="transparent"
+        //contentContainerStyle={styles.contentContainer}
       >
-        <ThemedTextInput
-          style={styles.input}
-          placeholder="Challenge Name"
-          onChangeText={setChallengeName}
-          value={challengeName}
-          viewWidth="90%"
-          title="Challenge Name"
-          testID="Challenge-Name-Input"
-        />
-        <ThemedTextInput
-          style={styles.input}
-          placeholder="Description"
-          onChangeText={setDescription}
-          value={description}
-          viewWidth="90%"
-          title="Description"
-          testID="Description-Input"
-        />
+        <ThemedView
+          style={styles.imageContainer}
+          colorType="transparent"
+          testID="challenge-image"
+        >
+          <Image
+            source={
+              postImage
+                ? { uri: postImage }
+                : require("@/assets/images/no-image.svg")
+            }
+            style={styles.image}
+          />
+        </ThemedView>
+
+        <ThemedView style={styles.inputContainer}>
+          <ThemedTextInput
+            style={styles.input}
+            placeholder="Caption"
+            onChangeText={(text) => setCaption(text)}
+            viewWidth={"90%"}
+            title="Caption"
+            testID="Caption-Input"
+          />
+        </ThemedView>
 
         {/* Location toggle */}
         <ThemedView style={styles.containerRow}>
@@ -115,6 +122,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "transparent",
     gap: height * 0.027,
+    paddingTop: 27,
   },
   containerRow: {
     width: "90%",
@@ -123,13 +131,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "baseline",
     padding: 15,
+    paddingLeft: 25,
   },
   title: {
-    flex: 1,
+    flex: 0.45,
     width: "85%",
     alignSelf: "center",
     textAlign: "left",
-    textAlignVertical: "center",
+    textAlignVertical: "bottom",
   },
   input: {
     alignSelf: "center",
@@ -138,15 +147,37 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 16,
   },
+  inputContainer: {
+    width: "95%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "baseline",
+    paddingTop: 13,
+  },
   switch: {
     alignSelf: "flex-start",
-    width: "15%",
+    width: "10%",
     borderWidth: 2,
     borderRadius: 15,
   },
   switchText: {
     width: "90%",
-    padding: 15,
+    paddingLeft: 15,
     alignSelf: "center",
+  },
+
+  image: {
+    width: width * 0.9,
+    height: height * 0.4,
+    borderRadius: 15,
+  },
+
+  imageContainer: {
+    height: height * 0.4,
+    width: width * 0.9,
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "white",
+    backgroundColor: "transparent",
   },
 });
