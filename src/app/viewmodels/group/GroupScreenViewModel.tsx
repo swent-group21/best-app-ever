@@ -5,12 +5,13 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
 
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
+  const groupId = currentGroup.gid ?? "";
 
   useEffect(() => {
     if (user.uid) {
       const fetchGroupChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getAllPostsOfGroup(currentGroup.gid ?? "");
+          const challengesData = await firestoreCtrl.getAllPostsOfGroup(groupId);
           setGroupChallenges(challengesData);
         } catch (error) {
           console.error("Error fetching challenges: ", error);
@@ -25,7 +26,7 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
       const fetchGroups = async () => {
         try {
           const groupsData = (await firestoreCtrl.getGroupsByUserId(user.uid))
-            .filter((group) => (currentGroup.gid === currentGroup.gid && group.updateDate !== undefined))
+            .filter((group) => (groupId === group.gid && group.updateDate !== undefined))
             .sort((a, b) => b.updateDate.toMillis() - a.updateDate.toMillis());
           setOtherGroups(groupsData);
         } catch (error) {
@@ -45,5 +46,6 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
     otherGroups,
     groupName,
     groupChallengeTitle,
+    groupId,
   };
 }

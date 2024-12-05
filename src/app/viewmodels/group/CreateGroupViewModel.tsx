@@ -30,6 +30,7 @@ export default function CreateChallengeViewModel({
         creationDate,
       );
 
+      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
     } catch (error) {
       console.error("Unable to create challenge", error);
       return error;

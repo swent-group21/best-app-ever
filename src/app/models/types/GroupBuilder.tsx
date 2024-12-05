@@ -26,6 +26,7 @@ export const createGroup = async (
   
       // Save the group to Firestore
       await firestoreCtrl.newGroup(newGroup);
+      await firestoreCtrl.addGroupToMemberGroups(user.uid, newGroup.name);
     } catch (error) {
       console.error("Error creating group: ", error);
     }

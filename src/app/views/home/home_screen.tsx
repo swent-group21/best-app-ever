@@ -97,7 +97,7 @@ export default function HomeScreen({
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
         leftAction={() => navigation.navigate("MapScreen")}
-        centerAction={() => navigation.navigate("Camera")}
+        centerAction={() => navigation.navigate("Camera", { group_id: "main" })}
       />
     </ThemedView>
   );

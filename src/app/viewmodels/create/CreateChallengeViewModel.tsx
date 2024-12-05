@@ -18,6 +18,7 @@ export default function CreateChallengeViewModel({
   const [isLocationEnabled, setIsLocationEnabled] = useState(true);
 
   const imageId = route.params?.image_id;
+  const group_id = route.params?.group_id;
 
   // Toggle location switch
   const toggleLocation = () => setIsLocationEnabled((prev) => !prev);
@@ -46,8 +47,9 @@ export default function CreateChallengeViewModel({
         challengeName,
         description,
         isLocationEnabled ? location : null,
+        group_id,
         date,
-        imageId
+        imageId,
       );
       navigation.reset({ index: 0, routes: [{ name: "Home" }] });
     } catch (error) {

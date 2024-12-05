@@ -8,13 +8,16 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
   SetUser: undefined;
   Home: undefined;
-  Camera: undefined;
+  Camera: {
+    group_id: string;
+  };
   SetUsername: undefined;
   Maximize: {
     challenge: DBChallenge;
   };
   CreateChallenge: {
     picture_id: string;
+    group_id: string;
   };
   Profile: undefined;
   MapScreen: undefined;

@@ -14,7 +14,10 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
-export default function Camera({ navigation, firestoreCtrl }: any) {
+export default function Camera({ navigation, firestoreCtrl, route }: any) {
+
+  const group_id = route.params?.group_id;
+
   const {
     facing,
     permission,
@@ -30,7 +33,7 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
     takePicture,
     imageUrlGen,
     setIsCameraEnabled,
-  } = useCameraViewModel(firestoreCtrl, navigation);
+  } = useCameraViewModel(firestoreCtrl, navigation, group_id);
 
   if (!permission) {
     return <View />;

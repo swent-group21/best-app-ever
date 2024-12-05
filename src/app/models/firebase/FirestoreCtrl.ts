@@ -39,6 +39,7 @@ export type DBChallenge = {
   date?: Timestamp;
   likes?: string[]; // User IDs
   location?: GeoPoint | null;
+  group_id?: string;
 };
 
 export type DBComment = {
@@ -374,7 +375,7 @@ export default class FirestoreCtrl {
       // Retrieve all groups using the group IDs
       const groupsRef = collection(firestore, "groups");
 
-      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+      const q = query(groupsRef, where("name", "in", userData.groups));
 
       const groupSnapshots = await getDocs(q);
 
@@ -459,6 +460,7 @@ export default class FirestoreCtrl {
 
   /**
    * Create a group in firestore
+   * @param groupData The group data to add.
    */
   async newGroup(groupData: DBGroup): Promise<void> {
     try {
@@ -469,6 +471,44 @@ export default class FirestoreCtrl {
       console.log("Challenge id: ", docRef.id);
     } catch (error) {
       console.error("Error writting challenge document: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update a group in firestore with last post date
+   * @param gid The ID of the group to update.
+   * @param updateTime The time of the last post.
+   */
+  async updateGroup(gid: string, updateTime: Timestamp): Promise<void> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const docSnap = await getDoc(groupRef);
+      const groupData = docSnap.data() as DBGroup;
+      
+      groupData.updateDate = updateTime;
+      groupData.gid = gid;
+
+      await setDoc(doc(firestore, "users", gid), groupData);
+    } catch (error) {
+      console.error("Error updating group: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update a group in firestore with last post date
+   * @param gid The ID of the group to update.
+   * @param updateTime The time of the last post.
+   */
+  async addGroupToMemberGroups(uid:string, group_name: string): Promise<void> {
+    try {
+      const user = await this.getUser(uid);
+      user.groups?.push(group_name);
+      await this.createUser(uid, user);
+
+    } catch (error) {
+      console.error("Error setting name: ", error);
       throw error;
     }
   }

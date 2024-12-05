@@ -32,6 +32,7 @@ export default function GroupScreen({
     otherGroups,
     groupName,
     groupChallengeTitle,
+    groupId,
 } = useGroupScreenViewModel(user, firestoreCtrl, group);
 
   return (
@@ -106,7 +107,7 @@ export default function GroupScreen({
             centerIcon="camera-outline"
             rightIcon="trophy-outline"
             leftAction={() => navigation.navigate("MapScreen")}
-            centerAction={() => navigation.navigate("Camera")}
+            centerAction={() => navigation.navigate("Camera", { group_id: {groupId} })}
         />
     </ThemedView>
   );

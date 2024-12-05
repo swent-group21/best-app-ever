@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 import { Camera } from "react-native-maps";
 import { CameraView } from "expo-camera";
 
-export function useCameraViewModel(firestoreCtrl: any, navigation: any) {
+export function useCameraViewModel(firestoreCtrl: any, navigation: any, group_id: string) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const camera = useRef<CameraView>(null);
@@ -65,7 +65,7 @@ export function useCameraViewModel(firestoreCtrl: any, navigation: any) {
 
   const imageUrlGen = async () => {
     const img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
-    navigation.navigate("CreateChallenge", { image_id: img_id });
+    navigation.navigate("CreateChallenge", { image_id: img_id, group_id: group_id });
   };
 
   return {
