@@ -27,7 +27,6 @@ export default function SetUsername({
   const [username, setUsername] = React.useState("");
   const [image, setImage] = React.useState<string | null>(null);
   const pickImage = async () => {
-    console.log("Loading image");
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,

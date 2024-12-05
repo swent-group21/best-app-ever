@@ -18,6 +18,11 @@ const Stack = createNativeStackNavigator();
 jest.mock("@/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
+      getChallengeDescription: jest.fn().mockResolvedValueOnce({
+        title: "Challenge Title",
+        description: "Challenge Description",
+        endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+      }),
       // Add any other methods as needed
     };
   });
@@ -78,6 +83,7 @@ const SetUsernameTest = () => {
 
 describe("SetUsernameScreen", () => {
   beforeEach(() => {
+    jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();
   });
 
@@ -145,6 +151,11 @@ describe("SetUsernameScreen", () => {
   it("should call FirestoreCtrl methods when uploading profile", async () => {
     mockFirestoreCtrl.setName = jest.fn().mockResolvedValueOnce(null);
     mockFirestoreCtrl.setProfilePicture = jest.fn().mockResolvedValueOnce(null);
+    mockFirestoreCtrl.getChallengeDescription = jest.fn().mockResolvedValueOnce({
+      title: "Challenge Title",
+      description: "Challenge Description",
+      endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+    }),
 
     render(<SetUsernameTest />);
     const usernameInput = screen.getByTestId("usernameInput");
@@ -166,6 +177,11 @@ describe("SetUsernameScreen", () => {
   it("should navigate to Home after successful upload", async () => {
     mockFirestoreCtrl.setName = jest.fn().mockResolvedValueOnce(null);
     mockFirestoreCtrl.setProfilePicture = jest.fn().mockResolvedValueOnce(null);
+    mockFirestoreCtrl.getChallengeDescription = jest.fn().mockResolvedValueOnce({
+      title: "Challenge Title",
+      description: "Challenge Description",
+      endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+    }),
 
     render(<SetUsernameTest />);
 

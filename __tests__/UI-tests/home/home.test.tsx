@@ -123,6 +123,7 @@ const HomeScreenTest = () => {
 describe("HomeScreen", () => {
   // Reset mock data before each test
   beforeEach(() => {
+    jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();
   });
 
