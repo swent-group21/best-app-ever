@@ -95,6 +95,7 @@ export default function CreateChallengeViewModel({
         firestoreCtrl,
         caption,
         isLocationEnabled ? location : null,
+        descriptionTitle.title ?? "",
         date,
         postImage
       );

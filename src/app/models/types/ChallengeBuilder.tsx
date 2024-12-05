@@ -3,45 +3,13 @@ import { GeoPoint, Timestamp } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 /**
- * Used to build an already created Challenge from Firestore DB
- */
-export const buildChallenge = async (
-  challengeId: string,
-  firestoreCtrl: FirestoreCtrl,
-): Promise<DBChallenge> => {
-  try {
-    // Fetch the challenge data from Firestore
-    const challenge = await firestoreCtrl.getChallenge(challengeId);
-
-    if (!challenge) {
-      throw "Error: no challenge found when buildChallenge";
-    }
-    // Fetch additional required data like user's name
-    await firestoreCtrl.getName(challenge.uid);
-    //const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
-
-    const challengeData: DBChallenge = {
-      challenge_name: challenge.challenge_name,
-      description: challenge.description,
-      uid: challenge.uid,
-      date: challenge.date,
-      location: challenge.location,
-    };
-
-    return challengeData;
-  } catch (error) {
-    throw error;
-  }
-};
-
-/**
  * Used to create a Challenge and store it in Firestore DB
  */
 export const createChallenge = async (
   firestoreCtrl: FirestoreCtrl,
-  challenge_name: string,
-  description: string,
+  caption: string,
   location: LocationObject | null,
+  challenge_description: string,
   date?: Timestamp,
   image_id?: string,
   likes?: string[],
@@ -62,18 +30,14 @@ export const createChallenge = async (
         : new GeoPoint(location.coords.latitude, location.coords.longitude);
 
     const newChallenge: DBChallenge = {
-      challenge_name: challenge_name,
-      description: description || "",
+      caption: caption || "",
       uid: user.uid,
       image_id: image_id,
       likes: likes || [],
       location: locationFirebase,
+      challenge_description: challenge_description,
+      date: date,
     };
-
-    if (image_id) {
-      const image_url = await firestoreCtrl.getImageUrl(image_id);
-      newChallenge.image_id = image_url;
-    }
 
     if (date) {
       newChallenge.date = date;
