@@ -33,10 +33,9 @@ export default function SignInScreen({
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
-      testID="sign-in-screen"
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ThemedView style={styles.signInScreen}>
+        <ThemedView style={styles.signInScreen} testID="sign-in-screen">
           {/* Background shape */}
           <ThemedView
             style={styles.ovalShapeTwo}

@@ -118,9 +118,9 @@ describe("FinalScreen", () => {
     fireEvent.press(signInButton);
 
     // Wait for the navigation to complete
-    await waitFor(() =>
-      expect(screen.findByTestId("sign-in-screen")).toBeDefined(),
-    );
+    await waitFor(() => {
+      expect(screen.queryByTestId("sign-in-screen")).toBeTruthy();
+    });
   });
 
   it("should navigate to SignUp screen when Sign Up button is pressed", async () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react-native";
 import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -89,37 +89,43 @@ const MaximizeScreenTest = () => {
 
 describe("MaximizeScreen", () => {
   it("renders correctly", async () => {
-    const { findByText, findByTestId } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
-    await waitFor(() => {
-      expect(findByText("Description 1")).toBeTruthy();
-      expect(findByText("Test User")).toBeTruthy();
-      expect(findByTestId("challenge-image")).toBeTruthy();
-      expect(findByTestId("like-button")).toBeTruthy();
-      expect(findByTestId("comment-input")).toBeTruthy();
-      expect(findByTestId("send-button")).toBeTruthy();
-      expect(findByTestId("comments-section")).toBeTruthy();
-    });
+    const description = await screen.findByText("Description 1");
+    const user = await screen.findByText("Test User");
+    const challengeImage = await screen.findByTestId("challenge-image");
+    const likeButton = await screen.findByTestId("like-button");
+    const commentInput = await screen.findByTestId("comment-input");
+    const sendButton = await screen.findByTestId("send-button");
+    const commentsSection = await screen.findByTestId("comments-section");
+
+    expect(description).toBeTruthy();
+    expect(user).toBeTruthy();
+    expect(challengeImage).toBeTruthy();
+    expect(likeButton).toBeTruthy();
+    expect(commentInput).toBeTruthy();
+    expect(sendButton).toBeTruthy();
+    expect(commentsSection).toBeTruthy();
   });
 
   it("allows liking the image", async () => {
-    const { findByTestId } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
     // Find the like button
-    const likeButton = await findByTestId("like-button");
+    const likeButton = await screen.findByTestId("like-button");
 
     // Press the like button
     fireEvent.press(likeButton);
   });
 
   it("allows commenting on the image", async () => {
-    const { findByTestId } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
     // Find the comment input field
-    const commentInput = await findByTestId("comment-input");
+    const commentInput = await screen.findByTestId("comment-input");
 
     // Find the send button
-    const sendButton = await findByTestId("send-button");
+    const sendButton = await screen.findByTestId("send-button");
 
     // Type a comment in the input field
     fireEvent.changeText(commentInput, "This is a test comment");
@@ -133,51 +139,61 @@ describe("MaximizeScreen", () => {
   });
 
   it("display text if no comments are available", async () => {
-    const { findByText } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
     await waitFor(() => {
-      expect(findByText("No comments available")).toBeTruthy();
+      expect(screen.findByText("No comments available")).toBeTruthy();
     });
   });
 
   it("displays comments", async () => {
-    const { findByText } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
-    await waitFor(() => {
-      expect(findByText("This is a test comment")).toBeTruthy();
-    });
+    //Add a comment
+    // Find the comment input field
+    const commentInput = await screen.findByTestId("comment-input");
+
+    // Find the send button
+    const sendButton = await screen.findByTestId("send-button");
+
+    // Type a comment in the input field
+    fireEvent.changeText(commentInput, "This is a test comment");
+
+    // Press the send button
+    fireEvent.press(sendButton);
+
+    const comment = await screen.findByText("This is a test comment");
+    expect(comment).toBeTruthy();
   });
 
   // Functions used in maximize_screen.tsx should be tested here
   it("fetches user data", async () => {
-    const { getByText } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
     await waitFor(() => {
-      expect(getByText("Test User")).toBeTruthy();
+      expect(screen.getByText("Test User")).toBeTruthy();
     });
   });
 
   it("fetches likes", async () => {
-    const { findByTestId } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
     await waitFor(() => {
-      expect(findByTestId("like-button")).toBeTruthy();
+      expect(screen.findByTestId("like-button")).toBeTruthy();
     });
   });
 
   it("gets the right number of likes", async () => {
-    const { findByText } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
-    await waitFor(() => {
-      expect(findByText("2 likes")).toBeTruthy();
-    });
+    const likesCount = await screen.findByText("2 likes");
+    expect(likesCount).toBeTruthy();
   });
 
   it("displays correctly when no likes are available", async () => {
-    const { getByText } = render(<MaximizeScreenTest />);
+    render(<MaximizeScreenTest />);
 
-    await waitFor(() => {
-      expect(getByText("0 like")).toBeTruthy();
-    });
+    const noLikes = await screen.findByText("0 like");
+    expect(noLikes).toBeTruthy();
   });
 });
