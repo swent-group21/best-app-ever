@@ -5,22 +5,31 @@ import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import { BottomBar } from "../../../components/navigation/BottomBar";
 import { ThemedView } from "../../../components/theme/ThemedView";
-import {Colors} from "../../../constants/Colors";
 import CreateGroupViewModel from "../../viewmodels/group/CreateGroupViewModel";
+import FirestoreCtrl,{ DBUser } from "../../models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function CreateGroupScreen({ navigation, route, firestoreCtrl }: any) {
+export default function CreateGroupScreen(
+  { user, 
+    navigation, 
+    firestoreCtrl 
+  } : {
+    user: DBUser;
+    navigation: any;
+    firestoreCtrl: FirestoreCtrl;
+  }
+) {
   const {
     groupName,
     setGroupName,
     challengeTitle,
     setChallengeTitle,
     makeGroup,
-  } = CreateGroupViewModel({ navigation, route, firestoreCtrl });
+  } = CreateGroupViewModel({ user, navigation, firestoreCtrl });
 
   return (
-    <ThemedView style={styles.createChallengeScreen}>
+    <ThemedView style={styles.createGroupScreen}>
       {/* Title */}
       <ThemedText style={styles.title} colorType="textPrimary" type="title" testID="Create-Challenge-Text">
         Create a New Group
@@ -55,7 +64,7 @@ export default function CreateGroupScreen({ navigation, route, firestoreCtrl }: 
 }
 
 const styles = StyleSheet.create({
-  createChallengeScreen: {
+  createGroupScreen: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",

@@ -2,20 +2,19 @@ import { useState, useEffect } from "react";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createGroup } from "../../models/types/GroupBuilder";
+import FirestoreCtrl, { DBUser } from "@/app/models/firebase/FirestoreCtrl";
 
 export default function CreateChallengeViewModel({
-  firestoreCtrl,
-  navigation,
-  route,
+    user, 
+    navigation,
+    firestoreCtrl,
 }: {
-  firestoreCtrl: any;
-  navigation: any;
-  route: any;
+    user: DBUser;
+    navigation: any;
+    firestoreCtrl: FirestoreCtrl;
 }) {
   const [groupName, setGroupName] = useState("");
   const [challengeTitle, setChallengeTitle] = useState("");
-
-  const user = route.params.user;
 
   // Create the challenge
   const makeGroup = async () => {

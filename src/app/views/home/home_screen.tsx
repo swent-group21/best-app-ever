@@ -54,7 +54,7 @@ export default function HomeScreen({
         <ThemedView style={styles.createGroupContainer} testID="create-group-button">
           <ThemedTextButton
             style={styles.createGroupButton}
-            onPress={() => {}}
+            onPress={() => navigation.navigate("CreateGroup")}
             text="+"
             textStyle={styles.createGroupText}
             textColorType="textOverLight"

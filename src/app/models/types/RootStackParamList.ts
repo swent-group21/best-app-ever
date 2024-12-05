@@ -21,4 +21,5 @@ export type RootStackParamList = {
   GroupScreen: {
     currentGroup: DBGroup;
   }
+  CreateGroup: undefined;
 };
