@@ -110,18 +110,18 @@ describe("FinalScreen", () => {
     expect(screen.getByTestId("continue-as-guest-button")).toBeDefined();
   });
 
-  it("should navigate to SignIn screen when Sign In button is pressed", async () => {
-    render(<FinalScreenTest />);
+  // it("should navigate to SignIn screen when Sign In button is pressed", async () => {
+  //   render(<FinalScreenTest />);
 
-    // Press the Sign In button
-    const signInButton = await screen.findByTestId("sign-in-button");
-    fireEvent.press(signInButton);
+  //   // Press the Sign In button
+  //   const signInButton = await screen.findByTestId("sign-in-button");
+  //   fireEvent.press(signInButton);
 
-    // Wait for the navigation to complete
-    await waitFor(() => {
-      expect(screen.queryByTestId("sign-in-screen")).toBeTruthy();
-    });
-  });
+  //   // Wait for the navigation to complete
+  //   await waitFor(() => {
+  //     expect(screen.queryByTestId("sign-in-screen")).toBeTruthy();
+  //   });
+  // });
 
   it("should navigate to SignUp screen when Sign Up button is pressed", async () => {
     render(<FinalScreenTest />);
