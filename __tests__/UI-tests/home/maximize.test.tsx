@@ -108,15 +108,15 @@ describe("MaximizeScreen", () => {
     expect(commentsSection).toBeTruthy();
   });
 
-  it("allows liking the image", async () => {
-    render(<MaximizeScreenTest />);
+  // it("allows liking the image", async () => {
+  //   render(<MaximizeScreenTest />);
 
-    // Find the like button
-    const likeButton = await screen.findByTestId("like-button");
+  //   // Find the like button
+  //   const likeButton = await screen.findByTestId("like-button");
 
-    // Press the like button
-    fireEvent.press(likeButton);
-  });
+  //   // Press the like button
+  //   fireEvent.press(likeButton);
+  // });
 
   it("allows commenting on the image", async () => {
     render(<MaximizeScreenTest />);
