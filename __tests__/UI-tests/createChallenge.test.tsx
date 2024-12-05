@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, act, screen } from "@testing-library/react-native";
 import CreateChallengeScreen from "@/app/screens/create/create_challenge";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +11,13 @@ jest.mock("expo-location");
 const Stack = createNativeStackNavigator();
 
 // Mock FirestoreCtrl
+jest.mock("@/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      newChallenge: jest.fn(),
+    };
+  });
+});
 const mockFirestoreCtrl = new FirestoreCtrl();
 
 // Mock navigation params
@@ -37,7 +44,10 @@ const CreateChallengeScreenTest = () => {
             />
           )}
         </Stack.Screen>
-        {/* Add other screens if necessary */}
+        
+        <Stack.Screen name="Home">
+          {() => <></>}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -45,17 +55,11 @@ const CreateChallengeScreenTest = () => {
 
 describe("CreateChallengeScreen", () => {
   beforeAll(() => {
+    jest.useFakeTimers();
     jest.setSystemTime(new Date(1466424490000));
   });
 
   it("allows creating a new challenge with no location", async () => {
-    const resetNavigationMock = jest.fn();
-    jest
-      .spyOn(require("@react-navigation/native"), "useNavigation")
-      .mockReturnValue({
-        reset: resetNavigationMock,
-      });
-
     const requestForegroundPermissionsAsyncMock = jest.fn();
     jest
       .spyOn(require("expo-location"), "requestForegroundPermissionsAsync")
@@ -65,27 +69,29 @@ describe("CreateChallengeScreen", () => {
         status: "denied",
       });
 
-    const { getByPlaceholderText, getByTestId } = render(
-      <CreateChallengeScreenTest />,
-    );
+    render( <CreateChallengeScreenTest /> );
 
     // Fill in the form
     fireEvent.changeText(
-      getByPlaceholderText("Challenge Name"),
+      screen.getByPlaceholderText("Challenge Name"),
       "Test Challenge",
     );
     fireEvent.changeText(
-      getByPlaceholderText("Description"),
+      screen.getByPlaceholderText("Description"),
       "Test Description",
     );
 
-    const switchButton = getByTestId("switch-button");
-    expect(switchButton.props.value).toBe(true);
-    await fireEvent.press(switchButton);
-    expect(switchButton.props.value).toBe(false);
+    const switchButton = screen.getByTestId("switch-button");
+    await act(async () => {
+      expect(switchButton.props.value).toBe(true);
+      await fireEvent.press(switchButton);
+      expect(switchButton.props.value).toBe(false);
+    });
 
     // Press the right icon (arrow-forward) to submit
-    const rightIcon = getByTestId("bottom-right-icon-arrow-forward");
-    fireEvent.press(rightIcon);
+    const rightIcon = screen.getByTestId("bottom-right-icon-arrow-forward");
+    await act(async () => {
+      fireEvent.press(rightIcon);
+    });
   });
 });

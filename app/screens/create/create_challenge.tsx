@@ -21,7 +21,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   const [description, setDescription] = useState("");
 
   const image_id = route.params?.image_id;
-  console.log("image_id: ", image_id);
 
   const [location, setLocation] = useState<LocationObject | null>(null);
 
@@ -34,7 +33,7 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
     async function getCurrentLocation() {
       let { status } = await requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Permission to access location was denied");
+        //console.log("Permission to access location was denied");
         setIsEnabled(false);
         return;
       }
@@ -50,7 +49,6 @@ const CreateChallengeScreen = ({ navigation, route, firestoreCtrl }: any) => {
   async function makeChallenge() {
     try {
       let date: Date = new Date();
-      console.log("Date: ", date);
 
       await createChallenge(
         firestoreCtrl,
