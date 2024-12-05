@@ -50,8 +50,14 @@ export function useHomeScreenViewModel(
     if (user.uid) {
       const fetchChallenges = async () => {
         try {
-          const challengesData = await firestoreCtrl.getKChallenges(100);
-          setChallenges(challengesData);
+          const challengesData = await firestoreCtrl.getPostsByChallengeTitle(titleChallenge.title)
+            .then((challenge: DBChallenge[]) => {
+            // Sort challenges by date
+            const sortedChallenges = challenge.sort(
+              (a, b) => (a.date && b.date ) ? (b.date.seconds - a.date.seconds) : 0,
+            );
+            setChallenges(sortedChallenges);
+        });
         } catch (error) {
           console.error("Error fetching challenges: ", error);
         }
