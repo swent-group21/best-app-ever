@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
 
@@ -29,9 +29,7 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
           created_at: new Date(),
         },
       ]),
-      updateLikesOf: jest
-        .fn()
-        .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
+      updateLikesOf: jest.fn().mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
     };
   });
 });
@@ -59,21 +57,22 @@ describe("Challenge Component", () => {
   });
 
   beforeAll(() => {
+    jest.useFakeTimers();
     jest.setSystemTime(new Date(1466424490000));
   });
 
   it("fetches user data on mount", async () => {
     const { getByText } = render(
       <Challenge
-        challengeDB={challengeDB}
-        index={0}
-        firestoreCtrl={mockFirestoreCtrl}
-        navigation={navigation}
-        testID="challenge"
-        currentUser={currentUser}
+      challengeDB={challengeDB}
+      index={0}
+      firestoreCtrl={mockFirestoreCtrl}
+      navigation={navigation}
+      testID="challenge"
+      currentUser={currentUser}
       />,
     );
-
+    
     await waitFor(() => {
       expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith("user123");
     });
@@ -96,7 +95,7 @@ describe("Challenge Component", () => {
     });
   });
 
-  it("toggles isOpen state when the challenge is pressed", () => {
+  it("toggles isOpen state when the challenge is pressed", async () => {
     const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
@@ -112,15 +111,17 @@ describe("Challenge Component", () => {
 
     // Initially, the detailed view should not be open
     expect(() => getByTestId("challenge-container")).toThrow();
-
+    
     // Press the touchable to open the details
-    fireEvent.press(touchable);
+    await act(async () => {
+      fireEvent.press(touchable);
+    });
 
     // Now the detailed view should be visible
     expect(getByTestId("challenge-container")).toBeTruthy();
   });
 
-  it("navigates to Maximize screen when expand button is pressed", () => {
+  it("navigates to Maximize screen when expand button is pressed", async () => {
     const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
@@ -133,7 +134,9 @@ describe("Challenge Component", () => {
     );
 
     // Open the detailed view
-    fireEvent.press(getByTestId("challenge-touchable"));
+    await act(async () => {
+      fireEvent.press(getByTestId("challenge-touchable"));
+    });
 
     const expandButton = getByTestId("expand-button");
     fireEvent.press(expandButton);
@@ -159,17 +162,21 @@ describe("Challenge Component", () => {
     );
 
     // Open the detailed view
-    fireEvent.press(getByTestId("challenge-touchable"));
+    await act(async () => {
+      fireEvent.press(getByTestId("challenge-touchable"));
+    });
 
     let likeButton = getByTestId("like-button");
 
     // Like the challenge
-    fireEvent.press(likeButton);
+    await act(async () => {
+      fireEvent.press(likeButton);
+    });
 
     // Ensure updateLikesOf was called with the new likes list
     expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
       "challenge123",
-      ["user123"],
+      ["12345", "67890", "user123"],
     );
   });
 });

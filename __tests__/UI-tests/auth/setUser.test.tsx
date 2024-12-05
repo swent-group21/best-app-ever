@@ -100,8 +100,6 @@ describe("SetUsernameScreen", () => {
     const usernameInput = screen.getByTestId("usernameInput");
     fireEvent.changeText(usernameInput, "newUsername");
 
-    console.log(usernameInput);
-
     await waitFor(() => {
       expect(screen.getByDisplayValue("newUsername")).toBeDefined();
     });

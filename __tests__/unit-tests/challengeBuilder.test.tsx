@@ -80,9 +80,7 @@ describe("createChallenge", () => {
   });
 
   it("should log an error when Firestore operations fail", async () => {
-    mockFirestoreCtrl.getUser = jest
-      .fn()
-      .mockRejectedValue(new Error("Firestore error"));
+    mockFirestoreCtrl.getUser = jest.fn().mockRejectedValue(new Error("Firestore error"));
 
     await expect(
       createChallenge(mockFirestoreCtrl, "Test", "Description", null),
