@@ -489,7 +489,7 @@ export default class FirestoreCtrl {
       groupData.updateDate = updateTime;
       groupData.gid = gid;
 
-      await setDoc(doc(firestore, "users", gid), groupData);
+      await setDoc(doc(firestore, "groups", gid), groupData);
     } catch (error) {
       console.error("Error updating group: ", error);
       throw error;

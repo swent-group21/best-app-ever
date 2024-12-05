@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
-export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, currentGroup: DBGroup) {
+export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, route: any) {
 
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
-  const groupId = currentGroup.gid ?? "";
+  const group: DBGroup = route.params?.currentGroup;
+  console.log("currentGroup in groupScreen: ", group);
+  console.log("current route in groupScreen: ", route);
+
+  const groupId = group.gid ?? "";
 
   useEffect(() => {
     if (user.uid) {
@@ -19,7 +23,7 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
       };
       fetchGroupChallenges();
     }
-  }, [user.uid, firestoreCtrl]);
+  }, [user.uid, firestoreCtrl, groupId]);
 
   useEffect(() => {
     if (user.uid) {
@@ -35,11 +39,11 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
       };
       fetchGroups();
     }
-  }, [user.uid, firestoreCtrl, currentGroup]);
+  }, [user.uid, firestoreCtrl, group]);
 
 
-  const groupName = currentGroup.name ?? "";
-  const groupChallengeTitle = currentGroup.challengeTitle ?? "";
+  const groupName = group.name ?? "";
+  const groupChallengeTitle = group.challengeTitle ?? "";
 
   return {
     groupChallenges,

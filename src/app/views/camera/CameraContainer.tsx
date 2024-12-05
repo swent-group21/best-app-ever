@@ -16,8 +16,6 @@ const { width, height } = Dimensions.get("window");
 
 export default function Camera({ navigation, firestoreCtrl, route }: any) {
 
-  const group_id = route.params?.group_id;
-
   const {
     facing,
     permission,
@@ -33,7 +31,7 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     takePicture,
     imageUrlGen,
     setIsCameraEnabled,
-  } = useCameraViewModel(firestoreCtrl, navigation, group_id);
+  } = useCameraViewModel(firestoreCtrl, navigation, route);
 
   if (!permission) {
     return <View />;

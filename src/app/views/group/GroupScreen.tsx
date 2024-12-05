@@ -26,14 +26,13 @@ export default function GroupScreen({
   route: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const group: DBGroup = route.params?.group;
 
   const { groupChallenges, 
     otherGroups,
     groupName,
     groupChallengeTitle,
     groupId,
-} = useGroupScreenViewModel(user, firestoreCtrl, group);
+} = useGroupScreenViewModel(user, firestoreCtrl, route);
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">

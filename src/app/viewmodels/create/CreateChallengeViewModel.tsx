@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createChallenge } from "../../models/types/ChallengeBuilder";
-import { DBGroup } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBGroup } from "../../models/firebase/FirestoreCtrl";
 
 export default function CreateChallengeViewModel({
   firestoreCtrl,
   navigation,
   route,
 }: {
-  firestoreCtrl: any;
+  firestoreCtrl: FirestoreCtrl;
   navigation: any;
   route: any;
 }) {
@@ -20,6 +20,7 @@ export default function CreateChallengeViewModel({
 
   const imageId = route.params?.image_id;
   const group_id = route.params?.group_id;
+  console.log("group_id in create :", group_id);
 
   // Toggle location switch
   const toggleLocation = () => setIsLocationEnabled((prev) => !prev);
@@ -55,7 +56,8 @@ export default function CreateChallengeViewModel({
       if (group_id == "" || group_id == "home") {
         navigation.navigate("Home");
       } else {
-        const group: DBGroup = firestoreCtrl.getGroup(group_id);
+        const group: DBGroup = await firestoreCtrl.getGroup(group_id);
+        console.log("group in create challenge: ", group);
         navigation.navigate("GroupScreen", { currentGroup: group });
       }
     } catch (error) {
