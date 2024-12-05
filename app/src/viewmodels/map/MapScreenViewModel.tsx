@@ -4,9 +4,7 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import FirestoreCtrl, {
-  DBChallenge,
-} from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
 /**
  * Default location centered on the city of Nice, France.
@@ -31,6 +29,12 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
   >([]);
+  const [titleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
+    title: "Challenge Title",
+    description: "Challenge Description",
+    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+  });
+  const [description, setDescription] = useState<string>();
 
   /**
    * Requests permission to access the user's location and fetches their current location.
@@ -56,13 +60,36 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
     getCurrentLocation();
   }, []);
 
+  useEffect(() => {
+    const fetchCurrentChallenge = async () => {
+      try {
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+  
+        const formattedChallenge = {
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
+          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+        };
+  
+        setTitleChallenge(formattedChallenge);
+        //console.log("Current Challenge: ", formattedChallenge);
+      } catch (error) {
+        console.error("Error fetching current challenge: ", error);
+      }
+    };
+    fetchCurrentChallenge();
+  }, [firestoreCtrl]);
+
   /**
    * Fetches challenges with valid locations from Firestore.
    */
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
-        const challengesData = await firestoreCtrl.getKChallenges(100);
+        const challengesData = await firestoreCtrl.getPostsByChallengeTitle(
+          titleChallenge.title,
+        );;
         const filteredChallenges = challengesData.filter(
           (challenge) =>
             challenge.location !== undefined && challenge.location !== null,

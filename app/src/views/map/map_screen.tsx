@@ -65,8 +65,8 @@ export default function MapScreen({
             }}
             image={require("../../../assets/images/icon_trans.png")}
             flat={true}
-            title={challenge.challenge_name}
-            description={challenge.description}
+            title={challenge.caption}
+            description={`${challenge.date.toDate().toLocaleString()}`}
           />
         ))}
       </MapView>
