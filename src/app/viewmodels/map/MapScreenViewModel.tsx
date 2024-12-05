@@ -58,22 +58,40 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
-  
+        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
         const formattedChallenge = {
           title: currentChallengeData.Title,
           description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
+          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
         };
-  
         setTitleChallenge(formattedChallenge);
-        //console.log("Current Challenge: ", formattedChallenge);
+        return formattedChallenge.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
-    fetchCurrentChallenge();
+
+
+    const fetchChallenges = async (challengeTitle: string) => {
+      try {
+        const challengesData = await firestoreCtrl.getPostsByChallengeTitle(
+          challengeTitle,
+        );;
+        const filteredChallenges = challengesData.filter(
+          (challenge) =>
+            challenge.location !== undefined && challenge.location !== null,
+        );
+        setChallengesWithLocation(filteredChallenges);
+      } catch (error) {
+        console.error("Error fetching challenges: ", error);
+      }
+    }
+      
+
+    fetchCurrentChallenge().then((challengeTitle) => {
+      console.log("Current challenge fetched : ", challengeTitle);
+      fetchChallenges(challengeTitle);
+    });
   }, [firestoreCtrl]);
 
   /**

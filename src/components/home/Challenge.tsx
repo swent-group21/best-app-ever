@@ -128,7 +128,7 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"on " + challengeDate.toUTCString()}
+                        {"on " + challengeDate.toLocaleString()}
                       </ThemedText>
                     </ThemedView>
                   </View>
