@@ -44,10 +44,8 @@ const CreateChallengeScreenTest = () => {
             />
           )}
         </Stack.Screen>
-        
-        <Stack.Screen name="Home">
-          {() => <></>}
-        </Stack.Screen>
+
+        <Stack.Screen name="Home">{() => <></>}</Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -69,7 +67,7 @@ describe("CreateChallengeScreen", () => {
         status: "denied",
       });
 
-    render( <CreateChallengeScreenTest /> );
+    render(<CreateChallengeScreenTest />);
 
     // Fill in the form
     fireEvent.changeText(

@@ -172,7 +172,7 @@ describe("logInWithEmail", () => {
   });
 
   it("should create a new user in Firestore if not found", async () => {
-    // Mock Firebase Auth response as Promise 
+    // Mock Firebase Auth response as Promise
     (signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
       user: {
         uid: "user",
@@ -201,12 +201,12 @@ describe("logInWithEmail", () => {
     // Temporarily suppress console.error
     const originalConsoleError = console.error;
     console.error = jest.fn();
-  
+
     // Mock Firebase Auth rejection
     (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
       new Error("Invalid credentials"),
     );
-  
+
     // Call the function
     await logInWithEmail(
       "test@example.com",
@@ -215,7 +215,7 @@ describe("logInWithEmail", () => {
       mockNavigation,
       setUser,
     );
-  
+
     // Assertions
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
       auth,
@@ -226,7 +226,7 @@ describe("logInWithEmail", () => {
     expect(setUser).not.toHaveBeenCalled();
     expect(mockNavigation.reset).not.toHaveBeenCalled();
     expect(mockNavigation.navigate).not.toHaveBeenCalled();
-  
+
     // Restore the original console.error
     console.error = originalConsoleError;
   });
@@ -466,7 +466,9 @@ describe("signInAsGuest", () => {
 
   it("should handle guest sign-in failure", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     // Mock Firebase sign-in failure
     (signInAnonymously as jest.Mock).mockRejectedValueOnce(

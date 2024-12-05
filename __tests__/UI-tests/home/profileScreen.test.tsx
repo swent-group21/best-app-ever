@@ -77,7 +77,7 @@ describe("ProfileScreen - Guest User", () => {
       <ProfileScreenTest user={mockGuestUser} />,
     );
 
-    await act(async () => { 
+    await act(async () => {
       expect(getByText("You are not logged in !")).toBeTruthy(); // Verify the title renders
       expect(getByTestId("sign-in-button")).toBeTruthy(); // Verify the sign in button renders
     });

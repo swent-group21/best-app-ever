@@ -29,7 +29,9 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
           created_at: new Date(),
         },
       ]),
-      updateLikesOf: jest.fn().mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
+      updateLikesOf: jest
+        .fn()
+        .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
     };
   });
 });
@@ -64,15 +66,15 @@ describe("Challenge Component", () => {
   it("fetches user data on mount", async () => {
     const { getByText } = render(
       <Challenge
-      challengeDB={challengeDB}
-      index={0}
-      firestoreCtrl={mockFirestoreCtrl}
-      navigation={navigation}
-      testID="challenge"
-      currentUser={currentUser}
+        challengeDB={challengeDB}
+        index={0}
+        firestoreCtrl={mockFirestoreCtrl}
+        navigation={navigation}
+        testID="challenge"
+        currentUser={currentUser}
       />,
     );
-    
+
     await waitFor(() => {
       expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith("user123");
     });
@@ -111,7 +113,7 @@ describe("Challenge Component", () => {
 
     // Initially, the detailed view should not be open
     expect(() => getByTestId("challenge-container")).toThrow();
-    
+
     // Press the touchable to open the details
     await act(async () => {
       fireEvent.press(touchable);

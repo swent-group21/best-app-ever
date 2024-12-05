@@ -1,5 +1,10 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+} from "@testing-library/react-native";
 import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

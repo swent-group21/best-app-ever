@@ -67,7 +67,7 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
         return Promise.resolve(mockGroups);
       }),
       getChallengeDescription: jest.fn(() => {
-        return mockChallengeDescription
+        return mockChallengeDescription;
       }),
       getKChallenges: jest.fn(() => {
         return mockChallenges;
@@ -150,7 +150,7 @@ describe("HomeScreen", () => {
     render(<HomeScreenTest />);
 
     // Await the findByTestId for the description
-    const description =  screen.findByTestId("description-id");
+    const description = screen.findByTestId("description-id");
 
     expect(description).toBeTruthy();
   });
