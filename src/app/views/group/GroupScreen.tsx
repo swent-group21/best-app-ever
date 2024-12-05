@@ -49,6 +49,16 @@ export default function GroupScreen({
 
         {/* Groups */}
         <ThemedScrollView style={styles.groupsContainer} horizontal>
+            <ThemedView style={styles.HomeContainer} testID="create-group-button">
+              <ThemedTextButton
+                  style={styles.HomeButton}
+                  onPress={() => navigation.reset({ index: 0, routes: [{ name: "Home" }] })}
+                  text="Home"
+                  textStyle={styles.HomeText}
+                  textColorType="textOverLight"
+                  colorType="backgroundSecondary"
+              />
+            </ThemedView>
             {otherGroups.map((group, index) => (
             <GroupIcon
                 groupDB={group}
@@ -62,7 +72,7 @@ export default function GroupScreen({
             <ThemedView style={styles.createGroupContainer} testID="create-group-button">
                 <ThemedTextButton
                     style={styles.createGroupButton}
-                    onPress={() => {}}
+                    onPress={() => navigation.navigate("CreateGroup")}
                     text="+"
                     textStyle={styles.createGroupText}
                     textColorType="textOverLight"
@@ -107,7 +117,7 @@ export default function GroupScreen({
             centerIcon="camera-outline"
             rightIcon="trophy-outline"
             leftAction={() => navigation.navigate("MapScreen")}
-            centerAction={() => navigation.navigate("Camera", { group_id: {groupId} })}
+            centerAction={() => navigation.navigate("Camera", { group_id: groupId })}
         />
     </ThemedView>
   );
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
   },
   groupsContainer: {
     width: width - 20,
-    height: 0.18 * height,
+    height: 0.25 * height,
     borderRadius: 15,
     backgroundColor: "transparent",
   },
@@ -153,6 +163,28 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "center",
     fontSize: 60,
+  },
+  HomeContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    backgroundColor: "transparent",
+    width: width * 0.23,
+    height: width * 0.2,
+    borderRadius: 20,
+    margin: 10,
+    alignItems: "center",
+  },
+  HomeButton: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 15,
+  },
+  HomeText: {
+    flex: 1,
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontSize: 25,
+    fontWeight: "bold",
   },
   challengeTitle: {
     width: width - 20,

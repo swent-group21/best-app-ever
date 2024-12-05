@@ -26,7 +26,7 @@ export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCt
       const fetchGroups = async () => {
         try {
           const groupsData = (await firestoreCtrl.getGroupsByUserId(user.uid))
-            .filter((group) => (groupId === group.gid && group.updateDate !== undefined))
+            .filter((group) => (groupId !== group.gid && group.updateDate !== undefined))
             .sort((a, b) => b.updateDate.toMillis() - a.updateDate.toMillis());
           setOtherGroups(groupsData);
         } catch (error) {
