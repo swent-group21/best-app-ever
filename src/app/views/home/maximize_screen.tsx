@@ -35,15 +35,14 @@ export default function MaximizeScreen({
     toggleLike,
     addComment,
     postDate,
-    postTitle,
     postImage,
-    postDescription,
+    postCaption,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl);
 
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
-        title={postTitle}
+        title=""
         leftIcon="arrow-back-outline"
         leftAction={() => navigation.goBack()}
       />
@@ -87,7 +86,7 @@ export default function MaximizeScreen({
         </ThemedView>
 
         <ThemedView style={styles.descriptionContainer} colorType="transparent">
-          <ThemedText colorType="white">{postDescription}</ThemedText>
+          <ThemedText colorType="white">{postCaption}</ThemedText>
         </ThemedView>
 
         <ThemedView style={styles.row} colorType="transparent">

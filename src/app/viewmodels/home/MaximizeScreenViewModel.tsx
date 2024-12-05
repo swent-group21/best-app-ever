@@ -63,9 +63,8 @@ export function useMaximizeScreenViewModel(
   };
 
   const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
-  const postTitle = challenge.challenge_name || "Secret Challenge";
   const postImage = challenge.image_id ?? "";
-  const postDescription = challenge.description ?? "";
+  const postCaption = challenge.caption == "" ? "Secret Challenge" : challenge.caption;
 
   return {
     commentText,
@@ -77,8 +76,7 @@ export function useMaximizeScreenViewModel(
     toggleLike,
     addComment,
     postDate,
-    postTitle,
     postImage,
-    postDescription,
+    postCaption,
   };
 }
