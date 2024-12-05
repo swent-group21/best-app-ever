@@ -15,15 +15,13 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       Description: "Mock Description",
       endDate: new Date(2024, 1, 1),
     }),
-    getKChallenges: jest
-      .fn()
-      .mockResolvedValue([
-        {
-          uid: "1",
-          challenge_name: "Challenge 1",
-          description: "Description 1",
-        },
-      ]),
+    getKChallenges: jest.fn().mockResolvedValue([
+      {
+        uid: "1",
+        challenge_name: "Challenge 1",
+        description: "Description 1",
+      },
+    ]),
     getGroupsByUserId: jest
       .fn()
       .mockResolvedValue([{ id: "1", name: "Group 1" }]),
