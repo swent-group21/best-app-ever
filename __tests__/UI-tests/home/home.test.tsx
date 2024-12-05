@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
-import { render, waitFor } from "@testing-library/react-native";
+import { render, waitFor, screen } from "@testing-library/react-native";
 import HomeScreen from "@/app/screens/home/home_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -9,10 +9,9 @@ import FirestoreCtrl, {
   DBGroup,
   DBChallengeDescription,
 } from "@/firebase/FirestoreCtrl";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Stack = createNativeStackNavigator();
-
-const mockFirestoreCtrl = new FirestoreCtrl();
 
 // Mock data for challenges
 const mockChallenges: DBChallenge[] = [
@@ -58,15 +57,31 @@ const mockChallengeDescription: DBChallengeDescription = {
 };
 
 // Mock getChallengesByUserId method
-mockFirestoreCtrl.getChallengesByUserId = jest
-  .fn()
-  .mockResolvedValue(mockChallenges);
-
-mockFirestoreCtrl.getGroupsByUserId = jest.fn().mockResolvedValue(mockGroups);
-
-mockFirestoreCtrl.getChallengeDescription = jest
-  .fn()
-  .mockResolvedValue(mockChallengeDescription);
+jest.mock("@/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      getChallengesByUserId: jest.fn(() => {
+        return mockChallenges;
+      }),
+      getGroupsByUserId: jest.fn(() => {
+        return Promise.resolve(mockGroups);
+      }),
+      getChallengeDescription: jest.fn(() => {
+        return mockChallengeDescription
+      }),
+      getKChallenges: jest.fn(() => {
+        return mockChallenges;
+      }),
+      getUser: jest.fn(() => {
+        return mockUser;
+      }),
+      getLikesOf: jest.fn(() => {
+        return Promise.resolve(["12345"]);
+      }),
+    };
+  });
+});
+const mockFirestoreCtrl = new FirestoreCtrl();
 
 //Mock User
 const mockUser = {
@@ -106,28 +121,36 @@ const HomeScreenTest = () => {
 };
 
 describe("HomeScreen", () => {
-  it("renders default text", async () => {
-    const { getByText } = render(<HomeScreenTest />);
+  // Reset mock data before each test
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    expect(getByText("No challenge to display")).toBeTruthy();
+  it("renders default text", async () => {
+    render(<HomeScreenTest />);
+
+    await waitFor(async () => {
+      expect(screen.getByText("No challenge to display")).toBeTruthy();
+    });
   });
 
   it("renders challenges fetched from Firestore", async () => {
-    const { findByTestId } = render(<HomeScreenTest />);
+    render(<HomeScreenTest />);
 
-    // Wait for the challenges to be fetched and rendered
-    await waitFor(() => {
-      expect(findByTestId("challenge-id-0")).toBeTruthy();
-      expect(findByTestId("challenge-id-1")).toBeTruthy();
-    });
+    // Await individual findBy* methods
+    const challenge1 = await screen.findByTestId("challenge-id-0");
+    const challenge2 = await screen.findByTestId("challenge-id-1");
+
+    expect(challenge1).toBeTruthy();
+    expect(challenge2).toBeTruthy();
   });
 
   it("renders description fetched from Firestore", async () => {
-    const { getByTestId } = render(<HomeScreenTest />);
+    render(<HomeScreenTest />);
 
-    // Wait for the description to be fetched and rendered
-    await waitFor(() => {
-      expect(getByTestId("description-id")).toBeTruthy();
-    });
+    // Await the findByTestId for the description
+    const description =  screen.findByTestId("description-id");
+
+    expect(description).toBeTruthy();
   });
 });
