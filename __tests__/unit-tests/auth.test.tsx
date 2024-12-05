@@ -93,7 +93,12 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
         }
         return Promise.reject(new Error("User not found"));
       }),
-      createUser: jest.fn() as jest.Mock<Promise<void>, [string, DBUser]>,
+      createUser: jest.fn((uid: string, user: DBUser) => {
+        if (uid === "user" || uid === "guest123") {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error("User not found"));
+      }),
     };
   });
 });
@@ -167,16 +172,14 @@ describe("logInWithEmail", () => {
   });
 
   it("should create a new user in Firestore if not found", async () => {
-    // Mock Firebase Auth response
+    // Mock Firebase Auth response as Promise 
     (signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
       user: {
         uid: "user",
         email: "test@example.com",
-        displayName: "",
       },
     });
 
-    // Call the function
     await logInWithEmail(
       "test@example.com",
       "password123",
@@ -185,7 +188,6 @@ describe("logInWithEmail", () => {
       setUser,
     );
 
-    // Assertions
     expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user", {
       uid: "user",
       name: "",
@@ -196,11 +198,15 @@ describe("logInWithEmail", () => {
   });
 
   it("should handle login failure due to invalid credentials", async () => {
+    // Temporarily suppress console.error
+    const originalConsoleError = console.error;
+    console.error = jest.fn();
+  
     // Mock Firebase Auth rejection
     (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
       new Error("Invalid credentials"),
     );
-
+  
     // Call the function
     await logInWithEmail(
       "test@example.com",
@@ -209,7 +215,7 @@ describe("logInWithEmail", () => {
       mockNavigation,
       setUser,
     );
-
+  
     // Assertions
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
       auth,
@@ -218,9 +224,11 @@ describe("logInWithEmail", () => {
     );
     expect(mockFirestoreCtrl.getUser).not.toHaveBeenCalled();
     expect(setUser).not.toHaveBeenCalled();
-    // No navigation reset or navigate should occur
     expect(mockNavigation.reset).not.toHaveBeenCalled();
     expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  
+    // Restore the original console.error
+    console.error = originalConsoleError;
   });
 
   it("should alert and log error if login fails unexpectedly", async () => {
@@ -277,7 +285,7 @@ describe("signUpWithEmail", () => {
     // Mock Firebase Auth response
     (createUserWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
       user: {
-        uid: "user123",
+        uid: "user",
       },
     });
 
@@ -297,8 +305,8 @@ describe("signUpWithEmail", () => {
       "test@example.com",
       "password123",
     );
-    expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user123", {
-      uid: "user123",
+    expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user", {
+      uid: "user",
       name: "Test User",
       email: "test@example.com",
       createdAt: expect.any(Date),
@@ -349,6 +357,11 @@ describe("signUpWithEmail", () => {
   });
 
   it("should handle errors when creating a user in Firebase Auth", async () => {
+    // Mock console.error
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
     // Mock Firebase Auth failure
     (createUserWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
       new Error("Firebase error"),
@@ -452,6 +465,9 @@ describe("signInAsGuest", () => {
   });
 
   it("should handle guest sign-in failure", async () => {
+    // Mock console.error
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
     // Mock Firebase sign-in failure
     (signInAnonymously as jest.Mock).mockRejectedValueOnce(
       new Error("Firebase error"),
