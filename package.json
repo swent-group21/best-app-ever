@@ -42,7 +42,7 @@
     "expo-image-picker": "~16.0.1",
     "expo-linking": "~7.0.3",
     "expo-location": "~18.0.1",
-    "expo-router": "^4.0.7",
+    "expo-router": "^3.1.0",
     "expo-splash-screen": "~0.29.12",
     "expo-status-bar": "~2.0.0",
     "expo-system-ui": "~4.0.2",
@@ -73,6 +73,7 @@
     "react-native-svg": "15.8.0",
     "react-native-web": "~0.19.10",
     "react-router-dom": "^6.27.0",
+    "react-test-renderer": "^18.3.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
