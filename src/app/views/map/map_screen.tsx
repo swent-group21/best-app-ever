@@ -50,6 +50,7 @@ export default function MapScreen({
         {challengesWithLocation.map((challenge :any, index) => (
           <MapMarker
             key={index}
+            testID={challenge.challenge_name}
             coordinate={{
               latitude: challenge.location.latitude,
               longitude: challenge.location.longitude,
