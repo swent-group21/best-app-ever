@@ -103,7 +103,7 @@ export default function MaximizeScreen({
         </ThemedView>
 
         <ThemedView style={styles.descriptionContainer} colorType="transparent">
-          <ThemedText colorType="white">{postCaption}</ThemedText>
+          <ThemedText colorType="white" type="defaultSemiBold">{postCaption}</ThemedText>
         </ThemedView>
 
         <ThemedView style={styles.row} colorType="transparent">
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
 
   row: {
     width: "90%",
-    minHeight: height * 0.1,
+    minHeight: height * 0.08,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "90%",
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingTop: 5,
   },
 
   likeButtonContainer: {
