@@ -6,7 +6,7 @@ import { StyleSheet, Dimensions } from "react-native";
 // Get the screen dimensions
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeConceptScreen( ) {
+export default function WelcomeConceptScreen() {
   return (
     <ThemedView style={styles.container} testID="container">
       <ThemedView
@@ -40,7 +40,6 @@ export default function WelcomeConceptScreen( ) {
     </ThemedView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {

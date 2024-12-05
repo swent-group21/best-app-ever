@@ -11,7 +11,6 @@ export default function SignInViewModel(
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  
   const handleEmailChange = (text: string) => setEmail(text);
 
   const handlePasswordChange = (text: string) => setPassword(text);

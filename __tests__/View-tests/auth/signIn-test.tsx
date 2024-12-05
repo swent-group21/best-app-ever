@@ -26,7 +26,6 @@ describe("SignInScreen Tests", () => {
     });
   });
 
-
   it("updates email and password fields", () => {
     const handleEmailChangeMock = jest.fn();
     const handlePasswordChangeMock = jest.fn();
@@ -45,7 +44,7 @@ describe("SignInScreen Tests", () => {
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     const emailInput = getByTestId("email-input");
@@ -75,7 +74,7 @@ describe("SignInScreen Tests", () => {
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     // Vérifie la présence du message d'erreur
@@ -100,7 +99,7 @@ describe("SignInScreen Tests", () => {
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     const signInButton = getByTestId("sign-in-button");
@@ -116,7 +115,7 @@ describe("SignInScreen Tests", () => {
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     const forgotPasswordButton = getByText("Forgot Password?");

@@ -21,7 +21,6 @@ describe("ForgotPasswordScreen Tests", () => {
     });
   });
 
-
   it("displays an error message when there is an error", () => {
     (ForgotPasswordViewModel as jest.Mock).mockReturnValue({
       email: "",
@@ -30,7 +29,9 @@ describe("ForgotPasswordScreen Tests", () => {
       handleResetPassword: jest.fn(),
     });
 
-    const { getByText } = render(<ForgotPasswordScreen navigation={mockNavigation} />);
+    const { getByText } = render(
+      <ForgotPasswordScreen navigation={mockNavigation} />,
+    );
 
     // Vérifie que le message d'erreur est affiché
     const errorMessage = getByText("Please enter a valid email.");
@@ -47,7 +48,9 @@ describe("ForgotPasswordScreen Tests", () => {
       handleResetPassword: handleResetPasswordMock,
     });
 
-    const { getByTestId } = render(<ForgotPasswordScreen navigation={mockNavigation} />);
+    const { getByTestId } = render(
+      <ForgotPasswordScreen navigation={mockNavigation} />,
+    );
 
     const resetButton = getByTestId("resetPasswordButton");
 
@@ -57,7 +60,9 @@ describe("ForgotPasswordScreen Tests", () => {
   });
 
   it("navigates back when the cancel button is pressed", () => {
-    const { getByTestId } = render(<ForgotPasswordScreen navigation={mockNavigation} />);
+    const { getByTestId } = render(
+      <ForgotPasswordScreen navigation={mockNavigation} />,
+    );
 
     const cancelButton = getByTestId("cancelButton");
 

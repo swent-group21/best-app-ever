@@ -30,7 +30,7 @@ describe("WelcomeIntroScreen UI Tests", () => {
   it("renders the description text correctly", () => {
     const { getByText } = render(<WelcomeIntroScreen />);
     const description = getByText(
-      "Compete with your friends and people around you\nBecome the goat and win prizes!"
+      "Compete with your friends and people around you\nBecome the goat and win prizes!",
     );
     expect(description).toBeTruthy();
   });

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBChallenge, DBComment, DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBComment,
+  DBUser,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 export function useMaximizeScreenViewModel(
@@ -24,12 +28,14 @@ export function useMaximizeScreenViewModel(
     });
 
     // Fetch comments
-    firestoreCtrl.getCommentsOf(challenge.challenge_id ?? "").then((comments) => {
-      const sortedComments = comments.sort(
-        (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
-      );
-      setCommentList(sortedComments);
-    });
+    firestoreCtrl
+      .getCommentsOf(challenge.challenge_id ?? "")
+      .then((comments) => {
+        const sortedComments = comments.sort(
+          (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
+        );
+        setCommentList(sortedComments);
+      });
 
     // Fetch likes
     firestoreCtrl.getLikesOf(challenge.challenge_id ?? "").then((likes) => {

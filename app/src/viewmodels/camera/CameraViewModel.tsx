@@ -1,10 +1,18 @@
 import { useState, useRef, useCallback, useMemo } from "react";
-import { CameraType, useCameraPermissions, CameraCapturedPicture, CameraPictureOptions } from "expo-camera";
+import {
+  CameraType,
+  useCameraPermissions,
+  CameraCapturedPicture,
+  CameraPictureOptions,
+} from "expo-camera";
 import { FlashMode } from "expo-camera/build/Camera.types";
 import { Platform } from "react-native";
 import { CameraView } from "expo-camera";
 
-export default function useCameraViewModel(firestoreCtrl: any, navigation: any) {
+export default function useCameraViewModel(
+  firestoreCtrl: any,
+  navigation: any,
+) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const camera = useRef<CameraView>(null);
@@ -48,11 +56,11 @@ export default function useCameraViewModel(firestoreCtrl: any, navigation: any) 
     [zoom, lastZoom],
   );
 
-
   const takePicture = async () => {
     if (camera.current) {
       try {
-        const capturedPicture = await camera.current?.takePictureAsync(cameraPictureOptions);
+        const capturedPicture =
+          await camera.current?.takePictureAsync(cameraPictureOptions);
         setPicture(capturedPicture);
         setIsCameraEnabled(false);
       } catch (error) {

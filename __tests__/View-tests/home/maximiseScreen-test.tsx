@@ -6,12 +6,10 @@ describe("MaximiseScreen Component", () => {
 
 // import React from "react";
 // import { render, fireEvent } from "@testing-library/react-native";
-// import MaximizeScreen from "../../../src/app/views/home/maximize_screen";
-// import { useMaximizeScreenViewModel } from "../../../src/app/viewmodels/home/MaximizeScreenViewModel";
-// import { Timestamp } from "firebase/firestore";
-// import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
+// import MaximizeScreen from "@/src/views/home/maximize_screen";
+// import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-// jest.mock("../../../src/app/viewmodels/home/MaximizeScreenViewModel", () => ({
+// jest.mock("@/src/viewmodels/home/MaximizeScreenViewModel", () => ({
 //   useMaximizeScreenViewModel: jest.fn(),
 // }));
 
@@ -31,7 +29,7 @@ describe("MaximiseScreen Component", () => {
 //     jest.clearAllMocks();
 
 //     // Mock the ViewModel
-//     require("../../../src/app/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel.mockReturnValue({
+//     require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel.mockReturnValue({
 //       commentText: "",
 //       setCommentText: jest.fn(),
 //       commentList: [
@@ -85,7 +83,7 @@ describe("MaximiseScreen Component", () => {
 //     );
 
 //     fireEvent.press(getByText("heart-outline"));
-//     const toggleLike = require("../../../src/app/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+//     const toggleLike = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
 //       .toggleLike;
 //     expect(toggleLike).toHaveBeenCalled();
 //   });
@@ -100,7 +98,7 @@ describe("MaximiseScreen Component", () => {
 //       />
 //     );
 
-//     const addComment = require("../../../src/app/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+//     const addComment = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
 //       .addComment;
 
 //     const input = getByPlaceholderText("Write a comment...");

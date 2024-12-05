@@ -1,4 +1,7 @@
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBUser,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 

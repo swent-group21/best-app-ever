@@ -13,7 +13,6 @@ import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewMode
 import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({
@@ -25,7 +24,8 @@ export default function HomeScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const { userIsGuest, challenges, groups, titleChallenge } = useHomeScreenViewModel(user, firestoreCtrl);
+  const { userIsGuest, challenges, groups, titleChallenge } =
+    useHomeScreenViewModel(user, firestoreCtrl);
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -34,11 +34,13 @@ export default function HomeScreen({
         leftIcon="people-outline"
         leftAction={() => navigation.navigate("Friends")}
         rightIcon={
-          userIsGuest || !user.image_id ? "person-circle-outline" : user.image_id
+          userIsGuest || !user.image_id
+            ? "person-circle-outline"
+            : user.image_id
         }
         rightAction={() => navigation.navigate("Profile")}
         testID="top-bar"
-/>
+      />
 
       {/* Groups */}
       <ThemedScrollView style={styles.groupsContainer} horizontal>
@@ -52,7 +54,10 @@ export default function HomeScreen({
           />
         ))}
 
-        <ThemedView style={styles.createGroupContainer} testID="create-group-button">
+        <ThemedView
+          style={styles.createGroupContainer}
+          testID="create-group-button"
+        >
           <ThemedTextButton
             style={styles.createGroupButton}
             onPress={() => {}}
@@ -99,7 +104,7 @@ export default function HomeScreen({
         rightIcon="trophy-outline"
         leftAction={() => navigation.navigate("MapScreen")}
         centerAction={() => navigation.navigate("Camera")}
-        />
+      />
     </ThemedView>
   );
 }

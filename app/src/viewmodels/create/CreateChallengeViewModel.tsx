@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+  LocationObject,
+} from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createChallenge } from "@/types/ChallengeBuilder";
 
@@ -47,7 +51,7 @@ export default function CreateChallengeViewModel({
         description,
         isLocationEnabled ? location : null,
         date,
-        imageId
+        imageId,
       );
       navigation.reset({ index: 0, routes: [{ name: "Home" }] });
     } catch (error) {

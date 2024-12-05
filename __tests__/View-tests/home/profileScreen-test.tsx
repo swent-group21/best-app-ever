@@ -22,7 +22,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const container = getByTestId("profile-screen");
@@ -36,7 +36,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const imagePicker = getByTestId("image-picker");
@@ -50,7 +50,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const usernameInput = getByPlaceholderText("Enter your name");
@@ -64,7 +64,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const actionsContainer = getByTestId("actions-container");
@@ -78,7 +78,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const emailButton = getByText("Change your email");
@@ -92,7 +92,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const passwordButton = getByText("Change your password");
@@ -106,7 +106,7 @@ describe("ProfileScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const logoutButton = getByText("Log Out");

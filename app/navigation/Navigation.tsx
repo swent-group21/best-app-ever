@@ -37,6 +37,7 @@ export const Nav: React.FC<AppStackProps> = ({
   return (
     <Navigator
       initialRouteName={isLoggedIn}
+      id={undefined}
       screenOptions={{
         headerShown: false,
         headerStyle: {

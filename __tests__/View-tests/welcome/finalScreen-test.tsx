@@ -16,7 +16,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const screen = getByTestId("welcome-final-screen");
@@ -29,7 +29,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const shapeOne = getByTestId("ovalShapeOne");
@@ -45,7 +45,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const title = getByText("Ready to\nStrive?");
@@ -58,7 +58,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const signInButton = getByText("Sign In");
@@ -71,7 +71,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const signUpButton = getByText("Sign Up");
@@ -84,7 +84,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const guestButton = getByText("Continue as guest");
@@ -97,7 +97,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const signInButton = getByText("Sign In");
@@ -112,7 +112,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
         setUser={mockSetUser}
         navigation={mockNavigation}
         firestoreCtrl={new FirestoreCtrl()}
-      />
+      />,
     );
 
     const signUpButton = getByText("Sign Up");
@@ -120,5 +120,4 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
     expect(mockNavigation.navigate).toHaveBeenCalled();
   });
-
 });

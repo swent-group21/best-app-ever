@@ -22,7 +22,7 @@ describe("WelcomeConceptScreen", () => {
           top: "70%",
           left: "-30%",
         }),
-      ])
+      ]),
     );
   });
 
@@ -36,7 +36,7 @@ describe("WelcomeConceptScreen", () => {
   it("renders the description text correctly", () => {
     const { getByText } = render(<WelcomeConceptScreen />);
     const descriptionText = getByText(
-      "Become the best version of yourself\nInteract with motivated people to reach your goals !prizes!"
+      "Become the best version of yourself\nInteract with motivated people to reach your goals !prizes!",
     );
 
     expect(descriptionText).toBeTruthy();
@@ -45,7 +45,7 @@ describe("WelcomeConceptScreen", () => {
   it("ensures styles for the description text are applied", () => {
     const { getByText } = render(<WelcomeConceptScreen />);
     const descriptionText = getByText(
-      "Become the best version of yourself\nInteract with motivated people to reach your goals !prizes!"
+      "Become the best version of yourself\nInteract with motivated people to reach your goals !prizes!",
     );
 
     expect(descriptionText.props.style).toEqual(
@@ -53,7 +53,7 @@ describe("WelcomeConceptScreen", () => {
         expect.objectContaining({
           textAlign: "center",
         }),
-      ])
+      ]),
     );
   });
 });

@@ -30,11 +30,16 @@ describe("SetUsernameScreen Tests", () => {
   it("renders the initial state correctly", () => {
     const { getByTestId, queryByTestId, queryByText } = render(
       <SetUsernameScreen
-        user={{ uid: "123", name: "Test User", email: "test@example.com", createdAt: new Date() }}
+        user={{
+          uid: "123",
+          name: "Test User",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     // Vérifie que le champ d'entrée pour le nom d'utilisateur est vide
@@ -62,11 +67,16 @@ describe("SetUsernameScreen Tests", () => {
 
     const { getByTestId } = render(
       <SetUsernameScreen
-        user={{ uid: "123", name: "Test User", email: "test@example.com", createdAt: new Date() }}
+        user={{
+          uid: "123",
+          name: "Test User",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     const usernameInput = getByTestId("usernameInput");
@@ -88,11 +98,16 @@ describe("SetUsernameScreen Tests", () => {
 
     const { getByText } = render(
       <SetUsernameScreen
-        user={{ uid: "123", name: "Test User", email: "test@example.com", createdAt: new Date() }}
+        user={{
+          uid: "123",
+          name: "Test User",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     // Vérifie que le message d'erreur est affiché
@@ -114,11 +129,16 @@ describe("SetUsernameScreen Tests", () => {
 
     const { getByTestId } = render(
       <SetUsernameScreen
-        user={{ uid: "123", name: "Test User", email: "test@example.com", createdAt: new Date() }}
+        user={{
+          uid: "123",
+          name: "Test User",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
-      />
+      />,
     );
 
     const profilePicButton = getByTestId("profilePicButton");
@@ -127,5 +147,4 @@ describe("SetUsernameScreen Tests", () => {
     fireEvent.press(profilePicButton);
     expect(pickImageMock).toHaveBeenCalled();
   });
-
 });

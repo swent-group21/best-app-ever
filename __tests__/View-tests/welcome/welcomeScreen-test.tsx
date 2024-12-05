@@ -5,9 +5,7 @@ import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 import { Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
-
 const mockFirestoreCtrl = new FirestoreCtrl();
-
 
 describe("WelcomeScreens", () => {
   it("renders the initial screen correctly", () => {

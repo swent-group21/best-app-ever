@@ -15,23 +15,27 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       Description: "Mock Description",
       endDate: new Date(2024, 1, 1),
     }),
-    getKChallenges: jest.fn().mockResolvedValue([
-      { uid: "1", challenge_name: "Challenge 1", description: "Description 1" },
-    ]),
-    getGroupsByUserId: jest.fn().mockResolvedValue([
-      { id: "1", name: "Group 1" },
-    ]),
+    getKChallenges: jest
+      .fn()
+      .mockResolvedValue([
+        {
+          uid: "1",
+          challenge_name: "Challenge 1",
+          description: "Description 1",
+        },
+      ]),
+    getGroupsByUserId: jest
+      .fn()
+      .mockResolvedValue([{ id: "1", name: "Group 1" }]),
     getLikesOf: jest.fn().mockResolvedValue([]),
-
   }));
 });
-
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
-  const mockUseHomeScreenViewModel = require("@/src/viewmodels/home/HomeScreenViewModel")
-    .useHomeScreenViewModel;
+  const mockUseHomeScreenViewModel =
+    require("@/src/viewmodels/home/HomeScreenViewModel").useHomeScreenViewModel;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -40,8 +44,18 @@ describe("HomeScreen UI Tests", () => {
     mockUseHomeScreenViewModel.mockReturnValue({
       userIsGuest: false,
       challenges: [
-        { uid: "1", challenge_name: "Challenge 1", description: "Description 1", challenge_id: "1" },
-        { uid: "2", challenge_name: "Challenge 2", description: "Description 2", challenge_id: "2" },
+        {
+          uid: "1",
+          challenge_name: "Challenge 1",
+          description: "Description 1",
+          challenge_id: "1",
+        },
+        {
+          uid: "2",
+          challenge_name: "Challenge 2",
+          description: "Description 2",
+          challenge_id: "2",
+        },
       ],
       groups: [
         { id: "1", name: "Group 1" },
@@ -58,10 +72,16 @@ describe("HomeScreen UI Tests", () => {
   it("renders the HomeScreen with challenges and groups", () => {
     const { getByText, getByTestId } = render(
       <HomeScreen
-        user={{ name: "Test User", uid: "12345", email: "test@epfl.ch", createdAt: new Date(), image_id: null }}
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@epfl.ch",
+          createdAt: new Date(),
+          image_id: null,
+        }}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     // Vérifie le titre de la barre supérieure
@@ -80,7 +100,6 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("Current Challenge Description")).toBeTruthy();
   });
 
-
   it("renders 'No challenge to display' when no challenges are available", () => {
     // Mock les valeurs retournées pour simuler l'absence de défis
     mockUseHomeScreenViewModel.mockReturnValue({
@@ -96,10 +115,15 @@ describe("HomeScreen UI Tests", () => {
 
     const { getByText } = render(
       <HomeScreen
-        user={{ name: "Test User", uid: "12345", email: "test@epfl.ch", createdAt: new Date() }}
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@epfl.ch",
+          createdAt: new Date(),
+        }}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     // Vérifie que le texte pour "aucun défi" est affiché
@@ -120,7 +144,11 @@ describe("HomeScreen UI Tests", () => {
     });
 
     const { getByText } = render(
-      <HomeScreen user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }} navigation={mockNavigation} firestoreCtrl={mockFirestoreCtrl} />
+      <HomeScreen
+        user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
     );
 
     // Vérifie que les défis et groupes ne sont pas affichés

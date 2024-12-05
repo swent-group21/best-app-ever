@@ -40,8 +40,7 @@ export default function WelcomeScreens({
         onScroll={handleScroll}
         testID="welcome-scrollview"
       >
-        <WelcomeIntroScreen 
-        />
+        <WelcomeIntroScreen />
         <WelcomeConceptScreen />
         <WelcomePersonalScreen />
 

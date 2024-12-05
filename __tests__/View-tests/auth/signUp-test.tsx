@@ -36,7 +36,7 @@ describe("SignUp Screen Tests", () => {
         navigation={mockNavigation}
         setUser={mockSetUser}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     expect(getByTestId("sign-up-screen")).toBeTruthy();
@@ -60,7 +60,7 @@ describe("SignUp Screen Tests", () => {
         navigation={mockNavigation}
         setUser={mockSetUser}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const nameInput = getByTestId("name-input");
@@ -81,7 +81,7 @@ describe("SignUp Screen Tests", () => {
         navigation={mockNavigation}
         setUser={mockSetUser}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const signUpButton = getByTestId("sign-up-button");
@@ -89,5 +89,4 @@ describe("SignUp Screen Tests", () => {
 
     expect(mockHandleSignUp).toHaveBeenCalled();
   });
-  
 });

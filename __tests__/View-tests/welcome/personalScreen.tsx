@@ -24,7 +24,7 @@ describe("WelcomeConceptScreen UI Tests", () => {
   it("renders the description text correctly", () => {
     const { getByText } = render(<WelcomeConceptScreen />);
     const description = getByText(
-      "Create and share your memories with your friends\nGet rewarded for your creativity"
+      "Create and share your memories with your friends\nGet rewarded for your creativity",
     );
     expect(description).toBeTruthy();
   });

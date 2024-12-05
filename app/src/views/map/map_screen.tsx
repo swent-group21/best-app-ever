@@ -16,7 +16,8 @@ export default function MapScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const { permission, userLocation, challengesWithLocation } = useMapScreenViewModel(firestoreCtrl);
+  const { permission, userLocation, challengesWithLocation } =
+    useMapScreenViewModel(firestoreCtrl);
 
   if (!permission && userLocation === undefined) {
     return (
@@ -47,7 +48,7 @@ export default function MapScreen({
         showsCompass={true}
         loadingEnabled={true}
       >
-        {challengesWithLocation.map((challenge :any, index) => (
+        {challengesWithLocation.map((challenge: any, index) => (
           <MapMarker
             key={index}
             testID={challenge.challenge_name}

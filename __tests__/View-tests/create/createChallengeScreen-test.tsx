@@ -30,7 +30,7 @@ describe("CreateChallengeScreen UI Tests", () => {
 
   it("renders the Create Challenge screen", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />
+      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
     );
 
     const screenTitle = getByTestId("Create-Challenge-Text");
@@ -39,7 +39,7 @@ describe("CreateChallengeScreen UI Tests", () => {
 
   it("renders the Challenge Name input", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />
+      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
     );
 
     const nameInput = getByTestId("Challenge-Name-Input");
@@ -51,7 +51,7 @@ describe("CreateChallengeScreen UI Tests", () => {
 
   it("renders the Description input", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />
+      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
     );
 
     const descriptionInput = getByTestId("Description-Input");

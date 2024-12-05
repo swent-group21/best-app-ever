@@ -38,7 +38,9 @@ export default function ProfileScreen({
   if (userIsGuest) {
     return (
       <ThemedView style={styles.bigContainer}>
-        <ThemedText style={styles.notLoggedIn}>You are not logged in!</ThemedText>
+        <ThemedText style={styles.notLoggedIn}>
+          You are not logged in!
+        </ThemedText>
         <ThemedTextButton
           text="Sign In"
           textColorType="white"
@@ -50,67 +52,69 @@ export default function ProfileScreen({
   }
 
   return (
-  <ThemedView style={styles.bigContainer} testID="profile-screen">
-
-  <TopBar
-    title="Your profile"
-    leftIcon="arrow-back"
-    leftAction={() => navigation.goBack()}
-  />
-  <TouchableOpacity onPress={pickImage} testID="image-picker" style={styles.smallContainer}>
-    {!image ? (
-      <ThemedIconButton
-        name="person-circle-outline"
-        size={300}
-        color="white"
+    <ThemedView style={styles.bigContainer} testID="profile-screen">
+      <TopBar
+        title="Your profile"
+        leftIcon="arrow-back"
+        leftAction={() => navigation.goBack()}
+      />
+      <TouchableOpacity
         onPress={pickImage}
-      />
-    ) : (
-      <Image source={{ uri: image }} style={styles.image} />
-    )}
-  </TouchableOpacity>
+        testID="image-picker"
+        style={styles.smallContainer}
+      >
+        {!image ? (
+          <ThemedIconButton
+            name="person-circle-outline"
+            size={300}
+            color="white"
+            onPress={pickImage}
+          />
+        ) : (
+          <Image source={{ uri: image }} style={styles.image} />
+        )}
+      </TouchableOpacity>
 
-  <ThemedTextInput
-    style={styles.username}
-    value={name}
-    onChangeText={setName}
-    placeholder="Enter your name"
-  />
+      <ThemedTextInput
+        style={styles.username}
+        value={name}
+        onChangeText={setName}
+        placeholder="Enter your name"
+      />
 
-  <ThemedView style={styles.actionsContainer} testID="actions-container">
-    <ThemedView style={styles.row}>
-      <ThemedTextButton
-        text="Change your email"
-        textColorType="white"
-        onPress={handleChangeEmail}
-        style={styles.action}
-        colorType="transparent"
-      />
-      <Icon name="email" color="white" size={30} />
+      <ThemedView style={styles.actionsContainer} testID="actions-container">
+        <ThemedView style={styles.row}>
+          <ThemedTextButton
+            text="Change your email"
+            textColorType="white"
+            onPress={handleChangeEmail}
+            style={styles.action}
+            colorType="transparent"
+          />
+          <Icon name="email" color="white" size={30} />
+        </ThemedView>
+        <ThemedView style={styles.row}>
+          <ThemedTextButton
+            text="Change your password"
+            textColorType="white"
+            onPress={handleChangePassword}
+            style={styles.action}
+            colorType="transparent"
+          />
+          <Icon name="key" color="white" size={30} />
+        </ThemedView>
+        <ThemedView style={styles.row}>
+          <ThemedTextButton
+            text="Log Out"
+            textColorType="white"
+            onPress={handleLogOut}
+            style={styles.action}
+            colorType="transparent"
+          />
+          <Icon name="logout" color="white" size={30} />
+        </ThemedView>
+      </ThemedView>
     </ThemedView>
-    <ThemedView style={styles.row}>
-      <ThemedTextButton
-        text="Change your password"
-        textColorType="white"
-        onPress={handleChangePassword}
-        style={styles.action}
-        colorType="transparent"
-      />
-      <Icon name="key" color="white" size={30} />
-    </ThemedView>
-    <ThemedView style={styles.row}>
-      <ThemedTextButton
-        text="Log Out"
-        textColorType="white"
-        onPress={handleLogOut}
-        style={styles.action}
-        colorType="transparent"
-      />
-      <Icon name="logout" color="white" size={30} />
-    </ThemedView>
-  </ThemedView>
-</ThemedView>
-
   );
 }
 
@@ -122,8 +126,6 @@ const styles = StyleSheet.create({
   smallContainer: {
     width: "100%",
     alignItems: "center",
-    
-    
   },
   image: {
     width: 220,
@@ -141,7 +143,6 @@ const styles = StyleSheet.create({
   columnInfo: {
     flexDirection: "column",
     alignItems: "flex-start",
-    
   },
   logOut: {
     width: "100%",
@@ -150,7 +151,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "red",
     borderWidth: 1,
-    
   },
   logOutView: {
     top: 0,

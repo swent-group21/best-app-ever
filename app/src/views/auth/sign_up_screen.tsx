@@ -6,11 +6,19 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import  useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
+import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SignUp({ navigation, setUser, firestoreCtrl }: { navigation: any, setUser: any, firestoreCtrl: any }) {
+export default function SignUp({
+  navigation,
+  setUser,
+  firestoreCtrl,
+}: {
+  navigation: any;
+  setUser: any;
+  firestoreCtrl: any;
+}) {
   const {
     name,
     surname,
@@ -42,7 +50,10 @@ export default function SignUp({ navigation, setUser, firestoreCtrl }: { navigat
         Tell us about you!
       </ThemedText>
 
-      <ThemedScrollView style={styles.inputColumn} automaticallyAdjustKeyboardInsets={true}>
+      <ThemedScrollView
+        style={styles.inputColumn}
+        automaticallyAdjustKeyboardInsets={true}
+      >
         <ThemedTextInput
           testID="name-input"
           onChangeText={setName}
