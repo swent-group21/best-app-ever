@@ -58,6 +58,19 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
       getProfilePicture: jest.fn((id) => {
         return "uri";
       }),
+      getChallengeDescription: jest.fn((id) => {
+        return {
+          title: "Challenge Title",
+          description: "Challenge Description",
+          endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+        };
+      }),
+      getKChallenges: jest.fn((id) => {
+        return [];
+      }),
+      getGroupsByUserId: jest.fn((id) => {
+        return [];
+      }),
       // Add any other methods as needed
     };
   });
@@ -243,6 +256,12 @@ const HomeTest = ({ setUser }: { setUser: jest.Mock }) => {
 };
 
 describe("SignInScreen Tests", () => {
+  // Reset the mock before each test
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.clearAllMocks();
+  });
+
   it("authenticates and passes the user to HomeScreen", async () => {
     // Render the test app
     const { getByTestId } = render(<SignInTest setUser={mockSetUser} />);
