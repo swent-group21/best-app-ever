@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import { Challenge } from "../../src/components/home/Challenge";
-import FirestoreCtrl, { DBChallenge, DBUser } from "../../src/app/models/firebase/FirestoreCtrl";
+import { Challenge } from "@/src/components/home/Challenge";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 // Mock the navigation prop
@@ -16,7 +16,7 @@ let mockTimestamp = {
 let mockDate = new Date();
 
 // Mock FirestoreCtrl methods
-jest.mock("../../src/app/models/firebase/FirestoreCtrl", () => {
+jest.mock("@/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
       getUser: jest.fn().mockResolvedValue({

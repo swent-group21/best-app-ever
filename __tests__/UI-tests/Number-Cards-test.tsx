@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import NumberCard from "../../src/components/home/Number_Card";
+import NumberCard from "@/src/components/home/number_cards";
 
 describe("NumberCard Component", () => {
   it("renders correctly with default number", () => {
