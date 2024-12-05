@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import  useSignUpViewModel from "../../viewmodels/auth/SignUpViewModel";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { TopBar } from "@/components/navigation/TopBar";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import  useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
 
 const { width, height } = Dimensions.get("window");
 

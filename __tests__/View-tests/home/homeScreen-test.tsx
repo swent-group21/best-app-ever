@@ -1,14 +1,14 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import HomeScreen from "../../../temp/src/views/home/home_screen";
-import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
+import HomeScreen from "@/src/views/home/home_screen";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
-jest.mock("../../../src/app/viewmodels/home/HomeScreenViewModel", () => ({
+jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
   useHomeScreenViewModel: jest.fn(),
 }));
 
-jest.mock("../../../src/app/models/firebase/FirestoreCtrl", () => {
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getChallengeDescription: jest.fn().mockResolvedValue({
       Title: "Mock Challenge",
@@ -30,7 +30,7 @@ jest.mock("../../../src/app/models/firebase/FirestoreCtrl", () => {
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
-  const mockUseHomeScreenViewModel = require("../../../src/app/viewmodels/home/HomeScreenViewModel")
+  const mockUseHomeScreenViewModel = require("@/src/viewmodels/home/HomeScreenViewModel")
     .useHomeScreenViewModel;
 
   beforeEach(() => {

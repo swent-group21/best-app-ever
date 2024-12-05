@@ -7,12 +7,12 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
-import SignInViewModel from "../../viewmodels/auth/SignInViewModel";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ThemedText } from "@/components/theme/ThemedText";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import SignInViewModel from "@/src/viewmodels/auth/SignInViewModel";
 
 // Dimensions de l'écran
 const { width, height } = Dimensions.get("window");

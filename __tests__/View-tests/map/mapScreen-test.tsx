@@ -1,10 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import MapScreen from "../../../temp/src/views/map/map_screen";
-import { useMapScreenViewModel } from "../../../temp/src/viewmodels/map/MapScreenViewModel";
-import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
+import MapScreen from "@/src/views/map/map_screen";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-jest.mock("../../../src/app/viewmodels/map/MapScreenViewModel", () => ({
+jest.mock("@/src/viewmodels/map/MapScreenViewModel", () => ({
   useMapScreenViewModel: jest.fn(),
 }));
 
@@ -37,7 +36,7 @@ describe("MapScreen UI Tests", () => {
     jest.clearAllMocks();
 
     // Mock the ViewModel
-    require("../../../src/app/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue({
+    require("@/src/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue({
       permission: true,
       userLocation: {
         coords: {
@@ -74,7 +73,7 @@ describe("MapScreen UI Tests", () => {
   });
 
   it("renders 'Getting location...' when location is loading", () => {
-    require("../../../src/app/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue({
+    require("@/src/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue({
       permission: false,
       userLocation: undefined,
       challengesWithLocation: [],

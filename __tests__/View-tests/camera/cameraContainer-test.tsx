@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import Camera from "@";
-import useCameraViewModel from "../../../temp/src/viewmodels/camera/CameraViewModel";
+import Camera from "@/src/views/camera/CameraContainer";
+import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 
 // Mock de useCameraViewModel
-jest.mock("../../../src/app/viewmodels/camera/CameraViewModel");
+jest.mock("@/src/viewmodels/camera/CameraViewModel");
 jest.mock("expo-font", () => ({
   useFonts: jest.fn(() => [true]),
   isLoaded: jest.fn(() => true),

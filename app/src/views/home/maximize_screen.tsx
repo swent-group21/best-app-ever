@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
-import { SingleComment } from "../../../components/posts/Comment";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { useMaximizeScreenViewModel } from "../../viewmodels/home/MaximizeScreenViewModel";
-import FirestoreCtrl, { DBUser, DBChallenge } from "../../models/firebase/FirestoreCtrl";
+import { TopBar } from "@/components/navigation/TopBar";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { SingleComment } from "@/components/posts/Comment";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
+import FirestoreCtrl, { DBUser, DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

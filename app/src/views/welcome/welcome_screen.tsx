@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Dimensions } from "react-native";
 
-import WelcomeIntroScreen from "./intro_screen";
-import WelcomeConceptScreen from "./concept_screen";
-import WelcomePersonalScreen from "./personal_screen";
-import WelcomeFinalScreen from "./final_screen";
-import { useThemeColor } from "../../../hooks/useThemeColor";
-import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
+import WelcomeIntroScreen from "@/src/views/welcome/intro_screen";
+import WelcomeConceptScreen from "@/src/views/welcome/concept_screen";
+import WelcomePersonalScreen from "@/src/views/welcome/personal_screen";
+import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 // Get the device's screen width
 const SCREEN_WIDTH = Dimensions.get("window").width;

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { isValidEmail, signUpWithEmail } from "../../../types/Auth";
-import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
+import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import { Alert } from "react-native";
 
 export default function useSignUpViewModel(navigation: any, setUser: any, firestoreCtrl:any) {

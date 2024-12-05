@@ -1,11 +1,11 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import SignInScreen from "../../../temp/src/views/auth/sign_in_screen";
-import SignInViewModel from "../../../temp/src/viewmodels/auth/SignInViewModel";
-import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
+import SignInScreen from "@/src/views/auth/sign_in_screen";
+import SignInViewModel from "@/src/viewmodels/auth/SignInViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
-jest.mock("../../../src/app/viewmodels/auth/SignInViewModel", () => jest.fn());
+jest.mock("@/src/viewmodels/auth/SignInViewModel", () => jest.fn());
 
 describe("SignInScreen Tests", () => {
   const mockNavigation = { navigate: jest.fn() };

@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import WelcomeConceptScreen from "../../../temp/src/views/welcome/personal_screen";
+import WelcomeConceptScreen from "@/src/views/welcome/personal_screen";
 
 describe("WelcomeConceptScreen UI Tests", () => {
   it("renders the main container", () => {

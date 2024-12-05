@@ -1,4 +1,4 @@
-import { DBChallenge, DBUser } from "../src/models/firebase/FirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 export type RootStackParamList = {
   Welcome: undefined;

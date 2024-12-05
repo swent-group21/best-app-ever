@@ -1,17 +1,17 @@
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { Challenge } from "../../../components/home/Challenge";
-import { Group } from "../../../components/home/Group";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ChallengeDescription } from "../../../components/home/Challenge_Description";
-import { useHomeScreenViewModel } from "../../viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "../../models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
+import { TopBar } from "@/components/navigation/TopBar";
+import { Challenge } from "@/components/home/Challenge";
+import { Group } from "@/components/home/Group";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ChallengeDescription } from "@/components/home/Challenge_Description";
+import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
+import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 
 const { width, height } = Dimensions.get("window");

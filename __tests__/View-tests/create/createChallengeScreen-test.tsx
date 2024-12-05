@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import CreateChallengeScreen from "../../../temp/src/views/create/create_challenge";
-import CreateChallengeViewModel from "../../../temp/src/viewmodels/create/CreateChallengeViewModel";
+import CreateChallengeScreen from "@/src/views/create/create_challenge";
+import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
 import { Switch } from "react-native-gesture-handler";
 
-jest.mock("../../../src/app/viewmodels/create/CreateChallengeViewModel");
+jest.mock("@/src/viewmodels/create/CreateChallengeViewModel");
 
 describe("CreateChallengeScreen UI Tests", () => {
   const mockSetChallengeName = jest.fn();

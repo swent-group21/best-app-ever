@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import ForgotPasswordScreen from "../../../temp/src/views/auth/forgot_password_screen";
-import ForgotPasswordViewModel from "../../../temp/src/viewmodels/auth/ForgotPasswordViewModel";
+import ForgotPasswordScreen from "@/src/views/auth/forgot_password_screen";
+import ForgotPasswordViewModel from "@/src/viewmodels/auth/ForgotPasswordViewModel";
 
 // Mock du ViewModel
-jest.mock("../../../src/app/viewmodels/auth/ForgotPasswordViewModel", () => jest.fn());
+jest.mock("@/src/viewmodels/auth/ForgotPasswordViewModel", () => jest.fn());
 
 describe("ForgotPasswordScreen Tests", () => {
   const mockNavigation = { goBack: jest.fn() };

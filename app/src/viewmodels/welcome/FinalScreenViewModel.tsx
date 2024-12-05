@@ -1,4 +1,4 @@
-import { signInAsGuest } from "../../../types/Auth";
+import { signInAsGuest } from "@/types/Auth";
 import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
 export default function WelcomeFinalViewModel({

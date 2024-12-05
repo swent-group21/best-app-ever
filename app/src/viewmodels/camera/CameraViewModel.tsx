@@ -1,9 +1,7 @@
 import { useState, useRef, useCallback, useMemo } from "react";
 import { CameraType, useCameraPermissions, CameraCapturedPicture, CameraPictureOptions } from "expo-camera";
 import { FlashMode } from "expo-camera/build/Camera.types";
-import Gesture from "react-native-gesture-handler";
 import { Platform } from "react-native";
-import { Camera } from "react-native-maps";
 import { CameraView } from "expo-camera";
 
 export default function useCameraViewModel(firestoreCtrl: any, navigation: any) {

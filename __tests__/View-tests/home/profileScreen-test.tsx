@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import ProfileScreen from "../../../temp/src/views/home/profile_screen";
-import FirestoreCtrl from "../../../temp/src/models/firebase/FirestoreCtrl";
+import ProfileScreen from "@/src/views/home/profile_screen";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 describe("ProfileScreen UI Tests", () => {
   const mockSetUser = jest.fn();

@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import SignUp from "../../../temp/src/views/auth/sign_up_screen";
-import useSignUpViewModel from "../../../temp/src/viewmodels/auth/SignUpViewModel";
+import SignUp from "@/src/views/auth/sign_up_screen";
+import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
 
-jest.mock("../../../src/app/viewmodels/auth/SignUpViewModel");
+jest.mock("@/src/viewmodels/auth/SignUpViewModel");
 
 describe("SignUp Screen Tests", () => {
   const mockNavigation = { goBack: jest.fn() };

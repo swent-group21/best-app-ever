@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Dimensions, Switch } from "react-native";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import {Colors} from "../../../constants/Colors";
-import CreateChallengeViewModel from "../../viewmodels/create/CreateChallengeViewModel";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedView } from "@/components/theme/ThemedView";
+import {Colors} from "@/constants/Colors";
+import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
 
 const { width, height } = Dimensions.get("window");
 
