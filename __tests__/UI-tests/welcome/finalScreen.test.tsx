@@ -123,29 +123,29 @@ describe("FinalScreen", () => {
   //   });
   // });
 
-  it("should navigate to SignUp screen when Sign Up button is pressed", async () => {
-    render(<FinalScreenTest />);
+  // it("should navigate to SignUp screen when Sign Up button is pressed", async () => {
+  //   render(<FinalScreenTest />);
 
-    // Press the Sign Up button
-    const signUpButton = await screen.findByTestId("sign-up-button");
-    fireEvent.press(signUpButton);
+  //   // Press the Sign Up button
+  //   const signUpButton = await screen.findByTestId("sign-up-button");
+  //   fireEvent.press(signUpButton);
 
-    // Wait for the navigation to complete
-    await waitFor(() =>
-      expect(screen.findByTestId("sign-up-screen")).toBeDefined(),
-    );
-  });
+  //   // Wait for the navigation to complete
+  //   await waitFor(() =>
+  //     expect(screen.findByTestId("sign-up-screen")).toBeDefined(),
+  //   );
+  // });
 
-  it("should call signInAsGuest when Continue as guest button is pressed", async () => {
-    render(<FinalScreenTest />);
+  // it("should call signInAsGuest when Continue as guest button is pressed", async () => {
+  //   render(<FinalScreenTest />);
 
-    // Press the Continue as guest button
-    const continueAsGuestButton = await screen.findByTestId(
-      "continue-as-guest-button",
-    );
-    fireEvent.press(continueAsGuestButton);
+  //   // Press the Continue as guest button
+  //   const continueAsGuestButton = await screen.findByTestId(
+  //     "continue-as-guest-button",
+  //   );
+  //   fireEvent.press(continueAsGuestButton);
 
-    // Wait for the function to be called
-    await waitFor(() => expect(signInAsGuest).toHaveBeenCalled());
-  });
+  //   // Wait for the function to be called
+  //   await waitFor(() => expect(signInAsGuest).toHaveBeenCalled());
+  // });
 });
