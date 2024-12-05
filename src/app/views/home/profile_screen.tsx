@@ -50,7 +50,13 @@ export default function ProfileScreen({
   }
 
   return (
-    <ThemedView style={styles.bigContainer} testID="profile-screen">
+  <ThemedView style={styles.bigContainer} testID="profile-screen">
+
+  <TopBar
+    title="Your profile"
+    leftIcon="arrow-back"
+    leftAction={() => navigation.goBack()}
+  />
   <TouchableOpacity onPress={pickImage} testID="image-picker" style={styles.smallContainer}>
     {!image ? (
       <ThemedIconButton

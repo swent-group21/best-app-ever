@@ -17,8 +17,8 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
       try {
         const currentChallengeData = await firestoreCtrl.getChallengeDescription();
         const formattedChallenge = {
-          title: currentChallengeData.title,
-          description: currentChallengeData.description,
+          title: currentChallengeData.Title,
+          description: currentChallengeData.Description,
           endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
         };
         setTitleChallenge(formattedChallenge);

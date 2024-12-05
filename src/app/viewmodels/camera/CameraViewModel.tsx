@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 import { Camera } from "react-native-maps";
 import { CameraView } from "expo-camera";
 
-export function useCameraViewModel(firestoreCtrl: any, navigation: any) {
+export default function useCameraViewModel(firestoreCtrl: any, navigation: any) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const camera = useRef<CameraView>(null);

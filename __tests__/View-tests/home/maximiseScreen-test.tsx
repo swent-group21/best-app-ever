@@ -3,7 +3,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import MaximizeScreen from "../../../src/app/views/home/maximize_screen";
 import FirestoreCtrl from "../../../src/app/models/firebase/FirestoreCtrl";
 
-// tests don't pass but Roman's PR solves it 
 describe("MaximizeScreen UI Tests", () => {
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockUser = {
@@ -25,6 +24,19 @@ describe("MaximizeScreen UI Tests", () => {
       },
     },
   };
+
+  const mockChallenge = {
+    params : {
+      challenge: {
+        challenge_name: "Test Challenge",
+        description: "This is a test challenge description",
+        date: new Date(),
+        image_id: null,
+        likes: ['12345'],
+        comments: ['Test comment'],
+      },
+    }
+  }
 
   it("renders the main container", () => {
     const { getByTestId } = render(

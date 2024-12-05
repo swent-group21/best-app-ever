@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import { CameraView } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
-import { useCameraViewModel } from "../../viewmodels/camera/CameraViewModel";
 import { Dimensions } from "react-native";
+import  useCameraViewModel  from "../../viewmodels/camera/CameraViewModel";
 
 const { width, height } = Dimensions.get("window");
 
-export default function Camera({ navigation, firestoreCtrl }: any) {
+export default function Camera({ navigation, firestoreCtrl}: any) {
   const {
     facing,
     permission,
@@ -54,17 +54,19 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
               enableTorch={isFlashEnabled}
               ref={camera}
               zoom={zoom}
+              testID="camera-view"
             >
               <View style={styles.buttonPlaceHolder}>
                 <TouchableOpacity
                   style={styles.changeOrientationAndFlash}
                   onPress={toggleCameraFacing}
+                  testID="Switch-Button"
                 >
                   <Ionicons name="camera-reverse" size={24} color="white" />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.takePicture} onPress={takePicture}>
-                  <Ionicons name="radio-button-off-sharp" size={100} color="white" />
+                  <Ionicons name="radio-button-off-sharp" size={100} color="white" testID="Camera-Button" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -75,6 +77,7 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
                     name={isFlashEnabled ? "flash-off" : "flash"}
                     size={24}
                     color="white"
+                    testID="Flash-Button"
                   />
                 </TouchableOpacity>
               </View>
