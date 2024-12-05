@@ -43,8 +43,8 @@ const mockUser = {
 // Mock setUser
 const mockSetuser = jest.fn();
 
-// Create a test component to wrap FinalScreen with navigation
-const FinalScreenTest = () => (
+// Create a test component to wrap FinalScreen Sign-In
+const FinalScreenTestSignIn = () => (
   <NavigationContainer>
     <Stack.Navigator
       initialRouteName="WelcomeFinal"
@@ -69,10 +69,50 @@ const FinalScreenTest = () => (
           />
         )}
       </Stack.Screen>
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+// Create a test component to wrap FinalScreen Sign-Up
+const FinalScreenTestSignUp = () => (
+  <NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="WelcomeFinal"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="WelcomeFinal">
+        {(props) => (
+          <WelcomeFinalScreen
+            {...props}
+            firestoreCtrl={mockFirestoreCtrl}
+            setUser={mockSetuser}
+          />
+        )}
+      </Stack.Screen>
 
       <Stack.Screen name="SignUp">
         {(props) => (
           <SignUp
+            {...props}
+            firestoreCtrl={mockFirestoreCtrl}
+            setUser={mockSetuser}
+          />
+        )}
+      </Stack.Screen>
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+// Create a test component to wrap FinalScreen Home
+const FinalScreenTestHome = () => (
+  <NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="WelcomeFinal"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="WelcomeFinal">
+        {(props) => (
+          <WelcomeFinalScreen
             {...props}
             firestoreCtrl={mockFirestoreCtrl}
             setUser={mockSetuser}
@@ -99,7 +139,7 @@ describe("FinalScreen", () => {
   });
 
   it("should render all UI components", () => {
-    render(<FinalScreenTest />);
+    render(<FinalScreenTestSignIn />);
 
     // Verify static texts
     expect(screen.getByText("Ready to\nStrive?")).toBeDefined();
@@ -110,42 +150,42 @@ describe("FinalScreen", () => {
     expect(screen.getByTestId("continue-as-guest-button")).toBeDefined();
   });
 
-  // it("should navigate to SignIn screen when Sign In button is pressed", async () => {
-  //   render(<FinalScreenTest />);
+  it("should navigate to SignIn screen when Sign In button is pressed", async () => {
+    render(<FinalScreenTestSignIn />);
 
-  //   // Press the Sign In button
-  //   const signInButton = await screen.findByTestId("sign-in-button");
-  //   fireEvent.press(signInButton);
+    // Press the Sign In button
+    const signInButton = await screen.findByTestId("sign-in-button");
+    fireEvent.press(signInButton);
 
-  //   // Wait for the navigation to complete
-  //   await waitFor(() => {
-  //     expect(screen.queryByTestId("sign-in-screen")).toBeTruthy();
-  //   });
-  // });
+    // Wait for the navigation to complete
+    await waitFor(() => {
+      expect(screen.queryByTestId("sign-in-screen")).toBeTruthy();
+    });
+  });
 
-  // it("should navigate to SignUp screen when Sign Up button is pressed", async () => {
-  //   render(<FinalScreenTest />);
+  it("should navigate to SignUp screen when Sign Up button is pressed", async () => {
+    render(<FinalScreenTestSignUp />);
 
-  //   // Press the Sign Up button
-  //   const signUpButton = await screen.findByTestId("sign-up-button");
-  //   fireEvent.press(signUpButton);
+    // Press the Sign Up button
+    const signUpButton = await screen.findByTestId("sign-up-button");
+    fireEvent.press(signUpButton);
 
-  //   // Wait for the navigation to complete
-  //   await waitFor(() =>
-  //     expect(screen.findByTestId("sign-up-screen")).toBeDefined(),
-  //   );
-  // });
+    // Wait for the navigation to complete
+    await waitFor(() =>
+      expect(screen.findByTestId("sign-up-screen")).toBeDefined(),
+    );
+  });
 
-  // it("should call signInAsGuest when Continue as guest button is pressed", async () => {
-  //   render(<FinalScreenTest />);
+  it("should call signInAsGuest when Continue as guest button is pressed", async () => {
+    render(<FinalScreenTestHome />);
 
-  //   // Press the Continue as guest button
-  //   const continueAsGuestButton = await screen.findByTestId(
-  //     "continue-as-guest-button",
-  //   );
-  //   fireEvent.press(continueAsGuestButton);
+    // Press the Continue as guest button
+    const continueAsGuestButton = await screen.findByTestId(
+      "continue-as-guest-button",
+    );
+    fireEvent.press(continueAsGuestButton);
 
-  //   // Wait for the function to be called
-  //   await waitFor(() => expect(signInAsGuest).toHaveBeenCalled());
-  // });
+    // Wait for the function to be called
+    await waitFor(() => expect(signInAsGuest).toHaveBeenCalled());
+  });
 });
