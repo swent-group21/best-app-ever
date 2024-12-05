@@ -39,7 +39,7 @@ export default function MaximizeScreen({
 
   useEffect(() => {
     // Fetch current user name and ID
-    console.log("User: ", user);
+    //console.log("User: ", user);
     setCurrentUserId(user.uid);
     setCurrentUserName(user.name);
 
@@ -68,7 +68,7 @@ export default function MaximizeScreen({
         setIsLiked(likes.includes(user.uid));
       });
 
-    console.log("-> Maximized challenge: ", { challenge });
+    //console.log("-> Maximized challenge: ", { challenge });
   }, [challenge, firestoreCtrl]);
 
   // @ts-ignore - date is not of the correct type
@@ -229,7 +229,7 @@ export default function MaximizeScreen({
                   .addComment(newComment)
                   .then(() => {
                     setCommentList([...commentList, newComment]);
-                    console.log("Comment added");
+                    //console.log("Comment added");
                   })
                   .catch((error) =>
                     console.error("Error adding comment: ", error),

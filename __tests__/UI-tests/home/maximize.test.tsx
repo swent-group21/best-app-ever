@@ -4,6 +4,7 @@ import MaximizeScreen from "@/app/screens/home/maximize_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl from "@/firebase/FirestoreCtrl";
+import { Challenge } from "@/components/home/Challenge";
 
 jest.mock("@/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
@@ -27,7 +28,6 @@ jest.mock("@/firebase/FirestoreCtrl", () => {
     };
   });
 });
-
 const mockFirestoreCtrl = new FirestoreCtrl();
 
 const mockNavigation = {
@@ -50,11 +50,6 @@ const Stack = createNativeStackNavigator();
 const MaximizeScreenTest = () => {
   const route = {
     params: {
-      user: {
-        uid: "12345",
-        name: "Test User",
-        email: "test@example.com",
-      },
       challenge: {
         challenge_id: "1",
         challenge_name: "Challenge 1",
@@ -88,6 +83,11 @@ const MaximizeScreenTest = () => {
 };
 
 describe("MaximizeScreen", () => {
+  // Clear mocks before each test
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders correctly", async () => {
     render(<MaximizeScreenTest />);
 
@@ -139,11 +139,12 @@ describe("MaximizeScreen", () => {
   });
 
   it("display text if no comments are available", async () => {
+    mockFirestoreCtrl.getCommentsOf = jest.fn().mockResolvedValue([]);
+
     render(<MaximizeScreenTest />);
 
-    await waitFor(() => {
-      expect(screen.findByText("No comments available")).toBeTruthy();
-    });
+    const noCommentsText = await screen.findByText("No comment to display");
+    expect(noCommentsText).toBeTruthy();
   });
 
   it("displays comments", async () => {
