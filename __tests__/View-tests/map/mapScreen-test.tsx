@@ -68,6 +68,16 @@ describe("MapScreen UI Tests", () => {
 //     );
 //   });
 
+  it("renders the map with challenges and user location", () => {
+    const { getByText, getByTestId } = render(
+      <MapScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+        route={{}}
+      />,
+    );
+
 //   it("renders the map with challenges and user location", () => {
 //     const { getByText, getByTestId } = render(
 //       <MapScreen
@@ -83,6 +93,7 @@ describe("MapScreen UI Tests", () => {
 //     expect(getByTestId("Challenge 2")).toBeTruthy();
 //   });
 
+
 //   it("renders 'Getting location...' when location is loading", () => {
 //     require("@/src/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue(
 //       {
@@ -91,6 +102,16 @@ describe("MapScreen UI Tests", () => {
 //         challengesWithLocation: [],
 //       },
 //     );
+
+    const { getByText } = render(
+      <MapScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+        route={{}}
+      />,
+    );
+
 
 //     const { getByText } = render(
 //       <MapScreen
