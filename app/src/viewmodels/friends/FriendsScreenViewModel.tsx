@@ -7,7 +7,7 @@ import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
  * @param uid : the user's ID
  * @returns : searchText, setSearchText, users, friends, requests, filteredUsers, handleFriendPress
  */
-export default function useFriendsScreenViewModel(firestoreCtrl: any, uid: string) {
+export function useFriendsScreenViewModel(firestoreCtrl: any, uid: string) {
   const [searchText, setSearchText] = useState("");
   const [users, setUsers] = useState<DBUser[]>([]);
   const [friends, setFriends] = useState<DBUser[]>([]);

@@ -10,6 +10,7 @@ export type RootStackParamList = {
   Home: undefined;
   Camera: undefined;
   SetUsername: undefined;
+  Friends: undefined;
   Maximize: {
     challenge: DBChallenge;
   };
