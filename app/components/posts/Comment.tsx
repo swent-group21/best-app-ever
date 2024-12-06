@@ -2,9 +2,15 @@ import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { ThemedIconButton } from "../theme/ThemedIconButton";
 import { DBComment } from "../../src/models/firebase/FirestoreCtrl";
+import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * The SingleComment component displays a single comment.
+ * @param comment : the comment object
+ * @returns : a component for the comment
+ */
 export function SingleComment(comment: DBComment) {
   return (
     <View
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
     height: height * 0.08,
     flexDirection: "column",
     padding: 10,
-    backgroundColor: "black",
+    backgroundColor: Colors.dark.backgroundPrimary,
     borderRadius: 15,
     borderColor: "black",
     borderWidth: 1,

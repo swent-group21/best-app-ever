@@ -14,6 +14,7 @@ import { ThemedText } from "../theme/ThemedText";
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
+// Define the TopbarProps type
 interface TopbarProps {
   leftIcon?: string;
   leftAction?: () => void;
@@ -24,6 +25,17 @@ interface TopbarProps {
   testID?: string;
 }
 
+/**
+ * The TopBar component displays a top bar with two icons and a title.
+ * @param leftIcon : icon for the left button
+ * @param leftAction : action for the left button
+ * @param rightIcon : icon for the right button
+ * @param rightAction : action for the right button
+ * @param title : title for the top bar
+ * @param colorType : color type for the icons
+ * @param testID : testID for the component
+ * @returns : a component for the top bar
+ */
 export function TopBar({
   leftIcon,
   leftAction = () => {},

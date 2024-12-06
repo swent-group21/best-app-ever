@@ -12,6 +12,16 @@ import React from "react";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * The Challenge component displays a challenge.
+ * @param challengeDB : the challenge object
+ * @param index : the index of the challenge
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
+ * @param testID : testID for the component
+ * @param currentUser : the current user object
+ * @returns : a component for the challenge
+ */
 export function Challenge({
   challengeDB,
   index,

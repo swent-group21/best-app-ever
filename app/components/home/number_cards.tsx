@@ -9,6 +9,12 @@ const initialCardNumber = "00";
 const initNumber = 0;
 const slice = -2;
 
+/** 
+ * The NumberCard component displays a number card.
+ * @param number : the number to display
+ * @param testID : testID for the component
+ * @returns : a component for the number card
+ */
 function NumberCard({
   number = initNumber,
   testID,

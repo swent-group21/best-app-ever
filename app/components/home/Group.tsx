@@ -10,6 +10,15 @@ import React from "react";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * The Group component displays a group.
+ * @param groupDB : the group object
+ * @param index : the index of the group
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
+ * @param testID : testID for the component
+ * @returns : a component for the group
+ */
 export function Group({
   groupDB,
   index,

@@ -7,6 +7,7 @@ import { useThemeColor } from "../../hooks/useThemeColor";
 // Get screen width and height
 const { width, height } = Dimensions.get("window");
 
+// Define the BottomBarProps type
 interface BottomBarProps {
   leftIcon?: string;
   leftAction?: () => void;
@@ -18,6 +19,18 @@ interface BottomBarProps {
   testID?: string;
 }
 
+/**
+ * The BottomBar component displays a bottom bar with three icons.
+ * @param leftIcon : icon for the left button
+ * @param leftAction : action for the left button
+ * @param centerIcon : icon for the center button
+ * @param centerAction : action for the center button
+ * @param rightIcon : icon for the right button
+ * @param rightAction : action for the right button
+ * @param colorType : color type for the icons
+ * @param testID : testID for the component
+ * @returns : a component for the bottom bar
+ */
 export function BottomBar({
   leftIcon,
   leftAction = () => {},

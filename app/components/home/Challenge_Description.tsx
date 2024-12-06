@@ -19,6 +19,10 @@ interface ChallengeDescriptionProps {
 
 /**
  * The ChallengeDescription component displays the current challenge description.
+ * @param dBChallengeDescription : the current challenge description
+ * @param onTimerFinished : function to call when the timer finishes
+ * @param testID : testID for the component
+ * @returns : a component for the challenge description
  */
 export function ChallengeDescription({
   dBChallengeDescription,

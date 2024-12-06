@@ -9,6 +9,7 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { Icon } from "react-native-elements";
 import { useProfileScreenViewModel } from "@/src/viewmodels/home/ProfileScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
 
@@ -94,7 +95,7 @@ export default function ProfileScreen({
         <ThemedView style={styles.row}>
           <ThemedTextButton
             text="Change your email"
-            textColorType="white"
+            textColorType="textSecondary"
             onPress={handleChangeEmail}
             style={styles.action}
             colorType="transparent"
@@ -104,7 +105,7 @@ export default function ProfileScreen({
         <ThemedView style={styles.row}>
           <ThemedTextButton
             text="Change your password"
-            textColorType="white"
+            textColorType="textSecondary"
             onPress={handleChangePassword}
             style={styles.action}
             colorType="transparent"
@@ -114,7 +115,7 @@ export default function ProfileScreen({
         <ThemedView style={styles.row}>
           <ThemedTextButton
             text="Log Out"
-            textColorType="white"
+            textColorType="textSecondary"
             onPress={handleLogOut}
             style={styles.action}
             colorType="transparent"
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 12,
     flexDirection: "row",
-    backgroundColor: "#212124",
+    backgroundColor: Colors.light.backgroundSecondary,
   },
   actionsContainer: {
     borderRadius: 10,
@@ -179,11 +180,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
     flexDirection: "column",
-    backgroundColor: "#212124",
+    backgroundColor: Colors.light.backgroundSecondary,
   },
   row: {
     flexDirection: "row",
-    backgroundColor: "#212124",
+    backgroundColor: Colors.light.backgroundSecondary,
     width: "100%",
     borderRadius: 10,
     justifyContent: "space-between",
