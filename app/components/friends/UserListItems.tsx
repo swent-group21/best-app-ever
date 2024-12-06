@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { useState, useEffect } from "react";
+
 
 /**
  * User list item component

@@ -1,9 +1,9 @@
-import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 
 /**
  * Friend Request Item component
@@ -41,22 +41,24 @@ export const FriendRequestItem = ({
     </ThemedText>
     <View style={styles.requestButtons} testID="friend-request-buttons">
       {/* Accept Button with Icon */}
-      <TouchableOpacity
-        style={styles.acceptButton}
+      <ThemedIconButton
+        name="check"
         onPress={onAccept}
         testID="accept-button"
-      >
-        <Icon name="check" size={30} color="#fff"  />
-      </TouchableOpacity>
+        color="#fff"
+        style={styles.acceptButton}
+      />
 
       {/* Decline Button with Icon */}
-      <TouchableOpacity
-        style={styles.declineButton}
+
+      <ThemedIconButton 
+        name="close"
         onPress={onDecline}
         testID="decline-button"
-      >
-        <Icon name="close" size={30} color="#fff" />
-      </TouchableOpacity>
+        color="#fff"
+        style={styles.declineButton}
+      />
+
     </View>
   </ThemedView>
 );

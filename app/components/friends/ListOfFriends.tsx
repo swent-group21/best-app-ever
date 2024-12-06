@@ -1,4 +1,3 @@
-import React from "react";
 import { FlatList } from "react-native";
 import { FriendListItem } from "@/components/friends/FriendListItem";
 import { ThemedText } from "@/components/theme/ThemedText";

@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet } from "react-native";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";

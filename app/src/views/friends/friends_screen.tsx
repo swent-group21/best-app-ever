@@ -1,4 +1,3 @@
-import React from "react";
 import { Text, StyleSheet } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
