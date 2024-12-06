@@ -81,7 +81,7 @@ jest.mock("expo", () => ({
 }));
 
 // Mock gesture-handler
-jest.mock("@/gesture-handler", () => {});
+jest.mock("./gesture-handler", () => {});
 
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () => ({
@@ -111,7 +111,7 @@ jest.mock("react-native-elements", () => {
   };
 });
 
-jest.mock("@/firebase/FirestoreCtrl");
+jest.mock("@/src/models/firebase/FirestoreCtrl");
 
 jest.mock("react-native-maps", () => {
   const { View } = require("react-native");
