@@ -9,7 +9,7 @@ import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
-    getKChallenges: jest.fn(),
+    getKChallenges: jest.fn(() => []),
   }));
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
@@ -87,6 +87,9 @@ describe("useMapScreenViewModel", () => {
   });
 
   it("should set default location when permission is denied", async () => {
+    // Mock console error
+    jest.spyOn(console, "error").mockImplementationOnce(() => {});
+    
     (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({
       status: "denied",
     });
@@ -102,6 +105,9 @@ describe("useMapScreenViewModel", () => {
   });
 
   it("should set default location on error during location fetch", async () => {
+    // Mock console error
+    jest.spyOn(console, "error").mockImplementationOnce(() => {});
+
     (requestForegroundPermissionsAsync as jest.Mock).mockRejectedValueOnce(
       new Error("PermissionError")
     );
@@ -117,6 +123,9 @@ describe("useMapScreenViewModel", () => {
   });
 
   it("should fetch challenges with valid locations from Firestore", async () => {
+    // Mock console error
+    jest.spyOn(console, "error").mockImplementationOnce(() => {});
+
     const mockChallenges: DBChallenge[] = [
       {
         challenge_id: "1",
@@ -151,6 +160,9 @@ describe("useMapScreenViewModel", () => {
   });
 
   it("should handle errors during challenge fetching", async () => {
+    // Mock console error
+    jest.spyOn(console, "error").mockImplementationOnce(() => {});
+
     (mockFirestoreCtrl.getKChallenges as jest.Mock).mockRejectedValueOnce(
       new Error("FirestoreError")
     );
@@ -165,12 +177,15 @@ describe("useMapScreenViewModel", () => {
     });
   });
 
-  it("should navigate back when navigateGoBack is called", () => {
+  it("should navigate back when navigateGoBack is called", async () => {
+    // Mock console error
+    jest.spyOn(console, "error").mockImplementationOnce(() => {});
+
     const { result } = renderHook(() =>
       useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
     );
 
-    act(() => {
+    await waitFor(() => {
       result.current.navigateGoBack();
     });
 
