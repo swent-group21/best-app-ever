@@ -2,6 +2,7 @@ import React from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
+import { Colors } from "@/constants/Colors";
 
 /**
  * Friend List Item component
@@ -58,10 +59,10 @@ const styles = StyleSheet.create({
   defaultAvatar: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#800080",
+    backgroundColor: Colors.light.backgroundSecondary,
   },
   avatarText: {
-    color: "#fff",
+    color: Colors.light.textPrimary,
     fontSize: 18,
     fontWeight: "bold",
   },

@@ -28,6 +28,9 @@ export type DBUser = {
   image_id?: string;
   createdAt: Date;
   groups?: string[];
+  friends?: string[];
+  userRequestedFriends?: string[];
+  friendsRequestedUser?: string[];
 };
 
 export type DBChallenge = {
@@ -497,4 +500,232 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
+
+  /**
+   * Retrieves all users from Firestore.
+   * @returns A promise that resolves to an array of users.
+   * */
+
+  async getAllUsers(): Promise<DBUser[]> {
+    try {
+      const usersRef = collection(firestore, "users");
+      const querySnapshot = await getDocs(usersRef);
+      const users = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+        } as DBUser;
+      });
+
+      return users;
+    } catch (error) {
+      console.error("Error getting all users: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Add a friend to the user's friend list.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to add.
+   */
+
+  async addFriend(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.userRequestedFriends = user.userRequestedFriends || [];
+      friend.friendsRequestedUser = friend.friendsRequestedUser || [];
+      // if (user.friends?.includes(friendId) || user.userRequestedFriends?.includes(friendId) || user.friendsRequestedUser?.includes(friendId)) {
+      //   return;
+      // }
+
+      user.userRequestedFriends?.push(friendId);
+      friend.friendsRequestedUser?.push(userId);
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    } catch (error) {
+      console.error("Error adding friend: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Accept a friend request.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to accept.
+   * */
+  async acceptFriend(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.friends = user.friends || [];
+      friend.friends = friend.friends || [];
+
+      user.friends?.push(friendId);
+      friend.friends?.push(userId);
+
+      user.friendsRequestedUser = user.friendsRequestedUser?.filter(
+        (id) => id !== friendId,
+      );
+      friend.userRequestedFriends = friend.userRequestedFriends?.filter(
+        (id) => id !== userId,
+      );
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    } catch (error) {
+      console.error("Error accepting friend: ", error);
+
+    }}
+
+     /**
+   * Reject a friend request.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the user to reject.
+   * */
+
+  async rejectFriend(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.userRequestedFriends = user.userRequestedFriends || [];
+      friend.friendsRequestedUser = friend.friendsRequestedUser || [];
+
+      user.friendsRequestedUser = user.friendsRequestedUser?.filter(
+        (id) => id !== friendId,
+      );
+      friend.userRequestedFriends = friend.userRequestedFriends?.filter(
+        (id) => id !== userId,
+      );
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    } catch (error) {
+      console.error("Error rejecting friend: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   *Retrieve the friends of a user.
+   * @param userId The UID of the user.
+   */
+   async getFriends(userId: string): Promise<DBUser[]> {
+    try {
+      const user = await this.getUser(userId);
+      const friends = await Promise.all(
+        user.friends?.map(async (id) => await this.getUser(id)) || [],
+      );
+      return friends;
+    } catch (error) {
+      console.error("Error getting friends: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   *Retrieve the users that the user has requested to be friends with.
+   * @param userId The UID of the user.
+   */
+   async getRequestedFriends(userId: string): Promise<DBUser[]> {
+    try {
+      const user = await this.getUser(userId);
+      const friends = await Promise.all(
+        user.userRequestedFriends?.map(async (id) => await this.getUser(id)) ||
+          [],
+      );
+      return friends;
+    } catch (error) {
+      console.error("Error getting requested friends: ", error);
+      throw error;
+    }
+  }
+
+   /**
+
+   *Retrieve the friends requests of a user.
+   * @param userId The UID of the user.
+   */
+   async getFriendRequests(userId: string): Promise<DBUser[]> {
+    try {
+      const user = await this.getUser(userId);
+      const friends = await Promise.all(
+        user.friendsRequestedUser?.map(async (id) => await this.getUser(id)) ||
+          [],
+      );
+      return friends;
+    } catch (error) {
+      console.error("Error getting friends requested user: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Remove a friend from the user's friend list.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to remove.
+   */
+  async removeFriendRequest(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      const friend = await this.getUser(friendId);
+
+      user.friendsRequestedUser = user.friendsRequestedUser || [];
+      friend.userRequestedFriends = friend.userRequestedFriends || [];
+
+      user.userRequestedFriends = user.userRequestedFriends?.filter(
+        (id) => id !== friendId,
+      );
+      friend.friendsRequestedUser = friend.friendsRequestedUser?.filter(
+        (id) => id !== userId,
+      );
+
+      await this.createUser(userId, user);
+      await this.createUser(friendId, friend);
+    } catch (error) {
+      console.error("Error unadding friend: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Check if a user is a friend of another user.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to check.
+   * @returns 
+   */
+  async isFriend(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      return user.friends?.includes(friendId);
+    } catch (error) {
+      console.error("Error checking if friend: ", error);
+    }
+  }
+
+  /**
+   * Check if a user has requested to be friends with another user.
+   * @param userId The UID of the user.
+   * @param friendId The UID of the friend to check.
+   * @returns if the user has requested to be friends with another user.
+   */
+  async isRequested(userId: string, friendId: string) {
+    try {
+      const user = await this.getUser(userId);
+      return user.userRequestedFriends?.includes(friendId);
+    } catch (error) {
+      console.error("Error checking if requested: ", error);
+      throw error;
+    }
+  }
+
+
+
+
+
 }
