@@ -103,8 +103,14 @@ export default function MaximizeScreen({
           </ThemedText>
         </ThemedView>
 
-        <ThemedView style={styles.descriptionContainer} colorType="transparent" testID="caption-id">
-          <ThemedText colorType="white" type="defaultSemiBold">{postCaption}</ThemedText>
+        <ThemedView
+          style={styles.descriptionContainer}
+          colorType="transparent"
+          testID="caption-id"
+        >
+          <ThemedText colorType="white" type="defaultSemiBold">
+            {postCaption}
+          </ThemedText>
         </ThemedView>
 
         <ThemedView style={styles.row} colorType="transparent">

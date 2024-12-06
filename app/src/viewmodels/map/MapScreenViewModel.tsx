@@ -4,7 +4,10 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import FirestoreCtrl, { DBChallenge, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBChallengeDescription,
+} from "../../models/firebase/FirestoreCtrl";
 
 /**
  * Default location centered on the city of Nice, France.
@@ -63,7 +66,8 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
         const formattedChallenge = {
           title: currentChallengeData.Title,
           description: currentChallengeData.Description,
@@ -76,12 +80,10 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
       }
     };
 
-
     const fetchChallenges = async (challengeTitle: string) => {
       try {
-        const challengesData = await firestoreCtrl.getPostsByChallengeTitle(
-          challengeTitle,
-        );;
+        const challengesData =
+          await firestoreCtrl.getPostsByChallengeTitle(challengeTitle);
         const filteredChallenges = challengesData.filter(
           (challenge) =>
             challenge.location !== undefined && challenge.location !== null,
@@ -90,8 +92,7 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
       } catch (error) {
         console.error("Error fetching challenges: ", error);
       }
-    }
-      
+    };
 
     fetchCurrentChallenge().then((challengeTitle) => {
       console.log("Current challenge fetched : ", challengeTitle);
@@ -107,7 +108,7 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
       try {
         const challengesData = await firestoreCtrl.getPostsByChallengeTitle(
           titleChallenge.title,
-        );;
+        );
         const filteredChallenges = challengesData.filter(
           (challenge) =>
             challenge.location !== undefined && challenge.location !== null,

@@ -46,5 +46,4 @@ describe("CreateChallengeScreen UI Tests", () => {
     fireEvent.changeText(captionInput, "Updated Caption Name");
     expect(mockSetCaption).toHaveBeenCalledWith("Updated Caption Name");
   });
-
 });

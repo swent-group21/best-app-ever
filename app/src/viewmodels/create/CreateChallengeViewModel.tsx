@@ -24,7 +24,6 @@ export default function CreateChallengeViewModel({
   navigation: any;
   route: any;
 }) {
-  
   const [location, setLocation] = useState<LocationObject | null>(null);
   const [isLocationEnabled, setIsLocationEnabled] = useState(true);
   const [caption, setCaption] = useState("");
@@ -35,7 +34,7 @@ export default function CreateChallengeViewModel({
       description: "Challenge Description",
       endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
     });
-  
+
   const [postImage, setPostImage] = useState<string>("");
 
   const imageId = route.params?.image_id;
@@ -96,8 +95,6 @@ export default function CreateChallengeViewModel({
     fetchDescriptionTitle();
   }, []);
 
-
-
   // Create the challenge
   const makeChallenge = async () => {
     try {
@@ -108,7 +105,7 @@ export default function CreateChallengeViewModel({
         isLocationEnabled ? location : null,
         descriptionTitle.title ?? "",
         date,
-        postImage
+        postImage,
       );
       navigation.reset({ index: 0, routes: [{ name: "Home" }] });
     } catch (error) {

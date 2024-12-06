@@ -46,30 +46,27 @@ export function useHomeScreenViewModel(
       }
     };
 
-
     const fetchChallenges = async (challengeTitle: string) => {
       try {
-        await firestoreCtrl.getPostsByChallengeTitle(challengeTitle)
+        await firestoreCtrl
+          .getPostsByChallengeTitle(challengeTitle)
           .then((challenge: DBChallenge[]) => {
-          // Sort challenges by date
-          const sortedChallenges = challenge.sort(
-            (a, b) => (a.date && b.date ) ? (b.date.seconds - a.date.seconds) : 0,
-          );
-          setChallenges(sortedChallenges);
-      });
+            // Sort challenges by date
+            const sortedChallenges = challenge.sort((a, b) =>
+              a.date && b.date ? b.date.seconds - a.date.seconds : 0,
+            );
+            setChallenges(sortedChallenges);
+          });
       } catch (error) {
         console.error("Error fetching challenges: ", error);
       }
-    }
-      
+    };
 
     fetchCurrentChallenge().then((challengeTitle) => {
       console.log("Current challenge fetched : ", challengeTitle);
       if (user.uid) fetchChallenges(challengeTitle);
     });
-
   }, [user.uid, firestoreCtrl]);
-
 
   useEffect(() => {
     if (user.uid) {

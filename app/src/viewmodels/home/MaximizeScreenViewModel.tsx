@@ -77,7 +77,8 @@ export function useMaximizeScreenViewModel(
 
   const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
   const postImage = challenge.image_id ?? "";
-  const postCaption = challenge.caption == "" ? "Secret Challenge" : challenge.caption;
+  const postCaption =
+    challenge.caption == "" ? "Secret Challenge" : challenge.caption;
 
   return {
     commentText,

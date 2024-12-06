@@ -497,7 +497,6 @@ export default class FirestoreCtrl {
     }
   }
 
-
   /**
    * Retrieves the posts of a specific challenge.
    *
@@ -509,7 +508,10 @@ export default class FirestoreCtrl {
   ): Promise<DBChallenge[]> {
     try {
       const postsRef = collection(firestore, "challenges");
-      const q = query(postsRef, where("challenge_description", "==", challengeTitle));
+      const q = query(
+        postsRef,
+        where("challenge_description", "==", challengeTitle),
+      );
 
       const querySnapshot = await getDocs(q);
       const posts = querySnapshot.docs.map((doc) => {

@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, Dimensions, Image, View } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  View,
+} from "react-native";
 import { Colors } from "../../constants/Colors";
 import { ThemedText } from "../theme/ThemedText";
 import { ThemedView } from "../theme/ThemedView";
