@@ -2,7 +2,7 @@ import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 import { Colors } from "@/constants/Colors";
 
 /**
