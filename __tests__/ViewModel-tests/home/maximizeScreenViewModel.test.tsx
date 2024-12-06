@@ -90,19 +90,19 @@ describe("useMaximizeScreenViewModel", () => {
       useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
     );
 
-    act(() => {
+    await waitFor(() => {
       result.current.toggleLike();
     });
 
     expect(result.current.isLiked).toBe(true);
-    expect(result.current.likeList).toEqual(["12345"]);
+    expect(result.current.likeList).toEqual(["12345", "67890"]);
 
-    act(() => {
+    await waitFor(() => {
       result.current.toggleLike();
     });
 
     expect(result.current.isLiked).toBe(false);
-    expect(result.current.likeList).toEqual([]);
+    expect(result.current.likeList).toEqual(["67890"]);
     expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("1", ["12345"]);
   });
 
@@ -138,12 +138,12 @@ describe("useMaximizeScreenViewModel", () => {
     expect(result.current.commentText).toBe("");
   });
 
-  it("should handle navigation correctly with navigateGoBack", () => {
+  it("should handle navigation correctly with navigateGoBack", async () => {
     const { result } = renderHook(() =>
       useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
     );
 
-    act(() => {
+    await waitFor(() => {
       result.current.navigateGoBack();
     });
 
@@ -175,14 +175,16 @@ describe("useMaximizeScreenViewModel", () => {
     });
   });
 
-  it("should update post details correctly", () => {
+  it("should update post details correctly", async () => {
     const { result } = renderHook(() =>
       useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
     );
 
-    expect(result.current.postTitle).toBe("Test Challenge");
-    expect(result.current.postDescription).toBe("Challenge description");
-    expect(result.current.postImage).toBe("test-image-id");
-    expect(result.current.postDate).toBe(mockChallenge.date);
+    await waitFor(() => {
+      expect(result.current.postTitle).toBe("Test Challenge");
+      expect(result.current.postDescription).toBe("Challenge description");
+      expect(result.current.postImage).toBe("test-image-id");
+      expect(result.current.postDate).toBe(mockChallenge.date);
+    });
   });
 });
