@@ -5,12 +5,16 @@ import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import { BottomBar } from "../../../components/navigation/BottomBar";
 import { ThemedView } from "../../../components/theme/ThemedView";
-import {Colors} from "../../../constants/Colors";
+import { Colors } from "../../../constants/Colors";
 import CreateChallengeViewModel from "../../viewmodels/create/CreateChallengeViewModel";
 
 const { width, height } = Dimensions.get("window");
 
-export default function CreateChallengeScreen({ navigation, route, firestoreCtrl }: any) {
+export default function CreateChallengeScreen({
+  navigation,
+  route,
+  firestoreCtrl,
+}: any) {
   const {
     challengeName,
     setChallengeName,
@@ -24,12 +28,20 @@ export default function CreateChallengeScreen({ navigation, route, firestoreCtrl
   return (
     <ThemedView style={styles.createChallengeScreen}>
       {/* Title */}
-      <ThemedText style={styles.title} colorType="textPrimary" type="title" testID="Create-Challenge-Text">
+      <ThemedText
+        style={styles.title}
+        colorType="textPrimary"
+        type="title"
+        testID="Create-Challenge-Text"
+      >
         Create a New Challenge
       </ThemedText>
 
       {/* Form */}
-      <ThemedScrollView style={styles.containerCol} automaticallyAdjustKeyboardInsets={true}>
+      <ThemedScrollView
+        style={styles.containerCol}
+        automaticallyAdjustKeyboardInsets={true}
+      >
         <ThemedTextInput
           style={styles.input}
           placeholder="Challenge Name"
@@ -53,20 +65,33 @@ export default function CreateChallengeScreen({ navigation, route, firestoreCtrl
         <ThemedView style={styles.containerRow}>
           <Switch
             style={styles.switch}
-            trackColor={{ false: Colors.dark.icon, true: Colors.light.tabIconDefault }}
-            thumbColor={isLocationEnabled ? Colors.light.tint : Colors.dark.white}
+            trackColor={{
+              false: Colors.dark.icon,
+              true: Colors.light.tabIconDefault,
+            }}
+            thumbColor={
+              isLocationEnabled ? Colors.light.tint : Colors.dark.white
+            }
             ios_backgroundColor={Colors.light.tint}
             onValueChange={toggleLocation}
             value={isLocationEnabled}
             testID="switch-button"
           />
-          <ThemedText colorType="textPrimary" style={styles.switchText} testID="Location-validation">
+          <ThemedText
+            colorType="textPrimary"
+            style={styles.switchText}
+            testID="Location-validation"
+          >
             Enable location ?
           </ThemedText>
         </ThemedView>
 
         {/* Submit button */}
-        <BottomBar rightIcon="arrow-forward" rightAction={makeChallenge} testID="bottom-bar" />
+        <BottomBar
+          rightIcon="arrow-forward"
+          rightAction={makeChallenge}
+          testID="bottom-bar"
+        />
       </ThemedScrollView>
     </ThemedView>
   );

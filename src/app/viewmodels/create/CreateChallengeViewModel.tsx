@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from "expo-location";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+  LocationObject,
+} from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createChallenge } from "../../models/types/ChallengeBuilder";
 import FirestoreCtrl, { DBGroup } from "../../models/firebase/FirestoreCtrl";

@@ -23,6 +23,6 @@ export type RootStackParamList = {
   MapScreen: undefined;
   GroupScreen: {
     currentGroup: DBGroup;
-  }
+  };
   CreateGroup: undefined;
 };

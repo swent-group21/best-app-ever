@@ -19,7 +19,7 @@ const SignUpTest = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        id = {undefined}
+        id={undefined}
         initialRouteName="SignUp"
         screenOptions={{ headerShown: false }}
       >

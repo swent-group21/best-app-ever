@@ -12,109 +12,113 @@ import useGroupScreenViewModel from "../../viewmodels/group/GroupScreenViewModel
 import { DBGroup, DBUser } from "../../models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
 
-
 const { width, height } = Dimensions.get("window");
 
 export default function GroupScreen({
   user,
   navigation,
   route,
-  firestoreCtrl
+  firestoreCtrl,
 }: any) {
-
-  const { groupChallenges, 
+  const {
+    groupChallenges,
     otherGroups,
     groupName,
     groupChallengeTitle,
     groupId,
-} = useGroupScreenViewModel(user, firestoreCtrl, route);
+  } = useGroupScreenViewModel(user, firestoreCtrl, route);
 
   return (
     <ThemedView style={styles.bigContainer} testID="group-screen">
-        <TopBar
-            title={groupName}
-            leftIcon="people-outline"
-            leftAction={() => navigation.navigate("Friends")}
-            rightIcon={
-            !user.image_id ? "person-circle-outline" : user.image_id
-            }
-            rightAction={() => navigation.navigate("Profile")}
-        />
+      <TopBar
+        title={groupName}
+        leftIcon="people-outline"
+        leftAction={() => navigation.navigate("Friends")}
+        rightIcon={!user.image_id ? "person-circle-outline" : user.image_id}
+        rightAction={() => navigation.navigate("Profile")}
+      />
 
-        {/* Groups */}
-        <ThemedScrollView style={styles.groupsContainer} horizontal>
-            <ThemedView style={styles.HomeContainer} testID="home-button">
-              <ThemedTextButton
-                  style={styles.HomeButton}
-                  onPress={() => navigation.navigate("Home")}
-                  text="Home"
-                  textStyle={styles.HomeText}
-                  textColorType="textOverLight"
-                  colorType="backgroundSecondary"
-                  testID="home-pressable-button"
-              />
-            </ThemedView>
-            {otherGroups.map((group, index) => (
-            <GroupIcon
-                groupDB={group}
-                navigation={navigation}
-                firestoreCtrl={firestoreCtrl}
-                key={index}
-                testID={`group-id-${index}`}
-            />
-            ))}
-
-            <ThemedView style={styles.createGroupContainer} testID="create-group-button">
-                <ThemedTextButton
-                    style={styles.createGroupButton}
-                    onPress={() => navigation.navigate("CreateGroup")}
-                    text="+"
-                    textStyle={styles.createGroupText}
-                    textColorType="textOverLight"
-                    colorType="backgroundSecondary"
-                    testID="create-group-pressable-button"
-                />
-            </ThemedView>
-        </ThemedScrollView>
-
-            {/* Challenge Title */}
-        <ThemedView style={styles.challengeTitle} testID={`description-id`}>
-            <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
-                {groupChallengeTitle}
-            </ThemedText>
+      {/* Groups */}
+      <ThemedScrollView style={styles.groupsContainer} horizontal>
+        <ThemedView style={styles.HomeContainer} testID="home-button">
+          <ThemedTextButton
+            style={styles.HomeButton}
+            onPress={() => navigation.navigate("Home")}
+            text="Home"
+            textStyle={styles.HomeText}
+            textColorType="textOverLight"
+            colorType="backgroundSecondary"
+            testID="home-pressable-button"
+          />
         </ThemedView>
+        {otherGroups.map((group, index) => (
+          <GroupIcon
+            groupDB={group}
+            navigation={navigation}
+            firestoreCtrl={firestoreCtrl}
+            key={index}
+            testID={`group-id-${index}`}
+          />
+        ))}
 
-        {/* Challenges */}
-        <ThemedScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            colorType="transparent"
+        <ThemedView
+          style={styles.createGroupContainer}
+          testID="create-group-button"
         >
-            {groupChallenges.length === 0 ? (
-            <ThemedText testID="no-challenge-id">No challenge to display</ThemedText>
-            ) : (
-            groupChallenges.map((challenge, index) => (
-                <Challenge
-                navigation={navigation}
-                firestoreCtrl={firestoreCtrl}
-                key={index}
-                challengeDB={challenge}
-                testID={`challenge-id-${index}`}
-                currentUser={user}
-                index={index}
-                />
-            ))
-            )}
-        </ThemedScrollView>
+          <ThemedTextButton
+            style={styles.createGroupButton}
+            onPress={() => navigation.navigate("CreateGroup")}
+            text="+"
+            textStyle={styles.createGroupText}
+            textColorType="textOverLight"
+            colorType="backgroundSecondary"
+            testID="create-group-pressable-button"
+          />
+        </ThemedView>
+      </ThemedScrollView>
 
-        <BottomBar
-            testID="bottom-bar"
-            leftIcon="map-outline"
-            centerIcon="camera-outline"
-            rightIcon="trophy-outline"
-            leftAction={() => navigation.navigate("MapScreen")}
-            centerAction={() => navigation.navigate("Camera", { group_id: groupId })}
-        />
+      {/* Challenge Title */}
+      <ThemedView style={styles.challengeTitle} testID={`description-id`}>
+        <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
+          {groupChallengeTitle}
+        </ThemedText>
+      </ThemedView>
+
+      {/* Challenges */}
+      <ThemedScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        colorType="transparent"
+      >
+        {groupChallenges.length === 0 ? (
+          <ThemedText testID="no-challenge-id">
+            No challenge to display
+          </ThemedText>
+        ) : (
+          groupChallenges.map((challenge, index) => (
+            <Challenge
+              navigation={navigation}
+              firestoreCtrl={firestoreCtrl}
+              key={index}
+              challengeDB={challenge}
+              testID={`challenge-id-${index}`}
+              currentUser={user}
+              index={index}
+            />
+          ))
+        )}
+      </ThemedScrollView>
+
+      <BottomBar
+        testID="bottom-bar"
+        leftIcon="map-outline"
+        centerIcon="camera-outline"
+        rightIcon="trophy-outline"
+        leftAction={() => navigation.navigate("MapScreen")}
+        centerAction={() =>
+          navigation.navigate("Camera", { group_id: groupId })
+        }
+      />
     </ThemedView>
   );
 }

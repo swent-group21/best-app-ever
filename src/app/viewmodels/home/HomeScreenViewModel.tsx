@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBUser,
+  DBGroup,
+  DBChallengeDescription,
+} from "../../models/firebase/FirestoreCtrl";
 
-export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl) {
+export function useHomeScreenViewModel(
+  user: DBUser,
+  firestoreCtrl: FirestoreCtrl,
+) {
   const userIsGuest = user.name === "Guest";
 
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
@@ -15,7 +23,8 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
         const formattedChallenge = {
           title: currentChallengeData.title,
           description: currentChallengeData.description,

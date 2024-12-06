@@ -8,7 +8,10 @@ import { SingleComment } from "../../../components/posts/Comment";
 import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
 import { useMaximizeScreenViewModel } from "../../viewmodels/home/MaximizeScreenViewModel";
-import FirestoreCtrl, { DBUser, DBChallenge } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBUser,
+  DBChallenge,
+} from "../../models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -63,13 +66,19 @@ export default function MaximizeScreen({
           />
           <ThemedView style={styles.userInfo} colorType="transparent">
             <ThemedText colorType="white">{postUser?.name}</ThemedText>
-            <ThemedText colorType="white">{"on " + postDate.toUTCString()}</ThemedText>
+            <ThemedText colorType="white">
+              {"on " + postDate.toUTCString()}
+            </ThemedText>
           </ThemedView>
         </ThemedView>
 
         <ThemedView style={styles.container} colorType="transparent">
           <Image
-            source={postImage ? { uri: postImage } : require("../../../assets/images/no-image.svg")}
+            source={
+              postImage
+                ? { uri: postImage }
+                : require("../../../assets/images/no-image.svg")
+            }
             style={styles.image}
           />
         </ThemedView>
@@ -96,14 +105,21 @@ export default function MaximizeScreen({
             value={commentText}
             onChangeText={setCommentText}
           />
-          <ThemedIconButton name="send" size={25} colorType="white" onPress={addComment} />
+          <ThemedIconButton
+            name="send"
+            size={25}
+            colorType="white"
+            onPress={addComment}
+          />
         </ThemedView>
 
         <ThemedView style={styles.commentColumn} colorType="transparent">
           {commentList.length === 0 ? (
             <ThemedText>No comment to display</ThemedText>
           ) : (
-            commentList.map((eachComment:any, i:any) => <SingleComment key={i} {...eachComment} />)
+            commentList.map((eachComment: any, i: any) => (
+              <SingleComment key={i} {...eachComment} />
+            ))
           )}
         </ThemedView>
       </ThemedScrollView>

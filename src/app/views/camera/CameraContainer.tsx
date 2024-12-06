@@ -15,7 +15,6 @@ import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 export default function Camera({ navigation, firestoreCtrl, route }: any) {
-
   const {
     facing,
     permission,
@@ -40,7 +39,9 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Text style={styles.message}>
+          We need your permission to show the camera
+        </Text>
         <Button onPress={requestPermission} title="Grant Permission" />
       </View>
     );
@@ -49,41 +50,51 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
   return (
     <View style={styles.container}>
       {isCameraEnabled ? (
-            <CameraView
-              style={styles.camera}
-              facing={facing}
-              enableTorch={isFlashEnabled}
-              ref={camera}
-              zoom={zoom}
+        <CameraView
+          style={styles.camera}
+          facing={facing}
+          enableTorch={isFlashEnabled}
+          ref={camera}
+          zoom={zoom}
+        >
+          <View style={styles.buttonPlaceHolder}>
+            <TouchableOpacity
+              style={styles.changeOrientationAndFlash}
+              onPress={toggleCameraFacing}
             >
-              <View style={styles.buttonPlaceHolder}>
-                <TouchableOpacity
-                  style={styles.changeOrientationAndFlash}
-                  onPress={toggleCameraFacing}
-                >
-                  <Ionicons name="camera-reverse" size={24} color="white" />
-                </TouchableOpacity>
+              <Ionicons name="camera-reverse" size={24} color="white" />
+            </TouchableOpacity>
 
-                <TouchableOpacity style={styles.takePicture} onPress={takePicture}>
-                  <Ionicons name="radio-button-off-sharp" size={100} color="white" />
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.takePicture} onPress={takePicture}>
+              <Ionicons
+                name="radio-button-off-sharp"
+                size={100}
+                color="white"
+              />
+            </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.changeOrientationAndFlash}
-                  onPress={toggleFlashMode}
-                >
-                  <Ionicons
-                    name={isFlashEnabled ? "flash-off" : "flash"}
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              </View>
-            </CameraView>
+            <TouchableOpacity
+              style={styles.changeOrientationAndFlash}
+              onPress={toggleFlashMode}
+            >
+              <Ionicons
+                name={isFlashEnabled ? "flash-off" : "flash"}
+                size={24}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
+        </CameraView>
       ) : (
         <View>
-          <ImageBackground source={{ uri: picture?.uri }} style={styles.pictureBackround} />
-          <TouchableOpacity style={styles.goBack} onPress={() => setIsCameraEnabled(true)}>
+          <ImageBackground
+            source={{ uri: picture?.uri }}
+            style={styles.pictureBackround}
+          />
+          <TouchableOpacity
+            style={styles.goBack}
+            onPress={() => setIsCameraEnabled(true)}
+          >
             <Ionicons name="close" size={30} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.send} onPress={imageUrlGen}>

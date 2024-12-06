@@ -38,7 +38,9 @@ export default function ProfileScreen({
   if (userIsGuest) {
     return (
       <ThemedView style={styles.bigContainer}>
-        <ThemedText style={styles.notLoggedIn}>You are not logged in!</ThemedText>
+        <ThemedText style={styles.notLoggedIn}>
+          You are not logged in!
+        </ThemedText>
         <ThemedTextButton
           text="Sign In"
           textColorType="white"
@@ -60,7 +62,11 @@ export default function ProfileScreen({
         }}
       />
 
-      <TouchableOpacity onPress={pickImage} testID="image-picker" style={styles.smallContainer}>
+      <TouchableOpacity
+        onPress={pickImage}
+        testID="image-picker"
+        style={styles.smallContainer}
+      >
         {!image ? (
           <ThemedIconButton
             name="person-circle-outline"
@@ -126,8 +132,6 @@ const styles = StyleSheet.create({
   smallContainer: {
     width: "100%",
     alignItems: "center",
-    
-    
   },
   image: {
     width: 220,
@@ -145,7 +149,6 @@ const styles = StyleSheet.create({
   columnInfo: {
     flexDirection: "column",
     alignItems: "flex-start",
-    
   },
   logOut: {
     width: "100%",
@@ -154,7 +157,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "red",
     borderWidth: 1,
-    
   },
   logOutView: {
     top: 0,

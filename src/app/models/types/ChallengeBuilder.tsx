@@ -84,7 +84,6 @@ export const createChallenge = async (
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
 
-
     const updateTime = Timestamp.now();
     if (group_id !== "" && group_id !== "home") {
       await firestoreCtrl.updateGroup(group_id, updateTime);

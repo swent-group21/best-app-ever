@@ -1,12 +1,21 @@
 import { useState, useRef, useCallback, useMemo } from "react";
-import { CameraType, useCameraPermissions, CameraCapturedPicture, CameraPictureOptions } from "expo-camera";
+import {
+  CameraType,
+  useCameraPermissions,
+  CameraCapturedPicture,
+  CameraPictureOptions,
+} from "expo-camera";
 import { FlashMode } from "expo-camera/build/Camera.types";
 import Gesture from "react-native-gesture-handler";
 import { Platform } from "react-native";
 import { Camera } from "react-native-maps";
 import { CameraView } from "expo-camera";
 
-export function useCameraViewModel(firestoreCtrl: any, navigation: any, route: any) {
+export function useCameraViewModel(
+  firestoreCtrl: any,
+  navigation: any,
+  route: any,
+) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const camera = useRef<CameraView>(null);
@@ -52,11 +61,11 @@ export function useCameraViewModel(firestoreCtrl: any, navigation: any, route: a
     [zoom, lastZoom],
   );
 
-
   const takePicture = async () => {
     if (camera.current) {
       try {
-        const capturedPicture = await camera.current?.takePictureAsync(cameraPictureOptions);
+        const capturedPicture =
+          await camera.current?.takePictureAsync(cameraPictureOptions);
         setPicture(capturedPicture);
         setIsCameraEnabled(false);
       } catch (error) {
@@ -67,7 +76,10 @@ export function useCameraViewModel(firestoreCtrl: any, navigation: any, route: a
 
   const imageUrlGen = async () => {
     const img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
-    navigation.navigate("CreateChallenge", { image_id: img_id, group_id: group_id });
+    navigation.navigate("CreateChallenge", {
+      image_id: img_id,
+      group_id: group_id,
+    });
   };
 
   return {

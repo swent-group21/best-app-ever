@@ -4,7 +4,9 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import FirestoreCtrl, { DBChallenge } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+} from "../../models/firebase/FirestoreCtrl";
 
 /**
  * Default location centered on the city of Nice, France.

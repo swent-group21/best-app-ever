@@ -3,10 +3,16 @@ import { render } from "@testing-library/react-native";
 import ProfileScreen from "../../../src/app/views/home/profile_screen";
 import { fireEvent, waitFor } from "@testing-library/react-native";
 import { launchImageLibraryAsync } from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "../../../src/app/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBUser,
+} from "../../../src/app/models/firebase/FirestoreCtrl";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { resetEmail, resetPassword, logOut } from "../../../src/app/models/types/Auth";
+import {
+  resetEmail,
+  resetPassword,
+  logOut,
+} from "../../../src/app/models/types/Auth";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +45,7 @@ const ProfileScreenTest: React.FC<{ user: DBUser }> = ({ user }) => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Profile"
-        id = {undefined}
+        id={undefined}
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Profile">

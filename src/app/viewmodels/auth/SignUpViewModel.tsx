@@ -3,7 +3,11 @@ import { isValidEmail, signUpWithEmail } from "../../models/types/Auth";
 import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
 import { Alert } from "react-native";
 
-export default function useSignUpViewModel(navigation: any, setUser: any, firestoreCtrl:any) {
+export default function useSignUpViewModel(
+  navigation: any,
+  setUser: any,
+  firestoreCtrl: any,
+) {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -16,7 +20,13 @@ export default function useSignUpViewModel(navigation: any, setUser: any, firest
     confirmPassword.length === 0 || password === confirmPassword;
 
   const handleSignUp = async () => {
-    if (!name || !surname || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
+    if (
+      !name ||
+      !surname ||
+      !isEmailValid ||
+      !isPasswordValid ||
+      !isConfirmPasswordValid
+    ) {
       Alert.alert("Please fill all fields correctly.");
       return;
     }
@@ -27,7 +37,7 @@ export default function useSignUpViewModel(navigation: any, setUser: any, firest
         email,
         password,
         firestoreCtrl,
-        navigation, 
+        navigation,
         setUser,
       );
     } catch (error) {
@@ -52,4 +62,4 @@ export default function useSignUpViewModel(navigation: any, setUser: any, firest
     isPasswordValid,
     isConfirmPasswordValid,
   };
-};
+}

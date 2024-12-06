@@ -26,7 +26,9 @@ export function GroupIcon({
       <ThemedView style={styles.container} testID={testID}>
         <ThemedTextButton
           style={styles.heading}
-          onPress={() => {navigation.navigate("GroupScreen", {currentGroup: groupDB})}}
+          onPress={() => {
+            navigation.navigate("GroupScreen", { currentGroup: groupDB });
+          }}
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"

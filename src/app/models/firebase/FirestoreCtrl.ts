@@ -351,9 +351,6 @@ export default class FirestoreCtrl {
     }
   }
 
-
-
-  
   /**
    * Retrieves all groups assigned to a specific user.
    *
@@ -464,10 +461,7 @@ export default class FirestoreCtrl {
    */
   async newGroup(groupData: DBGroup): Promise<void> {
     try {
-      const docRef = await addDoc(
-        collection(firestore, "groups"),
-        groupData,
-      );
+      const docRef = await addDoc(collection(firestore, "groups"), groupData);
       console.log("Challenge id: ", docRef.id);
     } catch (error) {
       console.error("Error writting challenge document: ", error);
@@ -485,7 +479,7 @@ export default class FirestoreCtrl {
       const groupRef = doc(firestore, "groups", gid);
       const docSnap = await getDoc(groupRef);
       const groupData = docSnap.data() as DBGroup;
-      
+
       groupData.updateDate = updateTime;
       groupData.gid = gid;
 
@@ -501,12 +495,11 @@ export default class FirestoreCtrl {
    * @param gid The ID of the group to update.
    * @param updateTime The time of the last post.
    */
-  async addGroupToMemberGroups(uid:string, group_name: string): Promise<void> {
+  async addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
     try {
       const user = await this.getUser(uid);
       user.groups?.push(group_name);
       await this.createUser(uid, user);
-
     } catch (error) {
       console.error("Error setting name: ", error);
       throw error;
@@ -532,12 +525,6 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
-
-
-
-
-
-
 
   /**
    * Add a new comment to a challenge.

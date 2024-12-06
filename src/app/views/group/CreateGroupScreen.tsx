@@ -6,20 +6,19 @@ import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
 import { BottomBar } from "../../../components/navigation/BottomBar";
 import { ThemedView } from "../../../components/theme/ThemedView";
 import CreateGroupViewModel from "../../viewmodels/group/CreateGroupViewModel";
-import FirestoreCtrl,{ DBUser } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
-export default function CreateGroupScreen(
-  { user, 
-    navigation, 
-    firestoreCtrl 
-  } : {
-    user: DBUser;
-    navigation: any;
-    firestoreCtrl: any;
-  }
-) {
+export default function CreateGroupScreen({
+  user,
+  navigation,
+  firestoreCtrl,
+}: {
+  user: DBUser;
+  navigation: any;
+  firestoreCtrl: any;
+}) {
   const {
     groupName,
     setGroupName,
@@ -31,12 +30,20 @@ export default function CreateGroupScreen(
   return (
     <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
       {/* Title */}
-      <ThemedText style={styles.title} colorType="textPrimary" type="title" testID="Create-Challenge-Text">
+      <ThemedText
+        style={styles.title}
+        colorType="textPrimary"
+        type="title"
+        testID="Create-Challenge-Text"
+      >
         Create a New Group
       </ThemedText>
 
       {/* Form */}
-      <ThemedScrollView style={styles.containerCol} automaticallyAdjustKeyboardInsets={true}>
+      <ThemedScrollView
+        style={styles.containerCol}
+        automaticallyAdjustKeyboardInsets={true}
+      >
         <ThemedTextInput
           style={styles.input}
           placeholder="Group Name"
@@ -57,7 +64,11 @@ export default function CreateGroupScreen(
         />
 
         {/* Submit button */}
-        <BottomBar rightIcon="arrow-forward" rightAction={makeGroup} testID="bottom-bar" />
+        <BottomBar
+          rightIcon="arrow-forward"
+          rightAction={makeGroup}
+          testID="bottom-bar"
+        />
       </ThemedScrollView>
     </ThemedView>
   );
@@ -97,5 +108,4 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 16,
   },
-
 });
