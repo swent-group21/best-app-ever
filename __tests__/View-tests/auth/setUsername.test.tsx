@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react-native";
 import SetUsernameScreen from "@/src/views/auth/set_up_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -12,6 +12,20 @@ describe("SetUsernameScreen Tests", () => {
   const mockNavigation = { navigate: jest.fn(), goBack: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockSetUser = jest.fn();
+
+  const SetUsernameTest = () => (
+    <SetUsernameScreen
+      user={{
+        uid: "123",
+        name: "Test User",
+        email: "test@example.com",
+        createdAt: new Date(),
+      }}
+      navigation={mockNavigation}
+      firestoreCtrl={mockFirestoreCtrl}
+      setUser={mockSetUser}
+    />
+  );
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -28,29 +42,17 @@ describe("SetUsernameScreen Tests", () => {
   });
 
   it("renders the initial state correctly", () => {
-    const { getByTestId, queryByTestId, queryByText } = render(
-      <SetUsernameScreen
-        user={{
-          uid: "123",
-          name: "Test User",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-        setUser={mockSetUser}
-      />,
-    );
+    render(<SetUsernameTest />);
 
     // Vérifie que le champ d'entrée pour le nom d'utilisateur est vide
-    const usernameInput = getByTestId("usernameInput");
+    expect(screen.getByTestId("usernameInput")).toBeTruthy();
 
     // Vérifie que l'image de profil par défaut est affichée
-    expect(queryByTestId("profilePicImage")).toBeNull();
-    expect(getByTestId("profile-icon-button")).toBeTruthy();
+    expect(screen.queryByTestId("profilePicImage")).toBeNull();
+    expect(screen.getByTestId("profile-icon-button")).toBeTruthy();
 
     // Vérifie qu'aucun message d'erreur n'est affiché
-    expect(queryByText(/Failed/)).toBeNull();
+    expect(screen.queryByText(/Failed/)).toBeNull();
   });
 
   it("updates username field when typing", () => {
@@ -65,21 +67,9 @@ describe("SetUsernameScreen Tests", () => {
       upload: jest.fn(),
     });
 
-    const { getByTestId } = render(
-      <SetUsernameScreen
-        user={{
-          uid: "123",
-          name: "Test User",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-        setUser={mockSetUser}
-      />,
-    );
+    render(<SetUsernameTest />);
 
-    const usernameInput = getByTestId("usernameInput");
+    const usernameInput = screen.getByTestId("usernameInput");
 
     // Simule la saisie d'un texte
     fireEvent.changeText(usernameInput, "newUsername");
@@ -96,22 +86,10 @@ describe("SetUsernameScreen Tests", () => {
       upload: jest.fn(),
     });
 
-    const { getByText } = render(
-      <SetUsernameScreen
-        user={{
-          uid: "123",
-          name: "Test User",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-        setUser={mockSetUser}
-      />,
-    );
+    render(<SetUsernameTest />);
 
     // Vérifie que le message d'erreur est affiché
-    const errorMessage = getByText("Failed to pick image.");
+    const errorMessage = screen.getByText("Failed to pick image.");
     expect(errorMessage).toBeTruthy();
   });
 
@@ -127,21 +105,9 @@ describe("SetUsernameScreen Tests", () => {
       upload: jest.fn(),
     });
 
-    const { getByTestId } = render(
-      <SetUsernameScreen
-        user={{
-          uid: "123",
-          name: "Test User",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-        setUser={mockSetUser}
-      />,
-    );
+    render(<SetUsernameTest />);
 
-    const profilePicButton = getByTestId("profilePicButton");
+    const profilePicButton = screen.getByTestId("profilePicButton");
 
     // Simule un appui sur le bouton de sélection d'image
     fireEvent.press(profilePicButton);
