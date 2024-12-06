@@ -17,6 +17,7 @@ import MaximizeScreen from "../src/views/home/maximize_screen";
 import CreateChallengeScreen from "../src/views/create/create_challenge";
 import ProfileScreen from "../src/views/home/profile_screen";
 import MapScreen from "../src/views/map/map_screen";
+import { NavigationContainer } from "@react-navigation/native";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +37,7 @@ export const Nav: React.FC<AppStackProps> = ({
   firestoreCtrl,
 }) => {
   return (
+  <NavigationContainer>
     <Navigator
       initialRouteName={isLoggedIn}
       id={undefined}
@@ -160,5 +162,6 @@ export const Nav: React.FC<AppStackProps> = ({
         </Screen>
       </Group>
     </Navigator>
+  </NavigationContainer>
   );
 };
