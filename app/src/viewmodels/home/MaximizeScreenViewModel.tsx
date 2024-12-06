@@ -4,7 +4,6 @@ import FirestoreCtrl, {
   DBComment,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
 
 /**
  * View model for the maximize screen.
@@ -44,7 +43,7 @@ export function useMaximizeScreenViewModel(
       .getCommentsOf(challenge.challenge_id ?? "")
       .then((comments) => {
         const sortedComments = comments.toSorted(
-          (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
+          (a, b) => a.created_at.getTime() - b.created_at.getTime(),
         );
         setCommentList(sortedComments);
       });
@@ -71,7 +70,7 @@ export function useMaximizeScreenViewModel(
       const newComment: DBComment = {
         comment_text: commentText,
         user_name: currentUserName ?? "",
-        created_at: Timestamp.now(),
+        created_at: new Date(),
         post_id: challenge.challenge_id ?? "",
       };
       await firestoreCtrl.addComment(newComment);
@@ -80,7 +79,7 @@ export function useMaximizeScreenViewModel(
     }
   };
 
-  const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
+  const postDate: Date = challenge.date ? challenge.date : new Date();
   const postTitle = challenge.challenge_name || "Secret Challenge";
   const postImage = challenge.image_id ?? "";
   const postDescription = challenge.description ?? "";
