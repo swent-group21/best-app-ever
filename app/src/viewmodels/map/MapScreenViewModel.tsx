@@ -32,7 +32,7 @@ export function useMapScreenViewModel(
   >([]);
 
   const navigateGoBack = () => {
-    () => navigation.goBack();
+    navigation.goBack();
   };
 
   /**

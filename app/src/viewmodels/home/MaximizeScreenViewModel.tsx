@@ -29,7 +29,7 @@ export function useMaximizeScreenViewModel(
   const currentUserName = user.name;
 
   const navigateGoBack = () => {
-    () => navigation.goBack();
+    navigation.goBack();
   };
 
   useEffect(() => {
