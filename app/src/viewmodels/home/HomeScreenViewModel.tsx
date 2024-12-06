@@ -12,10 +12,7 @@ import FirestoreCtrl, {
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
-export function useHomeScreenViewModel(
-  user: DBUser,
-  firestoreCtrl: FirestoreCtrl,
-) {
+export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl) {
   const userIsGuest = user.name === "Guest";
 
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
@@ -30,8 +27,7 @@ export function useHomeScreenViewModel(
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
         const formattedChallenge = {
           title: currentChallengeData.Title,
           description: currentChallengeData.Description,
@@ -75,10 +71,17 @@ export function useHomeScreenViewModel(
     }
   }, [user.uid, firestoreCtrl]);
 
+  // Filter challenges to only include those from friends
+  const challengesFromFriends = challenges.filter((challenge) =>
+    user.friends?.includes(challenge.uid)
+  );
+
   return {
     userIsGuest,
     challenges,
     groups,
     titleChallenge,
+    challengesFromFriends, // Add this
   };
 }
+
