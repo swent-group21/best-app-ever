@@ -25,12 +25,14 @@ export default function RequestList(
   return (
     <FlatList
       data={requests}
+      testID="friend-request-list"
       keyExtractor={(item) => item.uid}
       style={{ position: "relative" }}
       renderItem={({ item, index }) => (
         <FriendRequestItem
           name={item.name}
           key={index}
+          testID={index}
           avatar={item.image_id}
           onAccept={() => handleAccept(item.uid)}
           onDecline={() => handleDecline(item.uid)}

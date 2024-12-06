@@ -46,32 +46,7 @@ export default function HomeScreen({
         }
         rightAction={() => navigation.navigate("Profile")}
         testID="top-bar"
-      />
-
-      {/* Filter Icon */}
-      <ThemedView style={styles.filterIconContainer}>
-        <Ionicons
-          name="filter-outline"
-          size={30}
-          color="#fff"
-          onPress={() => setShowFilterOptions(!showFilterOptions)}
-          style={styles.filterIcon}
-          testID="filter-icon"
-        />
-        {showFilterOptions && (
-          <ThemedView style={styles.filterDropdown}>
-            <ThemedTextButton
-              text="Filter by Friends"
-              onPress={() => {
-                setFilterByFriends(!filterByFriends);
-                setShowFilterOptions(false);
-              }}
-              style={styles.dropdownOption}
-              textStyle={styles.dropdownText}
-            />
-          </ThemedView>
-        )}
-      </ThemedView>
+      />    
 
       {/* Challenges */}
       <ThemedScrollView

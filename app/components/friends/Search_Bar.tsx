@@ -14,7 +14,7 @@ export const SearchBar = ({
 }: {
   onSearch: (text: string) => void;
 }) => (
-  <ThemedView style={styles.searchContainer}>
+  <ThemedView style={styles.searchContainer} testID="search-bar">
     <ThemedTextInput
       style={styles.searchInput}
       placeholder="Search for a user..."
