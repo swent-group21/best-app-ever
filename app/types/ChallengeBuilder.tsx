@@ -61,11 +61,10 @@ export const createChallenge = async (
   try {
     // Prepare the challenge data for Firestore
     const user: DBUser = await firestoreCtrl.getUser();
-    console.log("createChallenge uid", user.uid);
-
-    if (location == null) {
-      console.log("location undefined");
-    }
+    //console.log("createChallenge uid", user.uid);
+    // if (location == null) {
+    //   console.log("location undefined");
+    // }
 
     // Convert the location object to a Firestore GeoPoint
     let locationFirebase =
