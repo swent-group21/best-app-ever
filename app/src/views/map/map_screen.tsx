@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import MapView, { LatLng, MapMarker } from "react-native-maps";
+import MapView, { MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";

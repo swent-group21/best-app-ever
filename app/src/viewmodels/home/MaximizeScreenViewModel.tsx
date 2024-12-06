@@ -43,7 +43,7 @@ export function useMaximizeScreenViewModel(
     firestoreCtrl
       .getCommentsOf(challenge.challenge_id ?? "")
       .then((comments) => {
-        const sortedComments = comments.sort(
+        const sortedComments = comments.toSorted(
           (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
         );
         setCommentList(sortedComments);

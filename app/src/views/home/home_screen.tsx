@@ -10,8 +10,7 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

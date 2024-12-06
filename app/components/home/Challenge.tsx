@@ -8,7 +8,6 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import React from "react";
 
 const { width, height } = Dimensions.get("window");
 
