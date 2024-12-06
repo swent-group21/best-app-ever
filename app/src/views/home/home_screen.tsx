@@ -31,8 +31,16 @@ export default function HomeScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const { userIsGuest, challenges, groups, titleChallenge, navigateToProfile, navigateToMap, navigateToCamera, navigateToFriends } =
-    useHomeScreenViewModel(user, firestoreCtrl, navigation);
+  const {
+    userIsGuest,
+    challenges,
+    groups,
+    titleChallenge,
+    navigateToProfile,
+    navigateToMap,
+    navigateToCamera,
+    navigateToFriends,
+  } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">

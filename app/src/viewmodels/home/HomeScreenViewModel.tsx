@@ -15,7 +15,7 @@ import FirestoreCtrl, {
 export function useHomeScreenViewModel(
   user: DBUser,
   firestoreCtrl: FirestoreCtrl,
-  navigation: any
+  navigation: any,
 ) {
   const userIsGuest = user.name === "Guest";
 

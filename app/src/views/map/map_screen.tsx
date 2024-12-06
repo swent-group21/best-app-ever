@@ -26,7 +26,7 @@ export default function MapScreen({
   const { permission, userLocation, challengesWithLocation, navigateGoBack } =
     useMapScreenViewModel(firestoreCtrl, navigation);
 
-  const uri =  "@/assets/images/icon_trans.png"
+  const uri = "@/assets/images/icon_trans.png";
 
   if (!permission && userLocation === undefined) {
     return (

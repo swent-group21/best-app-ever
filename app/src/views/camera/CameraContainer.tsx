@@ -73,23 +73,22 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
           testID="camera-view"
         >
           <View style={styles.buttonPlaceHolder}>
-
             <ThemedIconButton
               onPress={toggleCameraFacing}
               testID="Switch-Button"
               style={styles.changeOrientationAndFlash}
               name="camera-reverse"
               size={24}
-              color = "white"
+              color="white"
             />
-              
+
             <ThemedIconButton
-                style={styles.takePicture} 
-                onPress={takePicture}
-               name="radio-button-off-sharp"
-               size={100}
-               color="white"
-               testID="Camera-Button"
+              style={styles.takePicture}
+              onPress={takePicture}
+              name="radio-button-off-sharp"
+              size={100}
+              color="white"
+              testID="Camera-Button"
             />
 
             <ThemedIconButton

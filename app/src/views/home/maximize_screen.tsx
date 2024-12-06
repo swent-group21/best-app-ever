@@ -49,7 +49,7 @@ export default function MaximizeScreen({
     postTitle,
     postImage,
     postDescription,
-    navigateGoBack
+    navigateGoBack,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const noImageUri = require("@/assets/images/no-image.svg");
@@ -85,11 +85,7 @@ export default function MaximizeScreen({
 
         <ThemedView style={styles.container} colorType="transparent">
           <Image
-            source={
-              postImage
-                ? { uri: postImage }
-                : noImageUri
-            }
+            source={postImage ? { uri: postImage } : noImageUri}
             style={styles.image}
           />
         </ThemedView>

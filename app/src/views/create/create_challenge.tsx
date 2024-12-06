@@ -22,7 +22,11 @@ export default function CreateChallengeScreen({
   navigation,
   route,
   firestoreCtrl,
-}: { navigation: any; route: any; firestoreCtrl: FirestoreCtrl }) {
+}: {
+  navigation: any;
+  route: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const {
     challengeName,
     setChallengeName,

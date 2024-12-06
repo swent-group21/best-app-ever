@@ -23,8 +23,6 @@ export function useProfileScreenViewModel(
   const [image, setImage] = useState<string | null>(user.image_id ?? null);
 
   const navigateGoBack = () => navigation.goBack();
-  
-
 
   // Fetch the user's profile picture
   useEffect(() => {
