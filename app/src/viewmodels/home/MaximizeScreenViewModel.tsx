@@ -6,6 +6,13 @@ import FirestoreCtrl, {
 } from "@/src/models/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
+/**
+ * View model for the maximize screen.
+ * @param user : the user object
+ * @param challenge : the challenge object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : commentText, setCommentText, commentList, postUser, likeList, isLiked, toggleLike, addComment, postDate, postTitle, postImage, and postDescription
+ */
 export function useMaximizeScreenViewModel(
   user: DBUser,
   challenge: DBChallenge,

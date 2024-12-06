@@ -21,6 +21,7 @@ import MapScreen from "../src/views/map/map_screen";
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();
 
+// Navigation stack for the app
 interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
   user?: DBUser | null;

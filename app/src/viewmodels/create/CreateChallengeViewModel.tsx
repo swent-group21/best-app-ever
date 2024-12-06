@@ -7,6 +7,13 @@ import {
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createChallenge } from "@/types/ChallengeBuilder";
 
+/**
+ * View model for the create challenge screen.
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
+ * @param route : route object
+ * @returns : challengeName, setChallengeName, description, setDescription, location, isLocationEnabled, toggleLocation, and makeChallenge
+ */
 export default function CreateChallengeViewModel({
   firestoreCtrl,
   navigation,

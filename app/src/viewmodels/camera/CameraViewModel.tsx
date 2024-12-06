@@ -9,6 +9,12 @@ import { FlashMode } from "expo-camera/build/Camera.types";
 import { Platform } from "react-native";
 import { CameraView } from "expo-camera";
 
+/**
+ * ViewModel for the camera screen.
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
+ * @returns : functions for the camera screen
+ */
 export default function useCameraViewModel(
   firestoreCtrl: any,
   navigation: any,
@@ -25,15 +31,18 @@ export default function useCameraViewModel(
 
   const cameraPictureOptions: CameraPictureOptions = { base64: true };
 
+  // Change the camera facing
   const toggleCameraFacing = () => {
     setFacing((current) => (current === "back" ? "front" : "back"));
   };
 
+  // Change the flash mode
   const toggleFlashMode = () => {
     setFlashMode((current) => (current === "off" ? "on" : "off"));
     setIsFlashEnabled((prev) => !prev);
   };
 
+  // Function not used in the current implementation but can be used to zoom in/out
   const onPinch = useCallback(
     (event: any) => {
       const velocity = event.velocity / 20;
@@ -56,6 +65,7 @@ export default function useCameraViewModel(
     [zoom, lastZoom],
   );
 
+  // Take a picture with the camera
   const takePicture = async () => {
     if (camera.current) {
       try {
@@ -69,6 +79,7 @@ export default function useCameraViewModel(
     }
   };
 
+  // Generate an image URL from the picture taken
   const imageUrlGen = async () => {
     const img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
     navigation.navigate("CreateChallenge", { image_id: img_id });

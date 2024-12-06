@@ -12,6 +12,14 @@ import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Profile screen
+ * @param user : user object
+ * @param setUser : function to set the user object
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for the user's profile
+ */
 export default function ProfileScreen({
   user,
   setUser,

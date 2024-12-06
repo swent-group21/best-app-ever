@@ -15,6 +15,14 @@ import FirestoreCtrl, {
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Screen for maximizing a post
+ * @param user : user object
+ * @param navigation : navigation object
+ * @param route : route object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for maximizing a post
+ */
 export default function MaximizeScreen({
   user,
   navigation,

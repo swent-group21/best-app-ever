@@ -6,7 +6,10 @@ import { GeoPoint, Timestamp } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 /**
- * Used to build an already created Challenge from Firestore DB
+ * Function to build a challenge object from Firestore data
+ * @param challengeId : the challenge ID
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a challenge object
  */
 export const buildChallenge = async (
   challengeId: string,
@@ -39,6 +42,13 @@ export const buildChallenge = async (
 
 /**
  * Used to create a Challenge and store it in Firestore DB
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param challenge_name : the name of the challenge
+ * @param description : the description of the challenge
+ * @param location : the location of the challenge
+ * @param date : the date of the challenge
+ * @param image_id : the image id of the challenge
+ * @param likes : the likes of the challenge
  */
 export const createChallenge = async (
   firestoreCtrl: FirestoreCtrl,

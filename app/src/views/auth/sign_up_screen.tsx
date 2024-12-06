@@ -10,6 +10,13 @@ import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Screen for signing up
+ * @param navigation : navigation object
+ * @param setUser : function to set the user object
+ * @param firestoreCtrl : FirestoreCtrl object 
+ * @returns : a screen for signing up
+ */
 export default function SignUp({
   navigation,
   setUser,

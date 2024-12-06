@@ -1,6 +1,13 @@
 import { signInAsGuest } from "@/types/Auth";
 import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
+/**
+ * ViewModel for the WelcomeFinal screen
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
+ * @param setUser : set user object
+ * @returns : functions for the WelcomeFinal screen
+ */
 export default function WelcomeFinalViewModel({
   firestoreCtrl,
   navigation,

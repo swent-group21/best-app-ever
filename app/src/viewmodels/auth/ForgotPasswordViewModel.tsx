@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { resetPassword } from "@/types/Auth";
 
+/**
+ * ViewModel for the ForgotPassword screen
+ * @returns : email, errorMessage, handleEmailChange, and handleResetPassword
+ */
 export default function ForgotPasswordViewModel() {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleEmailChange = (text: string) => setEmail(text);
 
+  // Reset the user's password
   const handleResetPassword = async () => {
     if (!email.trim()) {
       setErrorMessage("Please enter a valid email.");

@@ -14,9 +14,15 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import SignInViewModel from "@/src/viewmodels/auth/SignInViewModel";
 
-// Dimensions de l'écran
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Screen for signing in
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param setUser : function to set the user object
+ * @returns : a screen for signing in
+ */
 export default function SignInScreen({
   navigation,
   firestoreCtrl,
@@ -42,13 +48,12 @@ export default function SignInScreen({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ThemedView style={styles.signInScreen}>
-          {/* Forme de fond */}
+
           <ThemedView
             style={styles.ovalShapeTwo}
             colorType="backgroundSecondary"
           />
 
-          {/* Contenu principal */}
           <ThemedText
             style={styles.titleText}
             colorType="textPrimary"
@@ -58,7 +63,7 @@ export default function SignInScreen({
           </ThemedText>
 
           <ThemedView style={styles.colContainer}>
-            {/* Champ Email */}
+
             <ThemedTextInput
               style={styles.input}
               type="email"
@@ -69,7 +74,6 @@ export default function SignInScreen({
               title="Email"
             />
 
-            {/* Champ Mot de passe */}
             <ThemedTextInput
               style={styles.input}
               type="password"
@@ -80,12 +84,10 @@ export default function SignInScreen({
               title="Password"
             />
 
-            {/* Message d'erreur */}
             {errorMessage && (
               <ThemedText style={styles.errorText}>{errorMessage}</ThemedText>
             )}
 
-            {/* Bouton Connexion */}
             <ThemedTextButton
               style={styles.buttonSignIn}
               onPress={handleSignIn}
@@ -95,7 +97,6 @@ export default function SignInScreen({
               textColorType="textOverLight"
             />
 
-            {/* Mot de passe oublié */}
             <ThemedTextButton
               style={{ alignItems: "center" }}
               onPress={() => navigation.navigate("ForgotPassword")}

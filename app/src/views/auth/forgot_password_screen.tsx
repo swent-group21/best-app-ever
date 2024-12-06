@@ -8,6 +8,11 @@ import ForgotPasswordViewModel from "@/src/viewmodels/auth/ForgotPasswordViewMod
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Screen for resetting the password
+ * @param navigation : navigation object
+ * @returns : a screen for resetting the password
+ */
 export default function ForgotPasswordScreen({ navigation }: any) {
   const { email, errorMessage, handleEmailChange, handleResetPassword } =
     ForgotPasswordViewModel();

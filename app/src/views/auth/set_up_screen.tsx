@@ -12,6 +12,14 @@ import SetUsernameViewModel from "@/src/viewmodels/auth/SetUsernameViewModel";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Screen for setting up the user's profile
+ * @param user : user object
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param setUser : function to set the user object
+ * @returns : a screen for setting up the user's profile
+ */
 export default function SetUsernameScreen({
   user,
   navigation,
@@ -34,24 +42,21 @@ export default function SetUsernameScreen({
 
   return (
     <ThemedView style={styles.screenContainer}>
-      {/* Forme d'arrière-plan */}
       <ThemedView style={styles.ovalShapeOne} colorType="backgroundSecondary" />
 
-      {/* Barre supérieure */}
       <TopBar
         leftIcon="arrow-back"
         leftAction={() => navigation.goBack()}
         title="Set up your profile"
       />
 
-      {/* Contenu principal */}
       <ThemedScrollView
         style={styles.mainContainer}
         automaticallyAdjustKeyboardInsets={true}
         colorType="transparent"
       >
         <ThemedView style={styles.smallContainer} colorType="transparent">
-          {/* Photo de profil */}
+
           <TouchableOpacity
             onPress={pickImage}
             style={styles.smallContainer}
@@ -74,7 +79,6 @@ export default function SetUsernameScreen({
             )}
           </TouchableOpacity>
 
-          {/* Champ de saisie pour le nom d'utilisateur */}
           <ThemedTextInput
             onChangeText={handleUsernameChange}
             value={username}
@@ -85,7 +89,6 @@ export default function SetUsernameScreen({
           />
         </ThemedView>
 
-        {/* Message d'erreur */}
         {errorMessage && (
           <ThemedText style={styles.errorMessage}>{errorMessage}</ThemedText>
         )}
@@ -95,7 +98,6 @@ export default function SetUsernameScreen({
         </ThemedText>
       </ThemedScrollView>
 
-      {/* Barre inférieure */}
       <BottomBar
         testID="bottom-bar-right-icon"
         rightIcon="arrow-forward"

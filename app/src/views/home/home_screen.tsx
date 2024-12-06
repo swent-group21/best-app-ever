@@ -15,6 +15,13 @@ import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Home screen
+ * @param user : user object
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for the home
+ */
 export default function HomeScreen({
   user,
   navigation,

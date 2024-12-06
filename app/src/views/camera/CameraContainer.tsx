@@ -14,6 +14,12 @@ import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Camera screen
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for the camera
+ */
 export default function Camera({ navigation, firestoreCtrl }: any) {
   const {
     facing,

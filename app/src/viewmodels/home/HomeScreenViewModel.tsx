@@ -6,6 +6,12 @@ import FirestoreCtrl, {
   DBChallengeDescription,
 } from "@/src/models/firebase/FirestoreCtrl";
 
+/**
+ * View model for the home screen.
+ * @param user : the user object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : userIsGuest, challenges, groups, and titleChallenge
+ */
 export function useHomeScreenViewModel(
   user: DBUser,
   firestoreCtrl: FirestoreCtrl,
@@ -20,6 +26,7 @@ export function useHomeScreenViewModel(
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
 
+  // Fetch the current challenge
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
@@ -38,6 +45,7 @@ export function useHomeScreenViewModel(
     fetchCurrentChallenge();
   }, [firestoreCtrl]);
 
+  // Fetch the challenges
   useEffect(() => {
     if (user.uid) {
       const fetchChallenges = async () => {
@@ -52,6 +60,7 @@ export function useHomeScreenViewModel(
     }
   }, [user.uid, firestoreCtrl]);
 
+  // Fetch the groups
   useEffect(() => {
     if (user.uid) {
       const fetchGroups = async () => {

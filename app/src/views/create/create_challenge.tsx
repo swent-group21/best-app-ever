@@ -10,6 +10,13 @@ import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeVie
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Screen for creating a new challenge
+ * @param navigation : navigation object
+ * @param route : route object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for creating a new challenge
+ */
 export default function CreateChallengeScreen({
   navigation,
   route,

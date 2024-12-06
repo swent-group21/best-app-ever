@@ -7,6 +7,13 @@ import { TopBar } from "@/components/navigation/TopBar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
+/**
+ * Screen for the map
+ * @param user : user object
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for the map
+ */
 export default function MapScreen({
   user,
   navigation,

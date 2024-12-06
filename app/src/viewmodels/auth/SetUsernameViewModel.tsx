@@ -2,6 +2,13 @@ import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
+/**
+ * ViewModel for the SetUsername screen.
+ * @param user : user object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param setUser : set user object
+ * @returns : functions for the SetUsername screen
+ */
 export default function SetUsernameViewModel(
   user: DBUser,
   firestoreCtrl: FirestoreCtrl,
@@ -13,6 +20,7 @@ export default function SetUsernameViewModel(
 
   const handleUsernameChange = (text: string) => setUsername(text);
 
+  // Pick an image from the user's gallery
   const pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -31,6 +39,7 @@ export default function SetUsernameViewModel(
     }
   };
 
+  // Upload the user's profile picture
   const upload = async () => {
     if (!username.trim()) {
       setErrorMessage("Please enter a username.");

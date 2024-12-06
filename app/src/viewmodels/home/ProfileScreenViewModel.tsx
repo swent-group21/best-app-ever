@@ -3,6 +3,14 @@ import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
 import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 
+/**
+ * ViewModel for the profile screen.
+ * @param user : user object
+ * @param setUser : set user object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
+ * @returns : functions for the profile screen
+ */
 export function useProfileScreenViewModel(
   user: DBUser,
   setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
@@ -14,6 +22,7 @@ export function useProfileScreenViewModel(
   const [name, setName] = useState<string>(user.name);
   const [image, setImage] = useState<string | null>(user.image_id ?? null);
 
+  // Fetch the user's profile picture
   useEffect(() => {
     const fetchProfilePicture = async () => {
       const profilePicture = await firestoreCtrl.getProfilePicture(user.uid);
@@ -22,6 +31,7 @@ export function useProfileScreenViewModel(
     fetchProfilePicture();
   }, [user.uid, firestoreCtrl]);
 
+  // Pick an image from the user's gallery
   const pickImage = async () => {
     try {
       const result = await launchImageLibraryAsync({
@@ -38,6 +48,7 @@ export function useProfileScreenViewModel(
     }
   };
 
+  // Upload the user's profile picture and name
   const upload = async () => {
     if (!name) {
       alert("Please enter a username.");

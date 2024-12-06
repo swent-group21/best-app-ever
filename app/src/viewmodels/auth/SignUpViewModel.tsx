@@ -2,6 +2,14 @@ import { useState } from "react";
 import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import { Alert } from "react-native";
 
+
+/**
+ * ViewModel for the SignUp screen
+ * @param navigation : navigation object
+ * @param setUser : set user object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : functions for the SignUp screen
+ */
 export default function useSignUpViewModel(
   navigation: any,
   setUser: any,
@@ -18,6 +26,9 @@ export default function useSignUpViewModel(
   const isConfirmPasswordValid =
     confirmPassword.length === 0 || password === confirmPassword;
 
+
+  // Sign up with email and password
+  // If the fields are not filled correctly, an alert will be shown
   const handleSignUp = async () => {
     if (
       !name ||

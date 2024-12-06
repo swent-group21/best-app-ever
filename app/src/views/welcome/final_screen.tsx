@@ -8,6 +8,13 @@ import WelcomeFinalViewModel from "@/src/viewmodels/welcome/FinalScreenViewModel
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Welcome final screen
+ * @param setUser : function to set the user object
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for the final welcome screen
+ */
 export default function WelcomeFinalScreen({
   setUser,
   navigation,
