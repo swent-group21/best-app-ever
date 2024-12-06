@@ -6,7 +6,6 @@ import { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
 import { View } from "react-native";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-
 const mockChallenge1: DBChallenge = {
   challenge_name: "Challenge Test 1",
   description: "Description Test 1",
@@ -28,7 +27,6 @@ const mockGroup = {
 };
 const mockOtherGroups = [mockGroup];
 
-
 jest.mock("@/src/viewmodels/group/GroupScreenViewModel", () =>
   jest.fn(() => ({
     groupChallenges: mockGroupChallenges,
@@ -36,30 +34,27 @@ jest.mock("@/src/viewmodels/group/GroupScreenViewModel", () =>
     groupName: "Test Name",
     groupChallengeTitle: "Title Test",
     groupId: "1234",
-  }))
-
-);jest.mock("expo-font", () => ({
+  })),
+);
+jest.mock("expo-font", () => ({
   useFonts: jest.fn(() => [true]),
   isLoaded: jest.fn(() => true),
 }));
-
 
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getUser: jest.fn(),
     getLikesOf: jest.fn().mockResolvedValue([]),
-    updatesLikesOf: jest.fn()
+    updatesLikesOf: jest.fn(),
   }));
 });
-
-
 
 describe("Group Screen renders challenges", () => {
   const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
-    jest.clearAllMocks(); 
+    jest.clearAllMocks();
   });
 
   afterEach(() => {

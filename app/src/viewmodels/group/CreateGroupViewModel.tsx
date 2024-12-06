@@ -6,9 +6,7 @@ import {
 } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createGroup } from "../../../types/GroupBuilder";
-import FirestoreCtrl, {
-  DBUser,
-} from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 
 export default function CreateGroupViewModel({
   user,

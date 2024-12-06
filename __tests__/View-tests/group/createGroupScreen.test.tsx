@@ -10,22 +10,21 @@ const mockSetGroupName = jest.fn();
 const mockSetChallengeTitle = jest.fn();
 const mockMakeGroup = jest.fn();
 
-
 jest.mock("@/src/viewmodels/group/CreateGroupViewModel", () =>
   jest.fn(() => ({
     groupName: "Test group",
     setGroupName: mockSetGroupName,
     challengeTitle: "Test challenge title",
     setChallengeTitle: mockSetChallengeTitle,
-    makeGroup: mockMakeGroup
-  }))
+    makeGroup: mockMakeGroup,
+  })),
 );
 
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getUser: jest.fn(),
     getLikesOf: jest.fn().mockResolvedValue([]),
-    updatesLikesOf: jest.fn()
+    updatesLikesOf: jest.fn(),
   }));
 });
 
@@ -41,13 +40,11 @@ const mockUser: DBUser = {
 describe("Create Group Screen renders", () => {
   const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
-  //const mockCreateGroupViewModel = 
-    //require("@/src/viewmodels/group/CreateGroupViewModel").CreateGroupViewModel;
-
+  //const mockCreateGroupViewModel =
+  //require("@/src/viewmodels/group/CreateGroupViewModel").CreateGroupViewModel;
 
   beforeEach(() => {
     jest.clearAllMocks();
-
   });
 
   afterEach(() => {

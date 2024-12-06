@@ -1,4 +1,7 @@
-import FirestoreCtrl, { DBGroup, DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBGroup,
+  DBUser,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { Timestamp } from "firebase/firestore";
 
 /**
