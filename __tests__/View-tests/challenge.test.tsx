@@ -11,10 +11,6 @@ const navigation = {
   navigate: jest.fn(),
 };
 
-let mockTimestamp = {
-  toDate: jest.fn().mockReturnValue(new Date()),
-};
-
 let mockDate = new Date();
 
 // Mock FirestoreCtrl methods
@@ -25,7 +21,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         uid: "user123",
         name: "Current User",
         email: "test@test.com",
-        createdAt: mockTimestamp,
+        createdAt: new Date(),
       }),
       getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
       getCommentsOf: jest.fn().mockResolvedValue([
@@ -33,7 +29,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
           uid: "12345",
           name: "Test User",
           comment: "This is a test comment",
-          created_at: mockTimestamp,
+          created_at: new Date(),
         },
       ]),
       updateLikesOf: jest
@@ -70,7 +66,7 @@ describe("Challenge Component", () => {
   });
 
   it("fetches user data on mount", async () => {
-    const { getByText } = render(
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -87,7 +83,7 @@ describe("Challenge Component", () => {
   });
 
   it("fetches likes data on mount and updates isLiked state", async () => {
-    const { getByTestId } = render(
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -154,7 +150,7 @@ describe("Challenge Component", () => {
   });
 
   it("toggles like state and updates likes list", async () => {
-    const { getByTestId, rerender } = render(
+    const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
         index={0}

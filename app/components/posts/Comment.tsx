@@ -39,7 +39,7 @@ export function SingleComment(comment: DBComment) {
         >
           <Text style={styles.user}> {comment.user_name} </Text>
           <Text style={styles.textofcomment}>
-            {comment.created_at.toDate().toLocaleString()}
+            {comment.created_at.toLocaleString()}
           </Text>
         </View>
         <Text style={styles.textofcomment}> {comment.comment_text} </Text>
