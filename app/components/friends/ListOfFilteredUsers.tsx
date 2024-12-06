@@ -86,6 +86,7 @@ export default function ListOfFilteredUsers({
             return (
               <UserListItem
                 name={item.name}
+                key={item.uid}
                 avatar={item.image_id}
                 isFriend={isFriend}
                 isRequested={isRequested}

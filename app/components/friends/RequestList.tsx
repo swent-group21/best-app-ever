@@ -25,11 +25,14 @@ export default function RequestList(
   };
 
   
+
+  
   return (
     <FlatList
       data={requests}
       testID="friend-request-list"
       keyExtractor={(item) => item.uid}
+      key={requests.length}
       style={{ position: "relative" }}
       renderItem={({ item, index }) => (
         <FriendRequestItem

@@ -2,7 +2,7 @@ import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
 
 /**
@@ -46,7 +46,7 @@ export const FriendRequestItem = ({
         onPress={onAccept}
         testID="accept-button"
       >
-        <Icon name="check" size={30} color="#fff" ref={'icon'} />
+        <Icon name="check" size={30} color="#fff"  />
       </TouchableOpacity>
 
       {/* Decline Button with Icon */}
