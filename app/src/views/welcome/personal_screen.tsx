@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get("window");
  */
 export default function WelcomeConceptScreen() {
   return (
-    <ThemedView style={styles.container} testID="container">
+    <ThemedView style={styles.container} testID="welcome-concept-screen">
       {/* Background shape */}
       <ThemedView
         style={styles.ovalShape}
