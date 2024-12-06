@@ -12,6 +12,7 @@ import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewMode
 import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedText } from "@/components/theme/ThemedText";
+import { Group } from "@/components/home/Group";
 
 const { width, height } = Dimensions.get("window");
 
@@ -55,6 +56,34 @@ export default function HomeScreen({
         rightAction={() => navigateToProfile()}
         testID="top-bar"
       />    
+
+      {/* Groups */}
+      <ThemedScrollView style={styles.groupsContainer} horizontal>
+        {groups.map((group, index) => (
+          <Group
+            groupDB={group}
+            navigation={navigation}
+            firestoreCtrl={firestoreCtrl}
+            key={index}
+            testID={`group-id-${index}`}
+          />
+        ))}
+
+        <ThemedView
+          style={styles.createGroupContainer}
+          testID="create-group-button"
+        >
+          <ThemedTextButton
+            style={styles.createGroupButton}
+            onPress={() => {}}
+            text="+"
+            textStyle={styles.createGroupText}
+            textColorType="textOverLight"
+            colorType="backgroundSecondary"
+          />
+        </ThemedView>
+      </ThemedScrollView>
+
 
       {/* Challenges */}
       <ThemedScrollView
@@ -141,5 +170,31 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: height * 0.04,
+  },
+  groupsContainer: {
+    width: width - 20,
+    height: 0.18 * height,
+    borderRadius: 15,
+    backgroundColor: "transparent",
+  },
+  createGroupContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    backgroundColor: "transparent",
+    width: width * 0.23,
+    height: width * 0.2,
+    borderRadius: 20,
+    margin: 10,
+    alignItems: "center",
+  },
+  createGroupButton: {
+    width: "95%",
+    height: "95%",
+    borderRadius: 60,
+  },
+  createGroupText: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 60,
   },
 });
