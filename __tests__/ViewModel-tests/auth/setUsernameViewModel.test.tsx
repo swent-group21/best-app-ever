@@ -45,7 +45,7 @@ describe("SetUsernameViewModel", () => {
 
   it("should update username when handleUsernameChange is called", () => {
     const { result } = renderHook(() =>
-      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser)
+      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser),
     );
 
     act(() => {
@@ -62,7 +62,7 @@ describe("SetUsernameViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser)
+      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser),
     );
 
     await act(async () => {
@@ -74,14 +74,16 @@ describe("SetUsernameViewModel", () => {
 
   it("should set errorMessage if image picking fails", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     (ImagePicker.launchImageLibraryAsync as jest.Mock).mockRejectedValueOnce(
-      new Error("ImagePickerError")
+      new Error("ImagePickerError"),
     );
 
     const { result } = renderHook(() =>
-      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser)
+      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser),
     );
 
     await act(async () => {
@@ -93,7 +95,7 @@ describe("SetUsernameViewModel", () => {
 
   it("should set errorMessage if username is not entered", async () => {
     const { result } = renderHook(() =>
-      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser)
+      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser),
     );
 
     await act(async () => {
@@ -106,11 +108,11 @@ describe("SetUsernameViewModel", () => {
   it("should call FirestoreCtrl methods and reset errorMessage on successful upload", async () => {
     (mockFirestoreCtrl.setName as jest.Mock).mockResolvedValueOnce(null);
     (mockFirestoreCtrl.setProfilePicture as jest.Mock).mockResolvedValueOnce(
-      null
+      null,
     );
 
     const { result } = renderHook(() =>
-      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser)
+      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser),
     );
 
     act(() => {
@@ -124,7 +126,7 @@ describe("SetUsernameViewModel", () => {
     expect(mockFirestoreCtrl.setName).toHaveBeenCalledWith(
       "mock-uid",
       "testUsername",
-      mockSetUser
+      mockSetUser,
     );
     expect(mockFirestoreCtrl.setProfilePicture).not.toHaveBeenCalled();
     expect(result.current.errorMessage).toBeNull();
@@ -132,14 +134,16 @@ describe("SetUsernameViewModel", () => {
 
   it("should handle errors during upload and set errorMessage", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     (mockFirestoreCtrl.setName as jest.Mock).mockRejectedValueOnce(
-      new Error("FirestoreError")
+      new Error("FirestoreError"),
     );
 
     const { result } = renderHook(() =>
-      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser)
+      SetUsernameViewModel(mockUser, mockFirestoreCtrl, mockSetUser),
     );
 
     act(() => {
@@ -151,7 +155,7 @@ describe("SetUsernameViewModel", () => {
     });
 
     expect(result.current.errorMessage).toBe(
-      "Failed to update profile. Please try again."
+      "Failed to update profile. Please try again.",
     );
   });
 });

@@ -1,5 +1,9 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
-import FirestoreCtrl, { DBChallenge, DBComment, DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBComment,
+  DBUser,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
 
 // Mock FirestoreCtrl
@@ -55,7 +59,12 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should initialize correctly and fetch user, comments, and likes", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     await waitFor(() => {
@@ -87,7 +96,12 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should toggle like and update the like list", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     await waitFor(() => {
@@ -103,12 +117,19 @@ describe("useMaximizeScreenViewModel", () => {
 
     expect(result.current.isLiked).toBe(false);
     expect(result.current.likeList).toEqual(["67890"]);
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("1", ["12345"]);
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("1", [
+      "12345",
+    ]);
   });
 
   it("should add a comment and update the comment list", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     act(() => {
@@ -140,7 +161,12 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should handle navigation correctly with navigateGoBack", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     await waitFor(() => {
@@ -154,11 +180,16 @@ describe("useMaximizeScreenViewModel", () => {
     mockFirestoreCtrl.getCommentsOf = jest.fn().mockResolvedValue([]);
 
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     await waitFor(() => {
-        expect(result.current.commentList).toEqual([]);
+      expect(result.current.commentList).toEqual([]);
     });
   });
 
@@ -166,18 +197,28 @@ describe("useMaximizeScreenViewModel", () => {
     mockFirestoreCtrl.getLikesOf = jest.fn().mockResolvedValue([]);
 
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     await waitFor(() => {
-        expect(result.current.likeList).toEqual([]);
-        expect(result.current.isLiked).toBe(false);
+      expect(result.current.likeList).toEqual([]);
+      expect(result.current.isLiked).toBe(false);
     });
   });
 
   it("should update post details correctly", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(mockUser, mockChallenge, mockFirestoreCtrl, mockNavigation)
+      useMaximizeScreenViewModel(
+        mockUser,
+        mockChallenge,
+        mockFirestoreCtrl,
+        mockNavigation,
+      ),
     );
 
     await waitFor(() => {

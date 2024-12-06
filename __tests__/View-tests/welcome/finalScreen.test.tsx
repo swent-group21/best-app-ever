@@ -14,7 +14,6 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         name: "Test User",
         createdAt: new Date(),
       }),
-      
     };
   });
 });

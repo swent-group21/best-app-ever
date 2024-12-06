@@ -1,11 +1,16 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
 import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
 
 // Mock `expo-location`
 jest.mock("expo-location", () => ({
-  requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: "undetermined" }),
+  requestForegroundPermissionsAsync: jest
+    .fn()
+    .mockResolvedValue({ status: "undetermined" }),
   getCurrentPositionAsync: jest.fn(),
 }));
 
@@ -29,7 +34,7 @@ const mockFirestoreCtrl = {};
 describe("CreateChallengeViewModel", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
   it("should initialize with default state", () => {
@@ -38,7 +43,7 @@ describe("CreateChallengeViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         route: mockRoute,
-      })
+      }),
     );
 
     expect(result.current.challengeName).toBe("");
@@ -53,7 +58,7 @@ describe("CreateChallengeViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         route: mockRoute,
-      })
+      }),
     );
 
     act(() => {
@@ -70,7 +75,9 @@ describe("CreateChallengeViewModel", () => {
   });
 
   it("should fetch location if permissions are granted", async () => {
-    (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({ status: "granted" });
+    (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({
+      status: "granted",
+    });
     (getCurrentPositionAsync as jest.Mock).mockResolvedValueOnce({
       coords: { latitude: 48.8566, longitude: 2.3522 },
     });
@@ -80,33 +87,35 @@ describe("CreateChallengeViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         route: mockRoute,
-      })
+      }),
     );
 
     await waitFor(() => {
-        expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
-        expect(getCurrentPositionAsync).toHaveBeenCalled();
-        expect(result.current.location).toEqual({
+      expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
+      expect(getCurrentPositionAsync).toHaveBeenCalled();
+      expect(result.current.location).toEqual({
         coords: { latitude: 48.8566, longitude: 2.3522 },
-        });
+      });
     });
   });
 
   it("should disable location if permissions are denied", async () => {
-    (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({ status: "denied" });
+    (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({
+      status: "denied",
+    });
 
     const { result } = renderHook(() =>
       CreateChallengeViewModel({
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         route: mockRoute,
-      })
+      }),
     );
 
     await waitFor(() => {
-        expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
-        expect(result.current.isLocationEnabled).toBe(false);
-        expect(result.current.location).toBe(null);
+      expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
+      expect(result.current.isLocationEnabled).toBe(false);
+      expect(result.current.location).toBe(null);
     });
   });
 
@@ -118,7 +127,7 @@ describe("CreateChallengeViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         route: mockRoute,
-      })
+      }),
     );
 
     act(() => {
@@ -136,7 +145,7 @@ describe("CreateChallengeViewModel", () => {
       "Test Description",
       null, // Location is null by default
       expect.any(Date),
-      "mock-image-id"
+      "mock-image-id",
     );
     expect(mockNavigation.reset).toHaveBeenCalledWith({
       index: 0,
@@ -153,11 +162,14 @@ describe("CreateChallengeViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         route: mockRoute,
-      })
+      }),
     );
 
     const error = await act(async () => result.current.makeChallenge());
     expect(error).toBe(errorMock);
-    expect(console.error).toHaveBeenCalledWith("Unable to create challenge", errorMock);
+    expect(console.error).toHaveBeenCalledWith(
+      "Unable to create challenge",
+      errorMock,
+    );
   });
 });

@@ -30,7 +30,9 @@ describe("buildChallenge", () => {
   });
 
   it("should throw an error if no challenge is found", async () => {
-    mockFirestoreCtrl.getChallenge = jest.fn().mockResolvedValue(new Error("No challenge found"));
+    mockFirestoreCtrl.getChallenge = jest
+      .fn()
+      .mockResolvedValue(new Error("No challenge found"));
 
     try {
       await buildChallenge("invalidChallenge", mockFirestoreCtrl);
@@ -63,29 +65,34 @@ describe("createChallenge", () => {
       challengeData.challenge_name,
       challengeData.description,
       null,
-      challengeData.date
+      challengeData.date,
     );
 
     // Verify FirestoreCtrl methods were called correctly
     expect(mockFirestoreCtrl.getUser).toHaveBeenCalled();
     expect(mockFirestoreCtrl.newChallenge).toHaveBeenCalledWith(
-        expect.objectContaining({
-            challenge_name: "Test Challenge",
-            description: "Test Description",
-            uid: "user123",
-            date: challengeData.date,
-            location: null,
-        }));
+      expect.objectContaining({
+        challenge_name: "Test Challenge",
+        description: "Test Description",
+        uid: "user123",
+        date: challengeData.date,
+        location: null,
+      }),
+    );
   });
 
   it("should log an error when Firestore operations fail", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
-    mockFirestoreCtrl.getUser = jest.fn().mockRejectedValue(new Error("Firestore error"));
+    mockFirestoreCtrl.getUser = jest
+      .fn()
+      .mockRejectedValue(new Error("Firestore error"));
 
     await expect(
-      createChallenge(mockFirestoreCtrl, "Test", "Description", null)
+      createChallenge(mockFirestoreCtrl, "Test", "Description", null),
     ).resolves.toBeUndefined(); // Function should handle the error internally
   });
 });

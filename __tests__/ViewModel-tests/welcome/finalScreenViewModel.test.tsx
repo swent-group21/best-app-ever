@@ -38,7 +38,7 @@ describe("WelcomeFinalViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         setUser: mockSetUser,
-      })
+      }),
     );
 
     act(() => {
@@ -54,7 +54,7 @@ describe("WelcomeFinalViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         setUser: mockSetUser,
-      })
+      }),
     );
 
     act(() => {
@@ -70,7 +70,7 @@ describe("WelcomeFinalViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         setUser: mockSetUser,
-      })
+      }),
     );
 
     await act(async () => {
@@ -80,7 +80,7 @@ describe("WelcomeFinalViewModel", () => {
     expect(signInAsGuest).toHaveBeenCalledWith(
       mockFirestoreCtrl,
       mockNavigation,
-      mockSetUser
+      mockSetUser,
     );
   });
 
@@ -88,7 +88,7 @@ describe("WelcomeFinalViewModel", () => {
     console.error = jest.fn();
 
     (signInAsGuest as jest.Mock).mockRejectedValueOnce(
-      new Error("SignInError")
+      new Error("SignInError"),
     );
 
     const { result } = renderHook(() =>
@@ -96,7 +96,7 @@ describe("WelcomeFinalViewModel", () => {
         firestoreCtrl: mockFirestoreCtrl,
         navigation: mockNavigation,
         setUser: mockSetUser,
-      })
+      }),
     );
 
     await act(async () => {

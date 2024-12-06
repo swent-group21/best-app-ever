@@ -1,7 +1,16 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen, act } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+  act,
+} from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
-import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBUser,
+} from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock the navigation prop
 const navigation = {
@@ -29,7 +38,9 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
           created_at: new Date(),
         },
       ]),
-      updateLikesOf: jest.fn().mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
+      updateLikesOf: jest
+        .fn()
+        .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
     };
   });
 });
@@ -106,12 +117,12 @@ describe("Challenge Component", () => {
         currentUser={currentUser}
       />,
     );
-    
+
     const touchable = screen.getByTestId("challenge-touchable");
-    
+
     // Initially, the detailed view should not be open
     expect(() => screen.getByTestId("challenge-container")).toThrow();
-    
+
     // Press the touchable to open the details
     await waitFor(() => {
       fireEvent.press(touchable);
@@ -139,10 +150,10 @@ describe("Challenge Component", () => {
     });
 
     const expandButton = screen.getByTestId("expand-button");
-    
+
     // Press the expand button
     await act(() => {
-        fireEvent.press(expandButton);
+      fireEvent.press(expandButton);
     });
 
     expect(navigation.navigate).toHaveBeenCalledWith("Maximize", {
@@ -167,14 +178,14 @@ describe("Challenge Component", () => {
 
     // Open the detailed view
     await waitFor(() => {
-        fireEvent.press(screen.getByTestId("challenge-touchable"));
+      fireEvent.press(screen.getByTestId("challenge-touchable"));
     });
 
     let likeButton = screen.getByTestId("like-button");
 
     // Like the challenge
     await waitFor(() => {
-        fireEvent.press(likeButton);
+      fireEvent.press(likeButton);
     });
 
     // Ensure updateLikesOf was called with the new likes list

@@ -1,9 +1,6 @@
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 import { renderHook, act } from "@testing-library/react-native";
-import {
-  useCameraPermissions,
-  CameraCapturedPicture,
-} from "expo-camera";
+import { useCameraPermissions, CameraCapturedPicture } from "expo-camera";
 
 // Mock `expo-camera`
 jest.mock("expo-camera", () => ({
@@ -32,9 +29,12 @@ describe("useCameraViewModel", () => {
   });
 
   it("should initialize with default states", () => {
-    (useCameraPermissions as jest.Mock).mockReturnValue([{ status: 'granted' }, jest.fn()]);
+    (useCameraPermissions as jest.Mock).mockReturnValue([
+      { status: "granted" },
+      jest.fn(),
+    ]);
     const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation)
+      useCameraViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     expect(result.current.facing).toBe("back");
@@ -47,7 +47,7 @@ describe("useCameraViewModel", () => {
 
   it("should toggle camera facing", () => {
     const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation)
+      useCameraViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     act(() => {
@@ -65,7 +65,7 @@ describe("useCameraViewModel", () => {
 
   it("should toggle flash mode", () => {
     const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation)
+      useCameraViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     act(() => {
@@ -83,30 +83,30 @@ describe("useCameraViewModel", () => {
     expect(result.current.isFlashEnabled).toBe(false);
   });
 
-it("should handle image URL generation and navigate to CreateChallenge", async () => {
+  it("should handle image URL generation and navigate to CreateChallenge", async () => {
     mockFirestoreCtrl.uploadImageFromUri.mockResolvedValue("mock-image-id");
-  
+
     const mockPicture: CameraCapturedPicture = {
       uri: "mock-picture-uri",
       width: 1080,
       height: 1920,
       base64: "mock-base64",
     };
-  
+
     const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation)
+      useCameraViewModel(mockFirestoreCtrl, mockNavigation),
     );
-  
+
     // Set the picture state directly
     act(() => {
       result.current.setIsCameraEnabled(false);
       result.current.picture = mockPicture; // Set the picture before calling imageUrlGen
     });
-  
+
     await act(async () => {
       await result.current.imageUrlGen();
     });
-  
+
     expect(mockFirestoreCtrl.uploadImageFromUri).toHaveBeenCalled;
     expect(mockNavigation.navigate).toHaveBeenCalledWith("CreateChallenge", {
       image_id: "mock-image-id",
@@ -115,10 +115,13 @@ it("should handle image URL generation and navigate to CreateChallenge", async (
 
   it("should request camera permissions", async () => {
     const mockRequestPermission = jest.fn();
-    (useCameraPermissions as jest.Mock).mockReturnValue([null, mockRequestPermission]);
+    (useCameraPermissions as jest.Mock).mockReturnValue([
+      null,
+      mockRequestPermission,
+    ]);
 
     const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation)
+      useCameraViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await act(async () => {

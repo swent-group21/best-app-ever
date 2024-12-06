@@ -1,5 +1,10 @@
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -90,20 +95,20 @@ describe("HomeScreen UI Tests", () => {
     );
 
     await waitFor(() => {
-    // Vérifie le titre de la barre supérieure
-    expect(getByText("Strive")).toBeTruthy();
+      // Vérifie le titre de la barre supérieure
+      expect(getByText("Strive")).toBeTruthy();
 
-    // Vérifie si les groupes s'affichent
-    expect(getByText("Group 1")).toBeTruthy();
-    expect(getByText("Group 2")).toBeTruthy();
+      // Vérifie si les groupes s'affichent
+      expect(getByText("Group 1")).toBeTruthy();
+      expect(getByText("Group 2")).toBeTruthy();
 
-    // Vérifie si les défis s'affichent
-    expect(getByTestId("challenge-id-0")).toBeTruthy();
-    expect(getByTestId("challenge-id-1")).toBeTruthy();
+      // Vérifie si les défis s'affichent
+      expect(getByTestId("challenge-id-0")).toBeTruthy();
+      expect(getByTestId("challenge-id-1")).toBeTruthy();
 
-    // Vérifie le défi actuel
-    expect(getByText("Current Challenge")).toBeTruthy();
-    expect(getByText("Current Challenge Description")).toBeTruthy();
+      // Vérifie le défi actuel
+      expect(getByText("Current Challenge")).toBeTruthy();
+      expect(getByText("Current Challenge Description")).toBeTruthy();
     });
   });
 

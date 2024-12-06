@@ -1,5 +1,21 @@
-import { isValidEmail, logInWithEmail, signUpWithEmail, signInAsGuest, logOut, resetPassword, resetEmail } from "@/types/Auth";
-import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signOut, sendPasswordResetEmail, updateEmail } from "@/src/models/firebase/Firebase";
+import {
+  isValidEmail,
+  logInWithEmail,
+  signUpWithEmail,
+  signInAsGuest,
+  logOut,
+  resetPassword,
+  resetEmail,
+} from "@/types/Auth";
+import {
+  auth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInAnonymously,
+  signOut,
+  sendPasswordResetEmail,
+  updateEmail,
+} from "@/src/models/firebase/Firebase";
 
 jest.mock("@/src/models/firebase/Firebase", () => ({
   auth: jest.fn(),
@@ -49,7 +65,11 @@ describe("isValidEmail", () => {
   });
 
   it("should return false for empty or null input", () => {
-    const emptyInputs = ["", null as unknown as string, undefined as unknown as string];
+    const emptyInputs = [
+      "",
+      null as unknown as string,
+      undefined as unknown as string,
+    ];
 
     emptyInputs.forEach((input) => {
       const result = isValidEmail(input);
@@ -60,28 +80,28 @@ describe("isValidEmail", () => {
 
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-    return jest.fn().mockImplementation(() => {
-      return {
-        getUser: jest.fn((uid: string) => {
-            if (uid === "user123") {
-                return Promise.resolve({
-                uid: "user123",
-                name: "Test User",
-                email: "test@example.com",
-                createdAt: new Date(),
-            });
+  return jest.fn().mockImplementation(() => {
+    return {
+      getUser: jest.fn((uid: string) => {
+        if (uid === "user123") {
+          return Promise.resolve({
+            uid: "user123",
+            name: "Test User",
+            email: "test@example.com",
+            createdAt: new Date(),
+          });
         }
         return Promise.reject(new Error("User not found"));
-    }),
-        createUser: jest.fn((uid: string, user: DBUser) => {
-          if (uid === "user" || uid === "guest123") {
-            return Promise.resolve();
-          }
-          return Promise.reject(new Error("User not found"));
-        }),
-      };
-    });
+      }),
+      createUser: jest.fn((uid: string, user: DBUser) => {
+        if (uid === "user" || uid === "guest123") {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error("User not found"));
+      }),
+    };
   });
+});
 const mockFirestoreCtrl = new FirestoreCtrl();
 
 describe("logInWithEmail", () => {
@@ -117,11 +137,15 @@ describe("logInWithEmail", () => {
       "password123",
       mockFirestoreCtrl,
       mockNavigation,
-      setUser
+      setUser,
     );
 
     // Assertions
-    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(auth, "test@example.com", "password123");
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+      "password123",
+    );
     expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith("user123");
     expect(setUser).toHaveBeenCalledWith({
       uid: "user123",
@@ -134,7 +158,14 @@ describe("logInWithEmail", () => {
       routes: [
         {
           name: "Home",
-          params: { user: { uid: "user123", name: "Test User", email: "test@example.com", createdAt: expect.any(Date) } },
+          params: {
+            user: {
+              uid: "user123",
+              name: "Test User",
+              email: "test@example.com",
+              createdAt: expect.any(Date),
+            },
+          },
         },
       ],
     });
@@ -155,7 +186,7 @@ describe("logInWithEmail", () => {
       "password123",
       mockFirestoreCtrl,
       mockNavigation,
-      setUser
+      setUser,
     );
 
     // Assertions
@@ -174,7 +205,9 @@ describe("logInWithEmail", () => {
     console.error = jest.fn();
 
     // Mock Firebase Auth rejection
-    (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(new Error("Invalid credentials"));
+    (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
+      new Error("Invalid credentials"),
+    );
 
     // Call the function
     await logInWithEmail(
@@ -182,17 +215,21 @@ describe("logInWithEmail", () => {
       "wrongpassword",
       mockFirestoreCtrl,
       mockNavigation,
-      setUser
+      setUser,
     );
 
     // Assertions
-    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(auth, "test@example.com", "wrongpassword");
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+      "wrongpassword",
+    );
     expect(mockFirestoreCtrl.getUser).not.toHaveBeenCalled();
     expect(setUser).not.toHaveBeenCalled();
     // No navigation reset or navigate should occur
     expect(mockNavigation.reset).not.toHaveBeenCalled();
     expect(mockNavigation.navigate).not.toHaveBeenCalled();
-    
+
     // Restore the original console.error
     console.error = originalConsoleError;
   });
@@ -200,10 +237,14 @@ describe("logInWithEmail", () => {
   it("should alert and log error if login fails unexpectedly", async () => {
     // Mock alert and console.error
     jest.spyOn(global, "alert").mockImplementation(() => {});
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     // Mock Firebase Auth rejection
-    (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(new Error("Network Error"));
+    (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
+      new Error("Network Error"),
+    );
 
     // Call the function
     await logInWithEmail(
@@ -211,338 +252,389 @@ describe("logInWithEmail", () => {
       "password123",
       mockFirestoreCtrl,
       mockNavigation,
-      setUser
+      setUser,
     );
 
     // Assertions
-    expect(alert).toHaveBeenCalledWith("Failed to log in: Error: Network Error");
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to log in: ", new Error("Network Error"));
-    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(auth, "test@example.com", "password123");
+    expect(alert).toHaveBeenCalledWith(
+      "Failed to log in: Error: Network Error",
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to log in: ",
+      new Error("Network Error"),
+    );
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+      "password123",
+    );
   });
 });
 
 describe("signUpWithEmail", () => {
-    // Mock navigation
-    const mockNavigation = {
-      navigate: jest.fn(),
-    };
+  // Mock navigation
+  const mockNavigation = {
+    navigate: jest.fn(),
+  };
 
-    const mockSetUser = jest.fn();
+  const mockSetUser = jest.fn();
 
-    beforeEach(() => {
-      jest.clearAllMocks(); // Reset mocks before each test
-      global.alert = jest.fn(); // Mock alert function
-    });
+  beforeEach(() => {
+    jest.clearAllMocks(); // Reset mocks before each test
+    global.alert = jest.fn(); // Mock alert function
+  });
 
-    it("should successfully create a user in Firebase Auth and Firestore", async () => {
-      // Mock Firebase Auth response
-      (createUserWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
-        user: {
-          uid: "user",
-        },
-      });
-
-      // Call the function
-      await signUpWithEmail(
-        "Test User",
-        "test@example.com",
-        "password123",
-        mockFirestoreCtrl,
-        mockNavigation,
-        mockSetUser
-      );
-
-      // Assertions
-      expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(auth, "test@example.com", "password123");
-      expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user", {
+  it("should successfully create a user in Firebase Auth and Firestore", async () => {
+    // Mock Firebase Auth response
+    (createUserWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
+      user: {
         uid: "user",
-        name: "Test User",
-        email: "test@example.com",
-        createdAt: expect.any(Date),
-        groups: [],
-      });
+      },
     });
 
-    it("should handle errors when creating a user in Firestore", async () => {
-      // Mock alert and console.error
-      jest.spyOn(global, "alert").mockImplementation(() => {});
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    // Call the function
+    await signUpWithEmail(
+      "Test User",
+      "test@example.com",
+      "password123",
+      mockFirestoreCtrl,
+      mockNavigation,
+      mockSetUser,
+    );
 
-        // Mock Firebase Auth response
-      (createUserWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
-        user: {
-          uid: "user",
-        },
-      });
+    // Assertions
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+      "password123",
+    );
+    expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user", {
+      uid: "user",
+      name: "Test User",
+      email: "test@example.com",
+      createdAt: expect.any(Date),
+      groups: [],
+    });
+  });
 
-      // Call the function
-      await signUpWithEmail(
-        "Test User",
-        "test@example.com",
-        "password123",
-        mockFirestoreCtrl,
-        mockNavigation,
-        mockSetUser
-      );
+  it("should handle errors when creating a user in Firestore", async () => {
+    // Mock alert and console.error
+    jest.spyOn(global, "alert").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
-      // Assertions
-      expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(auth, "test@example.com", "password123");
-      expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user", {
+    // Mock Firebase Auth response
+    (createUserWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
+      user: {
         uid: "user",
-        name: "Test User",
-        email: "test@example.com",
-        createdAt: expect.any(Date),
-        groups: [],
-      });
-
-      expect(mockSetUser).not.toHaveBeenCalled();
-      expect(mockNavigation.navigate).not.toHaveBeenCalled();
+      },
     });
 
-    it("should handle errors when creating a user in Firebase Auth", async () => {
-      // Mock Firebase Auth failure
-      (createUserWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(new Error("Firebase error"));
+    // Call the function
+    await signUpWithEmail(
+      "Test User",
+      "test@example.com",
+      "password123",
+      mockFirestoreCtrl,
+      mockNavigation,
+      mockSetUser,
+    );
 
-      // Call the function
-      await signUpWithEmail(
-        "Test User",
-        "test@example.com",
-        "password123",
-        mockFirestoreCtrl,
-        mockNavigation,
-        mockSetUser
-      );
-
-      // Assertions
-      expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(auth, "test@example.com", "password123");
-      expect(mockFirestoreCtrl.createUser).not.toHaveBeenCalled();
-      expect(mockSetUser).not.toHaveBeenCalled();
-      expect(mockNavigation.navigate).not.toHaveBeenCalled();
+    // Assertions
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+      "password123",
+    );
+    expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("user", {
+      uid: "user",
+      name: "Test User",
+      email: "test@example.com",
+      createdAt: expect.any(Date),
+      groups: [],
     });
 
-    it("should alert if required fields are missing", async () => {
-      // Call the function with missing userName
-      await signUpWithEmail("", "test@example.com", "password123", mockFirestoreCtrl, mockNavigation, mockSetUser);
+    expect(mockSetUser).not.toHaveBeenCalled();
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  });
 
-      // Assertions
-      expect(global.alert).toHaveBeenCalledWith("Please fill in all fields.");
-      expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
-      expect(mockFirestoreCtrl.createUser).not.toHaveBeenCalled();
-      expect(mockSetUser).not.toHaveBeenCalled();
-      expect(mockNavigation.navigate).not.toHaveBeenCalled();
-    });
+  it("should handle errors when creating a user in Firebase Auth", async () => {
+    // Mock Firebase Auth failure
+    (createUserWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
+      new Error("Firebase error"),
+    );
+
+    // Call the function
+    await signUpWithEmail(
+      "Test User",
+      "test@example.com",
+      "password123",
+      mockFirestoreCtrl,
+      mockNavigation,
+      mockSetUser,
+    );
+
+    // Assertions
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+      "password123",
+    );
+    expect(mockFirestoreCtrl.createUser).not.toHaveBeenCalled();
+    expect(mockSetUser).not.toHaveBeenCalled();
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  });
+
+  it("should alert if required fields are missing", async () => {
+    // Call the function with missing userName
+    await signUpWithEmail(
+      "",
+      "test@example.com",
+      "password123",
+      mockFirestoreCtrl,
+      mockNavigation,
+      mockSetUser,
+    );
+
+    // Assertions
+    expect(global.alert).toHaveBeenCalledWith("Please fill in all fields.");
+    expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
+    expect(mockFirestoreCtrl.createUser).not.toHaveBeenCalled();
+    expect(mockSetUser).not.toHaveBeenCalled();
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  });
 });
 
 describe("signInAsGuest", () => {
-    const mockNavigation = {
-      navigate: jest.fn(),
-    };
+  const mockNavigation = {
+    navigate: jest.fn(),
+  };
 
-    const mockSetUser = jest.fn();
+  const mockSetUser = jest.fn();
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-      global.alert = jest.fn();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.alert = jest.fn();
+  });
 
-    it("should successfully sign in as a guest and create a Firestore user", async () => {
-      // Mock Firebase response
-      (signInAnonymously as jest.Mock).mockResolvedValueOnce({
-        user: {
-          uid: "guest123",
-        },
-      });
-
-      // Call the function
-      await signInAsGuest(mockFirestoreCtrl, mockNavigation, mockSetUser);
-
-      // Assertions
-      expect(signInAnonymously).toHaveBeenCalledWith(auth);
-      expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("guest123", {
+  it("should successfully sign in as a guest and create a Firestore user", async () => {
+    // Mock Firebase response
+    (signInAnonymously as jest.Mock).mockResolvedValueOnce({
+      user: {
         uid: "guest123",
-        name: "Guest",
-        email: "",
-        createdAt: expect.any(Date),
-      });
+      },
     });
 
-    it("should handle Firestore user creation failure", async () => {
-      // Mock Firebase response
-      (signInAnonymously as jest.Mock).mockResolvedValueOnce({
-        user: {
-          uid: "guest123",
-        },
-      });
+    // Call the function
+    await signInAsGuest(mockFirestoreCtrl, mockNavigation, mockSetUser);
 
-      // Call the function
-      await signInAsGuest(mockFirestoreCtrl, mockNavigation, mockSetUser);
+    // Assertions
+    expect(signInAnonymously).toHaveBeenCalledWith(auth);
+    expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("guest123", {
+      uid: "guest123",
+      name: "Guest",
+      email: "",
+      createdAt: expect.any(Date),
+    });
+  });
 
-      // Assertions
-      expect(signInAnonymously).toHaveBeenCalledWith(auth);
-      expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("guest123", {
+  it("should handle Firestore user creation failure", async () => {
+    // Mock Firebase response
+    (signInAnonymously as jest.Mock).mockResolvedValueOnce({
+      user: {
         uid: "guest123",
-        name: "Guest",
-        email: "",
-        createdAt: expect.any(Date),
-      });
-      expect(mockSetUser).not.toHaveBeenCalled();
-      expect(mockNavigation.navigate).not.toHaveBeenCalled();
+      },
     });
 
-    it("should handle guest sign-in failure", async () => {
-      // Mock console.error
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    // Call the function
+    await signInAsGuest(mockFirestoreCtrl, mockNavigation, mockSetUser);
 
-      // Mock Firebase sign-in failure
-      (signInAnonymously as jest.Mock).mockRejectedValueOnce(new Error("Firebase error"));
-
-      // Call the function
-      await signInAsGuest(mockFirestoreCtrl, mockNavigation, mockSetUser);
-
-      // Assertions
-      expect(signInAnonymously).toHaveBeenCalledWith(auth);
-      expect(mockFirestoreCtrl.createUser).not.toHaveBeenCalled();
-      expect(mockSetUser).not.toHaveBeenCalled();
-      expect(mockNavigation.navigate).not.toHaveBeenCalled();
+    // Assertions
+    expect(signInAnonymously).toHaveBeenCalledWith(auth);
+    expect(mockFirestoreCtrl.createUser).toHaveBeenCalledWith("guest123", {
+      uid: "guest123",
+      name: "Guest",
+      email: "",
+      createdAt: expect.any(Date),
     });
+    expect(mockSetUser).not.toHaveBeenCalled();
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  });
+
+  it("should handle guest sign-in failure", async () => {
+    // Mock console.error
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    // Mock Firebase sign-in failure
+    (signInAnonymously as jest.Mock).mockRejectedValueOnce(
+      new Error("Firebase error"),
+    );
+
+    // Call the function
+    await signInAsGuest(mockFirestoreCtrl, mockNavigation, mockSetUser);
+
+    // Assertions
+    expect(signInAnonymously).toHaveBeenCalledWith(auth);
+    expect(mockFirestoreCtrl.createUser).not.toHaveBeenCalled();
+    expect(mockSetUser).not.toHaveBeenCalled();
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
+  });
 });
 
 describe("logOut", () => {
-    const mockNavigation = {
-      reset: jest.fn(),
-    };
+  const mockNavigation = {
+    reset: jest.fn(),
+  };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-      global.alert = jest.fn(); // Mock alert
-      console.error = jest.fn(); // Mock console.error
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.alert = jest.fn(); // Mock alert
+    console.error = jest.fn(); // Mock console.error
+  });
+
+  it("should log out and reset navigation to WelcomeFinal screen", async () => {
+    // Mock successful signOut
+    (signOut as jest.Mock).mockResolvedValueOnce(undefined);
+
+    // Call the function
+    await logOut(mockNavigation);
+
+    // Assertions
+    expect(signOut).toHaveBeenCalledWith(auth);
+    expect(mockNavigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{ name: "WelcomeFinal" }],
     });
+    expect(global.alert).not.toHaveBeenCalled(); // No alert should be shown
+    expect(console.error).not.toHaveBeenCalled(); // No error logged
+  });
 
-    it("should log out and reset navigation to WelcomeFinal screen", async () => {
-      // Mock successful signOut
-      (signOut as jest.Mock).mockResolvedValueOnce(undefined);
+  it("should handle logout failure and alert the user", async () => {
+    // Mock signOut rejection
+    (signOut as jest.Mock).mockRejectedValueOnce(new Error("Logout error"));
 
-      // Call the function
-      await logOut(mockNavigation);
+    // Call the function
+    await logOut(mockNavigation);
 
-      // Assertions
-      expect(signOut).toHaveBeenCalledWith(auth);
-      expect(mockNavigation.reset).toHaveBeenCalledWith({
-        index: 0,
-        routes: [{ name: "WelcomeFinal" }],
-      });
-      expect(global.alert).not.toHaveBeenCalled(); // No alert should be shown
-      expect(console.error).not.toHaveBeenCalled(); // No error logged
-    });
-
-    it("should handle logout failure and alert the user", async () => {
-      // Mock signOut rejection
-      (signOut as jest.Mock).mockRejectedValueOnce(new Error("Logout error"));
-
-      // Call the function
-      await logOut(mockNavigation);
-
-      // Assertions
-      expect(signOut).toHaveBeenCalledWith(auth);
-      expect(mockNavigation.reset).not.toHaveBeenCalled(); // Navigation should not reset
-    });
+    // Assertions
+    expect(signOut).toHaveBeenCalledWith(auth);
+    expect(mockNavigation.reset).not.toHaveBeenCalled(); // Navigation should not reset
+  });
 });
 
 describe("resetPassword", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      global.alert = jest.fn(); // Mock alert
-      console.error = jest.fn(); // Mock console.error
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.alert = jest.fn(); // Mock alert
+    console.error = jest.fn(); // Mock console.error
+  });
 
-    it("should send a password reset email when a valid email is provided", async () => {
-      // Mock sendPasswordResetEmail success
-      (sendPasswordResetEmail as jest.Mock).mockResolvedValueOnce(undefined);
+  it("should send a password reset email when a valid email is provided", async () => {
+    // Mock sendPasswordResetEmail success
+    (sendPasswordResetEmail as jest.Mock).mockResolvedValueOnce(undefined);
 
-      // Call the function
-      await resetPassword("test@example.com");
+    // Call the function
+    await resetPassword("test@example.com");
 
-      // Assertions
-      expect(sendPasswordResetEmail).toHaveBeenCalledWith(auth, "test@example.com");
-      expect(global.alert).toHaveBeenCalledWith("Password reset email sent.");
-      expect(console.error).not.toHaveBeenCalled(); // No error should be logged
-    });
+    // Assertions
+    expect(sendPasswordResetEmail).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+    );
+    expect(global.alert).toHaveBeenCalledWith("Password reset email sent.");
+    expect(console.error).not.toHaveBeenCalled(); // No error should be logged
+  });
 
-    it("should alert and log error if sending the email fails", async () => {
-      // Mock sendPasswordResetEmail failure
-      (sendPasswordResetEmail as jest.Mock).mockRejectedValueOnce(new Error("Email send error"));
+  it("should alert and log error if sending the email fails", async () => {
+    // Mock sendPasswordResetEmail failure
+    (sendPasswordResetEmail as jest.Mock).mockRejectedValueOnce(
+      new Error("Email send error"),
+    );
 
-      // Call the function
-      await resetPassword("test@example.com");
+    // Call the function
+    await resetPassword("test@example.com");
 
-      // Assertions
-      expect(sendPasswordResetEmail).toHaveBeenCalledWith(auth, "test@example.com");
-    });
+    // Assertions
+    expect(sendPasswordResetEmail).toHaveBeenCalledWith(
+      auth,
+      "test@example.com",
+    );
+  });
 
-    it("should alert and log error if no email is provided", async () => {
-      // Call the function with an empty email
-      await resetPassword("");
+  it("should alert and log error if no email is provided", async () => {
+    // Call the function with an empty email
+    await resetPassword("");
 
-      // Assertions
-      expect(sendPasswordResetEmail).not.toHaveBeenCalled(); // Email sending should not be attempted
-      expect(global.alert).toHaveBeenCalledWith("Please enter your email.");
-      expect(console.error).toHaveBeenCalledWith("Please enter your email.");
-    });
+    // Assertions
+    expect(sendPasswordResetEmail).not.toHaveBeenCalled(); // Email sending should not be attempted
+    expect(global.alert).toHaveBeenCalledWith("Please enter your email.");
+    expect(console.error).toHaveBeenCalledWith("Please enter your email.");
+  });
 });
 
 describe("resetEmail", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      global.alert = jest.fn(); // Mock alert
-      console.error = jest.fn(); // Mock console.error
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.alert = jest.fn(); // Mock alert
+    console.error = jest.fn(); // Mock console.error
+  });
 
-    it("should successfully update the email if valid and user is signed in", async () => {
-      // Mock current user
-      (auth.currentUser as any) = { uid: "user123" };
+  it("should successfully update the email if valid and user is signed in", async () => {
+    // Mock current user
+    (auth.currentUser as any) = { uid: "user123" };
 
-      // Mock email update success
-      (updateEmail as jest.Mock).mockResolvedValueOnce(undefined);
+    // Mock email update success
+    (updateEmail as jest.Mock).mockResolvedValueOnce(undefined);
 
-      // Call the function
-      await resetEmail("new@example.com");
+    // Call the function
+    await resetEmail("new@example.com");
 
-      // Assertions
-      expect(updateEmail).toHaveBeenCalledWith(auth.currentUser, "new@example.com");
-      expect(global.alert).toHaveBeenCalledWith("Email updated.");
-      expect(console.error).not.toHaveBeenCalled(); // No error should be logged
-    });
+    // Assertions
+    expect(updateEmail).toHaveBeenCalledWith(
+      auth.currentUser,
+      "new@example.com",
+    );
+    expect(global.alert).toHaveBeenCalledWith("Email updated.");
+    expect(console.error).not.toHaveBeenCalled(); // No error should be logged
+  });
 
-    it("should alert and log an error if the email is invalid", async () => {
-      // Call the function
-      await resetEmail("invalid-email");
+  it("should alert and log an error if the email is invalid", async () => {
+    // Call the function
+    await resetEmail("invalid-email");
 
-      // Assertions
-      expect(updateEmail).not.toHaveBeenCalled(); // Email update should not be attempted
-      expect(global.alert).toHaveBeenCalledWith("Please enter a valid email.");
-      expect(console.error).toHaveBeenCalledWith("Please enter a valid email.");
-    });
+    // Assertions
+    expect(updateEmail).not.toHaveBeenCalled(); // Email update should not be attempted
+    expect(global.alert).toHaveBeenCalledWith("Please enter a valid email.");
+    expect(console.error).toHaveBeenCalledWith("Please enter a valid email.");
+  });
 
-    it("should alert and log an error if no email is provided", async () => {
-      // Call the function with an empty email
-      await resetEmail("");
+  it("should alert and log an error if no email is provided", async () => {
+    // Call the function with an empty email
+    await resetEmail("");
 
-      // Assertions
-      expect(updateEmail).not.toHaveBeenCalled(); // Email update should not be attempted
-      expect(global.alert).toHaveBeenCalledWith("Please enter your email.");
-      expect(console.error).toHaveBeenCalledWith("Please enter your email.");
-    });
+    // Assertions
+    expect(updateEmail).not.toHaveBeenCalled(); // Email update should not be attempted
+    expect(global.alert).toHaveBeenCalledWith("Please enter your email.");
+    expect(console.error).toHaveBeenCalledWith("Please enter your email.");
+  });
 
-    it("should alert and log an error if no user is signed in", async () => {
-      // Mock email validation and remove current user
-      (auth.currentUser as any) = null;
+  it("should alert and log an error if no user is signed in", async () => {
+    // Mock email validation and remove current user
+    (auth.currentUser as any) = null;
 
-      // Call the function
-      await resetEmail("new@example.com");
+    // Call the function
+    await resetEmail("new@example.com");
 
-      // Assertions
-      expect(updateEmail).not.toHaveBeenCalled(); // Email update should not be attempted
-      expect(global.alert).toHaveBeenCalledWith("No user is currently signed in.");
-      expect(console.error).toHaveBeenCalledWith("No user is currently signed in.");
-    });
+    // Assertions
+    expect(updateEmail).not.toHaveBeenCalled(); // Email update should not be attempted
+    expect(global.alert).toHaveBeenCalledWith(
+      "No user is currently signed in.",
+    );
+    expect(console.error).toHaveBeenCalledWith(
+      "No user is currently signed in.",
+    );
+  });
 });

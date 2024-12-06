@@ -3,7 +3,9 @@ import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
 } from "expo-location";
-import FirestoreCtrl, { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
 
 // Mock FirestoreCtrl
@@ -22,23 +24,23 @@ jest.mock("expo-location", () => ({
 
 // Mock GeoPoint
 class MockGeoPoint {
-    latitude: number;
-    longitude: number;
+  latitude: number;
+  longitude: number;
 
-    constructor(latitude: number, longitude: number) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
+  constructor(latitude: number, longitude: number) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
 
-    isEqual(other: MockGeoPoint): boolean {
-        return (
-        this.latitude === other.latitude && this.longitude === other.longitude
-        );
-    }
+  isEqual(other: MockGeoPoint): boolean {
+    return (
+      this.latitude === other.latitude && this.longitude === other.longitude
+    );
+  }
 
-    toJSON() {
-        return { latitude: this.latitude, longitude: this.longitude };
-    }
+  toJSON() {
+    return { latitude: this.latitude, longitude: this.longitude };
+  }
 }
 
 const defaultLocation = {
@@ -70,37 +72,37 @@ describe("useMapScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await waitFor(() => {
-        expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
-        expect(getCurrentPositionAsync).toHaveBeenCalled();
-        expect(result.current.permission).toBe(true);
-        expect(result.current.userLocation).toEqual({
+      expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
+      expect(getCurrentPositionAsync).toHaveBeenCalled();
+      expect(result.current.permission).toBe(true);
+      expect(result.current.userLocation).toEqual({
         coords: {
-            latitude: 48.8566,
-            longitude: 2.3522,
+          latitude: 48.8566,
+          longitude: 2.3522,
         },
-        });
+      });
     });
   });
 
   it("should set default location when permission is denied", async () => {
     // Mock console error
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
-    
+
     (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({
       status: "denied",
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await waitFor(() => {
-        expect(result.current.permission).toBe(false);
-        expect(result.current.userLocation).toEqual(defaultLocation);
+      expect(result.current.permission).toBe(false);
+      expect(result.current.userLocation).toEqual(defaultLocation);
     });
   });
 
@@ -109,16 +111,16 @@ describe("useMapScreenViewModel", () => {
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
     (requestForegroundPermissionsAsync as jest.Mock).mockRejectedValueOnce(
-      new Error("PermissionError")
+      new Error("PermissionError"),
     );
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await waitFor(() => {
-        expect(result.current.permission).toBe(false);
-        expect(result.current.userLocation).toEqual(defaultLocation);
+      expect(result.current.permission).toBe(false);
+      expect(result.current.userLocation).toEqual(defaultLocation);
     });
   });
 
@@ -144,18 +146,18 @@ describe("useMapScreenViewModel", () => {
     ];
 
     (mockFirestoreCtrl.getKChallenges as jest.Mock).mockResolvedValueOnce(
-      mockChallenges
+      mockChallenges,
     );
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await waitFor(() => {
-        expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
-        expect(result.current.challengesWithLocation).toEqual([
+      expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
+      expect(result.current.challengesWithLocation).toEqual([
         mockChallenges[0],
-        ]); // Only valid locations should be included
+      ]); // Only valid locations should be included
     });
   });
 
@@ -164,16 +166,16 @@ describe("useMapScreenViewModel", () => {
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
     (mockFirestoreCtrl.getKChallenges as jest.Mock).mockRejectedValueOnce(
-      new Error("FirestoreError")
+      new Error("FirestoreError"),
     );
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await waitFor(() => {
-        expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
-        expect(result.current.challengesWithLocation).toEqual([]);
+      expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
+      expect(result.current.challengesWithLocation).toEqual([]);
     });
   });
 
@@ -182,7 +184,7 @@ describe("useMapScreenViewModel", () => {
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation)
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
     );
 
     await waitFor(() => {

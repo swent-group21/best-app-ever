@@ -8,10 +8,10 @@ jest.mock("@/types/Auth", () => ({
 }));
 
 describe("ForgotPasswordViewModel", () => {
-    beforeEach(() => {
-        jest.clearAllMocks(); // Reset mocks before each test
-        global.alert = jest.fn(); // Mock alert function
-    });
+  beforeEach(() => {
+    jest.clearAllMocks(); // Reset mocks before each test
+    global.alert = jest.fn(); // Mock alert function
+  });
 
   it("should update email when handleEmailChange is called", () => {
     const { result } = renderHook(() => ForgotPasswordViewModel());
@@ -36,7 +36,9 @@ describe("ForgotPasswordViewModel", () => {
   it("should call resetPassword and show success alert on valid email", async () => {
     // Mock the `alert` function and error console
     jest.spyOn(global, "alert").mockImplementation(() => {});
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     (resetPassword as jest.Mock).mockResolvedValueOnce(true);
 
@@ -52,7 +54,7 @@ describe("ForgotPasswordViewModel", () => {
 
     expect(resetPassword).toHaveBeenCalledWith("test@example.com");
     expect(window.alert).toHaveBeenCalledWith(
-      "A reset password link has been sent to your email."
+      "A reset password link has been sent to your email.",
     );
 
     (window.alert as jest.Mock).mockRestore();
@@ -72,7 +74,7 @@ describe("ForgotPasswordViewModel", () => {
     });
 
     expect(result.current.errorMessage).toBe(
-      "Failed to reset password. Please try again."
+      "Failed to reset password. Please try again.",
     );
     expect(resetPassword).toHaveBeenCalledWith("test@example.com");
   });
