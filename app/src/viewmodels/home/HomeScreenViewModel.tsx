@@ -4,13 +4,6 @@ import FirestoreCtrl, {
   DBUser,
   DBGroup,
   DBChallengeDescription,
-<<<<<<< HEAD:src/app/viewmodels/home/HomeScreenViewModel.tsx
-} from "../../models/firebase/FirestoreCtrl";
-
-export function useHomeScreenViewModel(
-  user: DBUser,
-  firestoreCtrl: FirestoreCtrl,
-=======
 } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
@@ -23,7 +16,6 @@ export function useHomeScreenViewModel(
   user: DBUser,
   firestoreCtrl: FirestoreCtrl,
   navigation: any,
->>>>>>> master:app/src/viewmodels/home/HomeScreenViewModel.tsx
 ) {
   const userIsGuest = user.name === "Guest";
 
@@ -45,16 +37,7 @@ export function useHomeScreenViewModel(
       try {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
-<<<<<<< HEAD:src/app/viewmodels/home/HomeScreenViewModel.tsx
-        const formattedChallenge = {
-          title: currentChallengeData.title,
-          description: currentChallengeData.description,
-          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
-        };
-        setTitleChallenge(formattedChallenge);
-=======
         setTitleChallenge(currentChallengeData);
->>>>>>> master:app/src/viewmodels/home/HomeScreenViewModel.tsx
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }

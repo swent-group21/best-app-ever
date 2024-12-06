@@ -7,8 +7,6 @@ const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
 
-<<<<<<< HEAD:src/components/home/timer.tsx
-=======
 /**
  * The Timer component displays a timer.
  * @param endDate : the end date of the timer
@@ -16,7 +14,6 @@ const HOURS_IN_DAY = 24;
  * @param testID : testID for the component
  * @returns : a component for the timer
  */
->>>>>>> master:app/components/home/timer.tsx
 function Timer({ endDate, onTimerFinished, testID }: any) {
   const targetTime = endDate;
   const [currentTime, setCurrentTime] = useState(Date.now());

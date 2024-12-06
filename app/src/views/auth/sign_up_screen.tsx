@@ -1,17 +1,5 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-<<<<<<< HEAD:src/app/views/auth/sign_up_screen.tsx
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import useSignUpViewModel from "../../viewmodels/auth/SignUpViewModel";
-
-const { width, height } = Dimensions.get("window");
-
-=======
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { TopBar } from "@/components/navigation/TopBar";
@@ -30,7 +18,6 @@ const { width, height } = Dimensions.get("window");
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : a screen for signing up
  */
->>>>>>> master:app/src/views/auth/sign_up_screen.tsx
 export default function SignUp({
   navigation,
   setUser,
@@ -38,11 +25,7 @@ export default function SignUp({
 }: {
   navigation: any;
   setUser: any;
-<<<<<<< HEAD:src/app/views/auth/sign_up_screen.tsx
-  firestoreCtrl: any;
-=======
   firestoreCtrl: FirestoreCtrl;
->>>>>>> master:app/src/views/auth/sign_up_screen.tsx
 }) {
   const {
     name,
@@ -77,10 +60,7 @@ export default function SignUp({
         Tell us about you!
       </ThemedText>
 
-<<<<<<< HEAD:src/app/views/auth/sign_up_screen.tsx
-=======
       {/* Inputs */}
->>>>>>> master:app/src/views/auth/sign_up_screen.tsx
       <ThemedScrollView
         style={styles.inputColumn}
         automaticallyAdjustKeyboardInsets={true}

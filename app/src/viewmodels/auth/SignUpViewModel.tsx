@@ -2,8 +2,6 @@ import { useState } from "react";
 import { isValidEmail, signUpWithEmail } from "@/types/Auth";
 import { Alert } from "react-native";
 
-<<<<<<< HEAD:src/app/viewmodels/auth/SignUpViewModel.tsx
-=======
 /**
  * ViewModel for the SignUp screen
  * @param navigation : navigation object
@@ -11,7 +9,6 @@ import { Alert } from "react-native";
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : functions for the SignUp screen
  */
->>>>>>> master:app/src/viewmodels/auth/SignUpViewModel.tsx
 export default function useSignUpViewModel(
   navigation: any,
   setUser: any,

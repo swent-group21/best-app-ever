@@ -1,25 +1,25 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import GroupScreen from "../../../src/app/views/group/GroupScreen";
-import useGroupScreenViewModel from "../../../src/app/viewmodels/group/GroupScreenViewModel";
-import { DBChallenge } from "../../../src/app/models/firebase/FirestoreCtrl";
+import GroupScreen from "@/src/views/group/GroupScreen";
+import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
+import { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
 import { View } from "react-native";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-// Mock de useGroupScreenViewModel
-jest.mock("../../../src/app/viewmodels/group/GroupScreenViewModel");
-jest.mock("expo-font", () => ({
-  useFonts: jest.fn(() => [true]),
-  isLoaded: jest.fn(() => true),
-}));
 
-const mockFirestoreCtrl = {
-  getUser: jest.fn(),
-  getLikesOf: jest.fn(() => Promise.resolve([])),
-  updateLikesOf: jest.fn(),
+const mockChallenge1: DBChallenge = {
+  challenge_name: "Challenge Test 1",
+  description: "Description Test 1",
+  uid: "1234",
+  group_id: "1234",
 };
-const mockNavigation = {
-  navigate: jest.fn(),
+const mockChallenge2: DBChallenge = {
+  challenge_name: "Challenge Test 2",
+  description: "Description Test 2",
+  uid: "12345678",
+  group_id: "1234",
 };
+const mockGroupChallenges: DBChallenge[] = [mockChallenge1, mockChallenge2];
 
 const mockGroup = {
   group_id: "1234_5679",
@@ -28,31 +28,38 @@ const mockGroup = {
 };
 const mockOtherGroups = [mockGroup];
 
-describe("Group Screen renders challenges", () => {
-  const mockChallenge1: DBChallenge = {
-    challenge_name: "Challenge Test 1",
-    description: "Description Test 1",
-    uid: "1234",
-    group_id: "1234",
-  };
-  const mockChallenge2: DBChallenge = {
-    challenge_name: "Challenge Test 2",
-    description: "Description Test 2",
-    uid: "12345678",
-    group_id: "1234",
-  };
 
-  const mockGroupChallenges: DBChallenge[] = [mockChallenge1, mockChallenge2];
+jest.mock("@/src/viewmodels/group/GroupScreenViewModel", () =>
+  jest.fn(() => ({
+    groupChallenges: mockGroupChallenges,
+    otherGroups: mockOtherGroups,
+    groupName: "Test Name",
+    groupChallengeTitle: "Title Test",
+    groupId: "1234",
+  }))
+
+);jest.mock("expo-font", () => ({
+  useFonts: jest.fn(() => [true]),
+  isLoaded: jest.fn(() => true),
+}));
+
+
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => ({
+    getUser: jest.fn(),
+    getLikesOf: jest.fn().mockResolvedValue([]),
+    updatesLikesOf: jest.fn()
+  }));
+});
+
+
+
+describe("Group Screen renders challenges", () => {
+  const mockNavigation = { navigate: jest.fn() };
+  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
-    // Mock the return value of useGroupScreenViewModel
-    (useGroupScreenViewModel as jest.Mock).mockReturnValue({
-      groupChallenges: mockGroupChallenges,
-      otherGroups: mockOtherGroups,
-      groupName: "Group Testing Name",
-      groupChallengeTitle: "Group Testing Challenge Title",
-      groupId: "1234",
-    });
+    jest.clearAllMocks(); 
   });
 
   afterEach(() => {

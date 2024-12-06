@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/app/models/types/RootStackParamList.ts
-import { DBChallenge, DBGroup } from "../firebase/FirestoreCtrl";
-=======
-import { DBChallenge, DBUser } from "@/src/models/firebase/FirestoreCtrl";
->>>>>>> master:app/types/RootStackParamList.ts
+import { DBChallenge, DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
 export type RootStackParamList = {
   Welcome: undefined;

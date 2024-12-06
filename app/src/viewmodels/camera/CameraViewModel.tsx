@@ -9,12 +9,6 @@ import { FlashMode } from "expo-camera/build/Camera.types";
 import { Platform } from "react-native";
 import { CameraView } from "expo-camera";
 
-<<<<<<< HEAD:src/app/viewmodels/camera/CameraViewModel.tsx
-export function useCameraViewModel(
-  firestoreCtrl: any,
-  navigation: any,
-  route: any,
-=======
 /**
  * ViewModel for the camera screen.
  * @param firestoreCtrl : FirestoreCtrl object
@@ -24,7 +18,7 @@ export function useCameraViewModel(
 export default function useCameraViewModel(
   firestoreCtrl: any,
   navigation: any,
->>>>>>> master:app/src/viewmodels/camera/CameraViewModel.tsx
+  route: any,
 ) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
@@ -74,10 +68,7 @@ export default function useCameraViewModel(
     [zoom, lastZoom],
   );
 
-<<<<<<< HEAD:src/app/viewmodels/camera/CameraViewModel.tsx
-=======
   // Take a picture with the camera
->>>>>>> master:app/src/viewmodels/camera/CameraViewModel.tsx
   const takePicture = async () => {
     if (camera.current) {
       try {

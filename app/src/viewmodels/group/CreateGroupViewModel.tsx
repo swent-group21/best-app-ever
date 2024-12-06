@@ -5,12 +5,12 @@ import {
   LocationObject,
 } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
-import { createGroup } from "../../models/types/GroupBuilder";
+import { createGroup } from "../../../types/GroupBuilder";
 import FirestoreCtrl, {
   DBUser,
-} from "../../../app/models/firebase/FirestoreCtrl";
+} from "../../models/firebase/FirestoreCtrl";
 
-export default function CreateChallengeViewModel({
+export default function CreateGroupViewModel({
   user,
   navigation,
   firestoreCtrl,

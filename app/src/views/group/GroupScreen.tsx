@@ -1,16 +1,15 @@
 import React from "react";
 import { Dimensions, StyleSheet, ViewStyle } from "react-native";
-import { TopBar } from "../../../components/navigation/TopBar";
-import { Challenge } from "../../../components/home/Challenge";
-import { GroupIcon } from "../../../components/home/GroupIcon";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import useGroupScreenViewModel from "../../viewmodels/group/GroupScreenViewModel";
-import { DBGroup, DBUser } from "../../models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
+import { TopBar } from "@/components/navigation/TopBar";
+import { Challenge } from "@/components/home/Challenge";
+import GroupIcon from "@/components/home/GroupIcon";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
+import { DBGroup, DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

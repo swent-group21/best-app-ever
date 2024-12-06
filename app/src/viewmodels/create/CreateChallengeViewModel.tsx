@@ -4,13 +4,8 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-<<<<<<< HEAD:src/app/viewmodels/create/CreateChallengeViewModel.tsx
-import { GeoPoint, Timestamp } from "firebase/firestore";
-import { createChallenge } from "../../models/types/ChallengeBuilder";
-import FirestoreCtrl, { DBGroup } from "../../models/firebase/FirestoreCtrl";
-=======
 import { createChallenge } from "@/types/ChallengeBuilder";
->>>>>>> master:app/src/viewmodels/create/CreateChallengeViewModel.tsx
+import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * View model for the create challenge screen.

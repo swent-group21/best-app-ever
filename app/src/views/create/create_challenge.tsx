@@ -1,17 +1,5 @@
 import React from "react";
 import { StyleSheet, Dimensions, Switch } from "react-native";
-<<<<<<< HEAD:src/app/views/create/create_challenge.tsx
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { Colors } from "../../../constants/Colors";
-import CreateChallengeViewModel from "../../viewmodels/create/CreateChallengeViewModel";
-
-const { width, height } = Dimensions.get("window");
-
-=======
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
@@ -30,20 +18,15 @@ const { width, height } = Dimensions.get("window");
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : a screen for creating a new challenge
  */
->>>>>>> master:app/src/views/create/create_challenge.tsx
 export default function CreateChallengeScreen({
   navigation,
   route,
   firestoreCtrl,
-<<<<<<< HEAD:src/app/views/create/create_challenge.tsx
-}: any) {
-=======
 }: {
   navigation: any;
   route: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
->>>>>>> master:app/src/views/create/create_challenge.tsx
   const {
     challengeName,
     setChallengeName,

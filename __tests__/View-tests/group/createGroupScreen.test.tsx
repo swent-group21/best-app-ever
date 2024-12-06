@@ -1,25 +1,33 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-import CreateGroupScreen from "../../../src/app/views/group/CreateGroupScreen";
-import CreateGroupViewModel from "../../../src/app/viewmodels/group/CreateGroupViewModel";
-import {
-  DBChallenge,
-  DBUser,
-} from "../../../src/app/models/firebase/FirestoreCtrl";
-import { View } from "react-native";
+import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
+import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock de useGroupScreenViewModel
-jest.mock("../../../src/app/viewmodels/group/CreateGroupViewModel");
-jest.mock("expo-font", () => ({
-  useFonts: jest.fn(() => [true]),
-  isLoaded: jest.fn(() => true),
-}));
 
-const mockFirestoreCtrl = {
-  getUser: jest.fn(),
-  getLikesOf: jest.fn(() => Promise.resolve([])),
-  updateLikesOf: jest.fn(),
-};
+const mockSetGroupName = jest.fn();
+const mockSetChallengeTitle = jest.fn();
+const mockMakeGroup = jest.fn();
+
+
+jest.mock("@/src/viewmodels/group/CreateGroupViewModel", () =>
+  jest.fn(() => ({
+    groupName: "Test group",
+    setGroupName: mockSetGroupName,
+    challengeTitle: "Test challenge title",
+    setChallengeTitle: mockSetChallengeTitle,
+    makeGroup: mockMakeGroup
+  }))
+);
+
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => ({
+    getUser: jest.fn(),
+    getLikesOf: jest.fn().mockResolvedValue([]),
+    updatesLikesOf: jest.fn()
+  }));
+});
 
 const mockDate = new Date();
 
@@ -31,19 +39,15 @@ const mockUser: DBUser = {
 };
 
 describe("Create Group Screen renders", () => {
-  const mockSetGroupName = jest.fn();
-  const mockSetChallengeTitle = jest.fn();
-  const mockMakeGroup = jest.fn();
+  const mockNavigation = { navigate: jest.fn() };
+  const mockFirestoreCtrl = new FirestoreCtrl();
+  //const mockCreateGroupViewModel = 
+    //require("@/src/viewmodels/group/CreateGroupViewModel").CreateGroupViewModel;
+
 
   beforeEach(() => {
-    // Mock the return value of useGroupScreenViewModel
-    (CreateGroupViewModel as jest.Mock).mockReturnValue({
-      groupName: "Test group",
-      setGroupName: mockSetGroupName,
-      challengeTitle: "Test challenge title",
-      setChallengeTitle: mockSetChallengeTitle,
-      makeGroup: mockMakeGroup,
-    });
+    jest.clearAllMocks();
+
   });
 
   afterEach(() => {

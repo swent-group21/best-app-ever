@@ -1,19 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
-<<<<<<< HEAD:src/components/home/Challenge.tsx
-import { Colors } from "../../constants/Colors";
-import { ThemedText } from "../theme/ThemedText";
-import { ThemedView } from "../theme/ThemedView";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
-import FirestoreCtrl, {
-  DBChallenge,
-  DBUser,
-} from "../../app/models/firebase/FirestoreCtrl";
-import React from "react";
-
-const { width, height } = Dimensions.get("window");
-
-=======
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -35,7 +21,6 @@ const { width, height } = Dimensions.get("window");
  * @param currentUser : the current user object
  * @returns : a component for the challenge
  */
->>>>>>> master:app/components/home/Challenge.tsx
 export function Challenge({
   challengeDB,
   index,

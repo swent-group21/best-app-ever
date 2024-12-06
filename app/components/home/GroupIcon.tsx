@@ -8,9 +8,6 @@ import React from "react";
 
 const { width, height } = Dimensions.get("window");
 
-<<<<<<<< HEAD:app/components/home/GroupIcon.tsx
-export function GroupIcon({
-========
 /**
  * The Group component displays a group.
  * @param groupDB : the group object
@@ -20,8 +17,7 @@ export function GroupIcon({
  * @param testID : testID for the component
  * @returns : a component for the group
  */
-export function Group({
->>>>>>>> master:app/components/home/Group.tsx
+export default function GroupIcon({
   groupDB,
   navigation,
   firestoreCtrl,

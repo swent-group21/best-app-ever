@@ -15,17 +15,13 @@ import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 
 const { width, height } = Dimensions.get("window");
 
-<<<<<<< HEAD:src/app/views/camera/CameraContainer.tsx
-export default function Camera({ navigation, firestoreCtrl, route }: any) {
-=======
 /**
  * Camera screen
  * @param navigation : navigation object
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : a screen for the camera
  */
-export default function Camera({ navigation, firestoreCtrl }: any) {
->>>>>>> master:app/src/views/camera/CameraContainer.tsx
+export default function Camera({ navigation, firestoreCtrl, route }: any) {
   const {
     facing,
     permission,
@@ -74,35 +70,6 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
           enableTorch={isFlashEnabled}
           ref={camera}
           zoom={zoom}
-<<<<<<< HEAD:src/app/views/camera/CameraContainer.tsx
-        >
-          <View style={styles.buttonPlaceHolder}>
-            <TouchableOpacity
-              style={styles.changeOrientationAndFlash}
-              onPress={toggleCameraFacing}
-            >
-              <Ionicons name="camera-reverse" size={24} color="white" />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.takePicture} onPress={takePicture}>
-              <Ionicons
-                name="radio-button-off-sharp"
-                size={100}
-                color="white"
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.changeOrientationAndFlash}
-              onPress={toggleFlashMode}
-            >
-              <Ionicons
-                name={isFlashEnabled ? "flash-off" : "flash"}
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-=======
           testID="camera-view"
         >
           <View style={styles.buttonPlaceHolder}>
@@ -132,7 +99,6 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
               color="white"
               testID="Flash-Button"
             />
->>>>>>> master:app/src/views/camera/CameraContainer.tsx
           </View>
         </CameraView>
       ) : (

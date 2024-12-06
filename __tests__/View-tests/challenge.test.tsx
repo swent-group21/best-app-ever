@@ -1,19 +1,10 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-<<<<<<< HEAD:__tests__/UI-tests/components/challenge.test.tsx
-import { Challenge } from "@/src/components/home/Challenge";
-import FirestoreCtrl, {
-  DBChallenge,
-  DBUser,
-} from "@/src/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
-=======
 import { Challenge } from "@/components/home/Challenge";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
->>>>>>> master:__tests__/View-tests/challenge.test.tsx
 
 // Mock the navigation prop
 const navigation = {

@@ -1,19 +1,5 @@
 import React from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
-<<<<<<< HEAD:src/app/views/home/maximize_screen.tsx
-import { TopBar } from "../../../components/navigation/TopBar";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedIconButton } from "../../../components/theme/ThemedIconButton";
-import { SingleComment } from "../../../components/posts/Comment";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { useMaximizeScreenViewModel } from "../../viewmodels/home/MaximizeScreenViewModel";
-import FirestoreCtrl, {
-  DBUser,
-  DBChallenge,
-} from "../../models/firebase/FirestoreCtrl";
-=======
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -26,7 +12,6 @@ import FirestoreCtrl, {
   DBUser,
   DBChallenge,
 } from "@/src/models/firebase/FirestoreCtrl";
->>>>>>> master:app/src/views/home/maximize_screen.tsx
 
 const { width, height } = Dimensions.get("window");
 
@@ -116,15 +101,7 @@ export default function MaximizeScreen({
 
         <ThemedView style={styles.container} colorType="transparent">
           <Image
-<<<<<<< HEAD:src/app/views/home/maximize_screen.tsx
-            source={
-              postImage
-                ? { uri: postImage }
-                : require("../../../assets/images/no-image.svg")
-            }
-=======
             source={postImage ? { uri: postImage } : noImageUri}
->>>>>>> master:app/src/views/home/maximize_screen.tsx
             style={styles.image}
           />
         </ThemedView>

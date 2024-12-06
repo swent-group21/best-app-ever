@@ -1,22 +1,7 @@
 import React from "react";
 import { Dimensions, StyleSheet } from "react-native";
-<<<<<<< HEAD:src/app/views/home/home_screen.tsx
-import { TopBar } from "../../../components/navigation/TopBar";
-import { Challenge } from "../../../components/home/Challenge";
-import { GroupIcon } from "../../../components/home/GroupIcon";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { ChallengeDescription } from "../../../components/home/Challenge_Description";
-import { useHomeScreenViewModel } from "../../viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "../../models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
-=======
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
-import { Group } from "@/components/home/Group";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
@@ -25,7 +10,7 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
->>>>>>> master:app/src/views/home/home_screen.tsx
+import GroupIcon from "@/components/home/GroupIcon";
 
 const { width, height } = Dimensions.get("window");
 
@@ -45,10 +30,6 @@ export default function HomeScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-<<<<<<< HEAD:src/app/views/home/home_screen.tsx
-  const { userIsGuest, challenges, groups, titleChallenge } =
-    useHomeScreenViewModel(user, firestoreCtrl);
-=======
   const {
     userIsGuest,
     challenges,
@@ -59,7 +40,6 @@ export default function HomeScreen({
     navigateToCamera,
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
->>>>>>> master:app/src/views/home/home_screen.tsx
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -137,13 +117,8 @@ export default function HomeScreen({
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-<<<<<<< HEAD:src/app/views/home/home_screen.tsx
-        leftAction={() => navigation.navigate("MapScreen")}
-        centerAction={() => navigation.navigate("Camera", { group_id: "home" })}
-=======
         leftAction={() => navigateToMap()}
         centerAction={() => navigateToCamera()}
->>>>>>> master:app/src/views/home/home_screen.tsx
       />
     </ThemedView>
   );

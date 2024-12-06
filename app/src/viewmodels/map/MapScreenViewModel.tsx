@@ -5,12 +5,8 @@ import {
 } from "expo-location";
 import FirestoreCtrl, {
   DBChallenge,
-<<<<<<< HEAD:src/app/viewmodels/map/MapScreenViewModel.tsx
-} from "../../models/firebase/FirestoreCtrl";
-=======
 } from "@/src/models/firebase/FirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
->>>>>>> master:app/src/viewmodels/map/MapScreenViewModel.tsx
 
 /**
  * Default location centered on the city of Nice, France.

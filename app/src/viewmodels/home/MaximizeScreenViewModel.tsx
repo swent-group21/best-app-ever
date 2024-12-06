@@ -3,12 +3,7 @@ import FirestoreCtrl, {
   DBChallenge,
   DBComment,
   DBUser,
-<<<<<<< HEAD:src/app/viewmodels/home/MaximizeScreenViewModel.tsx
-} from "../../models/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
-=======
 } from "@/src/models/firebase/FirestoreCtrl";
->>>>>>> master:app/src/viewmodels/home/MaximizeScreenViewModel.tsx
 
 /**
  * View model for the maximize screen.
@@ -47,13 +42,8 @@ export function useMaximizeScreenViewModel(
     firestoreCtrl
       .getCommentsOf(challenge.challenge_id ?? "")
       .then((comments) => {
-<<<<<<< HEAD:src/app/viewmodels/home/MaximizeScreenViewModel.tsx
-        const sortedComments = comments.sort(
-          (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
-=======
         const sortedComments = comments.toSorted(
           (a, b) => a.created_at.getTime() - b.created_at.getTime(),
->>>>>>> master:app/src/viewmodels/home/MaximizeScreenViewModel.tsx
         );
         setCommentList(sortedComments);
       });

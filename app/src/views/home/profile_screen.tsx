@@ -68,10 +68,6 @@ export default function ProfileScreen({
         leftIcon="arrow-back"
         leftAction={() => navigateGoBack()}
       />
-<<<<<<< HEAD:src/app/views/home/profile_screen.tsx
-
-=======
->>>>>>> master:app/src/views/home/profile_screen.tsx
       <TouchableOpacity
         onPress={pickImage}
         testID="image-picker"
