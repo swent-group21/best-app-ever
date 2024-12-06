@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -8,7 +8,6 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import React from "react";
 
 const { width, height } = Dimensions.get("window");
 
@@ -45,9 +44,7 @@ export function Challenge({
   const uri = "@/assets/images/no-image.svg";
 
   // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date
-    ? challengeDB.date.toDate()
-    : new Date();
+  let challengeDate: Date = challengeDB.date ? challengeDB.date : new Date();
 
   // Fetch user data
   useEffect(() => {

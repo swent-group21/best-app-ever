@@ -37,16 +37,12 @@ export function useHomeScreenViewModel(
       try {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
-        };
-        setTitleChallenge(formattedChallenge);
+        setTitleChallenge(currentChallengeData);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
+
     fetchCurrentChallenge();
   }, [firestoreCtrl]);
 
