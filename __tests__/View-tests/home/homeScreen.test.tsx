@@ -98,7 +98,7 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("Current Challenge Description")).toBeTruthy();
   });
 
-  it("renders 'No challenge to display' when no challenges are available", () => {
+  it("renders 'No challenges to display' when no challenges are available", () => {
     // Mock les valeurs retournées pour simuler l'absence de défis
     mockUseHomeScreenViewModel.mockReturnValue({
       userIsGuest: false,
@@ -125,7 +125,7 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Vérifie que le texte pour "aucun défi" est affiché
-    expect(getByText("No challenge to display")).toBeTruthy();
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 
   it("renders correctly for a guest user", () => {
@@ -150,6 +150,6 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Vérifie que les défis et groupes ne sont pas affichés
-    expect(getByText("No challenge to display")).toBeTruthy();
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 });

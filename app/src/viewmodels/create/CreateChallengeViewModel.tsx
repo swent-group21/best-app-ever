@@ -4,7 +4,6 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import { GeoPoint, Timestamp } from "firebase/firestore";
 import { createChallenge } from "@/types/ChallengeBuilder";
 
 /**
@@ -51,7 +50,7 @@ export default function CreateChallengeViewModel({
   // Create the challenge
   const makeChallenge = async () => {
     try {
-      const date = Timestamp.now();
+      const date = new Date();
       await createChallenge(
         firestoreCtrl,
         challengeName,

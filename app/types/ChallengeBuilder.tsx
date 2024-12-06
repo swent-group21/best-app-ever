@@ -2,7 +2,7 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { GeoPoint, Timestamp } from "firebase/firestore";
+import { GeoPoint } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 /**
@@ -20,11 +20,10 @@ export const buildChallenge = async (
     const challenge = await firestoreCtrl.getChallenge(challengeId);
 
     if (!challenge) {
-      throw "Error: no challenge found when buildChallenge";
+      throw console.error("Error: no challenge found when buildChallenge");
     }
     // Fetch additional required data like user's name
     await firestoreCtrl.getName(challenge.uid);
-    //const imageUrl = await firestoreCtrl.uploadImageFromUri(challenge.image_id); // Assuming image_id is the URL
 
     const challengeData: DBChallenge = {
       challenge_name: challenge.challenge_name,
@@ -55,7 +54,7 @@ export const createChallenge = async (
   challenge_name: string,
   description: string,
   location: LocationObject | null,
-  date?: Timestamp,
+  date?: Date,
   image_id?: string,
   likes?: string[],
 ): Promise<void> => {

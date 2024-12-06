@@ -4,6 +4,10 @@ import FriendsScreen from "@/src/views/friends/friends_screen";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import { getAuth } from "firebase/auth";
 
+jest.mock("expo-font", () => ({
+  useFonts: jest.fn(() => [true]),
+  isLoaded: jest.fn(() => true),
+}));
 jest.mock("firebase/auth", () => ({
   getAuth: jest.fn(),
 }));

@@ -12,7 +12,7 @@ import FirestoreCtrl, {
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
-export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl  navigation: any,
+export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl,navigation: any,
 ) {
   const userIsGuest = user.name === "Guest";
 
@@ -33,16 +33,12 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData = await firestoreCtrl.getChallengeDescription();
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
-        };
-        setTitleChallenge(formattedChallenge);
+        setTitleChallenge(currentChallengeData);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
+
     fetchCurrentChallenge();
   }, [firestoreCtrl]);
 

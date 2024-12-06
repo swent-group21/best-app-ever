@@ -14,6 +14,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
 
+  
   const {
     searchText,
     setSearchText,
@@ -50,7 +51,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
       <ThemedView style={styles.requestsContainer}>
         <ThemedText style={styles.sectionTitle}>Requests</ThemedText>
         {requests.length > 0 ? (
-          RequestList({requests}, {firestoreCtrl}, {uid})
+          <RequestList  requests={requests} firestoreCtrl={firestoreCtrl} uid={uid} />
         ) : (
           <ThemedText style={styles.noRequests}>
             No friends request for now
