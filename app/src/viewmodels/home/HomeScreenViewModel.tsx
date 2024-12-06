@@ -35,13 +35,14 @@ export function useHomeScreenViewModel(
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
         setTitleChallenge(currentChallengeData);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
-    
+
     fetchCurrentChallenge();
   }, [firestoreCtrl]);
 
