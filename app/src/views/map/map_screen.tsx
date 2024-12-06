@@ -26,12 +26,12 @@ export default function MapScreen({
   route: any;
 }) {
   const firstLocation = route.params?.location;
-  const { permission, userLocation, challengesWithLocation, navigateGoBack } =
+  const { userLocation, challengesWithLocation, navigateGoBack } =
     useMapScreenViewModel(firestoreCtrl, navigation, firstLocation);
 
   const uri = "@/assets/images/icon_trans.png";
 
-  if (!permission && userLocation === undefined) {
+  if (userLocation === undefined) {
     return (
       <ThemedView>
         <ThemedText>Getting location...</ThemedText>
@@ -49,8 +49,8 @@ export default function MapScreen({
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: userLocation?.latitude ?? 0,
-          longitude: userLocation?.longitude ?? 0,
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
