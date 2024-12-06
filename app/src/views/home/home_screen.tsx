@@ -93,7 +93,7 @@ export default function HomeScreen({
         {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={titleChallenge}
-          onTimerFinished={() => console.log("Timer Finished")}
+          onTimerFinished={() => console.info("Timer Finished")}
           testID={`description-id`}
         />
         {challenges.length === 0 ? (
