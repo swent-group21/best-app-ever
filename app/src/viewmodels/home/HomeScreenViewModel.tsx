@@ -27,7 +27,7 @@ export function useHomeScreenViewModel(
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
   const navigateToProfile = () => navigation.navigate("Profile");
-  const navigateToMap = () => navigation.navigate("Map");
+  const navigateToMap = () => navigation.navigate("MapScreen");
   const navigateToCamera = () => navigation.navigate("Camera");
   const navigateToFriends = () => navigation.navigate("Friends");
 
