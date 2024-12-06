@@ -24,6 +24,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
         Forgot your Password?
       </ThemedText>
 
+      {/* Form */}
       <ThemedView style={styles.smallContainer} testID="emailInput">
         <ThemedTextInput
           style={styles.input}
@@ -34,6 +35,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
           viewWidth={"90%"}
         />
 
+        {/* Error message for the user*/}
         {errorMessage && (
           <ThemedText style={styles.errorMessage}>{errorMessage}</ThemedText>
         )}

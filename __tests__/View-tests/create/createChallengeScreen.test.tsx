@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import CreateChallengeScreen from "@/src/views/create/create_challenge";
 import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
 import { Switch } from "react-native-gesture-handler";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 jest.mock("@/src/viewmodels/create/CreateChallengeViewModel");
 
@@ -30,7 +31,11 @@ describe("CreateChallengeScreen UI Tests", () => {
 
   it("renders the Create Challenge screen", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
+      <CreateChallengeScreen
+        navigation={{}}
+        route={{}}
+        firestoreCtrl={new FirestoreCtrl()}
+      />,
     );
 
     const screenTitle = getByTestId("Create-Challenge-Text");
@@ -39,7 +44,11 @@ describe("CreateChallengeScreen UI Tests", () => {
 
   it("renders the Challenge Name input", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
+      <CreateChallengeScreen
+        navigation={{}}
+        route={{}}
+        firestoreCtrl={new FirestoreCtrl()}
+      />,
     );
 
     const nameInput = getByTestId("Challenge-Name-Input");
@@ -51,7 +60,11 @@ describe("CreateChallengeScreen UI Tests", () => {
 
   it("renders the Description input", () => {
     const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
+      <CreateChallengeScreen
+        navigation={{}}
+        route={{}}
+        firestoreCtrl={new FirestoreCtrl()}
+      />,
     );
 
     const descriptionInput = getByTestId("Description-Input");

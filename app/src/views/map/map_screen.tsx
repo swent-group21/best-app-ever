@@ -23,8 +23,10 @@ export default function MapScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const { permission, userLocation, challengesWithLocation } =
-    useMapScreenViewModel(firestoreCtrl);
+  const { permission, userLocation, challengesWithLocation, navigateGoBack } =
+    useMapScreenViewModel(firestoreCtrl, navigation);
+
+  const uri = "@/assets/images/icon_trans.png";
 
   if (!permission && userLocation === undefined) {
     return (
@@ -39,7 +41,7 @@ export default function MapScreen({
       <TopBar
         title="Map"
         leftIcon="arrow-back"
-        leftAction={() => navigation.goBack()}
+        leftAction={() => navigateGoBack()}
       />
       <MapView
         style={styles.map}
@@ -63,7 +65,7 @@ export default function MapScreen({
               latitude: challenge.location.latitude,
               longitude: challenge.location.longitude,
             }}
-            image={require("../../../assets/images/icon_trans.png")}
+            image={require(uri)}
             flat={true}
             title={challenge.challenge_name}
             description={challenge.description}

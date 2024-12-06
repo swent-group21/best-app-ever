@@ -10,14 +10,14 @@ const { width, height } = Dimensions.get("window");
  * Welcome screen concept
  * @returns : a screen with the concept of the app
  */
-export default function WelcomeConceptScreen() {
+export default function WelcomePersonalScreen() {
   return (
-    <ThemedView style={styles.container} testID="container">
+    <ThemedView style={styles.container} testID="welcome-concept-screen">
       {/* Background shape */}
       <ThemedView
         style={styles.ovalShape}
         colorType="backgroundSecondary"
-        testID="ovalShape"
+        testID="background-image-1"
       />
 
       {/* Screen content */}

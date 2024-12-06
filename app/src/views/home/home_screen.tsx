@@ -24,8 +24,16 @@ export default function HomeScreen({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
-  const { userIsGuest, challenges, groups, titleChallenge, challengesFromFriends } =
-    useHomeScreenViewModel(user, firestoreCtrl);
+  const {
+    userIsGuest,
+    challenges,
+    groups,
+    titleChallenge, challengesFromFriends,
+    navigateToProfile,
+    navigateToMap,
+    navigateToCamera,
+    navigateToFriends,
+  } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
   const [showFilterOptions, setShowFilterOptions] = useState(false);
   const [filterByFriends, setFilterByFriends] = useState(false);
@@ -38,13 +46,13 @@ export default function HomeScreen({
       <TopBar
         title="Strive"
         leftIcon="people-outline"
-        leftAction={() => navigation.navigate("Friends")}
+        leftAction={() => navigateToFriends()}
         rightIcon={
           userIsGuest || !user.image_id
             ? "person-circle-outline"
             : user.image_id
         }
-        rightAction={() => navigation.navigate("Profile")}
+        rightAction={() => navigateToProfile()}
         testID="top-bar"
       />    
 
@@ -54,6 +62,7 @@ export default function HomeScreen({
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
+        {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={titleChallenge}
           onTimerFinished={() => console.log("Timer Finished")}
@@ -81,8 +90,8 @@ export default function HomeScreen({
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-        leftAction={() => navigation.navigate("MapScreen")}
-        centerAction={() => navigation.navigate("Camera")}
+        leftAction={() => navigateToMap()}
+        centerAction={() => navigateToCamera()}
       />
     </ThemedView>
   );

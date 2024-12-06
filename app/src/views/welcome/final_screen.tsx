@@ -6,6 +6,7 @@ import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import WelcomeFinalViewModel from "@/src/viewmodels/welcome/FinalScreenViewModel";
 
+// Get the window dimensions
 const { width, height } = Dimensions.get("window");
 
 /**
@@ -33,12 +34,12 @@ export default function WelcomeFinalScreen({
       <ThemedView
         style={styles.ovalShapeOne}
         colorType="backgroundSecondary"
-        testID="ovalShapeOne"
+        testID="background-image-1"
       />
       <ThemedView
         style={styles.ovalShapeTwo}
         colorType="backgroundSecondary"
-        testID="ovalShapeTwo"
+        testID="background-image-2"
       />
 
       {/* Screen content */}

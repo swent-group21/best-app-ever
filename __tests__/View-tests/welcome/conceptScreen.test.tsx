@@ -5,14 +5,14 @@ import WelcomeConceptScreen from "@/src/views/welcome/concept_screen";
 describe("WelcomeConceptScreen", () => {
   it("renders the container correctly", () => {
     const { getByTestId } = render(<WelcomeConceptScreen />);
-    const container = getByTestId("container");
+    const container = getByTestId("welcome-concept-screen");
 
     expect(container).toBeTruthy();
   });
 
   it("renders the background shape", () => {
     const { getByTestId } = render(<WelcomeConceptScreen />);
-    const ovalShape = getByTestId("ovalShape");
+    const ovalShape = getByTestId("background-image-1");
 
     expect(ovalShape).toBeTruthy();
     expect(ovalShape.props.style).toEqual(

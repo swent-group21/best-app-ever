@@ -12,7 +12,8 @@ import FirestoreCtrl, {
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
-export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl) {
+export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl  navigation: any,
+) {
   const userIsGuest = user.name === "Guest";
 
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
@@ -22,6 +23,10 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
+  const navigateToProfile = () => navigation.navigate("Profile");
+  const navigateToMap = () => navigation.navigate("Map");
+  const navigateToCamera = () => navigation.navigate("Camera");
+  const navigateToFriends = () => navigation.navigate("Friends");
 
   // Fetch the current challenge
   useEffect(() => {
@@ -81,6 +86,10 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
     challenges,
     groups,
     titleChallenge,
+    navigateToProfile,
+    navigateToMap,
+    navigateToCamera,
+    navigateToFriends,
     challengesFromFriends, // Add this
   };
 }
