@@ -12,7 +12,7 @@ import FirestoreCtrl, {
   DBComment,
   DBUser,
 } from "@/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
+import { GeoPoint, Timestamp } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 const { width, height } = Dimensions.get("window");
@@ -133,12 +133,7 @@ export default function MaximizeScreen({
                   navigation: navigation,
                   user: user,
                   firestoreCtrl: firestoreCtrl,
-                  location: {
-                    coords: {
-                      latitude: challenge.location?.latitude,
-                      longitude: challenge.location?.longitude,
-                    },
-                  } as LocationObject,
+                  location: challenge.location,
                 });
               }}
               size={25}

@@ -162,12 +162,7 @@ export function Challenge({
                           navigation: navigation,
                           firestoreCtrl: firestoreCtrl,
                           user: currentUser,
-                          location: {
-                            coords: {
-                              latitude: challengeDB.location?.latitude,
-                              longitude: challengeDB.location?.longitude,
-                            },
-                          } as LocationObject,
+                          location: challengeDB.location,
                         });
                       }}
                       size={25}

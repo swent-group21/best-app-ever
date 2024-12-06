@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
-import MapView, { LatLng, MapMarker } from "react-native-maps";
+import MapView, { MapMarker } from "react-native-maps";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
-  LocationObject,
 } from "expo-location";
+import { GeoPoint } from "firebase/firestore";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
 import FirestoreCtrl, { DBChallenge, DBUser } from "@/firebase/FirestoreCtrl";
-// import { DBChallenge } from "@/firebase/FirestoreCtrl";
-
 /**
  * The default location object, centered on the city of Nice, France.
  */
-const defaultLocation = {
-  coords: {
-    latitude: 43.6763,
-    longitude: 7.0122,
-  },
-} as LocationObject;
+const defaultLocation = new GeoPoint(43.6763, 7.0122);
 
 /**
  * The MapScreen component displays a map centered on the user's current location, if available.
@@ -40,10 +33,9 @@ export default function MapScreen({
   route: any;
 }) {
   // Sets the first location to the location provided in the route parameters, if available.
-  const firstLocation =
-    route.params != undefined ? route.params.location : undefined;
+  const firstLocation: GeoPoint | undefined = route.params?.location;
   const [permission, setPermission] = useState<boolean>(false);
-  const [userLocation, setUserPosition] = useState<LocationObject | undefined>(
+  const [userLocation, setUserPosition] = useState<GeoPoint | undefined>(
     firstLocation,
   );
   const [challengesWithLocation, setChallengesWithLocation] = useState<
@@ -65,7 +57,9 @@ export default function MapScreen({
         if (status === "granted") {
           setPermission(true);
           const location = await getCurrentPositionAsync();
-          setUserPosition(location);
+          setUserPosition(
+            new GeoPoint(location.coords.latitude, location.coords.longitude),
+          );
         } else {
           setPermission(false);
           setUserPosition(defaultLocation);
@@ -127,10 +121,10 @@ export default function MapScreen({
         style={styles.map}
         testID="mapView"
         initialRegion={{
-          latitude: userLocation?.coords.latitude ?? 0,
-          longitude: userLocation?.coords.longitude ?? 0,
-          latitudeDelta: 0.0,
-          longitudeDelta: 0.0,
+          latitude: userLocation?.latitude ?? 0,
+          longitude: userLocation?.longitude ?? 0,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
         }}
         zoomControlEnabled={true}
         mapType="standard"
