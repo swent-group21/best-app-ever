@@ -1,9 +1,7 @@
 import {
-  FieldPath,
   limit,
   documentId,
   GeoPoint,
-  Timestamp,
 } from "firebase/firestore";
 import {
   firestore,
@@ -36,7 +34,7 @@ export type DBChallenge = {
   description?: string;
   uid: string;
   image_id?: string;
-  date?: Timestamp;
+  date?: Date;
   likes?: string[]; // User IDs
   location?: GeoPoint | null;
 };
@@ -44,7 +42,7 @@ export type DBChallenge = {
 export type DBComment = {
   comment_text: string;
   user_name: string;
-  created_at: Timestamp;
+  created_at: Date;
   post_id: string;
 };
 
@@ -123,14 +121,12 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture);
-      //console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       return id_picture;
     } catch (error) {
       console.error("Error uploading image: ", error);
-      //console.log("Error uploading image: ", error);
       throw error;
     }
   }
@@ -149,12 +145,10 @@ export default class FirestoreCtrl {
 
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       const storageRef = ref(getStorage(), "images/" + id_picture);
-      //console.log("StorageRef:", storageRef);
 
       await uploadBytes(storageRef, blob);
 
       const downloadUrl = await getDownloadURL(storageRef);
-      //console.log("DownloadUrl", downloadUrl);
       return downloadUrl;
     } catch (error) {
       console.error("Error uploading image: ", error);
@@ -261,7 +255,10 @@ export default class FirestoreCtrl {
       const challengeRef = doc(firestore, "challenges", challengeId);
       const docSnap = await getDoc(challengeRef);
       if (docSnap.exists()) {
-        return docSnap.data() as DBChallenge;
+        return {
+          ...docSnap.data(),
+          date: docSnap.data().date.toDate(),
+        } as DBChallenge;
       } else {
         throw new Error("Challenge not found.");
       }
@@ -288,6 +285,7 @@ export default class FirestoreCtrl {
         return {
           ...data,
           challenge_id: doc.id,
+          date: data.date.toDate(),
         } as DBChallenge;
       });
       return challenges;
@@ -313,6 +311,7 @@ export default class FirestoreCtrl {
         return {
           ...data,
           challenge_id: doc.id,
+          date: data.date.toDate(),
         } as DBChallenge;
       });
       console.log("Challenges retrieved:", challenges);
@@ -339,7 +338,7 @@ export default class FirestoreCtrl {
           comment_id: doc.id,
           comment_text: data.comment_text,
           user_name: data.user_name,
-          created_at: data.created_at,
+          created_at: data.created_at.toDate(),
           post_id: data.post_id,
         } as DBComment;
       });
@@ -488,7 +487,9 @@ export default class FirestoreCtrl {
       const challengeDescription = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          ...data,
+          title: data.Title,
+          description: data.Description,
+          endDate: data.Date.toDate(),
         } as DBChallengeDescription;
       });
       return challengeDescription[0];
