@@ -28,7 +28,7 @@ export function useMaximizeScreenViewModel(
   const currentUserName = user.name;
 
   const navigateGoBack = () => {
-    () => navigation.goBack();
+    navigation.goBack();
   };
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export function useMaximizeScreenViewModel(
     firestoreCtrl
       .getCommentsOf(challenge.challenge_id ?? "")
       .then((comments) => {
-        const sortedComments = comments.sort(
+        const sortedComments = comments.toSorted(
           (a, b) => a.created_at.getTime() - b.created_at.getTime(),
         );
         setCommentList(sortedComments);

@@ -83,6 +83,22 @@ export default function MaximizeScreen({
           </ThemedView>
         </ThemedView>
 
+        {challenge.location && (
+          <ThemedIconButton
+            name="location-outline"
+            onPress={() => {
+              navigation.navigate("MapScreen", {
+                navigation: navigation,
+                user: user,
+                firestoreCtrl: firestoreCtrl,
+                location: challenge.location,
+              });
+            }}
+            size={25}
+            colorType="white"
+          />
+        )}
+
         <ThemedView style={styles.container} colorType="transparent">
           <Image
             source={postImage ? { uri: postImage } : noImageUri}

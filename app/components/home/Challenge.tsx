@@ -69,7 +69,7 @@ export function Challenge({
         setIsLiked(likes.includes(currentUser.uid));
         setLikes(likes);
       });
-  }, [challengeDB.challenge_id]);
+  });
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -166,14 +166,21 @@ export function Challenge({
                       );
                     }}
                   />
-                  <ThemedIconButton
-                    name="location-outline"
-                    onPress={() => {
-                      /* location button */
-                    }}
-                    size={25}
-                    color="white"
-                  />
+                  {challengeDB.location && (
+                    <ThemedIconButton
+                      name="location-outline"
+                      onPress={() => {
+                        navigation.navigate("MapScreen", {
+                          navigation: navigation,
+                          firestoreCtrl: firestoreCtrl,
+                          user: currentUser,
+                          location: challengeDB.location,
+                        });
+                      }}
+                      size={25}
+                      color="white"
+                    />
+                  )}
                 </ThemedView>
               </ThemedView>
             )}

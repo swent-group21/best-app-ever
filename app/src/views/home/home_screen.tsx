@@ -9,8 +9,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { Group } from "@/components/home/Group";
 
