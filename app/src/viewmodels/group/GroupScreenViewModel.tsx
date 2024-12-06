@@ -14,8 +14,6 @@ export default function useGroupScreenViewModel(
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
   const group: DBGroup = route.params?.currentGroup;
-  console.log("currentGroup in groupScreen: ", group);
-  console.log("current route in groupScreen: ", route);
 
   const groupId = group.gid ?? "";
 
@@ -43,7 +41,7 @@ export default function useGroupScreenViewModel(
               (group) =>
                 groupId !== group.gid && group.updateDate !== undefined,
             )
-            .sort((a, b) => b.updateDate.toMillis() - a.updateDate.toMillis());
+            .sort((a, b) => b.updateDate.getDate() - a.updateDate.getDate());
           setOtherGroups(groupsData);
         } catch (error) {
           console.error("Error fetching groups: ", error);

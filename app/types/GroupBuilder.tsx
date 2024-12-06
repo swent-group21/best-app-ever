@@ -9,7 +9,7 @@ export const createGroup = async (
   name: string,
   challengeTitle: string,
   members: string[],
-  updateDate: Timestamp,
+  updateDate: Date,
 ): Promise<void> => {
   try {
     // Prepare the challenge data for Firestore

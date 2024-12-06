@@ -28,7 +28,6 @@ export default function GroupIcon({
   if (!groupDB) {
     return <ThemedText>Loading Group...</ThemedText>;
   } else {
-    console.log("groupDB: ", groupDB);
     return (
       <ThemedView style={styles.container} testID={testID}>
         <ThemedTextButton

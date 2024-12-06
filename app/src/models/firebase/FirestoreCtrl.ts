@@ -48,7 +48,7 @@ export type DBGroup = {
   name: string;
   challengeTitle: string;
   members: string[];
-  updateDate: Timestamp;
+  updateDate: Date;
 };
 export type DBChallengeDescription = {
   title: string;
@@ -469,7 +469,7 @@ export default class FirestoreCtrl {
    * @param gid The ID of the group to update.
    * @param updateTime The time of the last post.
    */
-  async updateGroup(gid: string, updateTime: Timestamp): Promise<void> {
+  async updateGroup(gid: string, updateTime: Date): Promise<void> {
     try {
       const groupRef = doc(firestore, "groups", gid);
       const docSnap = await getDoc(groupRef);
