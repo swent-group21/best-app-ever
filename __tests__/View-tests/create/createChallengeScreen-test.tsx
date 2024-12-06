@@ -7,17 +7,15 @@ import { Switch } from "react-native-gesture-handler";
 jest.mock("@/src/viewmodels/create/CreateChallengeViewModel");
 
 describe("CreateChallengeScreen UI Tests", () => {
-  const mockSetChallengeName = jest.fn();
-  const mockSetDescription = jest.fn();
+  const mockSetCaption = jest.fn();
   const mockToggleLocation = jest.fn();
   const mockMakeChallenge = jest.fn();
 
   beforeEach(() => {
     (CreateChallengeViewModel as jest.Mock).mockReturnValue({
-      challengeName: "Test Challenge",
-      setChallengeName: mockSetChallengeName,
-      description: "Test Description",
-      setDescription: mockSetDescription,
+      caption: "Test Caption",
+      setCaption: mockSetCaption,
+      postImage: "Test Image",
       isLocationEnabled: true,
       toggleLocation: mockToggleLocation,
       makeChallenge: mockMakeChallenge,
@@ -37,27 +35,16 @@ describe("CreateChallengeScreen UI Tests", () => {
     expect(screenTitle).toBeTruthy();
   });
 
-  it("renders the Challenge Name input", () => {
+  it("renders the Caption input", () => {
     const { getByTestId } = render(
       <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
     );
 
-    const nameInput = getByTestId("Challenge-Name-Input");
-    expect(nameInput).toBeTruthy();
+    const captionInput = getByTestId("Caption-Input");
+    expect(captionInput).toBeTruthy();
 
-    fireEvent.changeText(nameInput, "Updated Challenge Name");
-    expect(mockSetChallengeName).toHaveBeenCalledWith("Updated Challenge Name");
+    fireEvent.changeText(captionInput, "Updated Caption Name");
+    expect(mockSetCaption).toHaveBeenCalledWith("Updated Caption Name");
   });
 
-  it("renders the Description input", () => {
-    const { getByTestId } = render(
-      <CreateChallengeScreen navigation={{}} route={{}} firestoreCtrl={{}} />,
-    );
-
-    const descriptionInput = getByTestId("Description-Input");
-    expect(descriptionInput).toBeTruthy();
-
-    fireEvent.changeText(descriptionInput, "Updated Description");
-    expect(mockSetDescription).toHaveBeenCalledWith("Updated Description");
-  });
 });

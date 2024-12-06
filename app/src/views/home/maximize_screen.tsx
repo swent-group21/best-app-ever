@@ -96,13 +96,14 @@ export default function MaximizeScreen({
             onPress={toggleLike}
             size={35}
             color={isLiked ? "red" : "white"}
+            testID="like-button"
           />
           <ThemedText style={styles.likeCountText} colorType="white">
             {likeList.length} {likeList.length === 1 ? "like" : "likes"}
           </ThemedText>
         </ThemedView>
 
-        <ThemedView style={styles.descriptionContainer} colorType="transparent">
+        <ThemedView style={styles.descriptionContainer} colorType="transparent" testID="caption-id">
           <ThemedText colorType="white" type="defaultSemiBold">{postCaption}</ThemedText>
         </ThemedView>
 
@@ -111,12 +112,14 @@ export default function MaximizeScreen({
             style={styles.commentInput}
             value={commentText}
             onChangeText={setCommentText}
+            testID="comment-input"
           />
           <ThemedIconButton
             name="send"
             size={25}
             colorType="white"
             onPress={addComment}
+            testID="send-comment"
           />
         </ThemedView>
 

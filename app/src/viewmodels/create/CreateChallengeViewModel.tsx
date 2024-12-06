@@ -5,7 +5,7 @@ import {
   LocationObject,
 } from "expo-location";
 import { GeoPoint, Timestamp } from "firebase/firestore";
-import { createChallenge } from "../../models/types/ChallengeBuilder";
+import { createChallenge } from "../../../types/ChallengeBuilder";
 import { DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
 /**
