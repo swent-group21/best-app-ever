@@ -9,79 +9,21 @@ import ListOfFriends from "@/components/friends/ListOfFriends";
 import RequestList from "@/components/friends/RequestList";
 import ListOfFilteredUsers from "@/components/friends/ListOfFilteredUsers";
 import {useFriendsScreenViewModel} from "@/src/viewmodels/friends/FriendsScreenViewModel";
-import { useEffect } from "react";
-import { useState } from "react";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
-export default function FriendsScreen({ navigation, firestoreCtrl }: { navigation: any; firestoreCtrl: FirestoreCtrl }) {
+export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
 
-  const [searchText, setSearchText] = useState("");
-  const [users, setUsers] = useState<DBUser[]>([]);
-  const [friends, setFriends] = useState<DBUser[]>([]);
-  const [requests, setRequests] = useState<DBUser[]>([]);
+  
 
-  // Fetch users
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const users = await firestoreCtrl.getAllUsers();
-        setUsers(users);
-      } catch (error) {
-        console.error("Error fetching users: ", error);
-      }
-    };
-    fetchUsers();
-  }, [firestoreCtrl]);
-
-  // Fetch friends
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const friends = await firestoreCtrl.getFriends(uid);
-        setFriends(friends);
-      } catch (error) {
-        console.error("Error fetching friends: ", error);
-      }
-    };
-    fetchFriends();
-  }, [firestoreCtrl, uid]);
-
-  // Fetch requests
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const requests = await firestoreCtrl.getFriendRequests(uid);
-        setRequests(requests);
-      } catch (error) {
-        console.error("Error fetching requests: ", error);
-      }
-    };
-    fetchRequests();
-  }, [firestoreCtrl, uid]);
-
-  const filteredUsers = searchText
-    ? users.filter(
-        (user) =>
-          user.uid &&
-          user.uid !== uid &&
-          user.name?.toLowerCase().includes(searchText.toLowerCase()),
-      )
-    : [];
-
-  const handleFriendPress = (friendId: string) => {
-    console.log(`Navigate to friend ${friendId}'s profile`);
-  };
-
-  // const {
-  //   searchText,
-  //   setSearchText,
-  //   friends,
-  //   requests,
-  //   filteredUsers,
-  //   handleFriendPress,
-  // } = useFriendsScreenViewModel(firestoreCtrl, uid);
+  const {
+    searchText,
+    setSearchText,
+    friends,
+    requests,
+    filteredUsers,
+    handleFriendPress,
+  } = useFriendsScreenViewModel(firestoreCtrl, uid);
 
   return (
     <ThemedView style={styles.container}>

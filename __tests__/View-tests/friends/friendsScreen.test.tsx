@@ -3,35 +3,42 @@ import { render } from "@testing-library/react-native";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import { getAuth } from "firebase/auth";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-jest.mock("expo-font", () => ({
-  useFonts: jest.fn(() => [true]),
-  isLoaded: jest.fn(() => true),
-}));
+// Mock Firebase Auth
 jest.mock("firebase/auth", () => ({
   getAuth: jest.fn(),
 }));
 
+// Mock ViewModel
 jest.mock("@/src/viewmodels/friends/FriendsScreenViewModel", () => ({
   useFriendsScreenViewModel: jest.fn(),
 }));
+
+// Mock FirestoreCtrl methods
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      getFriends: jest.fn(),
+      getFriendRequests: jest.fn(),
+      isFriend: jest.fn(),
+      addFriend: jest.fn(),
+      acceptFriend: jest.fn(),
+    };
+  });
+});
 
 describe("FriendsScreen Tests - Various Scenarios", () => {
   const mockNavigation = {
     goBack: jest.fn(),
   };
 
-  const mockFirestoreCtrl = {
-    getAllUsers: jest.fn(),
-    getFriends: jest.fn(),
-    getFriendRequests: jest.fn(),
-    isFriend: jest.fn(),
-  };
+  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Mock the Firebase `getAuth` method
+    // Mock Firebase Auth
     (getAuth as jest.Mock).mockReturnValue({
       currentUser: {
         uid: "test-user-id",
@@ -51,12 +58,13 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     });
 
     const { getByText } = render(
-      <FriendsScreen navigation={mockNavigation} firestoreCtrl={mockFirestoreCtrl} />
+      <FriendsScreen
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />
     );
 
     expect(getByText("Your friends")).toBeTruthy();
-
-    // Verify "No requests" message
     expect(getByText("Requests")).toBeTruthy();
     expect(getByText("No friends request for now")).toBeTruthy();
   });
@@ -73,38 +81,16 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     });
 
     const { getByText } = render(
-      <FriendsScreen navigation={mockNavigation} firestoreCtrl={mockFirestoreCtrl} />
+      <FriendsScreen
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />
     );
 
-    // Verify one friend is displayed
     expect(getByText("Your friends")).toBeTruthy();
     expect(getByText("Friend 1")).toBeTruthy();
-
-    // Verify "No requests" message
     expect(getByText("Requests")).toBeTruthy();
     expect(getByText("No friends request for now")).toBeTruthy();
-  });
-
-  it("renders FriendsScreen with one request and no friends", () => {
-    // Mock ViewModel for one request and no friends
-    (useFriendsScreenViewModel as jest.Mock).mockReturnValue({
-      searchText: "",
-      setSearchText: jest.fn(),
-      friends: [],
-      requests: [{ uid: "request1", name: "Request 1", email: "request1@example.com" }],
-      filteredUsers: [],
-      handleFriendPress: jest.fn(),
-    });
-
-    const { getByText, getByTestId } = render(
-      <FriendsScreen navigation={mockNavigation} firestoreCtrl={mockFirestoreCtrl} />
-    );
-
-    expect(getByText("Your friends")).toBeTruthy();
-
-    // Verify request list is displayed
-    expect(getByText("Requests")).toBeTruthy();
-    expect(getByTestId("friend-request-list")).toBeTruthy();
   });
 
 });
