@@ -1,27 +1,20 @@
-import React from "react";
+import { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // Install: `expo install @expo/vector-icons`
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
-import { Group } from "@/components/home/Group";
+import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { Group } from "@/components/home/Group";
 
 const { width, height } = Dimensions.get("window");
 
-/**
- * Home screen
- * @param user : user object
- * @param navigation : navigation object
- * @param firestoreCtrl : FirestoreCtrl object
- * @returns : a screen for the home
- */
 export default function HomeScreen({
   user,
   navigation,
@@ -36,11 +29,20 @@ export default function HomeScreen({
     challenges,
     groups,
     titleChallenge,
+    challengesFromFriends,
     navigateToProfile,
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
+
+  const [showFilterOptions, setShowFilterOptions] = useState(false);
+  const [filterByFriends, setFilterByFriends] = useState(false);
+
+  // Determine displayed challenges
+  const displayedChallenges = filterByFriends
+    ? challengesFromFriends
+    : challenges;
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -96,10 +98,10 @@ export default function HomeScreen({
           onTimerFinished={() => console.info("Timer Finished")}
           testID={`description-id`}
         />
-        {challenges.length === 0 ? (
-          <ThemedText>No challenge to display</ThemedText>
+        {displayedChallenges.length === 0 ? (
+          <ThemedText>No challenges to display</ThemedText>
         ) : (
-          challenges.map((challenge, index) => (
+          displayedChallenges.map((challenge, index) => (
             <Challenge
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
@@ -131,11 +133,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  groupsContainer: {
-    width: width - 20,
-    height: 0.18 * height,
-    borderRadius: 15,
+  filterIconContainer: {
+    position: "absolute",
+    top: height * 0.25,
+    right: width * 0.05,
+    zIndex: 10,
     backgroundColor: "transparent",
+  },
+  filterIcon: {
+    padding: 5,
+    backgroundColor: "#444",
+    borderRadius: 15,
+  },
+  filterDropdown: {
+    backgroundColor: "#333",
+    borderRadius: 8,
+    marginTop: 10,
+    padding: 10,
+    position: "absolute",
+    top: 40,
+    right: 0,
+  },
+  dropdownOption: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
+  },
+  dropdownText: {
+    color: "#fff",
   },
   container: {
     width: "100%",
@@ -145,6 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: height * 0.04,
+  },
+  groupsContainer: {
+    width: width - 20,
+    height: 0.18 * height,
+    borderRadius: 15,
+    backgroundColor: "transparent",
   },
   createGroupContainer: {
     flex: 1,

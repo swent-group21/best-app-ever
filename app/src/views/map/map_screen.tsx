@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import MapView, { LatLng, MapMarker } from "react-native-maps";
+import MapView, { MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
@@ -18,17 +18,20 @@ export default function MapScreen({
   user,
   navigation,
   firestoreCtrl,
+  route,
 }: {
   user: DBUser;
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
+  route: any;
 }) {
-  const { permission, userLocation, challengesWithLocation, navigateGoBack } =
-    useMapScreenViewModel(firestoreCtrl, navigation);
+  const firstLocation = route.params?.location;
+  const { userLocation, challengesWithLocation, navigateGoBack } =
+    useMapScreenViewModel(firestoreCtrl, navigation, firstLocation);
 
   const uri = "@/assets/images/icon_trans.png";
 
-  if (!permission && userLocation === undefined) {
+  if (userLocation === undefined) {
     return (
       <ThemedView>
         <ThemedText>Getting location...</ThemedText>
@@ -46,8 +49,8 @@ export default function MapScreen({
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: userLocation?.coords.latitude ?? 0,
-          longitude: userLocation?.coords.longitude ?? 0,
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -69,6 +72,13 @@ export default function MapScreen({
             flat={true}
             title={challenge.challenge_name}
             description={challenge.description}
+            onCalloutPress={() => {
+              navigation.navigate("Maximize", {
+                challenge: challenge,
+                user: user,
+                firestoreCtrl: firestoreCtrl,
+              });
+            }}
           />
         ))}
       </MapView>

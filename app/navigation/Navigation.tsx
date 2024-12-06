@@ -17,6 +17,7 @@ import MaximizeScreen from "@/src/views/home/maximize_screen";
 import CreateChallengeScreen from "@/src/views/create/create_challenge";
 import ProfileScreen from "@/src/views/home/profile_screen";
 import MapScreen from "@/src/views/map/map_screen";
+import FriendsScreen from "@/src/views/friends/friends_screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 const { Navigator, Screen, Group } =
@@ -154,6 +155,16 @@ export const Nav: React.FC<AppStackProps> = ({
                 {...props}
                 user={user}
                 setUser={setUser}
+                firestoreCtrl={firestoreCtrl}
+              />
+            )}
+          </Screen>
+
+          <Screen name="Friends">
+            {(props: any) => (
+              <FriendsScreen
+                {...props}
+                user={user}
                 firestoreCtrl={firestoreCtrl}
               />
             )}

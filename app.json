@@ -20,10 +20,15 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/images/adaptive-icon.png",
+        "foregroundImage": "./app/assets/images/icon_trans.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.strive"
+      "package": "com.strive",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCEhgdrq6tfUEErN326j50qTIeV3uxzmDQ"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
