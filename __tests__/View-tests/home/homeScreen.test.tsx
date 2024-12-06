@@ -1,4 +1,10 @@
-import { render, fireEvent } from "@testing-library/react-native";
+import React from "react";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -26,11 +32,10 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       .mockResolvedValue([{ id: "1", name: "Group 1" }]),
     getLikesOf: jest.fn().mockResolvedValue([]),
     getUser: jest.fn().mockResolvedValue({
-      name: "Test User",
       uid: "12345",
-      email: "email@gmail.com",
+      email: "test@example.com",
+      name: "Test User",
       createdAt: new Date(),
-      image_id: null,
     }),
   }));
 });
@@ -42,6 +47,7 @@ describe("HomeScreen UI Tests", () => {
     require("@/src/viewmodels/home/HomeScreenViewModel").useHomeScreenViewModel;
 
   beforeEach(() => {
+    jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();
 
     // Mock les valeurs par défaut du ViewModel
@@ -73,7 +79,7 @@ describe("HomeScreen UI Tests", () => {
     });
   });
 
-  it("renders the HomeScreen with challenges and groups", () => {
+  it("renders the HomeScreen with challenges and groups", async () => {
     const { getByText, getByTestId } = render(
       <HomeScreen
         user={{
@@ -88,20 +94,22 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    // Vérifie le titre de la barre supérieure
-    expect(getByText("Strive")).toBeTruthy();
+    await waitFor(() => {
+      // Vérifie le titre de la barre supérieure
+      expect(getByText("Strive")).toBeTruthy();
 
-    // Vérifie si les groupes s'affichent
-    expect(getByText("Group 1")).toBeTruthy();
-    expect(getByText("Group 2")).toBeTruthy();
+      // Vérifie si les groupes s'affichent
+      expect(getByText("Group 1")).toBeTruthy();
+      expect(getByText("Group 2")).toBeTruthy();
 
-    // Vérifie si les défis s'affichent
-    expect(getByTestId("challenge-id-0")).toBeTruthy();
-    expect(getByTestId("challenge-id-1")).toBeTruthy();
+      // Vérifie si les défis s'affichent
+      expect(getByTestId("challenge-id-0")).toBeTruthy();
+      expect(getByTestId("challenge-id-1")).toBeTruthy();
 
-    // Vérifie le défi actuel
-    expect(getByText("Current Challenge")).toBeTruthy();
-    expect(getByText("Current Challenge Description")).toBeTruthy();
+      // Vérifie le défi actuel
+      expect(getByText("Current Challenge")).toBeTruthy();
+      expect(getByText("Current Challenge Description")).toBeTruthy();
+    });
   });
 
   it("renders 'No challenges to display' when no challenges are available", () => {

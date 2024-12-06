@@ -130,7 +130,7 @@ export const signInAsGuest = async (
         email: "",
         createdAt: new Date(),
       };
-      console.log("User data:", userData);
+      //console.log("User data:", userData);
       firestoreCtrl
         .createUser(userCredential.user.uid, userData)
         .then(() => {

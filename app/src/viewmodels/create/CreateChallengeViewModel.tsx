@@ -40,7 +40,7 @@ export default function CreateChallengeViewModel({
     async function fetchLocation() {
       let { status } = await requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Permission to access location denied");
+        //console.log("Permission to access location denied");
         setIsLocationEnabled(false);
         return;
       }

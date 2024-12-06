@@ -1,13 +1,13 @@
-import { useState, useRef, useCallback, useMemo } from "react";
+import { useState, useRef, useCallback } from "react";
 import {
   CameraType,
   useCameraPermissions,
   CameraCapturedPicture,
   CameraPictureOptions,
+  FlashMode,
+  CameraView,
 } from "expo-camera";
-import { FlashMode } from "expo-camera/build/Camera.types";
 import { Platform } from "react-native";
-import { CameraView } from "expo-camera";
 
 /**
  * ViewModel for the camera screen.
