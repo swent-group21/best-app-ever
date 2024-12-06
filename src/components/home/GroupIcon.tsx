@@ -12,9 +12,9 @@ const { width, height } = Dimensions.get("window");
 
 export function GroupIcon({
   groupDB,
-  index,
-  firestoreCtrl,
   navigation,
+  firestoreCtrl,
+  key,
   testID,
 }: any) {
   // Display loading state or handle absence of challenge data
@@ -30,6 +30,7 @@ export function GroupIcon({
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"
+          testID={`group-pressable-button-${key}`}
         ></ThemedTextButton>
       </ThemedView>
     );

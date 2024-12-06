@@ -8,7 +8,7 @@ import { ThemedView } from "../../../components/theme/ThemedView";
 import { BottomBar } from "../../../components/navigation/BottomBar";
 import { ThemedText } from "../../../components/theme/ThemedText";
 import { ThemedTextButton } from "../../../components/theme/ThemedTextButton";
-import { useGroupScreenViewModel } from "../../viewmodels/group/GroupScreenViewModel";
+import useGroupScreenViewModel from "../../viewmodels/group/GroupScreenViewModel";
 import { DBGroup, DBUser } from "../../models/firebase/FirestoreCtrl";
 import FirestoreCtrl from "../../models/firebase/FirestoreCtrl";
 
@@ -20,12 +20,7 @@ export default function GroupScreen({
   navigation,
   route,
   firestoreCtrl
-}: {
-  user: DBUser;
-  navigation: any;
-  route: any;
-  firestoreCtrl: FirestoreCtrl;
-}) {
+}: any) {
 
   const { groupChallenges, 
     otherGroups,
@@ -35,7 +30,7 @@ export default function GroupScreen({
 } = useGroupScreenViewModel(user, firestoreCtrl, route);
 
   return (
-    <ThemedView style={styles.bigContainer} testID="home-screen">
+    <ThemedView style={styles.bigContainer} testID="group-screen">
         <TopBar
             title={groupName}
             leftIcon="people-outline"
@@ -48,7 +43,7 @@ export default function GroupScreen({
 
         {/* Groups */}
         <ThemedScrollView style={styles.groupsContainer} horizontal>
-            <ThemedView style={styles.HomeContainer} testID="create-group-button">
+            <ThemedView style={styles.HomeContainer} testID="home-button">
               <ThemedTextButton
                   style={styles.HomeButton}
                   onPress={() => navigation.navigate("Home")}
@@ -56,6 +51,7 @@ export default function GroupScreen({
                   textStyle={styles.HomeText}
                   textColorType="textOverLight"
                   colorType="backgroundSecondary"
+                  testID="home-pressable-button"
               />
             </ThemedView>
             {otherGroups.map((group, index) => (
@@ -76,6 +72,7 @@ export default function GroupScreen({
                     textStyle={styles.createGroupText}
                     textColorType="textOverLight"
                     colorType="backgroundSecondary"
+                    testID="create-group-pressable-button"
                 />
             </ThemedView>
         </ThemedScrollView>
@@ -94,7 +91,7 @@ export default function GroupScreen({
             colorType="transparent"
         >
             {groupChallenges.length === 0 ? (
-            <ThemedText>No challenge to display</ThemedText>
+            <ThemedText testID="no-challenge-id">No challenge to display</ThemedText>
             ) : (
             groupChallenges.map((challenge, index) => (
                 <Challenge

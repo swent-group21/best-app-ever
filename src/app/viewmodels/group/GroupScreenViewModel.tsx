@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FirestoreCtrl, { DBChallenge, DBUser, DBGroup, DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
 
-export function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, route: any) {
+export default function useGroupScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl, route: any) {
 
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
