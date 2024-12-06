@@ -12,6 +12,7 @@ export type RootStackParamList = {
     group_id: string;
   };
   SetUsername: undefined;
+  Friends: undefined;
   Maximize: {
     challenge: DBChallenge;
   };

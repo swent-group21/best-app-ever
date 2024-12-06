@@ -1,4 +1,3 @@
-import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
@@ -26,6 +25,13 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       .fn()
       .mockResolvedValue([{ id: "1", name: "Group 1" }]),
     getLikesOf: jest.fn().mockResolvedValue([]),
+    getUser: jest.fn().mockResolvedValue({
+      name: "Test User",
+      uid: "12345",
+      email: "email@gmail.com",
+      createdAt: new Date(),
+      image_id: null,
+    }),
   }));
 });
 
@@ -98,7 +104,7 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("Current Challenge Description")).toBeTruthy();
   });
 
-  it("renders 'No challenge to display' when no challenges are available", () => {
+  it("renders 'No challenges to display' when no challenges are available", () => {
     // Mock les valeurs retournées pour simuler l'absence de défis
     mockUseHomeScreenViewModel.mockReturnValue({
       userIsGuest: false,
@@ -125,7 +131,7 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Vérifie que le texte pour "aucun défi" est affiché
-    expect(getByText("No challenge to display")).toBeTruthy();
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 
   it("renders correctly for a guest user", () => {
@@ -150,6 +156,6 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Vérifie que les défis et groupes ne sont pas affichés
-    expect(getByText("No challenge to display")).toBeTruthy();
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 });

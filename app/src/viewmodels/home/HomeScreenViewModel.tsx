@@ -76,6 +76,11 @@ export function useHomeScreenViewModel(
     }
   }, [user.uid, firestoreCtrl]);
 
+  // Filter challenges to only include those from friends
+  const challengesFromFriends = challenges.filter((challenge) =>
+    user.friends?.includes(challenge.uid),
+  );
+
   return {
     userIsGuest,
     challenges,
@@ -85,5 +90,6 @@ export function useHomeScreenViewModel(
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
+    challengesFromFriends,
   };
 }
