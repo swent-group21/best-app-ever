@@ -18,11 +18,10 @@ const defaultLocation = {
   },
 } as LocationObject;
 
-
 /**
  * View model for the map screen.
  * @param firestoreCtrl : FirestoreCtrl object
- * @returns : permission, userLocation, and challengesWithLocation 
+ * @returns : permission, userLocation, and challengesWithLocation
  */
 export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
   const [permission, setPermission] = useState<boolean>(false);

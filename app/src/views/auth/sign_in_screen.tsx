@@ -48,7 +48,6 @@ export default function SignInScreen({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ThemedView style={styles.signInScreen}>
-
           <ThemedView
             style={styles.ovalShapeTwo}
             colorType="backgroundSecondary"
@@ -63,7 +62,6 @@ export default function SignInScreen({
           </ThemedText>
 
           <ThemedView style={styles.colContainer}>
-
             <ThemedTextInput
               style={styles.input}
               type="email"

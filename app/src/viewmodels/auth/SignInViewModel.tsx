@@ -2,7 +2,6 @@ import { useState } from "react";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { logInWithEmail } from "@/types/Auth";
 
-
 /**
  * ViewModel for the SignIn screen
  * @param firestoreCtrl : FirestoreCtrl object

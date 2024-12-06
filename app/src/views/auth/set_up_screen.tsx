@@ -56,7 +56,6 @@ export default function SetUsernameScreen({
         colorType="transparent"
       >
         <ThemedView style={styles.smallContainer} colorType="transparent">
-
           <TouchableOpacity
             onPress={pickImage}
             style={styles.smallContainer}
