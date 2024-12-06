@@ -4,12 +4,12 @@
     "slug": "strive",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./app/assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./src/assets/images/splash.png",
+      "image": "./app/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,15 +20,20 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./app/assets/images/icon_trans.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.strive"
+      "package": "com.strive",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCEhgdrq6tfUEErN326j50qTIeV3uxzmDQ"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "../src/assets/images/favicon.png"
+      "favicon": "./app/assets/images/favicon.png"
     },
     "plugins": [
       "@react-native-firebase/app",

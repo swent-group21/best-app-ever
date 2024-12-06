@@ -90,8 +90,8 @@ jest.mock("@react-native-async-storage/async-storage", () => ({
 }));
 
 // Mock the logInWithEmail function
-jest.mock("./src/app/models/types/Auth", () => ({
-  ...jest.requireActual("./src/app/models/types/Auth"),
+jest.mock("@/types/Auth", () => ({
+  ...jest.requireActual("@/types/Auth"),
   isValidEmail: jest.fn(),
   signUpWithEmail: jest.fn(),
   logInWithEmail: jest.fn(),
@@ -111,7 +111,7 @@ jest.mock("react-native-elements", () => {
   };
 });
 
-jest.mock("./src/app/models/firebase/FirestoreCtrl");
+jest.mock("@/src/models/firebase/FirestoreCtrl");
 
 jest.mock("react-native-maps", () => {
   const { View } = require("react-native");
