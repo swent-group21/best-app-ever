@@ -18,13 +18,16 @@ export default function MapScreen({
   user,
   navigation,
   firestoreCtrl,
+  route,
 }: {
   user: DBUser;
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
+  route: any;
 }) {
+  const firstLocation = route.params?.location;
   const { permission, userLocation, challengesWithLocation, navigateGoBack } =
-    useMapScreenViewModel(firestoreCtrl, navigation);
+    useMapScreenViewModel(firestoreCtrl, navigation, firstLocation);
 
   const uri = "@/assets/images/icon_trans.png";
 
@@ -46,8 +49,8 @@ export default function MapScreen({
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: userLocation?.coords.latitude ?? 0,
-          longitude: userLocation?.coords.longitude ?? 0,
+          latitude: userLocation?.latitude ?? 0,
+          longitude: userLocation?.longitude ?? 0,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}

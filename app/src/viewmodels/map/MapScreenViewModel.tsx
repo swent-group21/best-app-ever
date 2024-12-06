@@ -2,21 +2,16 @@ import { useEffect, useState } from "react";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
-  LocationObject,
 } from "expo-location";
 import FirestoreCtrl, {
   DBChallenge,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { GeoPoint } from "firebase/firestore";
 
 /**
  * Default location centered on the city of Nice, France.
  */
-const defaultLocation = {
-  coords: {
-    latitude: 43.6763,
-    longitude: 7.0122,
-  },
-} as LocationObject;
+const defaultLocation = new GeoPoint(43.6763, 7.0122);
 
 /**
  * View model for the map screen.
@@ -26,10 +21,11 @@ const defaultLocation = {
 export function useMapScreenViewModel(
   firestoreCtrl: FirestoreCtrl,
   navigation: any,
+  firstLocation: GeoPoint | undefined,
 ) {
   const [permission, setPermission] = useState<boolean>(false);
-  const [userLocation, setUserLocation] = useState<LocationObject | undefined>(
-    undefined,
+  const [userLocation, setUserLocation] = useState<GeoPoint | undefined>(
+    firstLocation,
   );
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
@@ -40,7 +36,8 @@ export function useMapScreenViewModel(
   };
 
   /**
-   * Requests permission to access the user's location and fetches their current location.
+   * Requests permission to access the user's location and fetches their current location, only if
+   * the user's location is not already set.
    */
   useEffect(() => {
     async function getCurrentLocation() {
@@ -49,7 +46,9 @@ export function useMapScreenViewModel(
         if (status === "granted") {
           setPermission(true);
           const location = await getCurrentPositionAsync();
-          setUserLocation(location);
+          setUserLocation(
+            new GeoPoint(location.coords.latitude, location.coords.longitude),
+          );
         } else {
           setPermission(false);
           setUserLocation(defaultLocation);
@@ -59,8 +58,7 @@ export function useMapScreenViewModel(
         setUserLocation(defaultLocation);
       }
     }
-
-    getCurrentLocation();
+    if (userLocation === undefined) getCurrentLocation();
   }, []);
 
   /**
