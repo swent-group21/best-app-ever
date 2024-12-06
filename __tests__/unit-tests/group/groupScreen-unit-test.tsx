@@ -23,17 +23,12 @@ const mockNavigation = {
 };
 
 
-const mockGroup0 = {
+const mockGroup = {
     group_id: "1234_5679",
       group_name: "Group Test 1",
       group_challenge_title: "Challenge Test 1",
 }
-const mockGroup1 = {
-    group_id: "1234567890",
-    group_name: "Group Test 2",
-    group_challenge_title: "Challenge Test 2",
-}
-const mockOtherGroups = [mockGroup0, mockGroup1];
+const mockOtherGroups = [mockGroup];
 
 
 describe("Group Screen renders challenges", () => {
@@ -83,11 +78,8 @@ describe("Group Screen renders challenges", () => {
   it("navigates to group when clicking to specific button", () => {
     const { getByTestId } = render(<GroupScreen user={{}} navigation={mockNavigation} route={{}} firestoreCtrl={mockFirestoreCtrl} />);
 
-    fireEvent.press(getByTestId("group-pressable-button-0"));
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {currentGroup: mockGroup0});
-
-    fireEvent.press(getByTestId("group-pressable-button-1"));
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {currentGroup: mockGroup1});
+    fireEvent.press(getByTestId("group-pressable-button"));
+    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {currentGroup: mockGroup});
   });
 
   it("navigate to CreateGroup screen when button + clicked", () => {

@@ -17,7 +17,7 @@ export default function CreateGroupScreen(
   } : {
     user: DBUser;
     navigation: any;
-    firestoreCtrl: FirestoreCtrl;
+    firestoreCtrl: any;
   }
 ) {
   const {
@@ -29,7 +29,7 @@ export default function CreateGroupScreen(
   } = CreateGroupViewModel({ user, navigation, firestoreCtrl });
 
   return (
-    <ThemedView style={styles.createGroupScreen}>
+    <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
       {/* Title */}
       <ThemedText style={styles.title} colorType="textPrimary" type="title" testID="Create-Challenge-Text">
         Create a New Group

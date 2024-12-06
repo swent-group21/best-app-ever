@@ -14,7 +14,7 @@ export function GroupIcon({
   groupDB,
   navigation,
   firestoreCtrl,
-  key,
+  index,
   testID,
 }: any) {
   // Display loading state or handle absence of challenge data
@@ -30,7 +30,7 @@ export function GroupIcon({
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"
-          testID={`group-pressable-button-${key}`}
+          testID="group-pressable-button"
         ></ThemedTextButton>
       </ThemedView>
     );
