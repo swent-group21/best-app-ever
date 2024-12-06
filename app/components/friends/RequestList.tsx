@@ -17,14 +17,11 @@ export default function RequestList({
   firestoreCtrl: any;
   uid: string;
 }) {
-  console.log("friend request list", requests);
   const handleAccept = (requestId: string) => {
-    console.log(`Friend request ${requestId} accepted`);
     firestoreCtrl.acceptFriend(uid, requestId);
   };
 
   const handleDecline = (requestId: string) => {
-    console.log(`Friend request ${requestId} declined`);
     firestoreCtrl.rejectFriend(uid, requestId);
   };
 

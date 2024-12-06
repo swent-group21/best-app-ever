@@ -90,6 +90,6 @@ export function useHomeScreenViewModel(
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
-    challengesFromFriends, // Add this
+    challengesFromFriends,
   };
 }
