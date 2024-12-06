@@ -67,6 +67,7 @@ describe("MapScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
+        route={{}}
       />,
     );
 
@@ -90,6 +91,7 @@ describe("MapScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
+        route={{}}
       />,
     );
 
