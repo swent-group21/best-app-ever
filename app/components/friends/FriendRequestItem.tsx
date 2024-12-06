@@ -51,14 +51,13 @@ export const FriendRequestItem = ({
 
       {/* Decline Button with Icon */}
 
-      <ThemedIconButton 
+      <ThemedIconButton
         name="close"
         onPress={onDecline}
         testID="decline-button"
         color="#fff"
         style={styles.declineButton}
       />
-
     </View>
   </ThemedView>
 );

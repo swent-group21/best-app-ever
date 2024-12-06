@@ -1,4 +1,3 @@
-
 import { FlatList } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { UserListItem } from "@/components/friends/UserListItems";

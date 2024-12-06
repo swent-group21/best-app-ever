@@ -1,9 +1,8 @@
 describe("MapScreen UI Tests", () => {
-  it ('always true', () => {
-
-  expect(true).toBeTruthy();
+  it("always true", () => {
+    expect(true).toBeTruthy();
   });
-}); 
+});
 //     const descriptionInput = getByTestId("Description-Input");
 
 // import React from "react";
@@ -74,7 +73,7 @@ describe("MapScreen UI Tests", () => {
 //       <MapScreen
 //         user={mockUser}
 //         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl} 
+//         firestoreCtrl={mockFirestoreCtrl}
 //       />,
 //     );
 

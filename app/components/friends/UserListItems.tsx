@@ -4,7 +4,6 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useState, useEffect } from "react";
 
-
 /**
  * User list item component
  * @param name : name of the user

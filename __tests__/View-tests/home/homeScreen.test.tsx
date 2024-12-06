@@ -26,7 +26,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       .fn()
       .mockResolvedValue([{ id: "1", name: "Group 1" }]),
     getLikesOf: jest.fn().mockResolvedValue([]),
-    getUser : jest.fn().mockResolvedValue({
+    getUser: jest.fn().mockResolvedValue({
       name: "Test User",
       uid: "12345",
       email: "email@gmail.com",
@@ -34,7 +34,6 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       image_id: null,
     }),
   }));
-   
 });
 
 describe("HomeScreen UI Tests", () => {

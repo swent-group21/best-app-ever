@@ -576,10 +576,10 @@ export default class FirestoreCtrl {
       await this.createUser(friendId, friend);
     } catch (error) {
       console.error("Error accepting friend: ", error);
+    }
+  }
 
-    }}
-
-     /**
+  /**
    * Reject a friend request.
    * @param userId The UID of the user.
    * @param friendId The UID of the user to reject.
@@ -612,7 +612,7 @@ export default class FirestoreCtrl {
    *Retrieve the friends of a user.
    * @param userId The UID of the user.
    */
-   async getFriends(userId: string): Promise<DBUser[]> {
+  async getFriends(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
       const friends = await Promise.all(
@@ -629,7 +629,7 @@ export default class FirestoreCtrl {
    *Retrieve the users that the user has requested to be friends with.
    * @param userId The UID of the user.
    */
-   async getRequestedFriends(userId: string): Promise<DBUser[]> {
+  async getRequestedFriends(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
       const friends = await Promise.all(
@@ -643,12 +643,12 @@ export default class FirestoreCtrl {
     }
   }
 
-   /**
+  /**
 
    *Retrieve the friends requests of a user.
    * @param userId The UID of the user.
    */
-   async getFriendRequests(userId: string): Promise<DBUser[]> {
+  async getFriendRequests(userId: string): Promise<DBUser[]> {
     try {
       const user = await this.getUser(userId);
       const friends = await Promise.all(
@@ -694,7 +694,7 @@ export default class FirestoreCtrl {
    * Check if a user is a friend of another user.
    * @param userId The UID of the user.
    * @param friendId The UID of the friend to check.
-   * @returns 
+   * @returns
    */
   async isFriend(userId: string, friendId: string) {
     try {
@@ -720,9 +720,4 @@ export default class FirestoreCtrl {
       throw error;
     }
   }
-
-
-
-
-
 }

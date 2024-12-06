@@ -41,6 +41,4 @@ describe("FriendListItem Component", () => {
     const friendName = getByText("Alice Johnson");
     expect(friendName).toBeTruthy();
   });
-
-
 });

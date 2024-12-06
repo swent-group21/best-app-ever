@@ -28,7 +28,8 @@ export default function HomeScreen({
     userIsGuest,
     challenges,
     groups,
-    titleChallenge, challengesFromFriends,
+    titleChallenge,
+    challengesFromFriends,
     navigateToProfile,
     navigateToMap,
     navigateToCamera,
@@ -39,7 +40,9 @@ export default function HomeScreen({
   const [filterByFriends, setFilterByFriends] = useState(false);
 
   // Determine displayed challenges
-  const displayedChallenges = filterByFriends ? challengesFromFriends : challenges;
+  const displayedChallenges = filterByFriends
+    ? challengesFromFriends
+    : challenges;
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -54,7 +57,7 @@ export default function HomeScreen({
         }
         rightAction={() => navigateToProfile()}
         testID="top-bar"
-      />    
+      />
 
       {/* Groups */}
       <ThemedScrollView style={styles.groupsContainer} horizontal>
@@ -82,7 +85,6 @@ export default function HomeScreen({
           />
         </ThemedView>
       </ThemedScrollView>
-
 
       {/* Challenges */}
       <ThemedScrollView

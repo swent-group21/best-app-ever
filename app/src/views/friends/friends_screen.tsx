@@ -7,13 +7,11 @@ import { SearchBar } from "@/components/friends/Search_Bar";
 import ListOfFriends from "@/components/friends/ListOfFriends";
 import RequestList from "@/components/friends/RequestList";
 import ListOfFilteredUsers from "@/components/friends/ListOfFilteredUsers";
-import {useFriendsScreenViewModel} from "@/src/viewmodels/friends/FriendsScreenViewModel";
+import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 
 export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
-
-  
 
   const {
     searchText,
@@ -51,7 +49,11 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
       <ThemedView style={styles.requestsContainer}>
         <ThemedText style={styles.sectionTitle}>Requests</ThemedText>
         {requests.length > 0 ? (
-          <RequestList  requests={requests} firestoreCtrl={firestoreCtrl} uid={uid} />
+          <RequestList
+            requests={requests}
+            firestoreCtrl={firestoreCtrl}
+            uid={uid}
+          />
         ) : (
           <ThemedText style={styles.noRequests}>
             No friends request for now

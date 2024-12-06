@@ -160,11 +160,15 @@ export const Nav: React.FC<AppStackProps> = ({
             )}
           </Screen>
 
-        <Screen name = "Friends">
-          {(props: any) => (
-            <FriendsScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
-          )}
-        </Screen>
+          <Screen name="Friends">
+            {(props: any) => (
+              <FriendsScreen
+                {...props}
+                user={user}
+                firestoreCtrl={firestoreCtrl}
+              />
+            )}
+          </Screen>
 
           <Screen name="MapScreen">
             {(props: any) => (

@@ -12,7 +12,10 @@ import FirestoreCtrl, {
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
-export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtrl,navigation: any,
+export function useHomeScreenViewModel(
+  user: DBUser,
+  firestoreCtrl: FirestoreCtrl,
+  navigation: any,
 ) {
   const userIsGuest = user.name === "Guest";
 
@@ -32,7 +35,8 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
         setTitleChallenge(currentChallengeData);
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
@@ -74,7 +78,7 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
 
   // Filter challenges to only include those from friends
   const challengesFromFriends = challenges.filter((challenge) =>
-    user.friends?.includes(challenge.uid)
+    user.friends?.includes(challenge.uid),
   );
 
   return {
@@ -89,4 +93,3 @@ export function useHomeScreenViewModel(user: DBUser, firestoreCtrl: FirestoreCtr
     challengesFromFriends, // Add this
   };
 }
-

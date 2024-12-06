@@ -8,11 +8,16 @@ import { ThemedText } from "@/components/theme/ThemedText";
  * @param firestoreCtrl : firestore controller
  * @param uid : current user's id
  */
-export default function RequestList(
- { requests, firestoreCtrl, uid, }: { requests: any[]; firestoreCtrl: any; uid: string }
- 
-) {
-  console.log('friend request list', requests);
+export default function RequestList({
+  requests,
+  firestoreCtrl,
+  uid,
+}: {
+  requests: any[];
+  firestoreCtrl: any;
+  uid: string;
+}) {
+  console.log("friend request list", requests);
   const handleAccept = (requestId: string) => {
     console.log(`Friend request ${requestId} accepted`);
     firestoreCtrl.acceptFriend(uid, requestId);
@@ -23,9 +28,6 @@ export default function RequestList(
     firestoreCtrl.rejectFriend(uid, requestId);
   };
 
-  
-
-  
   return (
     <FlatList
       data={requests}

@@ -61,7 +61,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       <FriendsScreen
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     expect(getByText("Your friends")).toBeTruthy();
@@ -74,7 +74,9 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     (useFriendsScreenViewModel as jest.Mock).mockReturnValue({
       searchText: "",
       setSearchText: jest.fn(),
-      friends: [{ uid: "friend1", name: "Friend 1", email: "friend1@example.com" }],
+      friends: [
+        { uid: "friend1", name: "Friend 1", email: "friend1@example.com" },
+      ],
       requests: [],
       filteredUsers: [],
       handleFriendPress: jest.fn(),
@@ -84,7 +86,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       <FriendsScreen
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     expect(getByText("Your friends")).toBeTruthy();
@@ -92,5 +94,4 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     expect(getByText("Requests")).toBeTruthy();
     expect(getByText("No friends request for now")).toBeTruthy();
   });
-
 });
