@@ -46,7 +46,7 @@ export const FriendRequestItem = ({
         onPress={onAccept}
         testID="accept-button"
       >
-        <Icon name="check" size={30} color="#fff" />
+        <Icon name="check" size={30} color="#fff" ref={'icon'} />
       </TouchableOpacity>
 
       {/* Decline Button with Icon */}
