@@ -19,6 +19,8 @@ import ProfileScreen from "@/src/views/home/profile_screen";
 import MapScreen from "@/src/views/map/map_screen";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import { NavigationContainer } from "@react-navigation/native";
+import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
+import GroupScreen from "@/src/views/group/GroupScreen";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();
@@ -173,6 +175,26 @@ export const Nav: React.FC<AppStackProps> = ({
           <Screen name="MapScreen">
             {(props: any) => (
               <MapScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
+            )}
+          </Screen>
+
+          <Screen name="GroupScreen">
+            {(props: any) => (
+              <GroupScreen
+                {...props}
+                user={user}
+                firestoreCtrl={firestoreCtrl}
+              />
+            )}
+          </Screen>
+
+          <Screen name="CreateGroup">
+            {(props: any) => (
+              <CreateGroupScreen
+                {...props}
+                user={user}
+                firestoreCtrl={firestoreCtrl}
+              />
             )}
           </Screen>
         </Group>

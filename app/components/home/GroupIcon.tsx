@@ -17,11 +17,11 @@ const { width, height } = Dimensions.get("window");
  * @param testID : testID for the component
  * @returns : a component for the group
  */
-export function Group({
+export default function GroupIcon({
   groupDB,
-  index,
-  firestoreCtrl,
   navigation,
+  firestoreCtrl,
+  index,
   testID,
 }: any) {
   // Display loading state or handle absence of challenge data
@@ -32,10 +32,13 @@ export function Group({
       <ThemedView style={styles.container} testID={testID}>
         <ThemedTextButton
           style={styles.heading}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("GroupScreen", { currentGroup: groupDB });
+          }}
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"
+          testID="group-pressable-button"
         ></ThemedTextButton>
       </ThemedView>
     );

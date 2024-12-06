@@ -18,6 +18,7 @@ import { CameraView } from "expo-camera";
 export default function useCameraViewModel(
   firestoreCtrl: any,
   navigation: any,
+  route: any,
 ) {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
@@ -28,6 +29,8 @@ export default function useCameraViewModel(
   const [isFlashEnabled, setIsFlashEnabled] = useState(false);
   const [zoom, setZoom] = useState(0);
   const [lastZoom, setLastZoom] = useState(0);
+
+  const group_id = route.params?.group_id;
 
   const cameraPictureOptions: CameraPictureOptions = { base64: true };
 
@@ -82,7 +85,10 @@ export default function useCameraViewModel(
   // Generate an image URL from the picture taken
   const imageUrlGen = async () => {
     const img_id = await firestoreCtrl.uploadImageFromUri(picture?.uri);
-    navigation.navigate("CreateChallenge", { image_id: img_id });
+    navigation.navigate("CreateChallenge", {
+      image_id: img_id,
+      group_id: group_id,
+    });
   };
 
   return {

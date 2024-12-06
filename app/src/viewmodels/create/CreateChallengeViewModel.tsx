@@ -5,6 +5,7 @@ import {
   LocationObject,
 } from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
+import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * View model for the create challenge screen.
@@ -18,7 +19,7 @@ export default function CreateChallengeViewModel({
   navigation,
   route,
 }: {
-  firestoreCtrl: any;
+  firestoreCtrl: FirestoreCtrl;
   navigation: any;
   route: any;
 }) {
@@ -28,6 +29,8 @@ export default function CreateChallengeViewModel({
   const [isLocationEnabled, setIsLocationEnabled] = useState(true);
 
   const imageId = route.params?.image_id;
+  const group_id = route.params?.group_id;
+  console.log("group_id in create :", group_id);
 
   // Toggle location switch
   const toggleLocation = () => setIsLocationEnabled((prev) => !prev);
@@ -56,10 +59,17 @@ export default function CreateChallengeViewModel({
         challengeName,
         description,
         isLocationEnabled ? location : null,
+        group_id,
         date,
         imageId,
       );
-      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+      if (group_id == "" || group_id == "home") {
+        navigation.navigate("Home");
+      } else {
+        const group: DBGroup = await firestoreCtrl.getGroup(group_id);
+        console.log("group in create challenge: ", group);
+        navigation.navigate("GroupScreen", { currentGroup: group });
+      }
     } catch (error) {
       console.error("Unable to create challenge", error);
       return error;

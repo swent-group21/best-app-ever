@@ -36,6 +36,7 @@ export type DBChallenge = {
   date?: Date;
   likes?: string[]; // User IDs
   location?: GeoPoint | null;
+  group_id?: string;
 };
 
 export type DBComment = {
@@ -46,11 +47,11 @@ export type DBComment = {
 };
 
 export type DBGroup = {
-  group_id: string;
-  group_name: string;
-  description?: string;
+  gid?: string;
+  name: string;
+  challengeTitle: string;
   members: string[];
-  creationDate?: Date;
+  updateDate: Date;
 };
 export type DBChallengeDescription = {
   title: string;
@@ -369,7 +370,7 @@ export default class FirestoreCtrl {
       // Retrieve all groups using the group IDs
       const groupsRef = collection(firestore, "groups");
 
-      const q = query(groupsRef, where(documentId(), "in", userData.groups));
+      const q = query(groupsRef, where("name", "in", userData.groups));
 
       const groupSnapshots = await getDocs(q);
 
@@ -377,7 +378,7 @@ export default class FirestoreCtrl {
       const dbGroups: DBGroup[] = groupSnapshots.docs.map(
         (doc) =>
           ({
-            group_id: doc.id,
+            gid: doc.id,
             ...doc.data(),
           }) as DBGroup,
       );
@@ -424,6 +425,101 @@ export default class FirestoreCtrl {
       return dbUsers;
     } catch (error) {
       console.error("Error getting groups by user ID: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves all posts of a specific group.
+   * @param groupId The ID of the group to get posts for.
+   * @returns A promise that resolves to an array of posts.
+   */
+  async getAllPostsOfGroup(groupId: string): Promise<DBChallenge[]> {
+    try {
+      const postsRef = collection(firestore, "challenges");
+      const q = query(postsRef, where("group_id", "==", groupId));
+      const querySnapshot = await getDocs(q);
+      const posts = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          challenge_id: doc.id,
+        } as DBChallenge;
+      });
+      return posts;
+    } catch (error) {
+      console.error("Error getting posts: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create a group in firestore
+   * @param groupData The group data to add.
+   */
+  async newGroup(groupData: DBGroup): Promise<void> {
+    try {
+      const docRef = await addDoc(collection(firestore, "groups"), groupData);
+      console.log("Challenge id: ", docRef.id);
+    } catch (error) {
+      console.error("Error writting challenge document: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update a group in firestore with last post date
+   * @param gid The ID of the group to update.
+   * @param updateTime The time of the last post.
+   */
+  async updateGroup(gid: string, updateTime: Date): Promise<void> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const docSnap = await getDoc(groupRef);
+      const groupData = docSnap.data() as DBGroup;
+
+      groupData.updateDate = updateTime;
+      groupData.gid = gid;
+
+      await setDoc(doc(firestore, "groups", gid), groupData);
+    } catch (error) {
+      console.error("Error updating group: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update a group in firestore with last post date
+   * @param gid The ID of the group to update.
+   * @param updateTime The time of the last post.
+   */
+  async addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
+    try {
+      const user = await this.getUser(uid);
+      user.groups?.push(group_name);
+      await this.createUser(uid, user);
+    } catch (error) {
+      console.error("Error setting name: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get a group from firestore
+   * @param gid The ID of the group to get.
+   * @returns A promise that resolves to the group data.
+   */
+  async getGroup(gid: string): Promise<DBGroup> {
+    try {
+      const groupRef = doc(firestore, "groups", gid);
+      const docSnap = await getDoc(groupRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as DBGroup;
+      } else {
+        throw new Error("Group not found.");
+      }
+    } catch (error) {
+      console.log("Error getting Group: ", error);
       throw error;
     }
   }

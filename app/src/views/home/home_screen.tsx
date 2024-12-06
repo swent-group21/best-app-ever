@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Install: `expo install @expo/vector-icons`
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
+
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -10,8 +11,8 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import GroupIcon from "@/components/home/GroupIcon";
 import { ThemedText } from "@/components/theme/ThemedText";
-import { Group } from "@/components/home/Group";
 
 const { width, height } = Dimensions.get("window");
 
@@ -62,7 +63,7 @@ export default function HomeScreen({
       {/* Groups */}
       <ThemedScrollView style={styles.groupsContainer} horizontal>
         {groups.map((group, index) => (
-          <Group
+          <GroupIcon
             groupDB={group}
             navigation={navigation}
             firestoreCtrl={firestoreCtrl}
@@ -77,7 +78,7 @@ export default function HomeScreen({
         >
           <ThemedTextButton
             style={styles.createGroupButton}
-            onPress={() => {}}
+            onPress={() => navigation.navigate("CreateGroup")}
             text="+"
             textStyle={styles.createGroupText}
             textColorType="textOverLight"

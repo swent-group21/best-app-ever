@@ -54,6 +54,7 @@ export const createChallenge = async (
   challenge_name: string,
   description: string,
   location: LocationObject | null,
+  group_id: string,
   date?: Date,
   image_id?: string,
   likes?: string[],
@@ -80,6 +81,7 @@ export const createChallenge = async (
       image_id: image_id,
       likes: likes || [],
       location: locationFirebase,
+      group_id: group_id,
     };
 
     if (image_id) {
@@ -93,6 +95,11 @@ export const createChallenge = async (
 
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
+
+    const updateTime = new Date();
+    if (group_id !== "" && group_id !== "home") {
+      await firestoreCtrl.updateGroup(group_id, updateTime);
+    }
   } catch (error) {
     console.error("Error creating challenge: ", error);
   }
