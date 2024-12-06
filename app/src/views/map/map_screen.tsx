@@ -69,6 +69,13 @@ export default function MapScreen({
             flat={true}
             title={challenge.challenge_name}
             description={challenge.description}
+            onCalloutPress={() => {
+              navigation.navigate("Maximize", {
+                challenge: challenge,
+                user: user,
+                firestoreCtrl: firestoreCtrl,
+              });
+            }}
           />
         ))}
       </MapView>
