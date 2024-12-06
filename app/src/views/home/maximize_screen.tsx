@@ -49,14 +49,17 @@ export default function MaximizeScreen({
     postTitle,
     postImage,
     postDescription,
-  } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl);
+    navigateGoBack
+  } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
+
+  const noImageUri = require("@/assets/images/no-image.svg");
 
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
         title={postTitle}
         leftIcon="arrow-back-outline"
-        leftAction={() => navigation.goBack()}
+        leftAction={() => navigateGoBack()}
       />
 
       <ThemedScrollView
@@ -85,7 +88,7 @@ export default function MaximizeScreen({
             source={
               postImage
                 ? { uri: postImage }
-                : require("../../../assets/images/no-image.svg")
+                : noImageUri
             }
             style={styles.image}
           />

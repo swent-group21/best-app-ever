@@ -6,10 +6,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
-import { Colors } from "../../constants/Colors";
-import { useThemeColor } from "../../hooks/useThemeColor";
-import { ThemedText } from "../theme/ThemedText";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { Colors } from "@/constants/Colors";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedText } from "@/components/theme/ThemedText";
 
 // Get screen width and height
 const { width, height } = Dimensions.get("window");

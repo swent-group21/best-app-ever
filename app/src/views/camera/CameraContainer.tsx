@@ -11,6 +11,7 @@ import { CameraView } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -39,7 +40,14 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
   } = useCameraViewModel(firestoreCtrl, navigation);
 
   if (!permission) {
-    return <View />;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          Errors occurred while requesting permission
+        </Text>
+        <Button onPress={requestPermission} title="Grant Permission" />
+      </View>
+    );
   }
 
   if (!permission.granted) {
@@ -65,34 +73,33 @@ export default function Camera({ navigation, firestoreCtrl }: any) {
           testID="camera-view"
         >
           <View style={styles.buttonPlaceHolder}>
-            <TouchableOpacity
-              style={styles.changeOrientationAndFlash}
+
+            <ThemedIconButton
               onPress={toggleCameraFacing}
               testID="Switch-Button"
-            >
-              <Ionicons name="camera-reverse" size={24} color="white" />
-            </TouchableOpacity>
+              style={styles.changeOrientationAndFlash}
+              name="camera-reverse"
+              size={24}
+              color = "white"
+            />
+              
+            <ThemedIconButton
+                style={styles.takePicture} 
+                onPress={takePicture}
+               name="radio-button-off-sharp"
+               size={100}
+               color="white"
+               testID="Camera-Button"
+            />
 
-            <TouchableOpacity style={styles.takePicture} onPress={takePicture}>
-              <Ionicons
-                name="radio-button-off-sharp"
-                size={100}
-                color="white"
-                testID="Camera-Button"
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
+            <ThemedIconButton
               style={styles.changeOrientationAndFlash}
               onPress={toggleFlashMode}
-            >
-              <Ionicons
-                name={isFlashEnabled ? "flash-off" : "flash"}
-                size={24}
-                color="white"
-                testID="Flash-Button"
-              />
-            </TouchableOpacity>
+              name={isFlashEnabled ? "flash-off" : "flash"}
+              size={24}
+              color="white"
+              testID="Flash-Button"
+            />
           </View>
         </CameraView>
       ) : (
@@ -203,7 +210,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     width: width,
     height: height * 0.3,
-    bottom: 0,
+    bottom: height * -0.1,
     position: "absolute",
     flex: 1,
   },

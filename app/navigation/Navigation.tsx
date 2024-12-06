@@ -1,22 +1,22 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types/RootStackParamList";
-import { DBUser } from "../src/models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "../src/models/firebase/FirestoreCtrl";
+import { RootStackParamList } from "@/types/RootStackParamList";
+import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Screens
-import WelcomeScreens from "../src/views/welcome/welcome_screen";
-import WelcomeFinalScreen from "../src/views/welcome/final_screen";
-import HomeScreen from "../src/views/home/home_screen";
-import SignUp from "../src/views/auth/sign_up_screen";
-import SignInScreen from "../src/views/auth/sign_in_screen";
-import ForgotPasswordScreen from "../src/views/auth/forgot_password_screen";
-import Camera from "../src/views/camera/CameraContainer";
-import SetUsername from "../src/views/auth/set_up_screen";
-import MaximizeScreen from "../src/views/home/maximize_screen";
-import CreateChallengeScreen from "../src/views/create/create_challenge";
-import ProfileScreen from "../src/views/home/profile_screen";
-import MapScreen from "../src/views/map/map_screen";
+import WelcomeScreens from "@/src/views/welcome/welcome_screen";
+import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
+import HomeScreen from "@/src/views/home/home_screen";
+import SignUp from "@/src/views/auth/sign_up_screen";
+import SignInScreen from "@/src/views/auth/sign_in_screen";
+import ForgotPasswordScreen from "@/src/views/auth/forgot_password_screen";
+import Camera from "@/src/views/camera/CameraContainer";
+import SetUsername from "@/src/views/auth/set_up_screen";
+import MaximizeScreen from "@/src/views/home/maximize_screen";
+import CreateChallengeScreen from "@/src/views/create/create_challenge";
+import ProfileScreen from "@/src/views/home/profile_screen";
+import MapScreen from "@/src/views/map/map_screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 const { Navigator, Screen, Group } =

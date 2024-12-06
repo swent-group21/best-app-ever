@@ -17,6 +17,7 @@ export function useMaximizeScreenViewModel(
   user: DBUser,
   challenge: DBChallenge,
   firestoreCtrl: FirestoreCtrl,
+  navigation : any
 ) {
   const [commentText, setCommentText] = useState("");
   const [commentList, setCommentList] = useState<DBComment[]>([]);
@@ -26,6 +27,8 @@ export function useMaximizeScreenViewModel(
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
+
+  const navigateGoBack = () => {() => navigation.goBack()};
 
   useEffect(() => {
     // Fetch post user data
@@ -93,5 +96,6 @@ export function useMaximizeScreenViewModel(
     postTitle,
     postImage,
     postDescription,
+    navigateGoBack
   };
 }

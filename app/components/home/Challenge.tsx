@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
-import { Colors } from "../../constants/Colors";
-import { ThemedText } from "../theme/ThemedText";
-import { ThemedView } from "../theme/ThemedView";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
+import { Colors } from "@/constants/Colors";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
-} from "../../src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/FirestoreCtrl";
 import React from "react";
 
 const { width, height } = Dimensions.get("window");
@@ -41,6 +41,8 @@ export function Challenge({
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
+
+  const uri = "@/assets/images/no-image.svg";
 
   // @ts-ignore - date is a Timestamp object
   let challengeDate: Date = challengeDB.date
@@ -93,7 +95,7 @@ export function Challenge({
               source={
                 challengeDB.image_id
                   ? { uri: challengeDB.image_id }
-                  : require("../../assets/images/no-image.svg")
+                  : require(uri)
               }
               style={styles.image}
             />

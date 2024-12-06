@@ -2,13 +2,14 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import SignUp from "@/src/views/auth/sign_up_screen";
 import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 jest.mock("@/src/viewmodels/auth/SignUpViewModel");
 
 describe("SignUp Screen Tests", () => {
   const mockNavigation = { goBack: jest.fn() };
   const mockSetUser = jest.fn();
-  const mockFirestoreCtrl = {};
+  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();

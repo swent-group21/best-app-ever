@@ -32,8 +32,8 @@ describe("WelcomeFinalScreen UI Tests", () => {
       />,
     );
 
-    const shapeOne = getByTestId("ovalShapeOne");
-    const shapeTwo = getByTestId("ovalShapeTwo");
+    const shapeOne = getByTestId("background-image-1");
+    const shapeTwo = getByTestId("background-image-2");
 
     expect(shapeOne).toBeTruthy();
     expect(shapeTwo).toBeTruthy();

@@ -42,6 +42,7 @@ export default function ProfileScreen({
     handleLogOut,
     handleChangeEmail,
     handleChangePassword,
+    navigateGoBack,
   } = useProfileScreenViewModel(user, setUser, firestoreCtrl, navigation);
 
   if (userIsGuest) {
@@ -65,7 +66,7 @@ export default function ProfileScreen({
       <TopBar
         title="Your profile"
         leftIcon="arrow-back"
-        leftAction={() => navigation.goBack()}
+        leftAction={() => navigateGoBack()}
       />
       <TouchableOpacity
         onPress={pickImage}

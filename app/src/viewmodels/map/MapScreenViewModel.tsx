@@ -23,7 +23,7 @@ const defaultLocation = {
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : permission, userLocation, and challengesWithLocation
  */
-export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
+export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl, navigation: any) {
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<LocationObject | undefined>(
     undefined,
@@ -31,6 +31,8 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
   >([]);
+
+  const navigateGoBack = () => {() => navigation.goBack()};
 
   /**
    * Requests permission to access the user's location and fetches their current location.
@@ -80,5 +82,6 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
     permission,
     userLocation,
     challengesWithLocation,
+    navigateGoBack
   };
 }

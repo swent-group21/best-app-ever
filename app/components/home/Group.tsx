@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
-import { Colors } from "../../constants/Colors";
-import { ThemedText } from "../theme/ThemedText";
-import { ThemedView } from "../theme/ThemedView";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
-import { ThemedTextButton } from "../theme/ThemedTextButton";
-import FirestoreCtrl, { DBUser } from "../../src/models/firebase/FirestoreCtrl";
+import { Colors } from "@/constants/Colors";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import React from "react";
 
 const { width, height } = Dimensions.get("window");

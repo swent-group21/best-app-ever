@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
-import { DBComment } from "../../src/models/firebase/FirestoreCtrl";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { DBComment } from "@/src/models/firebase/FirestoreCtrl";
 import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
