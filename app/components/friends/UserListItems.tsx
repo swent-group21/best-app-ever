@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
+import { Colors } from "@/constants/Colors";
 
 /**
  * User list item component
@@ -112,14 +113,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   avatarText: {
-    color: "#fff",
+    color: Colors.light.textPrimary,
     fontSize: 18,
     fontWeight: "bold",
   },
   defaultAvatar: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#800080",
+    backgroundColor: Colors.light.backgroundSecondary,
   },
   textContainer: {
     backgroundColor: "transparent",
