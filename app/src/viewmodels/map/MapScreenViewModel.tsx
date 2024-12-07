@@ -2,32 +2,31 @@ import { useEffect, useState } from "react";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
-  LocationObject,
 } from "expo-location";
 import FirestoreCtrl, {
   DBChallenge,
   DBChallengeDescription,
-} from "../../models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/FirestoreCtrl";
+import { GeoPoint } from "firebase/firestore";
 
 /**
  * Default location centered on the city of Nice, France.
  */
-const defaultLocation = {
-  coords: {
-    latitude: 43.6763,
-    longitude: 7.0122,
-  },
-} as LocationObject;
+const defaultLocation = new GeoPoint(43.6763, 7.0122);
 
 /**
  * View model for the map screen.
  * @param firestoreCtrl : FirestoreCtrl object
  * @returns : permission, userLocation, and challengesWithLocation
  */
-export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
+export function useMapScreenViewModel(
+  firestoreCtrl: FirestoreCtrl,
+  navigation: any,
+  firstLocation: GeoPoint | undefined,
+) {
   const [permission, setPermission] = useState<boolean>(false);
-  const [userLocation, setUserLocation] = useState<LocationObject | undefined>(
-    undefined,
+  const [userLocation, setUserLocation] = useState<GeoPoint | undefined>(
+    firstLocation,
   );
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
@@ -37,10 +36,14 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
-  const [description, setDescription] = useState<string>();
+
+  const navigateGoBack = () => {
+    navigation.goBack();
+  };
 
   /**
-   * Requests permission to access the user's location and fetches their current location.
+   * Requests permission to access the user's location and fetches their current location, only if
+   * the user's location is not already set.
    */
   useEffect(() => {
     async function getCurrentLocation() {
@@ -49,7 +52,9 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
         if (status === "granted") {
           setPermission(true);
           const location = await getCurrentPositionAsync();
-          setUserLocation(location);
+          setUserLocation(
+            new GeoPoint(location.coords.latitude, location.coords.longitude),
+          );
         } else {
           setPermission(false);
           setUserLocation(defaultLocation);
@@ -59,8 +64,7 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
         setUserLocation(defaultLocation);
       }
     }
-
-    getCurrentLocation();
+    if (userLocation === undefined) getCurrentLocation();
   }, []);
 
   useEffect(() => {
@@ -68,13 +72,8 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
       try {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
-        };
-        setTitleChallenge(formattedChallenge);
-        return formattedChallenge.title;
+        setTitleChallenge(currentChallengeData);
+        return currentChallengeData.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
@@ -100,31 +99,12 @@ export function useMapScreenViewModel(firestoreCtrl: FirestoreCtrl) {
     });
   }, [firestoreCtrl]);
 
-  /**
-   * Fetches challenges with valid locations from Firestore.
-   */
-  useEffect(() => {
-    const fetchChallenges = async () => {
-      try {
-        const challengesData = await firestoreCtrl.getPostsByChallengeTitle(
-          titleChallenge.title,
-        );
-        const filteredChallenges = challengesData.filter(
-          (challenge) =>
-            challenge.location !== undefined && challenge.location !== null,
-        );
-        setChallengesWithLocation(filteredChallenges);
-      } catch (error) {
-        console.error("Error fetching challenges: ", error);
-      }
-    };
-
-    fetchChallenges();
-  }, [firestoreCtrl]);
+  
 
   return {
     permission,
     userLocation,
     challengesWithLocation,
+    navigateGoBack,
   };
 }

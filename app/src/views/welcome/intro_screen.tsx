@@ -19,7 +19,7 @@ export default function WelcomeIntroScreen() {
       <ThemedView
         style={styles.ovalShape}
         colorType="backgroundSecondary"
-        testID="ovalShape"
+        testID="background-image-1"
       />
 
       {/* Screen content */}

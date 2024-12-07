@@ -7,6 +7,7 @@ import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,7 +25,7 @@ export default function SignUp({
 }: {
   navigation: any;
   setUser: any;
-  firestoreCtrl: any;
+  firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     name,
@@ -47,16 +48,19 @@ export default function SignUp({
     <ThemedView style={styles.signUpScreen} testID="sign-up-screen">
       <ThemedView style={styles.ovalShape} colorType="backgroundSecondary" />
 
+      {/* Top bar */}
       <TopBar
         title="Set up your profile"
         leftIcon="arrow-back"
         leftAction={() => navigation.goBack()}
       />
 
+      {/* Title */}
       <ThemedText style={styles.title} colorType="textPrimary" type="title">
         Tell us about you!
       </ThemedText>
 
+      {/* Inputs */}
       <ThemedScrollView
         style={styles.inputColumn}
         automaticallyAdjustKeyboardInsets={true}

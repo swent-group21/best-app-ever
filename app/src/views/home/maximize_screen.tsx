@@ -48,14 +48,17 @@ export default function MaximizeScreen({
     postDate,
     postImage,
     postCaption,
-  } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl);
+    navigateGoBack,
+  } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
+
+  const noImageUri = require("@/assets/images/no-image.svg");
 
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
         title=""
         leftIcon="arrow-back-outline"
-        leftAction={() => navigation.goBack()}
+        leftAction={() => navigateGoBack()}
       />
 
       <ThemedScrollView
@@ -79,13 +82,25 @@ export default function MaximizeScreen({
           </ThemedView>
         </ThemedView>
 
+        {challenge.location && (
+          <ThemedIconButton
+            name="location-outline"
+            onPress={() => {
+              navigation.navigate("MapScreen", {
+                navigation: navigation,
+                user: user,
+                firestoreCtrl: firestoreCtrl,
+                location: challenge.location,
+              });
+            }}
+            size={25}
+            colorType="white"
+          />
+        )}
+
         <ThemedView style={styles.container} colorType="transparent">
           <Image
-            source={
-              postImage
-                ? { uri: postImage }
-                : require("../../../assets/images/no-image.svg")
-            }
+            source={postImage ? { uri: postImage } : noImageUri}
             style={styles.image}
           />
         </ThemedView>

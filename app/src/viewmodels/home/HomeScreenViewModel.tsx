@@ -15,6 +15,7 @@ import FirestoreCtrl, {
 export function useHomeScreenViewModel(
   user: DBUser,
   firestoreCtrl: FirestoreCtrl,
+  navigation: any,
 ) {
   const userIsGuest = user.name === "Guest";
 
@@ -25,6 +26,10 @@ export function useHomeScreenViewModel(
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
+  const navigateToProfile = () => navigation.navigate("Profile");
+  const navigateToMap = () => navigation.navigate("MapScreen");
+  const navigateToCamera = () => navigation.navigate("Camera");
+  const navigateToFriends = () => navigation.navigate("Friends");
 
   // Fetch the current challenge
   useEffect(() => {
@@ -32,15 +37,8 @@ export function useHomeScreenViewModel(
       try {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: currentChallengeData.endDate, // Conversion Timestamp -> Date
-        };
-        setTitleChallenge(formattedChallenge);
-        return formattedChallenge.title;
+        setTitleChallenge(currentChallengeData);
+        return currentChallengeData.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
@@ -53,7 +51,7 @@ export function useHomeScreenViewModel(
           .then((challenge: DBChallenge[]) => {
             // Sort challenges by date
             const sortedChallenges = challenge.sort((a, b) =>
-              a.date && b.date ? b.date.seconds - a.date.seconds : 0,
+              a.date && b.date ? b.date.getTime() - a.date.getTime() : 0,
             );
             setChallenges(sortedChallenges);
           });
@@ -82,10 +80,20 @@ export function useHomeScreenViewModel(
     }
   }, [user.uid, firestoreCtrl]);
 
+  // Filter challenges to only include those from friends
+  const challengesFromFriends = challenges.filter((challenge) =>
+    user.friends?.includes(challenge.uid),
+  );
+
   return {
     userIsGuest,
     challenges,
     groups,
     titleChallenge,
+    navigateToProfile,
+    navigateToMap,
+    navigateToCamera,
+    navigateToFriends,
+    challengesFromFriends,
   };
 }

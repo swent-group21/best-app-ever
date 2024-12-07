@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, Dimensions, Switch, Image } from "react-native";
-import { ThemedTextInput } from "../../../components/theme/ThemedTextInput";
-import { ThemedText } from "../../../components/theme/ThemedText";
-import { ThemedScrollView } from "../../../components/theme/ThemedScrollView";
-import { BottomBar } from "../../../components/navigation/BottomBar";
-import { ThemedView } from "../../../components/theme/ThemedView";
-import { Colors } from "../../../constants/Colors";
-import CreateChallengeViewModel from "../../viewmodels/create/CreateChallengeViewModel";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { Colors } from "@/constants/Colors";
+import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,7 +22,11 @@ export default function CreateChallengeScreen({
   navigation,
   route,
   firestoreCtrl,
-}: any) {
+}: {
+  navigation: any;
+  route: any;
+  firestoreCtrl: FirestoreCtrl;
+}) {
   const {
     caption,
     setCaption,

@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
-import { Colors } from "../../constants/Colors";
-import { ThemedText } from "../theme/ThemedText";
-import { ThemedView } from "../theme/ThemedView";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
-import { ThemedTextButton } from "../theme/ThemedTextButton";
-import FirestoreCtrl, { DBUser } from "../../src/models/firebase/FirestoreCtrl";
+import { Colors } from "@/constants/Colors";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import React from "react";
 
 const { width, height } = Dimensions.get("window");
@@ -19,11 +17,11 @@ const { width, height } = Dimensions.get("window");
  * @param testID : testID for the component
  * @returns : a component for the group
  */
-export function Group({
+export default function GroupIcon({
   groupDB,
-  index,
-  firestoreCtrl,
   navigation,
+  firestoreCtrl,
+  index,
   testID,
 }: any) {
   // Display loading state or handle absence of challenge data
@@ -34,10 +32,13 @@ export function Group({
       <ThemedView style={styles.container} testID={testID}>
         <ThemedTextButton
           style={styles.heading}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("GroupScreen", { currentGroup: groupDB });
+          }}
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"
+          testID="group-pressable-button"
         ></ThemedTextButton>
       </ThemedView>
     );

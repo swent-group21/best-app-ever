@@ -4,9 +4,8 @@ import {
   getCurrentPositionAsync,
   LocationObject,
 } from "expo-location";
-import { GeoPoint, Timestamp } from "firebase/firestore";
-import { createChallenge } from "../../../types/ChallengeBuilder";
-import { DBChallengeDescription } from "../../models/firebase/FirestoreCtrl";
+import { createChallenge } from "@/types/ChallengeBuilder";
+import FirestoreCtrl, { DBGroup, DBChallengeDescription } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * View model for the create challenge screen.
@@ -20,7 +19,7 @@ export default function CreateChallengeViewModel({
   navigation,
   route,
 }: {
-  firestoreCtrl: any;
+  firestoreCtrl: FirestoreCtrl;
   navigation: any;
   route: any;
 }) {
@@ -38,6 +37,8 @@ export default function CreateChallengeViewModel({
   const [postImage, setPostImage] = useState<string>("");
 
   const imageId = route.params?.image_id;
+  const group_id = route.params?.group_id;
+  console.log("group_id in create :", group_id);
 
   // Toggle location switch
   const toggleLocation = () => setIsLocationEnabled((prev) => !prev);
@@ -47,7 +48,7 @@ export default function CreateChallengeViewModel({
     async function fetchLocation() {
       let { status } = await requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Permission to access location denied");
+        //console.log("Permission to access location denied");
         setIsLocationEnabled(false);
         return;
       }
@@ -98,16 +99,23 @@ export default function CreateChallengeViewModel({
   // Create the challenge
   const makeChallenge = async () => {
     try {
-      const date = Timestamp.now();
+      const date = new Date();
       await createChallenge(
         firestoreCtrl,
         caption,
         isLocationEnabled ? location : null,
+        group_id,
         descriptionTitle.title ?? "",
         date,
         postImage,
       );
-      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+      if (group_id == "" || group_id == "home") {
+        navigation.navigate("Home");
+      } else {
+        const group: DBGroup = await firestoreCtrl.getGroup(group_id);
+        console.log("group in create challenge: ", group);
+        navigation.navigate("GroupScreen", { currentGroup: group });
+      }
     } catch (error) {
       console.error("Unable to create challenge", error);
       return error;

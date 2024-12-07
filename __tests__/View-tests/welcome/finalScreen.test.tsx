@@ -2,6 +2,22 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
+// Mock FirestoreCtrl
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      getUser: jest.fn().mockResolvedValue({
+        uid: "user123",
+        email: "test@example.com",
+        name: "Test User",
+        createdAt: new Date(),
+      }),
+    };
+  });
+});
+const mockFirestoreCtrl = new FirestoreCtrl();
 
 describe("WelcomeFinalScreen UI Tests", () => {
   const mockNavigation = {
@@ -15,7 +31,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -28,12 +44,12 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
-    const shapeOne = getByTestId("ovalShapeOne");
-    const shapeTwo = getByTestId("ovalShapeTwo");
+    const shapeOne = getByTestId("background-image-1");
+    const shapeTwo = getByTestId("background-image-2");
 
     expect(shapeOne).toBeTruthy();
     expect(shapeTwo).toBeTruthy();
@@ -44,7 +60,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -57,7 +73,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -70,7 +86,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -83,7 +99,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -96,7 +112,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -111,7 +127,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={new FirestoreCtrl()}
+        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

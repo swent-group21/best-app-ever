@@ -11,7 +11,7 @@ describe("WelcomeIntroScreen UI Tests", () => {
 
   it("renders the background shape", () => {
     const { getByTestId } = render(<WelcomeIntroScreen />);
-    const ovalShape = getByTestId("ovalShape");
+    const ovalShape = getByTestId("background-image-1");
     expect(ovalShape).toBeTruthy();
   });
 

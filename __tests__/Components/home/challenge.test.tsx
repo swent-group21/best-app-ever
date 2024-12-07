@@ -1,5 +1,11 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+  act,
+} from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
 import FirestoreCtrl, {
   DBChallenge,
@@ -9,10 +15,6 @@ import FirestoreCtrl, {
 // Mock the navigation prop
 const navigation = {
   navigate: jest.fn(),
-};
-
-let mockTimestamp = {
-  toDate: jest.fn().mockReturnValue(new Date()),
 };
 
 let mockDate = new Date();
@@ -25,7 +27,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         uid: "user123",
         name: "Current User",
         email: "test@test.com",
-        createdAt: mockTimestamp,
+        createdAt: new Date(),
       }),
       getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
       getCommentsOf: jest.fn().mockResolvedValue([
@@ -33,7 +35,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
           uid: "12345",
           name: "Test User",
           comment: "This is a test comment",
-          created_at: mockTimestamp,
+          created_at: new Date(),
         },
       ]),
       updateLikesOf: jest
@@ -66,11 +68,12 @@ describe("Challenge Component", () => {
   });
 
   beforeAll(() => {
+    jest.useFakeTimers();
     jest.setSystemTime(new Date(1466424490000));
   });
 
   it("fetches user data on mount", async () => {
-    const { getByText } = render(
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -87,7 +90,7 @@ describe("Challenge Component", () => {
   });
 
   it("fetches likes data on mount and updates isLiked state", async () => {
-    const { getByTestId } = render(
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -103,8 +106,8 @@ describe("Challenge Component", () => {
     });
   });
 
-  it("toggles isOpen state when the challenge is pressed", () => {
-    const { getByTestId } = render(
+  it("toggles isOpen state when the challenge is pressed", async () => {
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -115,20 +118,22 @@ describe("Challenge Component", () => {
       />,
     );
 
-    const touchable = getByTestId("challenge-touchable");
+    const touchable = screen.getByTestId("challenge-touchable");
 
     // Initially, the detailed view should not be open
-    expect(() => getByTestId("challenge-container")).toThrow();
+    expect(() => screen.getByTestId("challenge-container")).toThrow();
 
     // Press the touchable to open the details
-    fireEvent.press(touchable);
+    await waitFor(() => {
+      fireEvent.press(touchable);
+    });
 
     // Now the detailed view should be visible
-    expect(getByTestId("challenge-container")).toBeTruthy();
+    expect(screen.getByTestId("challenge-container")).toBeTruthy();
   });
 
-  it("navigates to Maximize screen when expand button is pressed", () => {
-    const { getByTestId } = render(
+  it("navigates to Maximize screen when expand button is pressed", async () => {
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -140,10 +145,16 @@ describe("Challenge Component", () => {
     );
 
     // Open the detailed view
-    fireEvent.press(getByTestId("challenge-touchable"));
+    await waitFor(() => {
+      fireEvent.press(screen.getByTestId("challenge-touchable"));
+    });
 
-    const expandButton = getByTestId("expand-button");
-    fireEvent.press(expandButton);
+    const expandButton = screen.getByTestId("expand-button");
+
+    // Press the expand button
+    await act(() => {
+      fireEvent.press(expandButton);
+    });
 
     expect(navigation.navigate).toHaveBeenCalledWith("Maximize", {
       navigation: navigation,
@@ -154,7 +165,7 @@ describe("Challenge Component", () => {
   });
 
   it("toggles like state and updates likes list", async () => {
-    const { getByTestId, rerender } = render(
+    render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -166,17 +177,21 @@ describe("Challenge Component", () => {
     );
 
     // Open the detailed view
-    fireEvent.press(getByTestId("challenge-touchable"));
+    await waitFor(() => {
+      fireEvent.press(screen.getByTestId("challenge-touchable"));
+    });
 
-    let likeButton = getByTestId("like-button");
+    let likeButton = screen.getByTestId("like-button");
 
     // Like the challenge
-    fireEvent.press(likeButton);
+    await waitFor(() => {
+      fireEvent.press(likeButton);
+    });
 
     // Ensure updateLikesOf was called with the new likes list
     expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
       "challenge123",
-      ["user123"],
+      ["12345", "67890", "user123"],
     );
   });
 });

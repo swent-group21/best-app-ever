@@ -4,7 +4,6 @@ import FirestoreCtrl, {
   DBComment,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
 
 /**
  * View model for the maximize screen.
@@ -17,6 +16,7 @@ export function useMaximizeScreenViewModel(
   user: DBUser,
   challenge: DBChallenge,
   firestoreCtrl: FirestoreCtrl,
+  navigation: any,
 ) {
   const [commentText, setCommentText] = useState("");
   const [commentList, setCommentList] = useState<DBComment[]>([]);
@@ -26,6 +26,10 @@ export function useMaximizeScreenViewModel(
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
+
+  const navigateGoBack = () => {
+    navigation.goBack();
+  };
 
   useEffect(() => {
     // Fetch post user data
@@ -39,7 +43,7 @@ export function useMaximizeScreenViewModel(
       .getCommentsOf(challenge.challenge_id ?? "")
       .then((comments) => {
         const sortedComments = comments.sort(
-          (a, b) => a.created_at.toMillis() - b.created_at.toMillis(),
+          (a, b) => a.created_at.getTime() - b.created_at.getTime(),
         );
         setCommentList(sortedComments);
       });
@@ -66,7 +70,7 @@ export function useMaximizeScreenViewModel(
       const newComment: DBComment = {
         comment_text: commentText,
         user_name: currentUserName ?? "",
-        created_at: Timestamp.now(),
+        created_at: new Date(),
         post_id: challenge.challenge_id ?? "",
       };
       await firestoreCtrl.addComment(newComment);
@@ -75,7 +79,7 @@ export function useMaximizeScreenViewModel(
     }
   };
 
-  const postDate: Date = challenge.date ? challenge.date.toDate() : new Date();
+  const postDate: Date = challenge.date ? challenge.date : new Date();
   const postImage = challenge.image_id ?? "";
   const postCaption =
     challenge.caption == "" ? "Secret Challenge" : challenge.caption;
@@ -92,5 +96,6 @@ export function useMaximizeScreenViewModel(
     postDate,
     postImage,
     postCaption,
+    navigateGoBack,
   };
 }

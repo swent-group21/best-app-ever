@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -6,15 +6,14 @@ import {
   Image,
   View,
 } from "react-native";
-import { Colors } from "../../constants/Colors";
-import { ThemedText } from "../theme/ThemedText";
-import { ThemedView } from "../theme/ThemedView";
-import { ThemedIconButton } from "../theme/ThemedIconButton";
+import { Colors } from "@/constants/Colors";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
-} from "../../src/models/firebase/FirestoreCtrl";
-import React from "react";
+} from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,12 +46,12 @@ export function Challenge({
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
+
+  const uri = "@/assets/images/no-image.svg";
   const [userPp, setUserPp] = useState<string>("");
 
   // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date
-    ? challengeDB.date.toDate()
-    : new Date();
+  let challengeDate: Date = challengeDB.date ? challengeDB.date : new Date();
 
   // Fetch user data
   useEffect(() => {
@@ -83,7 +82,7 @@ export function Challenge({
         setIsLiked(likes.includes(currentUser.uid));
         setLikes(likes);
       });
-  }, [challengeDB.challenge_id]);
+  });
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -106,7 +105,7 @@ export function Challenge({
               source={
                 challengeDB.image_id
                   ? { uri: challengeDB.image_id }
-                  : require("../../assets/images/no-image.svg")
+                  : require(uri)
               }
               style={styles.image}
             />
@@ -187,14 +186,21 @@ export function Challenge({
                       );
                     }}
                   />
-                  <ThemedIconButton
-                    name="location-outline"
-                    onPress={() => {
-                      /* location button */
-                    }}
-                    size={25}
-                    color="white"
-                  />
+                  {challengeDB.location && (
+                    <ThemedIconButton
+                      name="location-outline"
+                      onPress={() => {
+                        navigation.navigate("MapScreen", {
+                          navigation: navigation,
+                          firestoreCtrl: firestoreCtrl,
+                          user: currentUser,
+                          location: challengeDB.location,
+                        });
+                      }}
+                      size={25}
+                      color="white"
+                    />
+                  )}
                 </ThemedView>
               </ThemedView>
             )}

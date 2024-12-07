@@ -1,5 +1,10 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -26,6 +31,12 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       .fn()
       .mockResolvedValue([{ id: "1", name: "Group 1" }]),
     getLikesOf: jest.fn().mockResolvedValue([]),
+    getUser: jest.fn().mockResolvedValue({
+      uid: "12345",
+      email: "test@example.com",
+      name: "Test User",
+      createdAt: new Date(),
+    }),
   }));
 });
 
@@ -36,6 +47,7 @@ describe("HomeScreen UI Tests", () => {
     require("@/src/viewmodels/home/HomeScreenViewModel").useHomeScreenViewModel;
 
   beforeEach(() => {
+    jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();
 
     // Mock les valeurs par défaut du ViewModel
@@ -67,7 +79,7 @@ describe("HomeScreen UI Tests", () => {
     });
   });
 
-  it("renders the HomeScreen with challenges and groups", () => {
+  it("renders the HomeScreen with challenges and groups", async () => {
     const { getByText, getByTestId } = render(
       <HomeScreen
         user={{
@@ -82,23 +94,25 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    // Vérifie le titre de la barre supérieure
-    expect(getByText("Strive")).toBeTruthy();
+    await waitFor(() => {
+      // Vérifie le titre de la barre supérieure
+      expect(getByText("Strive")).toBeTruthy();
 
-    // Vérifie si les groupes s'affichent
-    expect(getByText("Group 1")).toBeTruthy();
-    expect(getByText("Group 2")).toBeTruthy();
+      // Vérifie si les groupes s'affichent
+      expect(getByText("Group 1")).toBeTruthy();
+      expect(getByText("Group 2")).toBeTruthy();
 
-    // Vérifie si les défis s'affichent
-    expect(getByTestId("challenge-id-0")).toBeTruthy();
-    expect(getByTestId("challenge-id-1")).toBeTruthy();
+      // Vérifie si les défis s'affichent
+      expect(getByTestId("challenge-id-0")).toBeTruthy();
+      expect(getByTestId("challenge-id-1")).toBeTruthy();
 
-    // Vérifie le défi actuel
-    expect(getByText("Current Challenge")).toBeTruthy();
-    expect(getByText("Current Challenge Description")).toBeTruthy();
+      // Vérifie le défi actuel
+      expect(getByText("Current Challenge")).toBeTruthy();
+      expect(getByText("Current Challenge Description")).toBeTruthy();
+    });
   });
 
-  it("renders 'No challenge to display' when no challenges are available", () => {
+  it("renders 'No challenges to display' when no challenges are available", () => {
     // Mock les valeurs retournées pour simuler l'absence de défis
     mockUseHomeScreenViewModel.mockReturnValue({
       userIsGuest: false,
@@ -125,7 +139,7 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Vérifie que le texte pour "aucun défi" est affiché
-    expect(getByText("No challenge to display")).toBeTruthy();
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 
   it("renders correctly for a guest user", () => {
@@ -150,6 +164,6 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Vérifie que les défis et groupes ne sont pas affichés
-    expect(getByText("No challenge to display")).toBeTruthy();
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 });

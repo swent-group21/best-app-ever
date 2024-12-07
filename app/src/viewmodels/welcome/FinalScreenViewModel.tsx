@@ -1,5 +1,5 @@
 import { signInAsGuest } from "@/types/Auth";
-import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * ViewModel for the WelcomeFinal screen
