@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Dimensions, Image } from "react-native";
+import { StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -49,6 +49,7 @@ export default function MaximizeScreen({
     postImage,
     postCaption,
     navigateGoBack,
+    userProfilePicture,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const noImageUri = require("@/assets/images/no-image.svg");
@@ -68,16 +69,25 @@ export default function MaximizeScreen({
         colorType="transparent"
       >
         <ThemedView style={styles.user} colorType="transparent">
-          <ThemedIconButton
-            name="person-circle-outline"
-            onPress={() => {}}
-            size={45}
-            colorType="white"
-          />
+          {userProfilePicture ? (
+            <TouchableOpacity onPress={() => {}}>
+              <Image
+                source={{ uri: userProfilePicture }}
+                style={styles.iconImage}
+              />
+            </TouchableOpacity>
+          ) : (
+            <ThemedIconButton
+              name="person-circle-outline"
+              onPress={() => {}}
+              size={45}
+              color="white"
+            />
+          )}
           <ThemedView style={styles.userInfo} colorType="transparent">
-            <ThemedText colorType="white">{postUser?.name}</ThemedText>
+            <ThemedText colorType="white" type="defaultSemiBold">{postUser?.name}</ThemedText>
             <ThemedText colorType="white">
-              {"on " + postDate.toUTCString()}
+              {"on " + postDate.toDate().toLocaleString()}
             </ThemedText>
           </ThemedView>
         </ThemedView>
@@ -255,5 +265,12 @@ const styles = StyleSheet.create({
 
   spacer: {
     width: width * 0.5,
+  },
+
+
+  iconImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
 });

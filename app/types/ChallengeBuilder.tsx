@@ -21,7 +21,7 @@ export const createChallenge = async (
   location: LocationObject | null,
   group_id: string,
   challenge_description: string,
-  date?: Date,
+  date: Date,
   image_id?: string,
   likes?: string[],
 ): Promise<void> => {
@@ -46,15 +46,11 @@ export const createChallenge = async (
       date: date,
     };
 
-    if (date) {
-      newChallenge.date = date;
-    }
-
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
 
-    const updateTime = new Date();
     if (group_id !== "" && group_id !== "home") {
+      const updateTime = new Date();
       await firestoreCtrl.updateGroup(group_id, updateTime);
     }
   } catch (error) {

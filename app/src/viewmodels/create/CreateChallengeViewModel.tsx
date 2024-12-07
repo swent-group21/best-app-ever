@@ -36,9 +36,7 @@ export default function CreateChallengeViewModel({
 
   const [postImage, setPostImage] = useState<string>("");
 
-  const imageId = route.params?.image_id;
   const group_id = route.params?.group_id;
-  console.log("group_id in create :", group_id);
 
   // Toggle location switch
   const toggleLocation = () => setIsLocationEnabled((prev) => !prev);
@@ -79,14 +77,8 @@ export default function CreateChallengeViewModel({
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
 
-        const formattedChallenge = {
-          title: currentChallengeData.Title,
-          description: currentChallengeData.Description,
-          endDate: new Date(currentChallengeData.Date.seconds * 1000), // Conversion Timestamp -> Date
-        };
-
-        setDescriptionTitle(formattedChallenge);
-        console.log("Description title: ", formattedChallenge.title);
+        setDescriptionTitle(currentChallengeData);
+        console.log("Description title: ", currentChallengeData.title);
       } catch (error) {
         console.log("Error fetching description id");
         return error;

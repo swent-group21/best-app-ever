@@ -50,8 +50,7 @@ export function Challenge({
   const uri = "@/assets/images/no-image.svg";
   const [userPp, setUserPp] = useState<string>("");
 
-  // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date ? challengeDB.date : new Date();
+  let challengeDate: any = challengeDB.date;
 
   // Fetch user data
   useEffect(() => {
@@ -144,7 +143,7 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"on " + challengeDate.toLocaleString()}
+                        {"on " + challengeDate.toDate().toLocaleString()}
                       </ThemedText>
                     </ThemedView>
                   </View>

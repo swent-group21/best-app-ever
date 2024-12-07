@@ -28,7 +28,7 @@ export function useHomeScreenViewModel(
   });
   const navigateToProfile = () => navigation.navigate("Profile");
   const navigateToMap = () => navigation.navigate("MapScreen");
-  const navigateToCamera = () => navigation.navigate("Camera");
+  const navigateToCamera = () => navigation.navigate("Camera", { group_id: "home" });
   const navigateToFriends = () => navigation.navigate("Friends");
 
   // Fetch the current challenge
@@ -49,9 +49,12 @@ export function useHomeScreenViewModel(
         await firestoreCtrl
           .getPostsByChallengeTitle(challengeTitle)
           .then((challenge: DBChallenge[]) => {
+            const homeChallenges = challenge.filter(
+              (challenge) => challenge.group_id === "home",
+            );
             // Sort challenges by date
             const sortedChallenges = challenge.sort((a, b) =>
-              a.date && b.date ? b.date.getTime() - a.date.getTime() : 0,
+              a.date && b.date ? new Date(b.date).getTime() - new Date(a.date).getTime() : 0,
             );
             setChallenges(sortedChallenges);
           });
