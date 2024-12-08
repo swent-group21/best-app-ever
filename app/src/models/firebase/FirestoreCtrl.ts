@@ -631,6 +631,10 @@ export default class FirestoreCtrl {
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
 
+      if (user.friends?.includes(friendId)) {
+       return ;
+      }
+
       user.userRequestedFriends?.push(friendId);
       friend.friendsRequestedUser?.push(userId);
 
@@ -654,6 +658,10 @@ export default class FirestoreCtrl {
 
       user.friends = user.friends || [];
       friend.friends = friend.friends || [];
+
+      if (user.friends?.includes(friendId)) {
+        return;
+      }
 
       user.friends?.push(friendId);
       friend.friends?.push(userId);
@@ -685,6 +693,7 @@ export default class FirestoreCtrl {
 
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
+
 
       user.friendsRequestedUser = user.friendsRequestedUser?.filter(
         (id) => id !== friendId,
