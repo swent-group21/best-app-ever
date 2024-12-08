@@ -5,6 +5,7 @@ import {
 } from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
 import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock `expo-location`
 jest.mock("expo-location", () => ({
@@ -25,11 +26,12 @@ const mockNavigation = {
 
 const mockRoute = {
   params: {
+    group_id: "home",
     image_id: "mock-image-id",
   },
 };
 
-const mockFirestoreCtrl = {};
+const mockFirestoreCtrl = new FirestoreCtrl();
 
 describe("CreateChallengeViewModel", () => {
   beforeEach(() => {
@@ -144,12 +146,13 @@ describe("CreateChallengeViewModel", () => {
       "Test Challenge",
       "Test Description",
       null, // Location is null by default
+      "home",
       expect.any(Date),
       "mock-image-id",
     );
     expect(mockNavigation.reset).toHaveBeenCalledWith({
       index: 0,
-      routes: [{ name: "Home" }],
+      routes: [ { name: "Home", } ],
     });
   });
 

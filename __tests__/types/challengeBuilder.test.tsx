@@ -11,6 +11,7 @@ describe("buildChallenge", () => {
       challenge_name: "Test Challenge",
       description: "A test description",
       uid: "user123",
+      group_id: "group123",
       date: new Date(),
       location: { latitude: 10, longitude: 20 },
     };
@@ -57,6 +58,7 @@ describe("createChallenge", () => {
       challenge_name: "Test Challenge",
       description: "Test Description",
       date: new Date(),
+      group_id: "group123" // added group Id
     };
 
     // Call createChallenge with mock data
@@ -65,6 +67,7 @@ describe("createChallenge", () => {
       challengeData.challenge_name,
       challengeData.description,
       null,
+      challengeData.group_id,
       challengeData.date,
     );
 
@@ -75,6 +78,7 @@ describe("createChallenge", () => {
         challenge_name: "Test Challenge",
         description: "Test Description",
         uid: "user123",
+        group_id: "group123",
         date: challengeData.date,
         location: null,
       }),
@@ -92,7 +96,7 @@ describe("createChallenge", () => {
       .mockRejectedValue(new Error("Firestore error"));
 
     await expect(
-      createChallenge(mockFirestoreCtrl, "Test", "Description", null),
+      createChallenge(mockFirestoreCtrl, "Test", "Description", null, null, null),
     ).resolves.toBeUndefined(); // Function should handle the error internally
   });
 });

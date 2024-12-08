@@ -64,11 +64,17 @@ export default function CreateChallengeViewModel({
         imageId,
       );
       if (group_id == "" || group_id == "home") {
-        navigation.navigate("Home");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
       } else {
         const group: DBGroup = await firestoreCtrl.getGroup(group_id);
         console.log("group in create challenge: ", group);
-        navigation.navigate("GroupScreen", { currentGroup: group });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "GroupScreen", params: { currentGroup: group } }],
+        });
       }
     } catch (error) {
       console.error("Unable to create challenge", error);

@@ -14,6 +14,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
     getKChallenges: jest.fn(() => []),
   }));
 });
+
 const mockFirestoreCtrl = new FirestoreCtrl();
 
 // Mock `expo-location`
@@ -28,8 +29,10 @@ class MockGeoPoint {
   longitude: number;
 
   constructor(latitude: number, longitude: number) {
-    this.latitude = latitude;
-    this.longitude = longitude;
+    coords: {
+      this.latitude = latitude;
+      this.longitude = longitude;
+    }
   }
 
   isEqual(other: MockGeoPoint): boolean {
@@ -42,6 +45,12 @@ class MockGeoPoint {
     return { latitude: this.latitude, longitude: this.longitude };
   }
 }
+
+jest.mock("firebase/firestore", () =>
+  jest.fn(() => ({
+    GeoPoint: MockGeoPoint, 
+  }))
+);
 
 const defaultLocation = {
   coords: {
@@ -72,7 +81,7 @@ describe("useMapScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, null),
     );
 
     await waitFor(() => {
@@ -97,7 +106,7 @@ describe("useMapScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, null),
     );
 
     await waitFor(() => {
@@ -115,7 +124,7 @@ describe("useMapScreenViewModel", () => {
     );
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, null),
     );
 
     await waitFor(() => {
@@ -150,7 +159,7 @@ describe("useMapScreenViewModel", () => {
     );
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, null),
     );
 
     await waitFor(() => {
@@ -170,7 +179,7 @@ describe("useMapScreenViewModel", () => {
     );
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, null),
     );
 
     await waitFor(() => {
@@ -184,7 +193,7 @@ describe("useMapScreenViewModel", () => {
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, null),
     );
 
     await waitFor(() => {

@@ -48,6 +48,7 @@ jest.mock("firebase/firestore", () => ({
   where: jest.fn(),
   onSnapshot: jest.fn(),
   updateDoc: jest.fn(),
+  GeoPoint: jest.fn()
 }));
 
 jest.mock("firebase/auth", () => ({
