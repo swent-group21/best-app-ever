@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from "@testing-library/react-native";
+import { renderHook, waitFor } from "@testing-library/react-native";
 import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
@@ -30,7 +30,7 @@ jest.mock("firebase/firestore", () => {
       latitude: lat,
       longitude: lng,
       isEqual: (other) =>
-        lat === other.latitude && lng === other.longitude ? true : false,
+        lat === other.latitude && lng === other.longitude,
       toJSON: () => ({ latitude: lat, longitude: lng }),
     })),
   };

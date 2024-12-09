@@ -2,9 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/group/GroupScreen";
 import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
-import { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
-import { View } from "react-native";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
   challenge_name: "Challenge Test 1",
@@ -50,7 +48,6 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 });
 
 describe("Group Screen renders challenges", () => {
-  const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {

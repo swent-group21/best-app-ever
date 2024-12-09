@@ -1,8 +1,6 @@
 import React from "react";
 import {
   render,
-  fireEvent,
-  screen,
   waitFor,
 } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
