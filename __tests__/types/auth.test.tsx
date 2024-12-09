@@ -320,7 +320,7 @@ describe("signUpWithEmail", () => {
   it("should handle errors when creating a user in Firestore", async () => {
     // Mock alert and console.error
     jest.spyOn(global, "alert").mockImplementation(() => {});
-    const consoleErrorSpy = jest
+    jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
@@ -464,7 +464,7 @@ describe("signInAsGuest", () => {
 
   it("should handle guest sign-in failure", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest
+    jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 

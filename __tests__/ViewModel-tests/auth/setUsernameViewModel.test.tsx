@@ -74,7 +74,7 @@ describe("SetUsernameViewModel", () => {
 
   it("should set errorMessage if image picking fails", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest
+    jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
@@ -134,7 +134,7 @@ describe("SetUsernameViewModel", () => {
 
   it("should handle errors during upload and set errorMessage", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest
+    jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 

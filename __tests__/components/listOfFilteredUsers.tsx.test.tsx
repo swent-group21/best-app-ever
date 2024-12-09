@@ -15,7 +15,7 @@ describe("ListOfFilteredUsers", () => {
   };
 
   it("renders filtered users with correct statuses", async () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <ListOfFilteredUsers
         filteredUsers={mockFilteredUsers}
         searchText="John"

@@ -36,7 +36,7 @@ describe("ForgotPasswordViewModel", () => {
   it("should call resetPassword and show success alert on valid email", async () => {
     // Mock the `alert` function and error console
     jest.spyOn(global, "alert").mockImplementation(() => {});
-    const consoleErrorSpy = jest
+    jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 

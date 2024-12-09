@@ -19,13 +19,6 @@ describe("WelcomeFinalViewModel", () => {
     navigate: jest.fn(),
   };
   const mockSetUser = jest.fn();
-  const mockUser: DBUser = {
-    uid: "mock-uid",
-    email: "test@example.com",
-    name: "Test User",
-    image_id: "",
-    createdAt: new Date(),
-  };
 
   beforeEach(() => {
     jest.clearAllMocks();

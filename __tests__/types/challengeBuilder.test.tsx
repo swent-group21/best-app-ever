@@ -84,7 +84,7 @@ describe("createChallenge", () => {
 
   it("should log an error when Firestore operations fail", async () => {
     // Mock console.error
-    const consoleErrorSpy = jest
+    jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
