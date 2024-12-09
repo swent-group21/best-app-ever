@@ -46,7 +46,7 @@ export default function ListOfFilteredUsers({
   const handleAdd = async (userId: string) => {
     try {
       await firestoreCtrl.addFriend(uid, userId);
-      console.log("Friend request sent");
+      console.info("Friend request sent");
       setUserStatuses((prev) => ({
         ...prev,
         [userId]: { ...prev[userId], isRequested: true },
