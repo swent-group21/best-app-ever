@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  render,
-  waitFor,
-} from "@testing-library/react-native";
+import { render, waitFor } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 

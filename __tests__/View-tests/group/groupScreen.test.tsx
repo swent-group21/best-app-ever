@@ -2,7 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/group/GroupScreen";
 import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
-import FirestoreCtrl, { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+} from "@/src/models/firebase/FirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
   challenge_name: "Challenge Test 1",

@@ -29,8 +29,7 @@ jest.mock("firebase/firestore", () => {
     GeoPoint: jest.fn().mockImplementation((lat, lng) => ({
       latitude: lat,
       longitude: lng,
-      isEqual: (other) =>
-        lat === other.latitude && lng === other.longitude,
+      isEqual: (other) => lat === other.latitude && lng === other.longitude,
       toJSON: () => ({ latitude: lat, longitude: lng }),
     })),
   };
