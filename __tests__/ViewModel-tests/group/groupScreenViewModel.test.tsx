@@ -6,7 +6,12 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
       getAllPostsOfGroup: jest.fn(),
-      getGroupsByUserId: jest.fn(),
+      getGroupsByUserId: jest.fn(() => 
+        Promise.resolve([
+          { gid: "group-1", name: "Group 1", updateDate: new Date() },
+          { gid: "group-2", name: "Group 2", updateDate: new Date() },
+        ]),
+      ),
     };
   });
 });
@@ -130,13 +135,15 @@ describe("useGroupScreenViewModel", () => {
     });
   });
 
-  it("should return correct group details", () => {
+  it("should return correct group details", async () => {
     const { result } = renderHook(() =>
       useGroupScreenViewModel(mockUser, mockFirestoreCtrl, mockRoute),
     );
 
-    expect(result.current.groupName).toBe("Test Group");
-    expect(result.current.groupChallengeTitle).toBe("Test Challenge");
-    expect(result.current.groupId).toBe("test-group-id");
+    await waitFor(() => {
+      expect(result.current.groupName).toBe("Test Group");
+      expect(result.current.groupChallengeTitle).toBe("Test Challenge");
+      expect(result.current.groupId).toBe("test-group-id");
+    });
   });
 });
