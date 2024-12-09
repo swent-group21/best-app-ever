@@ -1,9 +1,8 @@
-import { FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { UserListItem } from "@/components/friends/UserListItems";
 import { ThemedView } from "@/components/theme/ThemedView";
-import { StyleSheet } from "react-native";
-import { useEffect, useState } from "react";
 
 /**
  * List of filtered users component
