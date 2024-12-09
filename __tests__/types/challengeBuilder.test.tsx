@@ -92,8 +92,16 @@ describe("createChallenge", () => {
       .fn()
       .mockRejectedValue(new Error("Firestore error"));
 
+    const null_location = null;
+
     await expect(
-      createChallenge(mockFirestoreCtrl, "Test", "Description", null, "123"),
+      createChallenge(
+        mockFirestoreCtrl,
+        "Test",
+        "Description",
+        null_location,
+        "123",
+      ),
     ).resolves.toBeUndefined(); // Function should handle the error internally
   });
 });

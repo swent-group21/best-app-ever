@@ -80,8 +80,14 @@ describe("useMapScreenViewModel", () => {
       status: "denied",
     });
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
@@ -103,8 +109,14 @@ describe("useMapScreenViewModel", () => {
       new Error("PermissionError"),
     );
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
@@ -143,8 +155,14 @@ describe("useMapScreenViewModel", () => {
       mockChallenges,
     );
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
@@ -163,8 +181,14 @@ describe("useMapScreenViewModel", () => {
       new Error("FirestoreError"),
     );
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
@@ -177,8 +201,14 @@ describe("useMapScreenViewModel", () => {
     // Mock console error
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
