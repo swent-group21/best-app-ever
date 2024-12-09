@@ -7,6 +7,7 @@ import FirestoreCtrl, {
   DBChallenge,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
+import { GeoPoint } from "firebase/firestore";
 
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
@@ -23,32 +24,19 @@ jest.mock("expo-location", () => ({
 }));
 
 // Mock GeoPoint
-class MockGeoPoint {
-  latitude: number;
-  longitude: number;
+jest.mock("firebase/firestore", () => {
+  return {
+    GeoPoint: jest.fn().mockImplementation((lat, lng) => ({
+      latitude: lat,
+      longitude: lng,
+      isEqual: (other) =>
+        lat === other.latitude && lng === other.longitude ? true : false,
+      toJSON: () => ({ latitude: lat, longitude: lng }),
+    })),
+  };
+});
 
-  constructor(latitude: number, longitude: number) {
-    this.latitude = latitude;
-    this.longitude = longitude;
-  }
-
-  isEqual(other: MockGeoPoint): boolean {
-    return (
-      this.latitude === other.latitude && this.longitude === other.longitude
-    );
-  }
-
-  toJSON() {
-    return { latitude: this.latitude, longitude: this.longitude };
-  }
-}
-
-const defaultLocation = {
-  coords: {
-    latitude: 43.6763,
-    longitude: 7.0122,
-  },
-};
+const defaultLocation = new GeoPoint(43.6763, 7.0122);
 
 const mockNavigation = {
   navigate: jest.fn(),
@@ -72,19 +60,15 @@ describe("useMapScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
     );
 
     await waitFor(() => {
       expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
       expect(getCurrentPositionAsync).toHaveBeenCalled();
       expect(result.current.permission).toBe(true);
-      expect(result.current.userLocation).toEqual({
-        coords: {
-          latitude: 48.8566,
-          longitude: 2.3522,
-        },
-      });
+      expect(result.current.userLocation.latitude).toBe(48.8566);
+      expect(result.current.userLocation.longitude).toBe(2.3522);
     });
   });
 
@@ -96,13 +80,24 @@ describe("useMapScreenViewModel", () => {
       status: "denied",
     });
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
       expect(result.current.permission).toBe(false);
-      expect(result.current.userLocation).toEqual(defaultLocation);
+      expect(result.current.userLocation.latitude).toBe(
+        defaultLocation.latitude,
+      );
+      expect(result.current.userLocation.longitude).toBe(
+        defaultLocation.longitude,
+      );
     });
   });
 
@@ -114,13 +109,24 @@ describe("useMapScreenViewModel", () => {
       new Error("PermissionError"),
     );
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
       expect(result.current.permission).toBe(false);
-      expect(result.current.userLocation).toEqual(defaultLocation);
+      expect(result.current.userLocation.latitude).toBe(
+        defaultLocation.latitude,
+      );
+      expect(result.current.userLocation.longitude).toBe(
+        defaultLocation.longitude,
+      );
     });
   });
 
@@ -134,7 +140,7 @@ describe("useMapScreenViewModel", () => {
         challenge_name: "Challenge 1",
         description: "Test Challenge 1",
         uid: "12345",
-        location: new MockGeoPoint(48.8566, 2.3522),
+        location: new GeoPoint(48.8566, 2.3522),
       },
       {
         challenge_id: "2",
@@ -149,8 +155,14 @@ describe("useMapScreenViewModel", () => {
       mockChallenges,
     );
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
@@ -169,8 +181,14 @@ describe("useMapScreenViewModel", () => {
       new Error("FirestoreError"),
     );
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
@@ -183,8 +201,14 @@ describe("useMapScreenViewModel", () => {
     // Mock console error
     jest.spyOn(console, "error").mockImplementationOnce(() => {});
 
+    const undefined_firstLocation = undefined;
+
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined_firstLocation,
+      ),
     );
 
     await waitFor(() => {
