@@ -27,10 +27,10 @@ describe("CreateGroupViewModel", () => {
         user: mockUser,
         navigation: mockNavigation,
         firestoreCtrl: mockFirestoreCtrl,
-      })
+      }),
     );
 
-    const { setGroupName, setChallengeTitle, } = result.current;
+    const { setGroupName, setChallengeTitle } = result.current;
 
     // Update groupName and challengeTitle states
     act(() => {
@@ -38,13 +38,13 @@ describe("CreateGroupViewModel", () => {
       setChallengeTitle("Test Challenge");
     });
 
-    await waitFor(() => { 
+    await waitFor(() => {
       expect(result.current.groupName).toBe("Test Group");
       expect(result.current.challengeTitle).toBe("Test Challenge");
     });
 
     //Update the state
-    const { makeGroup } = result.current
+    const { makeGroup } = result.current;
 
     // Wait for the state to reflect the updated values
     await act(async () => {
@@ -56,7 +56,7 @@ describe("CreateGroupViewModel", () => {
       "Test Group",
       "Test Challenge",
       ["test-user-id"],
-      expect.any(Date) // Timestamp or Date
+      expect.any(Date), // Timestamp or Date
     );
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("Home");
@@ -73,7 +73,7 @@ describe("CreateGroupViewModel", () => {
         user: mockUser,
         navigation: mockNavigation,
         firestoreCtrl: mockFirestoreCtrl,
-      })
+      }),
     );
 
     const { makeGroup } = result.current;
@@ -85,7 +85,7 @@ describe("CreateGroupViewModel", () => {
 
     expect(consoleSpy).toHaveBeenCalledWith(
       "Unable to create challenge",
-      expect.any(Error)
+      expect.any(Error),
     );
 
     expect(mockNavigation.navigate).not.toHaveBeenCalled();
