@@ -16,7 +16,11 @@ describe("RequestList", () => {
 
   it("renders the list of requests correctly", () => {
     const { getByText } = render(
-      <RequestList requests={requests} firestoreCtrl={mockFirestoreCtrl} uid={uid} />,
+      <RequestList
+        requests={requests}
+        firestoreCtrl={mockFirestoreCtrl}
+        uid={uid}
+      />,
     );
 
     expect(getByText("John")).toBeTruthy();
@@ -25,7 +29,11 @@ describe("RequestList", () => {
 
   it("calls acceptFriend when accept button is pressed", () => {
     const { getByTestId } = render(
-      <RequestList requests={requests} firestoreCtrl={mockFirestoreCtrl} uid={uid} />,
+      <RequestList
+        requests={requests}
+        firestoreCtrl={mockFirestoreCtrl}
+        uid={uid}
+      />,
     );
 
     const acceptButton = getByTestId("accept-button-0");
@@ -36,7 +44,11 @@ describe("RequestList", () => {
 
   it("calls rejectFriend when decline button is pressed", () => {
     const { getByTestId } = render(
-      <RequestList requests={requests} firestoreCtrl={mockFirestoreCtrl} uid={uid} />,
+      <RequestList
+        requests={requests}
+        firestoreCtrl={mockFirestoreCtrl}
+        uid={uid}
+      />,
     );
 
     const declineButton = getByTestId("decline-button-1");

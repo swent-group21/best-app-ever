@@ -19,14 +19,14 @@ describe("FriendRequestItem", () => {
 
     expect(getByTestId("friend-avatar-test-id")).toBeTruthy();
     expect(getByTestId("friend-avatar-test-id").props.source.uri).toBe(
-      "https://example.com/avatar.jpg"
+      "https://example.com/avatar.jpg",
     );
     expect(getByTestId("friend-name-test-id").props.children).toBe("John Doe");
   });
 
   it("renders a default avatar when no avatar is provided", () => {
     const { getByTestId } = render(
-      <FriendRequestItem {...defaultProps} avatar={null} />
+      <FriendRequestItem {...defaultProps} avatar={null} />,
     );
 
     expect(getByTestId("friend-avatar-text-test-id").props.children).toBe("J");

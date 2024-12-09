@@ -22,7 +22,7 @@ describe("useFriendsScreenViewModel", () => {
     mockFirestoreCtrl.getAllUsers.mockResolvedValueOnce(mockUsers);
 
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid)
+      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
     await waitFor(() => result.current.users.length > 0);
@@ -39,7 +39,7 @@ describe("useFriendsScreenViewModel", () => {
     mockFirestoreCtrl.getAllUsers.mockResolvedValueOnce(mockUsers);
 
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid)
+      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
     await waitFor(() => result.current.users.length > 0);
@@ -48,7 +48,9 @@ describe("useFriendsScreenViewModel", () => {
       result.current.setSearchText("john");
     });
 
-    expect(result.current.filteredUsers).toEqual([{ uid: "user1", name: "John Doe" }]);
+    expect(result.current.filteredUsers).toEqual([
+      { uid: "user1", name: "John Doe" },
+    ]);
   });
 
   it("excludes current user from filtered users", async () => {
@@ -59,7 +61,7 @@ describe("useFriendsScreenViewModel", () => {
     mockFirestoreCtrl.getAllUsers.mockResolvedValueOnce(mockUsers);
 
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid)
+      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
     await waitFor(() => result.current.users.length > 0);
@@ -76,7 +78,7 @@ describe("useFriendsScreenViewModel", () => {
     mockFirestoreCtrl.getFriends.mockResolvedValueOnce(mockFriends);
 
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid)
+      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
     await waitFor(() => result.current.friends.length > 0);
@@ -90,7 +92,7 @@ describe("useFriendsScreenViewModel", () => {
     mockFirestoreCtrl.getFriendRequests.mockResolvedValueOnce(mockRequests);
 
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid)
+      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
     await waitFor(() => result.current.requests.length > 0);
@@ -103,13 +105,15 @@ describe("useFriendsScreenViewModel", () => {
     console.log = jest.fn();
 
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid)
+      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
     act(() => {
       result.current.handleFriendPress("friend1");
     });
 
-    expect(console.log).toHaveBeenCalledWith("Navigate to friend friend1's profile");
+    expect(console.log).toHaveBeenCalledWith(
+      "Navigate to friend friend1's profile",
+    );
   });
 });

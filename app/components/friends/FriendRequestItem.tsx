@@ -31,7 +31,10 @@ export const FriendRequestItem = ({
         style={[styles.avatar, styles.defaultAvatar]}
         testID={`friend-avatar-${testID}`}
       >
-        <ThemedText style={styles.avatarText} testID={`friend-avatar-text-${testID}`}>
+        <ThemedText
+          style={styles.avatarText}
+          testID={`friend-avatar-text-${testID}`}
+        >
           {name.charAt(0).toUpperCase()}
         </ThemedText>
       </ThemedView>
@@ -39,7 +42,10 @@ export const FriendRequestItem = ({
     <ThemedText style={styles.name} testID={`friend-name-${testID}`}>
       {name}
     </ThemedText>
-    <View style={styles.requestButtons} testID={`friend-request-buttons-${testID}`}>
+    <View
+      style={styles.requestButtons}
+      testID={`friend-request-buttons-${testID}`}
+    >
       {/* Accept Button with Icon */}
       <ThemedIconButton
         name="check"
