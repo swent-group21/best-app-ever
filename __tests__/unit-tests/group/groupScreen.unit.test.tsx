@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/group/GroupScreen";
 import FirestoreCtrl, {
@@ -60,7 +60,7 @@ describe("Group Screen renders challenges", () => {
     jest.clearAllMocks();
   });
 
-  it("navigates to home when clicking the home button", () => {
+  it("navigates to home when clicking the home button", async () => {
     const { getByTestId } = render(
       <GroupScreen
         user={{}}
@@ -70,12 +70,15 @@ describe("Group Screen renders challenges", () => {
       />,
     );
 
-    fireEvent.press(getByTestId("home-pressable-button"));
+    await act(async () => {
+      fireEvent.press(getByTestId("home-pressable-button"));
+    });
+
     expect(mockNavigation.navigate).toHaveBeenCalledWith("Home");
     expect(getByTestId("home-button")).toBeTruthy();
   });
 
-  it("navigates to group when clicking to specific button", () => {
+  it("navigates to group when clicking to specific button", async () => {
     const { getByTestId } = render(
       <GroupScreen
         user={{}}
@@ -85,13 +88,16 @@ describe("Group Screen renders challenges", () => {
       />,
     );
 
-    fireEvent.press(getByTestId("group-pressable-button"));
+    await act(async () => {
+      fireEvent.press(getByTestId("group-pressable-button"));
+    });
+
     expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {
       currentGroup: mockGroup,
     });
   });
 
-  it("navigate to CreateGroup screen when button + clicked", () => {
+  it("navigate to CreateGroup screen when button + clicked", async () => {
     const { getByTestId } = render(
       <GroupScreen
         user={{}}
@@ -101,11 +107,14 @@ describe("Group Screen renders challenges", () => {
       />,
     );
 
-    fireEvent.press(getByTestId("create-group-pressable-button"));
+    await act(async () => {
+      fireEvent.press(getByTestId("create-group-pressable-button"));
+    });
+
     expect(mockNavigation.navigate).toHaveBeenCalledWith("CreateGroup");
   });
 
-  it("navigates to Camera with group informations when clicked", () => {
+  it("navigates to Camera with group informations when clicked", async () => {
     const { getByTestId } = render(
       <GroupScreen
         user={{}}
@@ -115,7 +124,10 @@ describe("Group Screen renders challenges", () => {
       />,
     );
 
-    fireEvent.press(getByTestId("bottom-center-icon-camera-outline"));
+    await act(async () => {
+      fireEvent.press(getByTestId("bottom-center-icon-camera-outline"));
+    });
+
     expect(mockNavigation.navigate).toHaveBeenCalledWith("Camera", {
       group_id: "1234",
     });
