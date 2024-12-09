@@ -44,7 +44,7 @@ describe("useFriendsScreenViewModel", () => {
 
     await waitFor(() => result.current.users.length > 0);
 
-    act(() => {
+    await act(() => {
       result.current.setSearchText("john");
     });
 
@@ -66,7 +66,7 @@ describe("useFriendsScreenViewModel", () => {
 
     await waitFor(() => result.current.users.length > 0);
 
-    act(() => {
+    await act(() => {
       result.current.setSearchText("me");
     });
 
@@ -101,15 +101,15 @@ describe("useFriendsScreenViewModel", () => {
     expect(result.current.requests).toEqual(mockRequests);
   });
 
-  it("logs the correct message on handleFriendPress", () => {
+  it("logs the correct message on handleFriendPress", async () => {
     console.log = jest.fn();
 
     const { result } = renderHook(() =>
       useFriendsScreenViewModel(mockFirestoreCtrl, uid),
     );
 
-    act(() => {
-      result.current.handleFriendPress("friend1");
+    await act(async () => {
+      await result.current.handleFriendPress("friend1");
     });
 
     expect(console.log).toHaveBeenCalledWith(
