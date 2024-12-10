@@ -100,6 +100,7 @@ export default function HomeScreen({
           testID={`description-id`}
         />
 
+        {/* Filter by Friends */}
         <ThemedIconButton
           name="filter"
           onPress={() => setShowFilterMenu(true)} // Ouvre le menu
