@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Dimensions, StyleSheet, Modal } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
@@ -12,7 +18,6 @@ import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import GroupIcon from "@/components/home/GroupIcon";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { TouchableOpacity, Text } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
