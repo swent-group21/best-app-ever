@@ -2,11 +2,59 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FirestoreCtrl, { DBUser } from '@/src/models/firebase/FirestoreCtrl';
 import { Nav } from '@/navigation/Navigation';
+import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 
 jest.mock('@/src/models/firebase/FirestoreCtrl');
 
+// Mock de useCameraViewModel
+jest.mock("@/src/viewmodels/camera/CameraViewModel");
+jest.mock("expo-font", () => ({
+  useFonts: jest.fn(() => [true]),
+  isLoaded: jest.fn(() => true),
+}));
+
+// Mock `expo-camera`
+jest.mock("expo-camera", () => ({
+  useCameraPermissions: jest.fn(),
+  CameraType: {
+    BACK: "back",
+    FRONT: "front",
+  },
+  FlashMode: {
+    ON: "on",
+    OFF: "off",
+  },
+}));
+
+
 describe('E2E Test: Create Challenge', () => {
-  const firestoreCtrl = new FirestoreCtrl();
+
+  const mockToggleCameraFacing = jest.fn();
+  const mockToggleFlashMode = jest.fn();
+  const mockTakePicture = jest.fn();
+  const mockSetIsCameraEnabled = jest.fn();
+
+  beforeEach(() => {
+    // Mock le retour de useCameraViewModel
+    (useCameraViewModel as jest.Mock).mockReturnValue({
+      facing: "back",
+      permission: { granted: true },
+      requestPermission: jest.fn(),
+      camera: { current: null },
+      picture: null,
+      isCameraEnabled: true,
+      flashMode: "off",
+      isFlashEnabled: false,
+      zoom: 0,
+      toggleCameraFacing: mockToggleCameraFacing,
+      toggleFlashMode: mockToggleFlashMode,
+      takePicture: mockTakePicture,
+      imageUrlGen: jest.fn(),
+      setIsCameraEnabled: mockSetIsCameraEnabled,
+    });
+  });
+
+  const mockFirestoreCtrl = new FirestoreCtrl() as jest.Mocked<FirestoreCtrl>;
 
   const mockUser: DBUser = {
     uid: 'user123',
@@ -21,23 +69,41 @@ describe('E2E Test: Create Challenge', () => {
   // Mock the FirestoreCtrl methods
   beforeEach(() => {
     // Mock the getChallengeDescription method
-    firestoreCtrl.getChallengeDescription = jest.fn().mockResolvedValue({
-      title: 'Current Challenge',
-      description: 'Description of current challenge',
-      endDate: new Date(),
+    mockFirestoreCtrl.getChallengeDescription.mockResolvedValue({ 
+      title: 'Current Challenge', 
+      description: 'Description of current challenge', 
+      endDate: new Date() 
     });
 
-    // Mock getKChallenges to return an empty list initially
-    firestoreCtrl.getKChallenges = jest.fn().mockResolvedValue([]);
-
-    // Mock methods involved in creating a challenge
-    firestoreCtrl.newChallenge = jest.fn().mockResolvedValue(undefined);
-    firestoreCtrl.getUser = jest.fn().mockResolvedValue(mockUser);
-    firestoreCtrl.getGroupsByUserId = jest.fn().mockResolvedValue([]);
-    firestoreCtrl.updateGroup = jest.fn().mockResolvedValue(undefined);
-
-    // Mock getImageUrl if needed
-    firestoreCtrl.getImageUrl = jest.fn().mockResolvedValue('http://example.com/image.jpg');
+    mockFirestoreCtrl.getKChallenges.mockResolvedValue([]);
+    mockFirestoreCtrl.newChallenge.mockResolvedValue(undefined);
+    mockFirestoreCtrl.getUser.mockResolvedValue(mockUser);
+     mockFirestoreCtrl.getGroupsByUserId.mockResolvedValue([]);
+    mockFirestoreCtrl.updateGroup.mockResolvedValue(undefined);
+    mockFirestoreCtrl.getImageUrl.mockResolvedValue('mock-image-id');
+    mockFirestoreCtrl.uploadImageFromUri.mockResolvedValue("mock-image-id");
+    const createMockCameraViewModel = () => ({
+      facing: "back",
+      permission: { granted: true },
+      requestPermission: jest.fn(),
+      camera: { current: null },
+      picture: null,
+      isCameraEnabled: true,
+      flashMode: "off",
+      isFlashEnabled: false,
+      zoom: 0,
+      toggleCameraFacing: jest.fn(),
+      toggleFlashMode: jest.fn(),
+      takePicture: jest.fn().mockImplementation(() => {
+        // Set picture data directly in the mock after taking picture
+        (useCameraViewModel as jest.Mock).mockReturnValue({
+          ...createMockCameraViewModel(), // Reuse the existing mock values
+          picture: { uri: 'mock-uri', width: 100, height: 100, base64: '' },
+        });
+      }),
+      imageUrlGen: jest.fn(),
+      setIsCameraEnabled: jest.fn(),
+    });
   });
 
   it('should create a new challenge and display it in the feed', async () => {
@@ -48,7 +114,7 @@ describe('E2E Test: Create Challenge', () => {
         isLoggedIn="Home"
         user={mockUser}
         setUser={setUser}
-        firestoreCtrl={firestoreCtrl}
+        firestoreCtrl={mockFirestoreCtrl}
       />
     );
 
@@ -59,7 +125,7 @@ describe('E2E Test: Create Challenge', () => {
     expect(queryByText('Test Challenge')).toBeNull();
 
     // Navigate to Camera Screen by pressing the camera icon in the BottomBar
-    const bottomBarCameraIcon = getByTestId('bottom-bar-center-icon');
+    const bottomBarCameraIcon = getByTestId('bottom-center-icon-camera-outline');
     fireEvent.press(bottomBarCameraIcon);
 
     // Wait for the Camera Screen to be displayed
@@ -69,9 +135,14 @@ describe('E2E Test: Create Challenge', () => {
     const takePictureButton = getByTestId('Camera-Button');
     fireEvent.press(takePictureButton);
 
-    // Since we can't actually take a picture, we need to simulate the state after taking a picture
-    // Let's assume that after taking a picture, it navigates to the CreateChallenge screen
-    // Wait for the CreateChallenge screen
+    await waitFor(() => expect(mockFirestoreCtrl.uploadImageFromUri).toHaveBeenCalled());
+
+    // Wait for image to be displayed in background
+    await waitFor(() => getByTestId('image-background'));
+
+    // Wait for goto button to be displayed
+    await waitFor(() => getByTestId('goto-create-screen'));
+
     await waitFor(() => getByTestId('Create-Challenge-Text'));
 
     // Fill in the challenge name and description
@@ -90,13 +161,13 @@ describe('E2E Test: Create Challenge', () => {
     fireEvent.press(submitButton);
 
     // Mock the new challenge to be returned by getKChallenges
-    firestoreCtrl.getKChallenges = jest.fn().mockResolvedValue([
+    mockFirestoreCtrl.getKChallenges = jest.fn().mockResolvedValue([
       {
         challenge_name: 'Test Challenge',
         description: 'This is a test challenge.',
         uid: mockUser.uid,
         date: new Date(),
-        image_id: 'http://example.com/image.jpg',
+        image_id: 'mock-image-id',
         likes: [],
         location: null,
         group_id: '',

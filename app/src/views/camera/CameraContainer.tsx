@@ -102,8 +102,9 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
           </View>
         </CameraView>
       ) : (
-        <View>
+        <View testID="picture-taken">
           <ImageBackground
+            testID="image-background"
             source={{ uri: picture?.uri }}
             style={styles.pictureBackround}
           />
@@ -113,7 +114,11 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
           >
             <Ionicons name="close" size={30} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.send} onPress={imageUrlGen}>
+          <TouchableOpacity 
+            testID="goto-create-screen"
+            style={styles.send}
+            onPress={imageUrlGen}
+          >
             <Ionicons name="send" size={30} color="white" />
           </TouchableOpacity>
         </View>
