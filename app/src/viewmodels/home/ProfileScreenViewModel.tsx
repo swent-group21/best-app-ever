@@ -37,7 +37,7 @@ export function useProfileScreenViewModel(
   const pickImage = async () => {
     try {
       const result = await launchImageLibraryAsync({
-        mediaTypes: ['images'],
+        mediaTypes: ["images"],
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,

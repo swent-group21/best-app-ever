@@ -38,11 +38,14 @@ export default function useCameraViewModel(
   const calculateZoom = (event: any, velocity: number, outFactor: number) => {
     const scaleFactor = Platform.OS === "ios" ? 0.01 : 25;
     const reduceFactor = Platform.OS === "ios" ? 0.02 : 50;
-  
+
     if (velocity > 0) {
       return zoom + event.scale * velocity * scaleFactor;
     } else {
-      return zoom - event.scale * (outFactor || 1) * Math.abs(velocity) * reduceFactor;
+      return (
+        zoom -
+        event.scale * (outFactor || 1) * Math.abs(velocity) * reduceFactor
+      );
     }
   };
 
