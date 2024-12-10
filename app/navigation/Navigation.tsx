@@ -1,8 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/RootStackParamList";
-import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 // Screens
 import WelcomeScreens from "@/src/views/welcome/welcome_screen";
@@ -21,7 +20,6 @@ import FriendsScreen from "@/src/views/friends/friends_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
 import GroupScreen from "@/src/views/group/GroupScreen";
-import FriendsProfile from "@/src/views/friends/friends_profile";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();

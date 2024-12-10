@@ -23,16 +23,11 @@ export default function SignUp({
   setUser,
   firestoreCtrl,
 }: {
-  navigation: any;
-  setUser: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly navigation: any;
+  readonly setUser: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
-    name,
-    surname,
-    email,
-    password,
-    confirmPassword,
     setName,
     setSurname,
     setEmail,

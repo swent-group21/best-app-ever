@@ -19,8 +19,8 @@ function NumberCard({
   number = initNumber,
   testID,
 }: {
-  number?: number;
-  testID?: string;
+  readonly number?: number;
+  readonly testID?: string;
 }) {
   function numberText() {
     if (number && Math.sign(number) >= initNumber) {

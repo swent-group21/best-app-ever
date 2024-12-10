@@ -36,7 +36,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
         />
 
         {/* Error message for the user*/}
-        {errorMessage && (
+        {Boolean(errorMessage) && (
           <ThemedText style={styles.errorMessage}>{errorMessage}</ThemedText>
         )}
 
