@@ -36,14 +36,14 @@ export default function useGroupScreenViewModel(
       try {
         const groups = await firestoreCtrl.getGroupsByUserId(uid);
         return groups.filter(
-          (group) => groupId !== group.gid && group.updateDate !== undefined
+          (group) => groupId !== group.gid && group.updateDate !== undefined,
         );
       } catch (error) {
         console.error("Error fetching groups: ", error);
         return [];
       }
     };
-  
+
     if (user.uid) {
       fetchGroups(user.uid).then(setOtherGroups);
     }
