@@ -40,11 +40,10 @@ export default function HomeScreen({
   const [filterByFriends, setFilterByFriends] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false); // État pour le menu
 
-
   // Determine displayed challenges
   const displayedChallenges = filterByFriends
-  ? challengesFromFriends || [] 
-  : challenges || [];
+    ? challengesFromFriends || []
+    : challenges || [];
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -94,7 +93,6 @@ export default function HomeScreen({
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
-
         {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={titleChallenge}
@@ -117,16 +115,23 @@ export default function HomeScreen({
         >
           <ThemedView style={styles.modalOverlay}>
             <ThemedView style={styles.modalContent}>
-              <TouchableOpacity style={styles.optionButton} testID="filter-by-friends-option" onPress={() => {
-                setFilterByFriends(true);
-                setShowFilterMenu(false);
-              }}>
+              <TouchableOpacity
+                style={styles.optionButton}
+                testID="filter-by-friends-option"
+                onPress={() => {
+                  setFilterByFriends(true);
+                  setShowFilterMenu(false);
+                }}
+              >
                 <Text style={styles.optionText}>Filter by Friends</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.optionButton} onPress={() => {
-                setFilterByFriends(false);
-                setShowFilterMenu(false);
-              }}>
+              <TouchableOpacity
+                style={styles.optionButton}
+                onPress={() => {
+                  setFilterByFriends(false);
+                  setShowFilterMenu(false);
+                }}
+              >
                 <Text style={styles.optionText}>See All Posts</Text>
               </TouchableOpacity>
             </ThemedView>
@@ -173,8 +178,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#444",
     borderRadius: 15,
     position: "relative",
-    right : 0
-
+    right: 0,
   },
   filterDropdown: {
     backgroundColor: "#333",
@@ -231,13 +235,13 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)", 
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
     justifyContent: "center",
     alignItems: "center",
   },
   modalContent: {
-    width: "90%", 
-    backgroundColor: "#222", 
+    width: "90%",
+    backgroundColor: "#222",
     borderRadius: 12,
     padding: 20,
     alignItems: "center",
@@ -259,9 +263,7 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#fff", 
+    color: "#fff",
     textAlign: "center",
   },
-  
-  
 });

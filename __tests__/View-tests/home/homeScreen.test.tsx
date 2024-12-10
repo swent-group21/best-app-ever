@@ -202,7 +202,7 @@ describe("HomeScreen UI Tests", () => {
     const filterByFriendsOption = getByText("Filter by Friends");
     fireEvent.press(filterByFriendsOption);
 
-    expect(getByText("No challenges to display")).toBeTruthy(); 
+    expect(getByText("No challenges to display")).toBeTruthy();
   });
 
   it("closes the filter menu after selection", () => {
@@ -247,39 +247,36 @@ describe("HomeScreen UI Tests", () => {
         },
       ],
       groups: [],
-      titleChallenge: 'go get hot wine!!',
+      titleChallenge: "go get hot wine!!",
     });
-  
+
     const mockUser = {
       name: "Test User",
       uid: "12345",
       email: "test@example.com",
       createdAt: new Date(),
-      friends: ["friend-1"], 
+      friends: ["friend-1"],
     };
-  
+
     const { getByTestId, queryAllByTestId } = render(
       <HomeScreen
         user={mockUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
-  
+
     const filterButton = getByTestId("filter-icon");
     fireEvent.press(filterButton);
-  
+
     const filterByFriendsOption = getByTestId("filter-by-friends-option");
     fireEvent.press(filterByFriendsOption);
-  
+
     const challenges = queryAllByTestId(/challenge-id-/);
-  
+
     challenges.forEach((challenge) => {
-      const challengeUid = challenge.props.challengeDB.uid; 
-      expect(mockUser.friends).toContain(challengeUid); 
+      const challengeUid = challenge.props.challengeDB.uid;
+      expect(mockUser.friends).toContain(challengeUid);
+    });
   });
 });
-  
-});
-
-

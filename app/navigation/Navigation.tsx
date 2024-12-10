@@ -196,7 +196,6 @@ export const Nav: React.FC<AppStackProps> = ({
               />
             )}
           </Screen>
-
         </Group>
       </Navigator>
     </NavigationContainer>
