@@ -128,7 +128,7 @@ export default function HomeScreen({
                 setFilterByFriends(false);
                 setShowFilterMenu(false);
               }}>
-                <Text style={styles.optionText}>See All Challenges</Text>
+                <Text style={styles.optionText}>See All Posts</Text>
               </TouchableOpacity>
             </ThemedView>
           </ThemedView>
@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     position: "relative",
     right : 0
-    
 
   },
   filterDropdown: {
@@ -233,29 +232,37 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.7)", 
     justifyContent: "center",
     alignItems: "center",
   },
   modalContent: {
-    width: 300,
-    backgroundColor: "#fff",
-    borderRadius: 10,
+    width: "90%", 
+    backgroundColor: "#222", 
+    borderRadius: 12,
     padding: 20,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 5,
   },
   optionButton: {
-    padding: 15,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#ddd",
+    backgroundColor: "#444",
     borderRadius: 8,
     width: "100%",
     alignItems: "center",
   },
   optionText: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
+    fontWeight: "600",
+    color: "#fff", 
+    textAlign: "center",
   },
+  
   
 });
