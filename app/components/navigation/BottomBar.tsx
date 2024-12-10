@@ -39,8 +39,7 @@ export function BottomBar({
   rightIcon,
   rightAction = () => {},
   colorType = "white",
-  testID,
-}: BottomBarProps) {
+}: Readonly<BottomBarProps>) {
   const color = useThemeColor({}, colorType);
   return (
     <View style={styles.container} testID="bottom-bar">

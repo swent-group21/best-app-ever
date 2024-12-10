@@ -12,9 +12,9 @@ export default function RequestList({
   firestoreCtrl,
   uid,
 }: {
-  requests: any[];
-  firestoreCtrl: any;
-  uid: string;
+  readonly requests: any[];
+  readonly firestoreCtrl: any;
+  readonly uid: string;
 }) {
   const handleAccept = (requestId: string) => {
     firestoreCtrl.acceptFriend(uid, requestId);

@@ -30,7 +30,7 @@ export function ThemedTextButton({
   colorType,
   textColorType = "backgroundPrimary",
   testID,
-}: ThemedTextButtonProps) {
+}: Readonly<ThemedTextButtonProps>) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "backgroundSecondary",
