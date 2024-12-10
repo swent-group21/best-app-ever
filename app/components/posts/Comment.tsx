@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get("window");
  * @param comment : the comment object
  * @returns : a component for the comment
  */
-export function SingleComment(comment: DBComment) {
+export function SingleComment(comment: Readonly<DBComment>) {
   return (
     <View
       style={{

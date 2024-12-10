@@ -1,6 +1,5 @@
 import { FlatList } from "react-native";
 import { FriendRequestItem } from "@/components/friends/FriendRequestItem";
-import { ThemedText } from "@/components/theme/ThemedText";
 
 /**
  * Request List with all users that have sent a friend request to the current user
@@ -13,9 +12,9 @@ export default function RequestList({
   firestoreCtrl,
   uid,
 }: {
-  requests: any[];
-  firestoreCtrl: any;
-  uid: string;
+  readonly requests: any[];
+  readonly firestoreCtrl: any;
+  readonly uid: string;
 }) {
   const handleAccept = (requestId: string) => {
     firestoreCtrl.acceptFriend(uid, requestId);

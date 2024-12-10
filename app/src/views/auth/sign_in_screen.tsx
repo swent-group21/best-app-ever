@@ -28,9 +28,9 @@ export default function SignInScreen({
   firestoreCtrl,
   setUser,
 }: {
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
-  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
 }) {
   const {
     email,

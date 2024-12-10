@@ -23,9 +23,9 @@ export default function CreateChallengeScreen({
   route,
   firestoreCtrl,
 }: {
-  navigation: any;
-  route: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly navigation: any;
+  readonly route: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     caption,

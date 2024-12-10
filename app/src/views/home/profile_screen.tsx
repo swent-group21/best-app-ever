@@ -27,10 +27,10 @@ export default function ProfileScreen({
   navigation,
   firestoreCtrl,
 }: {
-  user: DBUser;
-  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly user: DBUser;
+  readonly setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     userIsGuest,
@@ -38,7 +38,6 @@ export default function ProfileScreen({
     setName,
     image,
     pickImage,
-    upload,
     handleLogOut,
     handleChangeEmail,
     handleChangePassword,

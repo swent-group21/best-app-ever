@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
+import { launchImageLibraryAsync } from "expo-image-picker";
 import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 
@@ -37,7 +37,7 @@ export function useProfileScreenViewModel(
   const pickImage = async () => {
     try {
       const result = await launchImageLibraryAsync({
-        mediaTypes: MediaTypeOptions.All,
+        mediaTypes: ["images"],
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
