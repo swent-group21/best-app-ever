@@ -35,8 +35,7 @@ export default function HomeScreen({
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
-  //const [showFilterOptions, setShowFilterOptions] = useState(false);
-  const [filterByFriends, setFilterByFriends] = useState(false);
+  const [filterByFriends] = useState(false);
 
   // Determine displayed challenges
   const displayedChallenges = filterByFriends

@@ -32,22 +32,20 @@ export default function useGroupScreenViewModel(
   }, [user.uid, firestoreCtrl, groupId]);
 
   useEffect(() => {
+    const fetchGroups = async (uid) => {
+      try {
+        const groups = await firestoreCtrl.getGroupsByUserId(uid);
+        return groups.filter(
+          (group) => groupId !== group.gid && group.updateDate !== undefined
+        );
+      } catch (error) {
+        console.error("Error fetching groups: ", error);
+        return [];
+      }
+    };
+  
     if (user.uid) {
-      const fetchGroups = async () => {
-        try {
-          // Fetch groups
-          await firestoreCtrl.getGroupsByUserId(user.uid).then((groups) => {
-            const filteredGroups = groups.filter(
-              (group) =>
-                groupId !== group.gid && group.updateDate !== undefined,
-            );
-            setOtherGroups(filteredGroups);
-          });
-        } catch (error) {
-          console.error("Error fetching groups: ", error);
-        }
-      };
-      fetchGroups();
+      fetchGroups(user.uid).then(setOtherGroups);
     }
   }, [user.uid, firestoreCtrl, group]);
 
