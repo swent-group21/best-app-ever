@@ -25,14 +25,26 @@ export default function useCameraViewModel(
   const camera = useRef<CameraView>(null);
   const [picture, setPicture] = useState<CameraCapturedPicture>();
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
-  const [flashMode, setFlashMode] = useState<FlashMode | string>("off");
+  const [flashMode, setFlashMode] = useState<FlashMode>("off");
   const [isFlashEnabled, setIsFlashEnabled] = useState(false);
   const [zoom, setZoom] = useState(0);
-  const [lastZoom, setLastZoom] = useState(0);
+  const [lastZoom] = useState(0);
 
   const group_id = route.params?.group_id;
 
   const cameraPictureOptions: CameraPictureOptions = { base64: true };
+
+  // Calculate the zoom level
+  const calculateZoom = (event: any, velocity: number, outFactor: number) => {
+    const scaleFactor = Platform.OS === "ios" ? 0.01 : 25;
+    const reduceFactor = Platform.OS === "ios" ? 0.02 : 50;
+  
+    if (velocity > 0) {
+      return zoom + event.scale * velocity * scaleFactor;
+    } else {
+      return zoom - event.scale * (outFactor || 1) * Math.abs(velocity) * reduceFactor;
+    }
+  };
 
   // Change the camera facing
   const toggleCameraFacing = () => {
@@ -46,19 +58,12 @@ export default function useCameraViewModel(
   };
 
   // Function not used in the current implementation but can be used to zoom in/out
-  const onPinch = useCallback(
+  useCallback(
     (event: any) => {
       const velocity = event.velocity / 20;
       const outFactor = lastZoom * (Platform.OS === "ios" ? 40 : 15);
 
-      let newZoom =
-        velocity > 0
-          ? zoom + event.scale * velocity * (Platform.OS === "ios" ? 0.01 : 25)
-          : zoom -
-            event.scale *
-              (outFactor || 1) *
-              Math.abs(velocity) *
-              (Platform.OS === "ios" ? 0.02 : 50);
+      let newZoom = calculateZoom(event, velocity, outFactor);
 
       if (newZoom < 0) newZoom = 0;
       else if (newZoom > 0.7) newZoom = 0.7;
