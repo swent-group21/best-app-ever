@@ -20,18 +20,25 @@ jest.mock("@/types/ChallengeBuilder", () => ({
   createChallenge: jest.fn(),
 }));
 
+// Mock FirestoreCtrl
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => ({
+    // Mock FirestoreCtrl methods
+  }));
+});
+const mockFirestoreCtrl = new FirestoreCtrl();
+
 const mockNavigation = {
-  reset: jest.fn(),
+  navigate: jest.fn(),
+  reset: jest.fn()
 };
 
 const mockRoute = {
   params: {
-    group_id: "home",
     image_id: "mock-image-id",
+    group_id: "home",
   },
 };
-
-const mockFirestoreCtrl = new FirestoreCtrl();
 
 describe("CreateChallengeViewModel", () => {
   beforeEach(() => {

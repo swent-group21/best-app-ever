@@ -25,9 +25,9 @@ const mockNavigation = {
 
 const mockRoute = {
   params: {
-    group_id: "group123"
-  }
-}
+    group_id: "mock-group-id",
+  },
+};
 
 describe("useCameraViewModel", () => {
   beforeEach(() => {
@@ -115,7 +115,7 @@ describe("useCameraViewModel", () => {
 
     expect(mockFirestoreCtrl.uploadImageFromUri).toHaveBeenCalled;
     expect(mockNavigation.navigate).toHaveBeenCalledWith("CreateChallenge", {
-      group_id: "group123",
+      group_id: "mock-group-id",
       image_id: "mock-image-id",
     });
   });
