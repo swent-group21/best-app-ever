@@ -99,7 +99,7 @@ export default function CreateChallengeScreen({
           <ThemedText
             colorType="textPrimary"
             style={styles.switchText}
-            testID="Location-validation"
+            testID="location-validation"
           >
             Enable location ?
           </ThemedText>

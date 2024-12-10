@@ -29,7 +29,7 @@ export type DBUser = {
 
 export type DBChallenge = {
   challenge_id?: string; // Add this line
-  caption?: string;
+  caption: string;
   uid: string;
   image_id?: string;
   date: Date;
@@ -443,7 +443,9 @@ export default class FirestoreCtrl {
         return {
           ...data,
           challenge_id: doc.id,
+          date: data.date.toDate(),
         } as DBChallenge;
+        
       });
       return posts;
     } catch (error) {
@@ -833,8 +835,9 @@ export default class FirestoreCtrl {
       const posts = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          challenge_id: doc.id,
           ...data,
+          challenge_id: doc.id,
+          date: data.date.toDate(),
         } as DBChallenge;
       });
       return posts;

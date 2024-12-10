@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * Screen for the map
@@ -60,10 +60,10 @@ export default function MapScreen({
         showsCompass={true}
         loadingEnabled={true}
       >
-        {challengesWithLocation.map((challenge: any, index) => (
+        {challengesWithLocation.map((challenge: DBChallenge, index) => (
           <MapMarker
             key={index}
-            testID={challenge.challenge_name}
+            testID={challenge.caption}
             coordinate={{
               latitude: challenge.location.latitude,
               longitude: challenge.location.longitude,
@@ -71,12 +71,10 @@ export default function MapScreen({
             image={require(uri)}
             flat={true}
             title={challenge.caption}
-            description={`${challenge.date.toDate().toLocaleString()}`}
+            description={`${challenge.date.toLocaleString()}`}
             onCalloutPress={() => {
               navigation.navigate("Maximize", {
                 challenge: challenge,
-                user: user,
-                firestoreCtrl: firestoreCtrl,
               });
             }}
           />
