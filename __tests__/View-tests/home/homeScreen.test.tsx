@@ -329,4 +329,93 @@ describe("HomeScreen UI Tests", () => {
 
     expect(getByTestId("filter-icon")).toBeTruthy();
   });
+
+  it("displays no challenges when filterByFriends is true and challengesFromFriends is undefined", () => {
+    mockUseHomeScreenViewModel.mockReturnValue({
+      userIsGuest: false,
+      challenges: [{ uid: "user-1", challenge_name: "General Challenge" }],
+      challengesFromFriends: undefined, // Simule des défis d'amis manquants
+      groups: [],
+      titleChallenge: "go get hot wine!!",
+    });
+
+    const { getByText, getByTestId } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    // Activer le filtre "Filter by Friends"
+    fireEvent.press(getByTestId("filter-icon"));
+    fireEvent.press(getByTestId("filter-by-friends-option"));
+
+    // Vérifie qu'aucun défi n'est affiché
+    expect(getByText("No challenges to display")).toBeTruthy();
+  });
+
+  it("displays no challenges when filterByFriends is false and challenges is undefined", () => {
+    mockUseHomeScreenViewModel.mockReturnValue({
+      userIsGuest: false,
+      challenges: undefined, // Simule l'absence de défis généraux
+      challengesFromFriends: [
+        { uid: "friend-1", challenge_name: "Friend Challenge" },
+      ],
+      groups: [],
+      titleChallenge: "go get hot wine!!",
+    });
+
+    const { getByText, getByTestId } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    // Désactiver le filtre "Filter by Friends" (par défaut)
+    fireEvent.press(getByTestId("filter-icon"));
+    fireEvent.press(getByTestId("see-all-challenges-option"));
+
+    // Vérifie qu'aucun défi n'est affiché
+    expect(getByText("No challenges to display")).toBeTruthy();
+  });
+  it("closes the filter menu when onRequestClose is triggered", () => {
+    const { getByTestId, queryByTestId } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={{ navigate: jest.fn() }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    // Ouvre le modal
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+
+    // Vérifie que le modal est visible
+    expect(getByTestId("filter-modal")).toBeTruthy();
+
+    // Simule la fermeture du modal via `onRequestClose`
+    fireEvent(getByTestId("filter-modal"), "onRequestClose");
+
+    // Vérifie que le modal est fermé
+    expect(queryByTestId("filter-modal")).toBeNull();
+  });
 });
