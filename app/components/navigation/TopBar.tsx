@@ -43,37 +43,62 @@ export function TopBar({
   rightAction = () => {},
   title,
   colorType = "white",
-  testID,
-}: TopbarProps) {
+}: Readonly<TopbarProps>) {
   const color = useThemeColor({}, colorType);
 
   const isImageUrl = (icon?: string) =>
     icon?.startsWith("http://") || icon?.startsWith("https://");
 
+  // Determine the left content
+  const leftContent = leftIcon ? (
+    isImageUrl(leftIcon) ? (
+      <TouchableOpacity onPress={leftAction}>
+        <Image
+          source={{ uri: leftIcon }}
+          style={styles.iconImage}
+          testID={`topLeftImage-${leftIcon}`}
+        />
+      </TouchableOpacity>
+    ) : (
+      <ThemedIconButton
+        name={leftIcon}
+        onPress={leftAction}
+        size={30}
+        color={color}
+        testID={`topLeftIcon-${leftIcon}`}
+      />
+    )
+  ) : (
+    <View style={styles.placeholder} />
+  );
+
+  // Determine the right content
+  const rightContent = rightIcon ? (
+    isImageUrl(rightIcon) ? (
+      <TouchableOpacity onPress={rightAction}>
+        <Image
+          source={{ uri: rightIcon }}
+          style={styles.iconImage}
+          testID={`topRightImage-${rightIcon}`}
+        />
+      </TouchableOpacity>
+    ) : (
+      <ThemedIconButton
+        name={rightIcon}
+        onPress={rightAction}
+        size={30}
+        color={color}
+        testID={`topRightIcon-${rightIcon}`}
+      />
+    )
+  ) : (
+    <View style={styles.placeholder} />
+  );
+
   return (
     <View style={styles.container} testID="topBar">
-      {leftIcon ? (
-        isImageUrl(leftIcon) ? (
-          <TouchableOpacity onPress={leftAction}>
-            <Image
-              source={{ uri: leftIcon }}
-              style={styles.iconImage}
-              testID={`topLeftImage-${leftIcon}`}
-            />
-          </TouchableOpacity>
-        ) : (
-          <ThemedIconButton
-            name={leftIcon}
-            onPress={leftAction}
-            size={30}
-            color={color}
-            testID={`topLeftIcon-${leftIcon}`}
-          />
-        )
-      ) : (
-        <View style={styles.placeholder} />
-      )}
-      {title && (
+      {leftContent}
+      {Boolean(title) && (
         <ThemedText
           style={styles.title}
           colorType={colorType}
@@ -82,27 +107,7 @@ export function TopBar({
           {title}
         </ThemedText>
       )}
-      {rightIcon ? (
-        isImageUrl(rightIcon) ? (
-          <TouchableOpacity onPress={rightAction}>
-            <Image
-              source={{ uri: rightIcon }}
-              style={styles.iconImage}
-              testID={`topRightImage-${rightIcon}`}
-            />
-          </TouchableOpacity>
-        ) : (
-          <ThemedIconButton
-            name={rightIcon}
-            onPress={rightAction}
-            size={30}
-            color={color}
-            testID={`topRightIcon-${rightIcon}`}
-          />
-        )
-      ) : (
-        <View style={styles.placeholder} />
-      )}
+      {rightContent}
     </View>
   );
 }
