@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Modal } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
@@ -11,6 +11,8 @@ import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewMode
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import GroupIcon from "@/components/home/GroupIcon";
 import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { TouchableOpacity, Text } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,12 +37,15 @@ export default function HomeScreen({
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
-  const [filterByFriends] = useState(false);
+  const [filterByFriends, setFilterByFriends] = useState(false);
+  const [showFilterMenu, setShowFilterMenu] = useState(false); // État pour le menu
+
 
   // Determine displayed challenges
   const displayedChallenges = filterByFriends
     ? challengesFromFriends
     : challenges;
+
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -90,12 +95,45 @@ export default function HomeScreen({
         contentContainerStyle={styles.contentContainer}
         colorType="transparent"
       >
+
         {/* Current Challenge Description  */}
         <ChallengeDescription
           dBChallengeDescription={titleChallenge}
           onTimerFinished={() => console.info("Timer Finished")}
           testID={`description-id`}
         />
+
+        <ThemedIconButton
+          name="filter"
+          onPress={() => setShowFilterMenu(true)} // Ouvre le menu
+          style={styles.filterIcon}
+          colorType="backgroundSecondary"
+          testID="filter-icon"
+        />
+        <Modal
+          visible={showFilterMenu}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowFilterMenu(false)}
+        >
+          <ThemedView style={styles.modalOverlay}>
+            <ThemedView style={styles.modalContent}>
+              <TouchableOpacity style={styles.optionButton} onPress={() => {
+                setFilterByFriends(true);
+                setShowFilterMenu(false);
+              }}>
+                <Text style={styles.optionText}>Filter by Friends</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.optionButton} onPress={() => {
+                setFilterByFriends(false);
+                setShowFilterMenu(false);
+              }}>
+                <Text style={styles.optionText}>See All Challenges</Text>
+              </TouchableOpacity>
+            </ThemedView>
+          </ThemedView>
+        </Modal>
+
         {displayedChallenges.length === 0 ? (
           <ThemedText>No challenges to display</ThemedText>
         ) : (
@@ -131,17 +169,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  filterIconContainer: {
-    position: "absolute",
-    top: height * 0.25,
-    right: width * 0.05,
-    zIndex: 10,
-    backgroundColor: "transparent",
-  },
   filterIcon: {
     padding: 5,
     backgroundColor: "#444",
     borderRadius: 15,
+    position: "relative",
+    right : 0
+    
+
   },
   filterDropdown: {
     backgroundColor: "#333",
@@ -196,4 +231,31 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 60,
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    width: 300,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  optionButton: {
+    padding: 15,
+    marginVertical: 10,
+    backgroundColor: "#ddd",
+    borderRadius: 8,
+    width: "100%",
+    alignItems: "center",
+  },
+  optionText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  
 });
