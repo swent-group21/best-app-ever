@@ -72,13 +72,18 @@ export default function useCameraViewModel(
   const takePicture = async () => {
     if (camera.current) {
       try {
+        console.log("Current Camera Valid")
         const capturedPicture =
           await camera.current?.takePictureAsync(cameraPictureOptions);
         setPicture(capturedPicture);
+        console.log("setIsCameraEnabled called", false);
         setIsCameraEnabled(false);
+        console.log("isCameraEnabled", isCameraEnabled);
       } catch (error) {
-        console.log(error);
+        console.log("Error in takePicture: ", error);
       }
+    } else {
+      console.error('camera.current is null'); //debug log
     }
   };
 

@@ -22,6 +22,7 @@ const { width, height } = Dimensions.get("window");
  * @returns : a screen for the camera
  */
 export default function Camera({ navigation, firestoreCtrl, route }: any) {
+  console.log("Route:", route)
   const {
     facing,
     permission,
