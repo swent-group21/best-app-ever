@@ -197,14 +197,6 @@ export const Nav: React.FC<AppStackProps> = ({
             )}
           </Screen>
 
-          <Screen name = 'FriendsProfile'>
-            {(props: any) => (
-              <FriendsProfile
-                {...props}
-              />
-            )}
-          </Screen>
-
         </Group>
       </Navigator>
     </NavigationContainer>
