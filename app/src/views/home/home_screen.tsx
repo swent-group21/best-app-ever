@@ -103,13 +103,14 @@ export default function HomeScreen({
         {/* Filter by Friends */}
         <ThemedIconButton
           name="filter"
-          onPress={() => setShowFilterMenu(true)} // Ouvre le menu
+          onPress={() => setShowFilterMenu(true)}
           style={styles.filterIcon}
           colorType="backgroundSecondary"
           testID="filter-icon"
         />
         <Modal
           visible={showFilterMenu}
+          testID="filter-modal"
           transparent={true}
           animationType="fade"
           onRequestClose={() => setShowFilterMenu(false)}
@@ -128,6 +129,7 @@ export default function HomeScreen({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.optionButton}
+                testID="see-all-challenges-option"
                 onPress={() => {
                   setFilterByFriends(false);
                   setShowFilterMenu(false);

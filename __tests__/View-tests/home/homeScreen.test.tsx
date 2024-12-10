@@ -279,4 +279,54 @@ describe("HomeScreen UI Tests", () => {
       expect(mockUser.friends).toContain(challengeUid);
     });
   });
+
+  it("sets filter to all challenges and closes the menu", async () => {
+    const { getByTestId } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+
+    const allChallengesOption = getByTestId("see-all-challenges-option");
+    fireEvent.press(allChallengesOption);
+
+    expect(getByTestId("filter-icon")).toBeTruthy();
+  });
+
+  it("resets filter to all challenges and closes the filter menu", async () => {
+    const { getByTestId, queryByTestId } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+
+    expect(getByTestId("filter-modal")).toBeTruthy();
+
+    const allPostsOption = getByTestId("see-all-challenges-option");
+    fireEvent.press(allPostsOption);
+
+    expect(queryByTestId("filter-modal")).toBeNull();
+
+    expect(getByTestId("filter-icon")).toBeTruthy();
+  });
 });
