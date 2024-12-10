@@ -6,6 +6,43 @@ import { GeoPoint } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 
 /**
+ * Function to build a challenge object from Firestore data
+ * @param challengeId : the challenge ID
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a challenge object
+ */
+export const buildChallenge = async (
+  challengeId: string,
+  firestoreCtrl: FirestoreCtrl,
+): Promise<DBChallenge> => {
+  try {
+    // Fetch the challenge data from Firestore
+    const challenge = await firestoreCtrl.getChallenge(challengeId);
+
+    if (!challenge) {
+      throw console.error("Error: no challenge found when buildChallenge");
+    }
+    // Fetch additional required data like user's name
+    await firestoreCtrl.getName(challenge.uid);
+
+    const challengeData: DBChallenge = {
+      caption: challenge.caption,
+      uid: challenge.uid,
+      image_id: challenge.image_id,
+      likes: challenge.likes,
+      date: challenge.date,
+      location: challenge.location,
+      challenge_description: challenge.challenge_description,
+      group_id: challenge.group_id,
+    };
+
+    return challengeData;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
  * Used to create a Challenge and store it in Firestore DB
  * @param firestoreCtrl : FirestoreCtrl object
  * @param challenge_name : the name of the challenge

@@ -94,7 +94,6 @@ export function useMapScreenViewModel(
     };
 
     fetchCurrentChallenge().then((challengeTitle) => {
-      console.log("Current challenge fetched : ", challengeTitle);
       fetchChallenges(challengeTitle);
     });
   }, [firestoreCtrl]);

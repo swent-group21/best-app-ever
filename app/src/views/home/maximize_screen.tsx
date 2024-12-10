@@ -87,7 +87,7 @@ export default function MaximizeScreen({
           <ThemedView style={styles.userInfo} colorType="transparent">
             <ThemedText colorType="white" type="defaultSemiBold">{postUser?.name}</ThemedText>
             <ThemedText colorType="white">
-              {"on " + postDate.toDate().toLocaleString()}
+              {"on " + postDate.toUTCString()}
             </ThemedText>
           </ThemedView>
         </ThemedView>

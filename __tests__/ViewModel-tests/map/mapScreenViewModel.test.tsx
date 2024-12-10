@@ -5,6 +5,7 @@ import {
 } from "expo-location";
 import FirestoreCtrl, {
   DBChallenge,
+  DBChallengeDescription,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
 import { GeoPoint } from "firebase/firestore";
@@ -13,7 +14,12 @@ import { GeoPoint } from "firebase/firestore";
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getKChallenges: jest.fn(() => []),
-    getPostsByChallengeTitle: jest.fn(() => [])
+    getChallengeDescription: jest.fn(() => (
+      { title: "Description Test", 
+        description: "Description", 
+        endDate: new Date(2024, 1, 1, 0, 0, 0, 0) 
+      } as DBChallengeDescription)),
+    getPostsByChallengeTitle: jest.fn(() => []),
   }));
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
@@ -156,7 +162,7 @@ describe("useMapScreenViewModel", () => {
       },
     ];
 
-    (mockFirestoreCtrl.getKChallenges as jest.Mock).mockResolvedValueOnce(
+    (mockFirestoreCtrl.getPostsByChallengeTitle as jest.Mock).mockResolvedValueOnce(
       mockChallenges,
     );
 
@@ -171,7 +177,7 @@ describe("useMapScreenViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
+      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith("Description Test");
       expect(result.current.challengesWithLocation).toEqual([
         mockChallenges[0],
       ]); // Only valid locations should be included
@@ -197,7 +203,7 @@ describe("useMapScreenViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
+      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith("Description Test");
       expect(result.current.challengesWithLocation).toEqual([]);
     });
   });

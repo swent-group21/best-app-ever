@@ -32,7 +32,7 @@ export type DBChallenge = {
   caption: string;
   uid: string;
   image_id?: string;
-  date: Date;
+  date?: Date;
   likes?: string[]; // User IDs
   location?: GeoPoint | null;
   group_id?: string;
