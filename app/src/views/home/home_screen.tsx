@@ -43,9 +43,8 @@ export default function HomeScreen({
 
   // Determine displayed challenges
   const displayedChallenges = filterByFriends
-    ? challengesFromFriends
-    : challenges;
-
+  ? challengesFromFriends || [] 
+  : challenges || [];
 
   return (
     <ThemedView style={styles.bigContainer} testID="home-screen">
@@ -118,7 +117,7 @@ export default function HomeScreen({
         >
           <ThemedView style={styles.modalOverlay}>
             <ThemedView style={styles.modalContent}>
-              <TouchableOpacity style={styles.optionButton} onPress={() => {
+              <TouchableOpacity style={styles.optionButton} testID="filter-by-friends-option" onPress={() => {
                 setFilterByFriends(true);
                 setShowFilterMenu(false);
               }}>

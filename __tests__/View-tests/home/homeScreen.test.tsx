@@ -2,6 +2,7 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import { fireEvent } from "@testing-library/react-native";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
@@ -133,7 +134,6 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    // Vérifie que le texte pour "aucun défi" est affiché
     expect(getByText("No challenges to display")).toBeTruthy();
   });
 
@@ -158,7 +158,128 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    // Vérifie que les défis et groupes ne sont pas affichés
     expect(getByText("No challenges to display")).toBeTruthy();
   });
+
+  it("opens the filter menu when the filter button is pressed", () => {
+    const { getByTestId, getByText } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+
+    expect(getByText("Filter by Friends")).toBeTruthy();
+    expect(getByText("See All Posts")).toBeTruthy();
+  });
+
+  it("applies the correct filter when an option is selected", () => {
+    const { getByTestId, getByText } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+
+    const filterByFriendsOption = getByText("Filter by Friends");
+    fireEvent.press(filterByFriendsOption);
+
+    expect(getByText("No challenges to display")).toBeTruthy(); 
+  });
+
+  it("closes the filter menu after selection", () => {
+    const { getByTestId, getByText, queryByText } = render(
+      <HomeScreen
+        user={{
+          name: "Test User",
+          uid: "12345",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+
+    const filterByFriendsOption = getByText("Filter by Friends");
+    fireEvent.press(filterByFriendsOption);
+
+    expect(queryByText("Filter by Friends")).toBeNull();
+    expect(queryByText("See All Challenges")).toBeNull();
+  });
+
+  it("the feed only shows friend's posts", async () => {
+    mockUseHomeScreenViewModel.mockReturnValue({
+      userIsGuest: false,
+      challenges: [
+        {
+          uid: "friend-1",
+          challenge_name: "Challenge 1",
+          description: "Description from Friend 1",
+          challenge_id: "1",
+        },
+        {
+          uid: "user-1",
+          challenge_name: "General Challenge",
+          description: "Description 1",
+          challenge_id: "2",
+        },
+      ],
+      groups: [],
+      titleChallenge: 'go get hot wine!!',
+    });
+  
+    const mockUser = {
+      name: "Test User",
+      uid: "12345",
+      email: "test@example.com",
+      createdAt: new Date(),
+      friends: ["friend-1"], 
+    };
+  
+    const { getByTestId, queryAllByTestId } = render(
+      <HomeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />
+    );
+  
+    const filterButton = getByTestId("filter-icon");
+    fireEvent.press(filterButton);
+  
+    const filterByFriendsOption = getByTestId("filter-by-friends-option");
+    fireEvent.press(filterByFriendsOption);
+  
+    const challenges = queryAllByTestId(/challenge-id-/);
+  
+    challenges.forEach((challenge) => {
+      const challengeUid = challenge.props.challengeDB.uid; 
+      expect(mockUser.friends).toContain(challengeUid); 
+  });
 });
+  
+});
+
+
