@@ -21,6 +21,7 @@ import FriendsScreen from "@/src/views/friends/friends_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
 import GroupScreen from "@/src/views/group/GroupScreen";
+import FriendsProfile from "@/src/views/friends/friends_profile";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();
@@ -197,6 +198,15 @@ export const Nav: React.FC<AppStackProps> = ({
               />
             )}
           </Screen>
+
+          <Screen name = 'FriendsProfile'>
+            {(props: any) => (
+              <FriendsProfile
+                {...props}
+              />
+            )}
+          </Screen>
+
         </Group>
       </Navigator>
     </NavigationContainer>

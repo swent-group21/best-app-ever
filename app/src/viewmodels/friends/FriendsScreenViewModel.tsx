@@ -61,8 +61,8 @@ export function useFriendsScreenViewModel(firestoreCtrl: any, uid: string) {
       )
     : [];
 
-  const handleFriendPress = (friendId: string) => {
-    console.log(`Navigate to friend ${friendId}'s profile`);
+  const handleFriendPress = (friend: DBUser) => {
+    console.log("Friend pressed: ", friend);
   };
 
   return {
