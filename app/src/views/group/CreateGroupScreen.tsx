@@ -15,9 +15,9 @@ export default function CreateGroupScreen({
   navigation,
   firestoreCtrl,
 }: {
-  user: DBUser;
-  navigation: any;
-  firestoreCtrl: any;
+  readonly user: DBUser;
+  readonly navigation: any;
+  readonly firestoreCtrl: any;
 }) {
   const {
     groupName,

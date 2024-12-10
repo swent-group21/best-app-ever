@@ -26,10 +26,10 @@ export default function SetUsernameScreen({
   firestoreCtrl,
   setUser,
 }: {
-  user: DBUser;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
-  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  readonly user: DBUser;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
 }) {
   const {
     username,
@@ -88,7 +88,7 @@ export default function SetUsernameScreen({
           />
         </ThemedView>
 
-        {errorMessage && (
+        {Boolean(errorMessage) && (
           <ThemedText style={styles.errorMessage}>{errorMessage}</ThemedText>
         )}
 

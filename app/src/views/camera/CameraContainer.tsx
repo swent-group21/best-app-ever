@@ -29,7 +29,6 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     camera,
     picture,
     isCameraEnabled,
-    flashMode,
     isFlashEnabled,
     zoom,
     toggleCameraFacing,

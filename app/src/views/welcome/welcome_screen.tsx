@@ -23,9 +23,9 @@ export default function WelcomeScreens({
   navigation,
   firestoreCtrl,
 }: {
-  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const color = useThemeColor({}, "textPrimary");
   const [activeIndex, setActiveIndex] = useState(0);

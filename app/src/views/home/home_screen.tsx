@@ -19,9 +19,9 @@ export default function HomeScreen({
   navigation,
   firestoreCtrl,
 }: {
-  user: DBUser;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly user: DBUser;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     userIsGuest,
@@ -35,7 +35,7 @@ export default function HomeScreen({
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
-  const [showFilterOptions, setShowFilterOptions] = useState(false);
+  //const [showFilterOptions, setShowFilterOptions] = useState(false);
   const [filterByFriends, setFilterByFriends] = useState(false);
 
   // Determine displayed challenges

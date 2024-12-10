@@ -21,9 +21,9 @@ export default function WelcomeFinalScreen({
   navigation,
   firestoreCtrl,
 }: {
-  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const { navigateToSignIn, navigateToSignUp, continueAsGuest } =
     WelcomeFinalViewModel({ firestoreCtrl, navigation, setUser });
