@@ -11,8 +11,11 @@ export default function CreateGroupViewModel({
   navigation: any;
   firestoreCtrl: FirestoreCtrl;
 }) {
+  const MIN_RADIUS = 2000;
+  const MAX_RADIUS = 50000;
   const [groupName, setGroupName] = useState("");
   const [challengeTitle, setChallengeTitle] = useState("");
+  const [radius, setRadius] = useState(MIN_RADIUS);
 
   // Create the challenge
   const makeGroup = async () => {
@@ -41,5 +44,6 @@ export default function CreateGroupViewModel({
     challengeTitle,
     setChallengeTitle,
     makeGroup,
+    setRadius,
   };
 }

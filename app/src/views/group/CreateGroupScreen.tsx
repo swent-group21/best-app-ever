@@ -25,6 +25,7 @@ export default function CreateGroupScreen({
     challengeTitle,
     setChallengeTitle,
     makeGroup,
+    setRadius,
   } = CreateGroupViewModel({ user, navigation, firestoreCtrl });
 
   return (
