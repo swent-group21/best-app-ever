@@ -845,6 +845,7 @@ export default class FirestoreCtrl {
       const randomUsers = allUsers
         .filter(user => 
           user.uid !== uid &&
+          user.name !== 'Guest' &&
           !userFriends.some(f => f.uid === user.uid) &&
           !Array.from(friendSuggestions).some(f => f.uid === user.uid)
         )
