@@ -65,7 +65,7 @@ export function Challenge({
     const fetchLikes = async () => {
       try {
         const fetchedLikes = await firestoreCtrl.getLikesOf(
-          challengeDB.challenge_id ?? ""
+          challengeDB.challenge_id ?? "",
         );
         setIsLiked(fetchedLikes.includes(currentUser.uid));
         setLikes(fetchedLikes);
@@ -82,7 +82,7 @@ export function Challenge({
     const fetchComments = async () => {
       try {
         const fetchedComments = await firestoreCtrl.getCommentsOf(
-          challengeDB.challenge_id ?? ""
+          challengeDB.challenge_id ?? "",
         );
         setComments(fetchedComments);
       } catch (error) {
@@ -103,10 +103,7 @@ export function Challenge({
         : likes.filter((userId) => userId !== currentUser.uid);
 
       setLikes(newLikeList);
-      firestoreCtrl.updateLikesOf(
-        challengeDB.challenge_id ?? "",
-        newLikeList
-      );
+      firestoreCtrl.updateLikesOf(challengeDB.challenge_id ?? "", newLikeList);
       console.log("Likes updated successfully");
     } catch (error) {
       console.error("Error updating likes:", error);
@@ -128,10 +125,7 @@ export function Challenge({
         {/* User Info */}
         <ThemedView style={styles.userInfo}>
           {user?.image_id ? (
-            <Image
-              source={{ uri: user.image_id }}
-              style={styles.userAvatar}
-            />
+            <Image source={{ uri: user.image_id }} style={styles.userAvatar} />
           ) : (
             <ThemedView style={styles.defaultAvatar}>
               <ThemedText style={styles.avatarText}>
@@ -139,13 +133,15 @@ export function Challenge({
               </ThemedText>
             </ThemedView>
           )}
-          <ThemedText style={styles.userName}>{user?.name || "Anonymous"}</ThemedText>
+          <ThemedText style={styles.userName}>
+            {user?.name || "Anonymous"}
+          </ThemedText>
         </ThemedView>
 
         {/* Challenge Image */}
         <Image
           source={{
-            uri: challengeDB.image_id ||placeholderImage,
+            uri: challengeDB.image_id || placeholderImage,
           }}
           style={styles.challengeImage}
         />
@@ -186,7 +182,9 @@ export function Challenge({
               })
             }
           >
-            <ThemedText style={styles.commentText} testID="add-a-comment">Add a comment...</ThemedText>
+            <ThemedText style={styles.commentText} testID="add-a-comment">
+              Add a comment...
+            </ThemedText>
           </TouchableWithoutFeedback>
         </ThemedView>
       </ThemedView>

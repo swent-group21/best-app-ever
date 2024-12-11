@@ -15,7 +15,10 @@ import { SingleComment } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
-import FirestoreCtrl, { DBUser, DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBUser,
+  DBChallenge,
+} from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -74,37 +77,43 @@ export default function MaximizeScreen({
         automaticallyAdjustKeyboardInsets={true}
         colorType="transparent"
       >
-      <ThemedView style= {{width: width,flexDirection: 'row', height : height*0.1}} colorType="transparent">
-        {/* User Info */}
-        <ThemedView style={styles.userInfo}>
-          {postUser?.image_id ? (
-            <Image
-              source={{ uri: postUser.image_id }}
-              style={styles.userAvatar}
-            />
-          ) : (
-            <ThemedView style={styles.defaultAvatar}>
-              <Text style={styles.avatarText}>
-                {postUser?.name?.charAt(0).toUpperCase() || "A"}
-              </Text>
+        <ThemedView
+          style={{ width: width, flexDirection: "row", height: height * 0.1 }}
+          colorType="transparent"
+        >
+          {/* User Info */}
+          <ThemedView style={styles.userInfo}>
+            {postUser?.image_id ? (
+              <Image
+                source={{ uri: postUser.image_id }}
+                style={styles.userAvatar}
+              />
+            ) : (
+              <ThemedView style={styles.defaultAvatar}>
+                <Text style={styles.avatarText}>
+                  {postUser?.name?.charAt(0).toUpperCase() || "A"}
+                </Text>
+              </ThemedView>
+            )}
+            <ThemedView style={styles.userDetails}>
+              <ThemedText style={styles.userName}>
+                {postUser?.name || "Anonymous"}
+              </ThemedText>
+              <ThemedText style={styles.postDate}>
+                {postDate.toLocaleString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </ThemedText>
             </ThemedView>
-          )}
-          <ThemedView style={styles.userDetails}>
-            <ThemedText style={styles.userName}>{postUser?.name || "Anonymous"}</ThemedText>
-            <ThemedText style={styles.postDate}>
-              {postDate.toLocaleString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </ThemedText>
-           
           </ThemedView>
-          
-        </ThemedView>
-        <ThemedView style={{position: 'absolute', right: 15, top: 30}} colorType="transparent">
-        {challenge.location && (
+          <ThemedView
+            style={{ position: "absolute", right: 15, top: 30 }}
+            colorType="transparent"
+          >
+            {challenge.location && (
               <ThemedIconButton
                 name="location-outline"
                 testID="location-button"
@@ -121,8 +130,8 @@ export default function MaximizeScreen({
                 colorType="white"
               />
             )}
+          </ThemedView>
         </ThemedView>
-      </ThemedView>
 
         {/* Post Image with Double Tap */}
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
@@ -153,7 +162,7 @@ export default function MaximizeScreen({
           />
           <ThemedText style={styles.likeCount}>
             {likeList.length} {likeList.length === 1 ? "Like" : "Likes"}
-          </ThemedText>  
+          </ThemedText>
         </ThemedView>
 
         {/* Comment Input */}
@@ -209,7 +218,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: width * 0.9,
     marginLeft: 10,
-    
   },
   userAvatar: {
     width: 50,
@@ -257,7 +265,6 @@ const styles = StyleSheet.create({
   },
   locationButton: {
     position: "relative",
-    
   },
   postDescription: {
     fontSize: 16,
@@ -269,7 +276,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
-
   },
   likeCount: {
     fontSize: 14,

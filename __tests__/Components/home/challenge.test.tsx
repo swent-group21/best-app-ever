@@ -106,8 +106,6 @@ describe("Challenge Component", () => {
     });
   });
 
- 
-
   it("navigates to Maximize screen when expand button is pressed", async () => {
     render(
       <Challenge
@@ -124,7 +122,6 @@ describe("Challenge Component", () => {
     await waitFor(() => {
       fireEvent.press(screen.getByTestId("add-a-comment"));
     });
-
 
     expect(navigation.navigate).toHaveBeenCalledWith("Maximize", {
       navigation: navigation,
@@ -148,11 +145,10 @@ describe("Challenge Component", () => {
 
     // Like the challenge
     await waitFor(() => {
-      fireEvent.press( screen.getByTestId("like-button"));
+      fireEvent.press(screen.getByTestId("like-button"));
     });
 
     // Ensure updateLikesOf was called with the new likes list
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled(
-    );
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
   });
 });

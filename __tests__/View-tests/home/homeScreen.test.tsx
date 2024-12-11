@@ -3,7 +3,6 @@ import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
   useHomeScreenViewModel: jest.fn(),
@@ -177,14 +176,14 @@ describe("HomeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
-  
-    const challengeComponents = getAllByTestId(/challenge-id-\d+/); 
-  
+
+    const challengeComponents = getAllByTestId(/challenge-id-\d+/);
+
     fireEvent.press(challengeComponents[0]);
     fireEvent.press(challengeComponents[0]);
-  
+
     expect(challengeComponents[0]).toBeTruthy();
   });
 });

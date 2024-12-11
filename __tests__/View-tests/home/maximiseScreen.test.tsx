@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent} from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import MaximizeScreen from "@/src/views/home/maximize_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -22,7 +22,7 @@ describe("MaximizeScreen UI Tests", () => {
     uid: "user-1",
     name: "Test User",
     image_id: "https://example.com/user-image.jpg",
-    email : "bla@gmail.com", 
+    email: "bla@gmail.com",
     createdAt: new Date(),
   };
   const mockRoute = {
@@ -147,7 +147,7 @@ describe("MaximizeScreen UI Tests", () => {
         navigation={mockNavigation}
         route={mockRoute}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const locationButton = getByTestId("location-button");
@@ -163,16 +163,21 @@ describe("MaximizeScreen UI Tests", () => {
 
   it("toggles the like button when pressed", () => {
     const mockToggleLike = jest.fn();
-    jest.spyOn(require("@/src/viewmodels/home/MaximizeScreenViewModel"), "useMaximizeScreenViewModel").mockReturnValue({
-      toggleLike: mockToggleLike,
-      isLiked: false,
-      likeList: [],
-      commentList: [],
-      postDate: new Date(),
-      postUser: mockUser,
-      postDescription: "A test challenge",
-      postImage: "https://example.com/test-image.jpg",
-    });
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
+        "useMaximizeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        isLiked: false,
+        likeList: [],
+        commentList: [],
+        postDate: new Date(),
+        postUser: mockUser,
+        postDescription: "A test challenge",
+        postImage: "https://example.com/test-image.jpg",
+      });
 
     const { getByTestId } = render(
       <MaximizeScreen
@@ -180,7 +185,7 @@ describe("MaximizeScreen UI Tests", () => {
         navigation={mockNavigation}
         route={mockRoute}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const likeButton = getByTestId("like-button");
@@ -188,19 +193,24 @@ describe("MaximizeScreen UI Tests", () => {
 
     expect(mockToggleLike).toHaveBeenCalled();
   });
-  
+
   it("handles double-tap to like the post", () => {
     const mockToggleLike = jest.fn();
-    jest.spyOn(require("@/src/viewmodels/home/MaximizeScreenViewModel"), "useMaximizeScreenViewModel").mockReturnValue({
-      toggleLike: mockToggleLike,
-      isLiked: false,
-      likeList: [],
-      commentList: [],
-      postDate: new Date(),
-      postUser: mockUser,
-      postDescription: "A test challenge",
-      postImage: "https://example.com/test-image.jpg",
-    });
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
+        "useMaximizeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        isLiked: false,
+        likeList: [],
+        commentList: [],
+        postDate: new Date(),
+        postUser: mockUser,
+        postDescription: "A test challenge",
+        postImage: "https://example.com/test-image.jpg",
+      });
 
     const { getByTestId } = render(
       <MaximizeScreen
@@ -208,7 +218,7 @@ describe("MaximizeScreen UI Tests", () => {
         navigation={mockNavigation}
         route={mockRoute}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     const postImage = getByTestId("post-image");
@@ -217,5 +227,4 @@ describe("MaximizeScreen UI Tests", () => {
 
     expect(mockToggleLike).toHaveBeenCalled();
   });
-
 });
