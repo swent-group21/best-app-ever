@@ -126,7 +126,7 @@ describe("useFriendsScreenViewModel", () => {
     );
 
     await act(async () => {
-      await result.current.handleFriendPress("friend1");
+      result.current.handleFriendPress("friend1");
     });
 
     expect(console.log).toHaveBeenCalledWith(

@@ -23,9 +23,9 @@ export function useProfileScreenViewModel(
   image: string | null;
   pickImage: () => Promise<void>;
   upload: () => Promise<void>;
-  handleLogOut: () => void;
-  handleChangeEmail: () => void;
-  handleChangePassword: () => void;
+  handleLogOut: () => Promise<void>;
+  handleChangeEmail: () => Promise<void>;
+  handleChangePassword: () => Promise<void>;
   navigateGoBack: () => void;
 } {
   const userIsGuest = user.name === "Guest";

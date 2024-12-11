@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import ProfileScreen from "@/src/views/home/profile_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
