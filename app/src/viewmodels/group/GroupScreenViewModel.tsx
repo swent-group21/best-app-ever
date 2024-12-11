@@ -51,6 +51,8 @@ export default function useGroupScreenViewModel(
 
   const groupName = group.name ?? "";
   const groupChallengeTitle = group.challengeTitle ?? "";
+  const groupCenter = group.location;
+  const groupRadius = group.radius;
 
   return {
     groupChallenges,
@@ -58,5 +60,7 @@ export default function useGroupScreenViewModel(
     groupName,
     groupChallengeTitle,
     groupId,
+    groupCenter,
+    groupRadius,
   };
 }
