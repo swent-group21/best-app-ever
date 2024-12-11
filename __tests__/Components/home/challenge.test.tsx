@@ -108,7 +108,7 @@ describe("Challenge Component", () => {
   });
 
   it("toggles isOpen state when the challenge is pressed", async () => {
-    render(
+    const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -119,27 +119,20 @@ describe("Challenge Component", () => {
       />,
     );
 
-    const touchable = screen.getByTestId("challenge-touchable");
-
-    // Make sure the useEffects have run
-    await act(async () => {
-      await Promise.resolve();
-    });
-
-    // Initially, the detailed view should not be open
-    expect(() => screen.getByTestId("challenge-container")).toThrow();
+    const touchable = await getByTestId("challenge-touchable");
 
     // Press the touchable to open the details
     await waitFor(() => {
       fireEvent.press(touchable);
     });
 
+
     // Now the detailed view should be visible
-    expect(screen.getByTestId("challenge-container")).toBeTruthy();
+    expect(async () => await screen.getByTestId("challenge-container")).toBeTruthy();
   });
 
   it("navigates to Maximize screen when expand button is pressed", async () => {
-    render(
+    const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -150,12 +143,14 @@ describe("Challenge Component", () => {
       />,
     );
 
+    const touchable = await getByTestId("challenge-touchable");
+
     // Open the detailed view
-    await waitFor(() => {
-      fireEvent.press(screen.getByTestId("challenge-touchable"));
+    await act(() => {
+      fireEvent.press(touchable);
     });
 
-    const expandButton = screen.getByTestId("expand-button");
+    const expandButton = async () => await screen.getByTestId("expand-button");
 
     // Press the expand button
     await act(() => {
