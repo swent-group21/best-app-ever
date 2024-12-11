@@ -20,6 +20,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
     requests,
     filteredUsers,
     handleFriendPress,
+    suggestions,
   } = useFriendsScreenViewModel(firestoreCtrl, uid);
 
   return (
@@ -60,7 +61,16 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
           </ThemedText>
         )}
       </ThemedView>
-    </ThemedView>
+
+      <Text style={styles.suggestionsTitle}>Suggestions for you</Text>
+        <ListOfFilteredUsers
+          filteredUsers={suggestions}
+          searchText="" // Pas besoin de filtrage ici
+          uid={uid}
+          firestoreCtrl={firestoreCtrl}
+        />
+
+            </ThemedView>
   );
 }
 
@@ -97,4 +107,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#333",
   },
+  suggestionsTitle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 20,
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+  
 });
