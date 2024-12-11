@@ -823,13 +823,18 @@ export default class FirestoreCtrl {
     }
   }
 
+  /**
+   * Get friend suggestions for a user.
+   * @param uid The UID of the user.
+   * @returns An array of user suggestions.
+   */
   async getFriendSuggestions(uid: string): Promise<DBUser[]> {
     const allUsers = await this.getAllUsers();
     const userFriends = await this.getFriends(uid);
   
     const friendSuggestions = new Set<DBUser>();
   
-    // Récupérer les amis de mes amis
+    // get friends of friends
     for (const friend of userFriends) {
       const friendsOfFriend = await this.getFriends(friend.uid);
       for (const fof of friendsOfFriend) {
@@ -839,7 +844,7 @@ export default class FirestoreCtrl {
       }
     }
   
-    // Compléter avec des utilisateurs aléatoires si nécessaire
+    // complete with random users
     const neededSuggestions = 10 - friendSuggestions.size;
     if (neededSuggestions > 0) {
       const randomUsers = allUsers

@@ -67,9 +67,10 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
       content: (
         <ListOfFilteredUsers
           filteredUsers={suggestions}
-          searchText="" // Pas besoin de filtrage ici
+          searchText="" 
           uid={uid}
           firestoreCtrl={firestoreCtrl}
+          testID="suggestions-list"
         />
       ),
     },
