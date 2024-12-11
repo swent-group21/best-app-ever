@@ -18,7 +18,7 @@ export default function ListOfFriends({ friends, handleFriendPress }: any) {
       renderItem={({ item, index }) => (
         <FriendListItem
           name={item.name}
-          key={item.uid}
+          key = {item.uid}
           avatar={item.image_id}
           onPress={() => handleFriendPress(item.uid)}
           testID={`friend-item-${item.name}`}

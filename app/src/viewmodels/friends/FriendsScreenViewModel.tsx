@@ -15,18 +15,19 @@ export function useFriendsScreenViewModel(firestoreCtrl: any, uid: string) {
 
   const [suggestions, setSuggestions] = useState<DBUser[]>([]);
 
-  // Fetch friend suggestions
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      try {
-        const suggestions = await firestoreCtrl.getFriendSuggestions(uid);
-        setSuggestions(suggestions);
-      } catch (error) {
-        console.error("Error fetching friend suggestions: ", error);
-      }
-    };
-    fetchSuggestions();
-  }, [firestoreCtrl, uid]);
+    // Fetch friend suggestions
+    useEffect(() => {
+      const fetchSuggestions = async () => {
+        try {
+          const suggestions = await firestoreCtrl.getFriendSuggestions(uid);
+          setSuggestions(suggestions);
+        } catch (error) {
+          console.error("Error fetching friend suggestions: ", error);
+        }
+      };
+      fetchSuggestions();
+    }, [firestoreCtrl, uid]);
+
 
   // Fetch users
   useEffect(() => {
@@ -88,6 +89,6 @@ export function useFriendsScreenViewModel(firestoreCtrl: any, uid: string) {
     requests,
     filteredUsers,
     handleFriendPress,
-    suggestions,
+    suggestions
   };
 }

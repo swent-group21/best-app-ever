@@ -27,7 +27,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
   const sections = [
     {
       id: "search-results",
-      title: null,
+      title: null, 
       content: (
         <ListOfFilteredUsers
           searchText={searchText}
@@ -37,32 +37,28 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
         />
       ),
     },
-
+    
     {
       id: "friends",
       title: "Your friends",
       content: (
-        <ListOfFriends
-          friends={friends}
-          handleFriendPress={handleFriendPress}
-        />
+        <ListOfFriends friends={friends} handleFriendPress={handleFriendPress} />
       ),
     },
     {
       id: "requests",
       title: "Requests",
-      content:
-        requests.length > 0 ? (
-          <RequestList
-            requests={requests}
-            firestoreCtrl={firestoreCtrl}
-            uid={uid}
-          />
-        ) : (
-          <ThemedText style={styles.noRequests}>
-            No friends request for now
-          </ThemedText>
-        ),
+      content: requests.length > 0 ? (
+        <RequestList
+          requests={requests}
+          firestoreCtrl={firestoreCtrl}
+          uid={uid}
+        />
+      ) : (
+        <ThemedText style={styles.noRequests}>
+          No friends request for now
+        </ThemedText>
+      ),
     },
 
     {
@@ -71,7 +67,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
       content: (
         <ListOfFilteredUsers
           filteredUsers={suggestions}
-          searchText=""
+          searchText="" 
           uid={uid}
           firestoreCtrl={firestoreCtrl}
           testID="suggestions-list"
@@ -81,7 +77,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
   ];
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style = {styles.bigContainer}>
       {/* Barre de recherche */}
       <TopBar
         title="Strive is better with friends"
@@ -96,9 +92,7 @@ export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <ThemedView style={styles.sectionContainer}>
-            {item.title && (
-              <Text style={styles.sectionTitle}>{item.title}</Text>
-            )}
+            {item.title && <Text style={styles.sectionTitle}>{item.title}</Text>}
             {item.content}
           </ThemedView>
         )}
