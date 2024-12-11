@@ -29,12 +29,12 @@ export function Challenge({
   testID,
   currentUser,
 }: {
-  challengeDB: DBChallenge;
-  index: number;
-  firestoreCtrl: FirestoreCtrl;
-  navigation: any;
-  testID: string;
-  currentUser: DBUser;
+  readonly challengeDB: DBChallenge;
+  readonly index: number;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly navigation: any;
+  readonly testID: string;
+  readonly currentUser: DBUser;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
