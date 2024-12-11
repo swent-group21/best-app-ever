@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  View,
+  Text,
+} from "react-native";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
+  DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedText } from "@/components/theme/ThemedText";
 
 const { width, height } = Dimensions.get("window");
 
-/**
- * The Challenge component displays a challenge.
- * @param challengeDB : the challenge object
- * @param index : the index of the challenge
- * @param firestoreCtrl : FirestoreCtrl object
- * @param navigation : navigation object
- * @param testID : testID for the component
- * @param currentUser : the current user object
- * @returns : a component for the challenge
- */
 export function Challenge({
   challengeDB,
   index,
@@ -36,206 +33,265 @@ export function Challenge({
   testID: string;
   currentUser: DBUser;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<DBUser | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
-  const [user, setUser] = useState<DBUser>();
-
-  const uri = "@/assets/images/no-image.svg";
-
-  // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date ? challengeDB.date : new Date();
+  const [comment, setComment] = useState<DBComment | null>(null);
 
   // Fetch user data
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await firestoreCtrl.getUser(challengeDB.uid);
+        setUser(userData || null);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     if (challengeDB.uid) {
-      const fetchUser = async () => {
-        try {
-          const userData = await firestoreCtrl.getUser(challengeDB.uid);
-          setUser(userData);
-        } catch (error) {
-          console.error("Error fetching challenges: ", error);
-        }
-      };
       fetchUser();
     }
-  }, [user]);
+  }, [challengeDB.uid, firestoreCtrl]);
 
-  // Fetch likes data
+  // Fetch likes
   useEffect(() => {
-    firestoreCtrl
-      .getLikesOf(challengeDB.challenge_id ?? "")
-      .then((likes: string[]) => {
-        setIsLiked(likes.includes(currentUser.uid));
-        setLikes(likes);
-      });
-  });
+    const fetchLikes = async () => {
+      try {
+        const fetchedLikes = await firestoreCtrl.getLikesOf(
+          challengeDB.challenge_id ?? ""
+        );
+        setIsLiked(fetchedLikes.includes(currentUser.uid));
+        setLikes(fetchedLikes);
+      } catch (error) {
+        console.error("Error fetching likes:", error);
+      }
+    };
 
-  // Display loading state or handle absence of challenge data
+    fetchLikes();
+  }, [challengeDB.challenge_id, currentUser.uid, firestoreCtrl]);
+
+  // Fetch the first comment of the challenge
+  useEffect(() => {
+    const fetchComment = async () => {
+      try {
+        const comments = await firestoreCtrl.getCommentsOf(
+          challengeDB.challenge_id ?? ""
+        );
+        if (comments.length > 0) {
+          setComment(comments[0]); // Display the most recent comment
+        }
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComment();
+  }, [challengeDB.challenge_id, firestoreCtrl]);
+
+  const handleLikePress = async () => {
+    try {
+      const newIsLiked = !isLiked;
+      setIsLiked(newIsLiked);
+
+      const newLikeList = newIsLiked
+        ? [...likes, currentUser.uid]
+        : likes.filter((userId) => userId !== currentUser.uid);
+
+      setLikes(newLikeList);
+      await firestoreCtrl.updateLikesOf(
+        challengeDB.challenge_id ?? "",
+        newLikeList
+      );
+    } catch (error) {
+      console.error("Error updating likes:", error);
+    }
+  };
+
+  // Handle no challenge case
   if (!challengeDB) {
-    return <ThemedText>Loading Challenge...</ThemedText>;
-  } else {
-    return (
-      <ThemedView
-        key={index}
-        testID={testID}
-        style={{ backgroundColor: "transparent" }}
-      >
-        <TouchableOpacity
-          testID="challenge-touchable"
-          onPress={() => setIsOpen(!isOpen)}
-          activeOpacity={0.8}
-        >
-          <ThemedView style={[styles.challenge]}>
-            <Image
-              testID="challenge-image"
-              source={
-                challengeDB.image_id
-                  ? { uri: challengeDB.image_id }
-                  : require(uri)
-              }
-              style={styles.image}
-            />
-
-            {isOpen && (
-              <ThemedView testID="challenge-container" style={styles.container}>
-                <ThemedView
-                  style={[styles.user, { justifyContent: "space-between" }]}
-                >
-                  <ThemedView style={styles.user}>
-                    <ThemedIconButton
-                      name="person-circle-outline"
-                      onPress={() => {
-                        /* user button */
-                      }}
-                      size={45}
-                      color="white"
-                    />
-                    <ThemedView style={styles.userInfo}>
-                      <ThemedText
-                        lightColor="white"
-                        darkColor="white"
-                        type="smallSemiBold"
-                      >
-                        {user?.name}
-                      </ThemedText>
-                      <ThemedText
-                        lightColor="white"
-                        darkColor="white"
-                        type="small"
-                      >
-                        {"on " + challengeDate.toUTCString()}
-                      </ThemedText>
-                    </ThemedView>
-                  </ThemedView>
-                  <ThemedIconButton
-                    testID="expand-button"
-                    name="chevron-expand-outline"
-                    onPress={() => {
-                      navigation.navigate("Maximize", {
-                        navigation: navigation,
-                        firestoreCtrl: firestoreCtrl,
-                        challenge: challengeDB,
-                        user: currentUser,
-                      });
-                    }}
-                    size={25}
-                    style={{ paddingRight: 8 }}
-                    color="white"
-                  />
-                </ThemedView>
-                <ThemedView style={styles.bottomBar}>
-                  <ThemedIconButton
-                    testID="like-button"
-                    name={isLiked ? "heart" : "heart-outline"}
-                    color={isLiked ? "red" : "white"}
-                    size={25}
-                    onPress={() => {
-                      const newIsLiked = !isLiked;
-                      setIsLiked(newIsLiked);
-
-                      const newLikeList = newIsLiked
-                        ? [...likes, currentUser.uid] // Liking
-                        : likes.filter((userId) => userId !== currentUser.uid); // Unliking
-
-                      setLikes(newLikeList);
-
-                      firestoreCtrl.updateLikesOf(
-                        challengeDB.challenge_id ?? "",
-                        newLikeList,
-                      );
-                    }}
-                  />
-                  {challengeDB.location && (
-                    <ThemedIconButton
-                      name="location-outline"
-                      onPress={() => {
-                        navigation.navigate("MapScreen", {
-                          navigation: navigation,
-                          firestoreCtrl: firestoreCtrl,
-                          user: currentUser,
-                          location: challengeDB.location,
-                        });
-                      }}
-                      size={25}
-                      color="white"
-                    />
-                  )}
-                </ThemedView>
-              </ThemedView>
-            )}
-          </ThemedView>
-        </TouchableOpacity>
-      </ThemedView>
-    );
+    return <Text>Loading Challenge...</Text>;
   }
+
+  return (
+    <View style={styles.challengeContainer} testID={testID}>
+      {/* User Info */}
+      <View style={styles.userInfo}>
+        {user?.image_id ? (
+          <Image
+            source={{ uri: user.image_id }}
+            style={styles.userAvatar}
+          />
+        ) : (
+          <ThemedView style={styles.defaultAvatar}>
+            <ThemedText style={styles.avatarText}>
+              {user?.name?.[0]?.toUpperCase() || "A"}
+            </ThemedText>
+          </ThemedView>
+        )}
+        <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
+
+        {/* Location Button */}
+        {challengeDB.location && (
+          <ThemedIconButton
+            testID="location-button"
+            name="location-outline"
+            size={24}
+            color="white"
+            style={styles.locationButton}
+            onPress={() =>
+              navigation.navigate("MapScreen", {
+                navigation,
+                firestoreCtrl,
+                user: currentUser,
+                location: challengeDB.location,
+              })
+            }
+          />
+        )}
+      </View>
+
+      {/* Challenge Image */}
+      <Image
+        source={{
+          uri: challengeDB.image_id || "https://via.placeholder.com/300",
+        }}
+        style={styles.challengeImage}
+      />
+
+      {/* Challenge Description */}
+      {challengeDB.description && (
+        <Text style={styles.challengeDescription}>
+          {challengeDB.description}
+        </Text>
+      )}
+
+      {/* Bottom Section */}
+      <View style={styles.bottomSection}>
+        {/* Like Button */}
+        <View style={styles.likesContainer}>
+          <ThemedIconButton
+            testID="like-button"
+            name={isLiked ? "heart" : "heart-outline"}
+            size={24}
+            color={isLiked ? "red" : "white"}
+            onPress={handleLikePress}
+          />
+          <Text style={styles.likeCount}>{likes.length} likes</Text>
+        </View>
+
+        {/* Comment Section */}
+        {comment && (
+          <View style={styles.commentContainer}>
+            <Text style={styles.commentAuthor}>{comment.user_name}:</Text>
+            <Text style={styles.commentText}>{comment.comment_text}</Text>
+          </View>
+        )}
+
+        {/* Add a Comment */}
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Maximize", {
+              navigation,
+              firestoreCtrl,
+              challenge: challengeDB,
+              user: currentUser,
+            })
+          }
+          style={styles.commentButton}
+        >
+          <Text style={styles.addCommentText}>Add a comment...</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-    marginRight: 24,
-  },
-  challenge: {
-    width: width - 20,
-    height: height / 3,
-    borderRadius: 15,
-    backgroundColor: Colors.light.transparent,
-  },
-  image: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    borderRadius: 15,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
+  challengeContainer: {
+    marginBottom: 20,
     backgroundColor: "transparent",
-  },
-  user: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 3,
-    padding: 5,
-    backgroundColor: "transparent",
+    borderRadius: 10,
+    overflow: "hidden",
+    padding: 10,
+    width: width,
+    alignSelf: "center",
   },
   userInfo: {
-    flexDirection: "column",
-    backgroundColor: "transparent",
-  },
-  bottomBar: {
     flexDirection: "row",
-    verticalAlign: "middle",
-    justifyContent: "space-between",
-    padding: 15,
-    gap: 3,
-    backgroundColor: "transparent",
+    alignItems: "center",
+    marginBottom: 10,
+    justifyContent: "flex-start",
+  },
+  userAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  defaultAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#555",
+  },
+  avatarText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  userName: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  locationButton: {
+    marginLeft: "auto",
+  },
+  challengeImage: {
+    width: "100%",
+    height: height * 0.4,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  challengeDescription: {
+    fontSize: 14,
+    color: "#fff",
+    marginBottom: 10,
+  },
+  bottomSection: {
+    marginTop: 10,
+  },
+  likesContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  likeCount: {
+    color: "#aaa",
+    fontSize: 14,
+    marginLeft: 10,
+  },
+  commentContainer: {
+    flexDirection: "row",
+    marginBottom: 5,
+  },
+  commentAuthor: {
+    color: "#fff",
+    fontWeight: "bold",
+    marginRight: 5,
+  },
+  commentText: {
+    color: "#aaa",
+  },
+  commentButton: {
+    marginTop: 5,
+  },
+  addCommentText: {
+    color: "white",
+    fontSize: 14,
   },
 });
