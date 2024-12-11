@@ -3,8 +3,7 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
   DBGroup,
-  DBChallengeDescription,
-} from "../../models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/FirestoreCtrl";
 
 export default function useGroupScreenViewModel(
   user: DBUser,
@@ -33,25 +32,20 @@ export default function useGroupScreenViewModel(
   }, [user.uid, firestoreCtrl, groupId]);
 
   useEffect(() => {
+    const fetchGroups = async (uid) => {
+      try {
+        const groups = await firestoreCtrl.getGroupsByUserId(uid);
+        return groups.filter(
+          (group) => groupId !== group.gid && group.updateDate !== undefined,
+        );
+      } catch (error) {
+        console.error("Error fetching groups: ", error);
+        return [];
+      }
+    };
+
     if (user.uid) {
-      const fetchGroups = async () => {
-        try {
-          // Fetch groups
-          await firestoreCtrl.getGroupsByUserId(user.uid).then((groups) => {
-            const filteredGroups = groups.filter(
-              (group) =>
-                groupId !== group.gid && group.updateDate !== undefined,
-            );
-            /*const sortedGroups = filteredGroups.sort(
-              (a, b) => b.updateDate.getTime() - a.updateDate.getTime(),
-            );*/
-            setOtherGroups(filteredGroups);
-          });
-        } catch (error) {
-          console.error("Error fetching groups: ", error);
-        }
-      };
-      fetchGroups();
+      fetchGroups(user.uid).then(setOtherGroups);
     }
   }, [user.uid, firestoreCtrl, group]);
 

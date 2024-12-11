@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Install: `expo install @expo/vector-icons`
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
-
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
@@ -21,9 +19,9 @@ export default function HomeScreen({
   navigation,
   firestoreCtrl,
 }: {
-  user: DBUser;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly user: DBUser;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     userIsGuest,
@@ -37,8 +35,7 @@ export default function HomeScreen({
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
-  const [showFilterOptions, setShowFilterOptions] = useState(false);
-  const [filterByFriends, setFilterByFriends] = useState(false);
+  const [filterByFriends] = useState(false);
 
   // Determine displayed challenges
   const displayedChallenges = filterByFriends

@@ -29,10 +29,10 @@ export default function MaximizeScreen({
   route,
   firestoreCtrl,
 }: {
-  user: DBUser;
-  navigation: any;
-  route: any;
-  firestoreCtrl: FirestoreCtrl;
+  readonly user: DBUser;
+  readonly navigation: any;
+  readonly route: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const challenge: DBChallenge = route.params?.challenge;
 

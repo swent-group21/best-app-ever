@@ -20,10 +20,10 @@ export default function MapScreen({
   firestoreCtrl,
   route,
 }: {
-  user: DBUser;
-  navigation: any;
-  firestoreCtrl: FirestoreCtrl;
-  route: any;
+  readonly user: DBUser;
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly route: any;
 }) {
   const firstLocation = route.params?.location;
   const { userLocation, challengesWithLocation, navigateGoBack } =
