@@ -61,6 +61,8 @@ export default function CreateGroupViewModel({
         challengeTitle,
         members,
         creationDate,
+        location,
+        radius,
       );
 
       navigation.navigate("Home");

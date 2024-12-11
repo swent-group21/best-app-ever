@@ -68,6 +68,7 @@ export function useHomeScreenViewModel(
         try {
           const groupsData = await firestoreCtrl.getGroupsByUserId(user.uid);
           setGroups(groupsData);
+          console.log("Groups: ", groupsData);
         } catch (error) {
           console.error("Error fetching groups: ", error);
         }
