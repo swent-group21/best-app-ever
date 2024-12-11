@@ -132,6 +132,7 @@ export default function HomeScreen({
 
       {/* Challenges */}
       <Animated.FlatList
+        testID="scroll-view"
         data={displayedChallenges}
         onScrollEndDrag={handleScrollEnd}
         keyExtractor={(item, index) => `challenge-${index}`}

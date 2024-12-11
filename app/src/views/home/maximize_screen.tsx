@@ -107,6 +107,7 @@ export default function MaximizeScreen({
         {challenge.location && (
               <ThemedIconButton
                 name="location-outline"
+                testID="location-button"
                 onPress={() => {
                   navigation.navigate("MapScreen", {
                     navigation: navigation,
@@ -127,6 +128,7 @@ export default function MaximizeScreen({
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
           <ThemedView style={styles.imageContainer}>
             <Image
+              testID="post-image"
               source={postImage ? { uri: postImage } : require(noImage)}
               style={styles.postImage}
             />

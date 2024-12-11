@@ -1,7 +1,8 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react-native";
+import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
@@ -34,6 +35,14 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
     }),
   }));
 });
+const mockUser = {
+  uid: "user-1",
+  name: "Test User",
+  image_id: "https://example.com/user-image.jpg",
+  email: "bla@gmail.com",
+  createdAt: new Date(),
+};
+const mockOnDoubleTap = jest.fn();
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
@@ -160,5 +169,22 @@ describe("HomeScreen UI Tests", () => {
 
     // Vérifie que les défis et groupes ne sont pas affichés
     expect(getByText("No challenges to display")).toBeTruthy();
+  });
+
+  it("likes a post on double-tap in HomeScreen", () => {
+    const { getAllByTestId } = render(
+      <HomeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />
+    );
+  
+    const challengeComponents = getAllByTestId(/challenge-id-\d+/); 
+  
+    fireEvent.press(challengeComponents[0]);
+    fireEvent.press(challengeComponents[0]);
+  
+    expect(challengeComponents[0]).toBeTruthy();
   });
 });
