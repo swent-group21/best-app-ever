@@ -30,7 +30,46 @@ export default function CreateGroupScreen({
     radius,
     MIN_RADIUS,
     MAX_RADIUS,
+    permission,
   } = CreateGroupViewModel({ user, navigation, firestoreCtrl });
+
+  if (permission === "WAITING") {
+    return (
+      <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
+        <ThemedText
+          style={styles.title}
+          colorType="textPrimary"
+          type="title"
+          testID="permission-waiting-text"
+        >
+          Allow location to create a group
+        </ThemedText>
+      </ThemedView>
+    );
+  }
+
+  if (permission === "REFUSED") {
+    return (
+      <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
+        <ThemedText
+          style={styles.title}
+          colorType="textPrimary"
+          type="title"
+          testID="permission-denied-text"
+        >
+          Permission not granted.
+        </ThemedText>
+        <ThemedText style={styles.permissionRefusedText} type="description">
+          You need to allow location permissions to create a group.
+        </ThemedText>
+        <BottomBar
+          rightIcon="arrow-back"
+          rightAction={() => navigation.navigate("Home")}
+          testID="go-back-home-button"
+        />
+      </ThemedView>
+    );
+  }
 
   return (
     <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
@@ -137,6 +176,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textAlignVertical: "center",
     fontWeight: "600",
+    paddingTop: 10,
+  },
+  permissionRefusedText: {
+    flex: 1,
+    textAlign: "center",
+    textAlignVertical: "center",
     paddingTop: 10,
   },
 });
