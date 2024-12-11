@@ -10,8 +10,8 @@ import {
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
+  DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { ThemedTextButton } from "../theme/ThemedTextButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -33,6 +33,7 @@ export function Challenge({
   const [user, setUser] = useState<DBUser | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
+  const [comments, setComments] = useState<DBComment[]>([]);
 
   // Double-tap logic
   const [lastTap, setLastTap] = useState<number | null>(null);
@@ -70,6 +71,22 @@ export function Challenge({
     fetchLikes();
   }, [challengeDB.challenge_id, currentUser.uid, firestoreCtrl]);
 
+  // Fetch comments
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const fetchedComments = await firestoreCtrl.getCommentsOf(
+          challengeDB.challenge_id ?? ""
+        );
+        setComments(fetchedComments);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [challengeDB.challenge_id, firestoreCtrl]);
+
   const handleLikePress = async () => {
     try {
       const newIsLiked = !isLiked;
@@ -103,12 +120,18 @@ export function Challenge({
       <View style={styles.challengeContainer} testID={testID}>
         {/* User Info */}
         <View style={styles.userInfo}>
-          <Image
-            source={{
-              uri: user?.image_id || "https://via.placeholder.com/50",
-            }}
-            style={styles.userAvatar}
-          />
+          {user?.image_id ? (
+            <Image
+              source={{ uri: user.image_id }}
+              style={styles.userAvatar}
+            />
+          ) : (
+            <View style={styles.defaultAvatar}>
+              <Text style={styles.avatarText}>
+                {user?.name?.charAt(0).toUpperCase() || "A"}
+              </Text>
+            </View>
+          )}
           <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
         </View>
 
@@ -124,6 +147,13 @@ export function Challenge({
         {challengeDB.description && (
           <Text style={styles.challengeDescription}>
             {challengeDB.description}
+          </Text>
+        )}
+
+        {/* First Comment */}
+        {comments.length > 0 && (
+          <Text style={styles.comment}>
+            {comments[0].user_name}: {comments[0].comment_text}
           </Text>
         )}
 
@@ -176,6 +206,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 10,
   },
+  defaultAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  avatarText: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+  },
   userName: {
     fontSize: 16,
     color: "#fff",
@@ -183,7 +227,7 @@ const styles = StyleSheet.create({
   },
   challengeImage: {
     width: "100%",
-    height: height * 0.4,
+    height: height * 0.5,
     borderRadius: 10,
     marginBottom: 10,
   },
@@ -191,6 +235,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#fff",
     marginBottom: 10,
+  },
+  comment: {
+    fontSize: 14,
+    color: "#aaa",
+    marginBottom: 10,
+    fontStyle: "italic",
   },
   bottomBar: {
     flexDirection: "row",
