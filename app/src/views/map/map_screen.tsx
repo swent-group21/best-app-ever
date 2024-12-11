@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import MapView, { MapMarker } from "react-native-maps";
+import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { TopBar } from "@/components/navigation/TopBar";
@@ -26,8 +26,18 @@ export default function MapScreen({
   readonly route: any;
 }) {
   const firstLocation = route.params?.location;
-  const { userLocation, challengesWithLocation, navigateGoBack } =
-    useMapScreenViewModel(firestoreCtrl, navigation, firstLocation);
+  const geoRestriction = route.params?.challengeArea;
+  const {
+    userLocation,
+    challengesWithLocation,
+    navigateGoBack,
+    challengeArea,
+  } = useMapScreenViewModel(
+    firestoreCtrl,
+    navigation,
+    firstLocation,
+    geoRestriction,
+  );
 
   const uri = "@/assets/images/icon_trans.png";
 
@@ -81,6 +91,19 @@ export default function MapScreen({
             }}
           />
         ))}
+
+        {geoRestriction && (
+          <MapCircle
+            center={{
+              latitude: challengeArea.center.latitude,
+              longitude: challengeArea.center.longitude,
+            }}
+            radius={challengeArea.radius}
+            strokeWidth={2}
+            strokeColor="#F00"
+            fillColor="rgba(255,0,0,0.5)"
+          />
+        )}
       </MapView>
     </ThemedView>
   );

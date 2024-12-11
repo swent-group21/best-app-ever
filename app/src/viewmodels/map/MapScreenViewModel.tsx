@@ -22,6 +22,7 @@ export function useMapScreenViewModel(
   firestoreCtrl: FirestoreCtrl,
   navigation: any,
   firstLocation: GeoPoint | undefined,
+  challengeArea: { center: GeoPoint; radius: number } | undefined,
 ) {
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<GeoPoint | undefined>(
@@ -86,5 +87,6 @@ export function useMapScreenViewModel(
     userLocation,
     challengesWithLocation,
     navigateGoBack,
+    challengeArea,
   };
 }
