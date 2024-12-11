@@ -12,6 +12,8 @@ import FirestoreCtrl, {
   DBUser,
   DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { ThemedView } from "@/components/theme/ThemedView";
 
 const { width, height } = Dimensions.get("window");
 

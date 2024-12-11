@@ -166,6 +166,7 @@ export default function MaximizeScreen({
             size={25}
             onPress={addComment}
             colorType="white"
+            style = {{}}
           />
         </View>
 
@@ -276,16 +277,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 15,
     width: "100%",
+    justifyContent: "space-between",
+    paddingHorizontal: 7,
   },
   commentInput: {
     flex: 1,
-    height: 40,
+    height: height * 0.05,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 10,
+    borderRadius: 15,
     paddingHorizontal: 10,
     color: "#fff",
-    marginRight: 10,
+    width: width * 0.85,
   },
   commentList: {
     width: "100%",
