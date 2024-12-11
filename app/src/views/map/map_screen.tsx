@@ -102,9 +102,9 @@ export default function MapScreen({
               longitude: challengeArea.center.longitude,
             }}
             radius={challengeArea.radius}
-            strokeWidth={2}
-            strokeColor="#F00"
-            fillColor="rgba(255,0,0,0.5)"
+            strokeWidth={1}
+            strokeColor="#000000"
+            fillColor="rgba(0,0,0,0.2)"
           />
         )}
       </MapView>

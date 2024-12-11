@@ -43,9 +43,6 @@ export function Challenge({
 
   const uri = "@/assets/images/no-image.svg";
 
-  // @ts-ignore - date is a Timestamp object
-  let challengeDate: Date = challengeDB.date ? challengeDB.date : new Date();
-
   // Fetch user data
   useEffect(() => {
     if (challengeDB.uid) {
@@ -124,7 +121,7 @@ export function Challenge({
                         darkColor="white"
                         type="small"
                       >
-                        {"on " + challengeDate.toUTCString()}
+                        {"on " + challengeDB.date.toUTCString()}
                       </ThemedText>
                     </ThemedView>
                   </ThemedView>
