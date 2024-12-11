@@ -8,6 +8,7 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { GeoPoint } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -40,6 +41,9 @@ export function Challenge({
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
   const [user, setUser] = useState<DBUser>();
+  const [groupCenter, setGroupCenter] = useState<GeoPoint | undefined>();
+  const [groupRadius, setGroupRadius] = useState<number | undefined>();
+  const groupId = challengeDB.group_id;
 
   const uri = "@/assets/images/no-image.svg";
 
@@ -67,6 +71,16 @@ export function Challenge({
         setLikes(likes);
       });
   });
+
+  // Gets the challenge's group area, if it exists
+  useEffect(() => {
+    if (groupId) {
+      firestoreCtrl.getGroup(groupId).then((group) => {
+        setGroupCenter(group.location);
+        setGroupRadius(group.radius);
+      });
+    }
+  }, [groupId]);
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {
@@ -172,6 +186,11 @@ export function Challenge({
                           firestoreCtrl: firestoreCtrl,
                           user: currentUser,
                           location: challengeDB.location,
+                          challengeArea: groupCenter &&
+                            groupRadius && {
+                              center: groupCenter,
+                              radius: groupRadius,
+                            },
                         });
                       }}
                       size={25}
