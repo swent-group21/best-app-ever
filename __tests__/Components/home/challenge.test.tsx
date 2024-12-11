@@ -4,7 +4,6 @@ import {
   fireEvent,
   waitFor,
   screen,
-  act,
 } from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
 import FirestoreCtrl, {

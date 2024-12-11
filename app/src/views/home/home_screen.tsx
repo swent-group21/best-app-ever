@@ -3,7 +3,6 @@ import {
   Animated,
   Dimensions,
   StyleSheet,
-  View,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native";

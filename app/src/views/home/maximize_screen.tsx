@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  View,
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -145,7 +144,7 @@ export default function MaximizeScreen({
         </TouchableWithoutFeedback>
 
         {/* Post Description */}
-        {postDescription && (
+        {Boolean(postDescription) && (
           <ThemedText style={styles.postDescription} colorType="white">
             {postDescription}
           </ThemedText>
@@ -188,8 +187,8 @@ export default function MaximizeScreen({
           {commentList.length === 0 ? (
             <ThemedText>No comments yet</ThemedText>
           ) : (
-            commentList.map((comment, index) => (
-              <SingleComment key={index} {...comment} />
+            commentList.map((comment) => (
+              <SingleComment key={Math.random()} {...comment} />
             ))
           )}
         </ThemedView>

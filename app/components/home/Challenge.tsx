@@ -3,10 +3,7 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  View,
-  Text,
   TouchableWithoutFeedback,
-  TouchableOpacity,
 } from "react-native";
 import FirestoreCtrl, {
   DBChallenge,
@@ -27,12 +24,12 @@ export function Challenge({
   testID,
   currentUser,
 }: {
-  challengeDB: DBChallenge;
-  index: number;
-  firestoreCtrl: FirestoreCtrl;
-  navigation: any;
-  testID: string;
-  currentUser: DBUser;
+  readonly challengeDB: DBChallenge;
+  readonly index: number;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly navigation: any;
+  readonly testID: string;
+  readonly currentUser: DBUser;
 }) {
   const [user, setUser] = useState<DBUser | null>(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -147,7 +144,7 @@ export function Challenge({
         />
 
         {/* Challenge Description */}
-        {challengeDB.description && (
+        {Boolean(challengeDB.description) && (
           <ThemedText style={styles.challengeDescription}>
             {challengeDB.description}
           </ThemedText>
