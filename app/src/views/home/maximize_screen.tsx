@@ -31,6 +31,7 @@ export default function MaximizeScreen({
   readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const challenge: DBChallenge = route.params?.challenge;
+  const noImage = "@/assets/images/no-image.svg";
 
   const {
     commentText,
@@ -75,33 +76,33 @@ export default function MaximizeScreen({
       >
       <ThemedView style= {{width: width,flexDirection: 'row', height : height*0.1}} colorType="transparent">
         {/* User Info */}
-        <View style={styles.userInfo}>
+        <ThemedView style={styles.userInfo}>
           {postUser?.image_id ? (
             <Image
               source={{ uri: postUser.image_id }}
               style={styles.userAvatar}
             />
           ) : (
-            <View style={styles.defaultAvatar}>
+            <ThemedView style={styles.defaultAvatar}>
               <Text style={styles.avatarText}>
                 {postUser?.name?.charAt(0).toUpperCase() || "A"}
               </Text>
-            </View>
+            </ThemedView>
           )}
-          <View style={styles.userDetails}>
-            <Text style={styles.userName}>{postUser?.name || "Anonymous"}</Text>
-            <Text style={styles.postDate}>
+          <ThemedView style={styles.userDetails}>
+            <ThemedText style={styles.userName}>{postUser?.name || "Anonymous"}</ThemedText>
+            <ThemedText style={styles.postDate}>
               {postDate.toLocaleString("en-US", {
                 weekday: "long",
                 year: "numeric",
                 month: "short",
                 day: "numeric",
               })}
-            </Text>
+            </ThemedText>
            
-          </View>
+          </ThemedView>
           
-        </View>
+        </ThemedView>
         <ThemedView style={{position: 'absolute', right: 15, top: 30}} colorType="transparent">
         {challenge.location && (
               <ThemedIconButton
@@ -124,12 +125,12 @@ export default function MaximizeScreen({
 
         {/* Post Image with Double Tap */}
         <TouchableWithoutFeedback onPress={handleDoubleTap}>
-          <View style={styles.imageContainer}>
+          <ThemedView style={styles.imageContainer}>
             <Image
-              source={postImage ? { uri: postImage } : require("@/assets/images/no-image.svg")}
+              source={postImage ? { uri: postImage } : require(noImage)}
               style={styles.postImage}
             />
-          </View>
+          </ThemedView>
         </TouchableWithoutFeedback>
 
         {/* Post Description */}
@@ -140,20 +141,21 @@ export default function MaximizeScreen({
         )}
 
         {/* Like Section */}
-        <View style={styles.likeSection}>
+        <ThemedView style={styles.likeSection}>
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
             onPress={toggleLike}
             size={30}
             color={isLiked ? "red" : "white"}
+            testID="like-button"
           />
-          <Text style={styles.likeCount}>
+          <ThemedText style={styles.likeCount}>
             {likeList.length} {likeList.length === 1 ? "Like" : "Likes"}
-          </Text>  
-        </View>
+          </ThemedText>  
+        </ThemedView>
 
         {/* Comment Input */}
-        <View style={styles.commentInputSection}>
+        <ThemedView style={styles.commentInputSection}>
           <ThemedTextInput
             style={styles.commentInput}
             value={commentText}
@@ -166,9 +168,9 @@ export default function MaximizeScreen({
             size={25}
             onPress={addComment}
             colorType="white"
-            style = {{}}
+            testID="send-comment-button"
           />
-        </View>
+        </ThemedView>
 
         {/* Comment List */}
         <ThemedView style={styles.commentList} colorType="transparent">

@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import FirestoreCtrl, {
   DBChallenge,
@@ -14,6 +15,7 @@ import FirestoreCtrl, {
 } from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedText } from "@/components/theme/ThemedText";
 
 const { width, height } = Dimensions.get("window");
 
@@ -39,6 +41,8 @@ export function Challenge({
 
   // Double-tap logic
   const [lastTap, setLastTap] = useState<number | null>(null);
+
+  const placeholderImage = "https://via.placeholder.com/300";
 
   // Fetch user data
   useEffect(() => {
@@ -99,10 +103,11 @@ export function Challenge({
         : likes.filter((userId) => userId !== currentUser.uid);
 
       setLikes(newLikeList);
-      await firestoreCtrl.updateLikesOf(
+      firestoreCtrl.updateLikesOf(
         challengeDB.challenge_id ?? "",
         newLikeList
       );
+      console.log("Likes updated successfully");
     } catch (error) {
       console.error("Error updating likes:", error);
     }
@@ -119,54 +124,56 @@ export function Challenge({
 
   return (
     <TouchableWithoutFeedback onPress={handleDoubleTap}>
-      <View style={styles.challengeContainer} testID={testID}>
+      <ThemedView style={styles.challengeContainer} testID={testID}>
         {/* User Info */}
-        <View style={styles.userInfo}>
+        <ThemedView style={styles.userInfo}>
           {user?.image_id ? (
             <Image
               source={{ uri: user.image_id }}
               style={styles.userAvatar}
             />
           ) : (
-            <View style={styles.defaultAvatar}>
-              <Text style={styles.avatarText}>
+            <ThemedView style={styles.defaultAvatar}>
+              <ThemedText style={styles.avatarText}>
                 {user?.name?.charAt(0).toUpperCase() || "A"}
-              </Text>
-            </View>
+              </ThemedText>
+            </ThemedView>
           )}
-          <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
-        </View>
+          <ThemedText style={styles.userName}>{user?.name || "Anonymous"}</ThemedText>
+        </ThemedView>
 
         {/* Challenge Image */}
         <Image
           source={{
-            uri: challengeDB.image_id || "https://via.placeholder.com/300",
+            uri: challengeDB.image_id ||placeholderImage,
           }}
           style={styles.challengeImage}
         />
 
         {/* Challenge Description */}
         {challengeDB.description && (
-          <Text style={styles.challengeDescription}>
+          <ThemedText style={styles.challengeDescription}>
             {challengeDB.description}
-          </Text>
+          </ThemedText>
         )}
 
         {/* First Comment */}
         {comments.length > 0 && (
-          <Text style={styles.comment}>
+          <ThemedText style={styles.comment} testID="firstComment">
             {comments[0].user_name}: {comments[0].comment_text}
-          </Text>
+          </ThemedText>
         )}
 
         {/* Bottom Bar */}
-        <View style={styles.bottomBar}>
+        <ThemedView style={styles.bottomBar}>
           {/* Like Button */}
-          <TouchableWithoutFeedback onPress={handleLikePress}>
-            <Text style={[styles.likeText, isLiked && styles.likedText]}>
-              {isLiked ? "♥" : "♡"} {likes.length}
-            </Text>
-          </TouchableWithoutFeedback>
+          <ThemedIconButton
+            name={isLiked ? "heart" : "heart-outline"}
+            onPress={handleLikePress}
+            size={30}
+            color={isLiked ? "red" : "white"}
+            testID="like-button"
+          />
 
           {/* Comment Button */}
           <TouchableWithoutFeedback
@@ -179,10 +186,10 @@ export function Challenge({
               })
             }
           >
-            <Text style={styles.commentText}>Add a comment...</Text>
+            <ThemedText style={styles.commentText} testID="add-a-comment">Add a comment...</ThemedText>
           </TouchableWithoutFeedback>
-        </View>
-      </View>
+        </ThemedView>
+      </ThemedView>
     </TouchableWithoutFeedback>
   );
 }
@@ -221,6 +228,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     fontWeight: "bold",
+  },
+  likeCount: {
+    fontSize: 14,
+    color: "#fff",
+    marginLeft: 10,
   },
   userName: {
     fontSize: 16,
