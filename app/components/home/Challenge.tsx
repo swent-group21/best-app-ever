@@ -130,25 +130,6 @@ export function Challenge({
           </ThemedView>
         )}
         <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
-
-        {/* Location Button */}
-        {challengeDB.location && (
-          <ThemedIconButton
-            testID="location-button"
-            name="location-outline"
-            size={24}
-            color="white"
-            style={styles.locationButton}
-            onPress={() =>
-              navigation.navigate("MapScreen", {
-                navigation,
-                firestoreCtrl,
-                user: currentUser,
-                location: challengeDB.location,
-              })
-            }
-          />
-        )}
       </View>
 
       {/* Challenge Image */}
@@ -216,6 +197,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: width,
     alignSelf: "center",
+    height: "auto",
   },
   userInfo: {
     flexDirection: "row",
@@ -253,9 +235,10 @@ const styles = StyleSheet.create({
   },
   challengeImage: {
     width: "100%",
-    height: height * 0.4,
+    height: height * 0.45,
     borderRadius: 10,
     marginBottom: 10,
+
   },
   challengeDescription: {
     fontSize: 14,
