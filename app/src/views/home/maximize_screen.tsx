@@ -50,6 +50,8 @@ export default function MaximizeScreen({
     postImage,
     postDescription,
     navigateGoBack,
+    groupCenter,
+    groupRadius,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const noImageUri = require("@/assets/images/no-image.svg");
@@ -92,6 +94,11 @@ export default function MaximizeScreen({
                 user: user,
                 firestoreCtrl: firestoreCtrl,
                 location: challenge.location,
+                challengeArea: groupCenter &&
+                  groupRadius && {
+                    center: groupCenter,
+                    radius: groupRadius,
+                  },
               });
             }}
             size={25}

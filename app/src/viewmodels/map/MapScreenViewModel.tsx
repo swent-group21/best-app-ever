@@ -80,7 +80,7 @@ export function useMapScreenViewModel(
     };
 
     fetchChallenges();
-  }, [firestoreCtrl]);
+  }, []);
 
   return {
     permission,

@@ -4,6 +4,7 @@ import FirestoreCtrl, {
   DBComment,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { GeoPoint } from "firebase/firestore";
 
 /**
  * View model for the maximize screen.
@@ -23,9 +24,12 @@ export function useMaximizeScreenViewModel(
   const [postUser, setPostUser] = useState<DBUser>();
   const [likeList, setLikeList] = useState<string[]>([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [groupCenter, setGroupCenter] = useState<GeoPoint | undefined>();
+  const [groupRadius, setGroupRadius] = useState<number | undefined>();
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
+  const groupId = challenge.group_id;
 
   const navigateGoBack = () => {
     navigation.goBack();
@@ -54,6 +58,16 @@ export function useMaximizeScreenViewModel(
       setIsLiked(likes.includes(currentUserId));
     });
   }, [challenge, firestoreCtrl, currentUserId]);
+
+  // Gets the challenge's group area, if it exists
+  useEffect(() => {
+    if (groupId) {
+      firestoreCtrl.getGroup(groupId).then((group) => {
+        setGroupCenter(group.location);
+        setGroupRadius(group.radius);
+      });
+    }
+  }, [groupId]);
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
@@ -98,5 +112,7 @@ export function useMaximizeScreenViewModel(
     postImage,
     postDescription,
     navigateGoBack,
+    groupCenter,
+    groupRadius,
   };
 }

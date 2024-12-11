@@ -41,7 +41,7 @@ export default function MapScreen({
 
   const uri = "@/assets/images/icon_trans.png";
 
-  if (userLocation === undefined) {
+  if (userLocation === undefined || challengesWithLocation === undefined) {
     return (
       <ThemedView style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#fff" />
