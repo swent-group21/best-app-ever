@@ -187,8 +187,11 @@ export default function MaximizeScreen({
           {commentList.length === 0 ? (
             <ThemedText>No comments yet</ThemedText>
           ) : (
-            commentList.map((comment) => (
-              <SingleComment key={Math.random()} {...comment} />
+            commentList.map((comment, index) => (
+              <SingleComment
+                key={comment.created_at.getTime().toPrecision(21)}
+                {...comment}
+              />
             ))
           )}
         </ThemedView>
