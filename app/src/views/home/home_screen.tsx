@@ -58,7 +58,7 @@ export default function HomeScreen({
       setIsCollapsed(shouldCollapse);
       Animated.timing(scrollY, {
         toValue: shouldCollapse ? 1 : 0,
-        duration: 175, // Reduced animation duration for snappier transitions
+        duration: 220, // Reduced animation duration for snappier transitions
         useNativeDriver: false,
       }).start();
     }

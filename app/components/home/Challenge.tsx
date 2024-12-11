@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
   Image,
   View,
   Text,
+  TouchableWithoutFeedback,
 } from "react-native";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
-  DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextButton } from "../theme/ThemedTextButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -36,7 +33,9 @@ export function Challenge({
   const [user, setUser] = useState<DBUser | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState<string[]>([]);
-  const [comment, setComment] = useState<DBComment | null>(null);
+
+  // Double-tap logic
+  const [lastTap, setLastTap] = useState<number | null>(null);
 
   // Fetch user data
   useEffect(() => {
@@ -71,24 +70,6 @@ export function Challenge({
     fetchLikes();
   }, [challengeDB.challenge_id, currentUser.uid, firestoreCtrl]);
 
-  // Fetch the first comment of the challenge
-  useEffect(() => {
-    const fetchComment = async () => {
-      try {
-        const comments = await firestoreCtrl.getCommentsOf(
-          challengeDB.challenge_id ?? ""
-        );
-        if (comments.length > 0) {
-          setComment(comments[0]); // Display the most recent comment
-        }
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-      }
-    };
-
-    fetchComment();
-  }, [challengeDB.challenge_id, firestoreCtrl]);
-
   const handleLikePress = async () => {
     try {
       const newIsLiked = !isLiked;
@@ -108,83 +89,69 @@ export function Challenge({
     }
   };
 
-  // Handle no challenge case
-  if (!challengeDB) {
-    return <Text>Loading Challenge...</Text>;
-  }
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    if (lastTap && now - lastTap < 300) {
+      // Double tap detected
+      handleLikePress();
+    }
+    setLastTap(now);
+  };
 
   return (
-    <View style={styles.challengeContainer} testID={testID}>
-      {/* User Info */}
-      <View style={styles.userInfo}>
-        {user?.image_id ? (
+    <TouchableWithoutFeedback onPress={handleDoubleTap}>
+      <View style={styles.challengeContainer} testID={testID}>
+        {/* User Info */}
+        <View style={styles.userInfo}>
           <Image
-            source={{ uri: user.image_id }}
+            source={{
+              uri: user?.image_id || "https://via.placeholder.com/50",
+            }}
             style={styles.userAvatar}
           />
-        ) : (
-          <ThemedView style={styles.defaultAvatar}>
-            <ThemedText style={styles.avatarText}>
-              {user?.name?.[0]?.toUpperCase() || "A"}
-            </ThemedText>
-          </ThemedView>
-        )}
-        <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
-      </View>
-
-      {/* Challenge Image */}
-      <Image
-        source={{
-          uri: challengeDB.image_id || "https://via.placeholder.com/300",
-        }}
-        style={styles.challengeImage}
-      />
-
-      {/* Challenge Description */}
-      {challengeDB.description && (
-        <Text style={styles.challengeDescription}>
-          {challengeDB.description}
-        </Text>
-      )}
-
-      {/* Bottom Section */}
-      <View style={styles.bottomSection}>
-        {/* Like Button */}
-        <View style={styles.likesContainer}>
-          <ThemedIconButton
-            testID="like-button"
-            name={isLiked ? "heart" : "heart-outline"}
-            size={24}
-            color={isLiked ? "red" : "white"}
-            onPress={handleLikePress}
-          />
-          <Text style={styles.likeCount}>{likes.length} likes</Text>
+          <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
         </View>
 
-        {/* Comment Section */}
-        {comment && (
-          <View style={styles.commentContainer}>
-            <Text style={styles.commentAuthor}>{comment.user_name}:</Text>
-            <Text style={styles.commentText}>{comment.comment_text}</Text>
-          </View>
+        {/* Challenge Image */}
+        <Image
+          source={{
+            uri: challengeDB.image_id || "https://via.placeholder.com/300",
+          }}
+          style={styles.challengeImage}
+        />
+
+        {/* Challenge Description */}
+        {challengeDB.description && (
+          <Text style={styles.challengeDescription}>
+            {challengeDB.description}
+          </Text>
         )}
 
-        {/* Add a Comment */}
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("Maximize", {
-              navigation,
-              firestoreCtrl,
-              challenge: challengeDB,
-              user: currentUser,
-            })
-          }
-          style={styles.commentButton}
-        >
-          <Text style={styles.addCommentText}>Add a comment...</Text>
-        </TouchableOpacity>
+        {/* Bottom Bar */}
+        <View style={styles.bottomBar}>
+          {/* Like Button */}
+          <TouchableWithoutFeedback onPress={handleLikePress}>
+            <Text style={[styles.likeText, isLiked && styles.likedText]}>
+              {isLiked ? "♥" : "♡"} {likes.length}
+            </Text>
+          </TouchableWithoutFeedback>
+
+          {/* Comment Button */}
+          <TouchableWithoutFeedback
+            onPress={() =>
+              navigation.navigate("Maximize", {
+                navigation,
+                firestoreCtrl,
+                challenge: challengeDB,
+                user: currentUser,
+              })
+            }
+          >
+            <Text style={styles.commentText}>Add a comment...</Text>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -197,13 +164,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: width,
     alignSelf: "center",
-    height: "auto",
   },
   userInfo: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
-    justifyContent: "flex-start",
   },
   userAvatar: {
     width: 40,
@@ -211,70 +176,37 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 10,
   },
-  defaultAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#555",
-  },
-  avatarText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
   userName: {
     fontSize: 16,
     color: "#fff",
     fontWeight: "bold",
   },
-  locationButton: {
-    marginLeft: "auto",
-  },
   challengeImage: {
     width: "100%",
-    height: height * 0.45,
+    height: height * 0.4,
     borderRadius: 10,
     marginBottom: 10,
-
   },
   challengeDescription: {
     fontSize: 14,
     color: "#fff",
     marginBottom: 10,
   },
-  bottomSection: {
+  bottomBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 10,
   },
-  likesContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 5,
-  },
-  likeCount: {
-    color: "#aaa",
-    fontSize: 14,
-    marginLeft: 10,
-  },
-  commentContainer: {
-    flexDirection: "row",
-    marginBottom: 5,
-  },
-  commentAuthor: {
+  likeText: {
+    fontSize: 16,
     color: "#fff",
-    fontWeight: "bold",
-    marginRight: 5,
+  },
+  likedText: {
+    color: "red",
   },
   commentText: {
+    fontSize: 16,
     color: "#aaa",
-  },
-  commentButton: {
-    marginTop: 5,
-  },
-  addCommentText: {
-    color: "white",
-    fontSize: 14,
   },
 });
