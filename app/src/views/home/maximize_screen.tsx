@@ -143,6 +143,7 @@ export default function MaximizeScreen({
             style={styles.commentInput}
             value={commentText}
             onChangeText={setCommentText}
+            placeholder="Add a comment"
             testID="comment-input"
           />
           <ThemedIconButton
@@ -150,7 +151,7 @@ export default function MaximizeScreen({
             size={25}
             colorType="white"
             onPress={addComment}
-            testID="send-comment"
+            testID="send-comment-button"
           />
         </ThemedView>
 

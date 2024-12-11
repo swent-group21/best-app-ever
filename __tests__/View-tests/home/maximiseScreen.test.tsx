@@ -75,52 +75,52 @@ describe("MaximizeScreen UI Tests", () => {
     expect(getByText("Another comment")).toBeTruthy();
   });
 
-  // it("handles liking a post", () => {
-  //   const { getByText } = render(
-  //     <MaximizeScreen
-  //       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
-  //       navigation={mockNavigation}
-  //       route={{ params: { challenge: mockChallenge } }}
-  //       firestoreCtrl={mockFirestoreCtrl}
-  //     />
-  //   );
+  it("handles liking a post", () => {
+    const { getByTestId } = render(
+      <MaximizeScreen
+        user={{
+          uid: "12345",
+          name: "Test User",
+          email: "test@gmail.com",
+          createdAt: new Date(),
+          image_id: null,
+        }}
+        navigation={mockNavigation}
+        route={{ params: { challenge: mockChallenge } }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
 
-  //   fireEvent.press(getByText("heart-outline"));
-  //   const toggleLike = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
-  //     .toggleLike;
-  //   expect(toggleLike).toHaveBeenCalled();
-  // });
+    fireEvent.press(getByTestId("like-button"));
+    const toggleLike =
+      require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+        .toggleLike;
+    expect(toggleLike).toHaveBeenCalled();
+  });
 
-  // it("handles adding a comment", () => {
-  //   const { getByText, getByPlaceholderText } = render(
-  //     <MaximizeScreen
-  //       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
-  //       navigation={mockNavigation}
-  //       route={{ params: { challenge: mockChallenge } }}
-  //       firestoreCtrl={mockFirestoreCtrl}
-  //     />
-  //   );
+  it("handles adding a comment", () => {
+    const { getByTestId } = render(
+      <MaximizeScreen
+        user={{
+          uid: "12345",
+          name: "Test User",
+          email: "test@gmail.com",
+          createdAt: new Date(),
+          image_id: null,
+        }}
+        navigation={mockNavigation}
+        route={{ params: { challenge: mockChallenge } }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
 
-  //   const addComment = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
-  //     .addComment;
+    const addComment =
+      require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+        .addComment;
 
-  //   const input = getByPlaceholderText("Write a comment...");
-  //   fireEvent.changeText(input, "New Comment");
-  //   fireEvent.press(getByText("send"));
-  //   expect(addComment).toHaveBeenCalled();
-  // });
-
-  // it("handles navigation back", () => {
-  //   const { getByText } = render(
-  //     <MaximizeScreen
-  //       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
-  //       navigation={mockNavigation}
-  //       route={{ params: { challenge: mockChallenge } }}
-  //       firestoreCtrl={mockFirestoreCtrl}
-  //     />
-  //   );
-
-  //   fireEvent.press(getByText("arrow-back-outline"));
-  //   expect(mockNavigation.goBack).toHaveBeenCalled();
-  // });
+    const input = getByTestId("comment-input");
+    fireEvent.changeText(input, "New Comment");
+    fireEvent.press(getByTestId("send-comment-button"));
+    expect(addComment).toHaveBeenCalled();
+  });
 });
