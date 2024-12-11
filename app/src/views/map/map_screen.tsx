@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -43,8 +43,9 @@ export default function MapScreen({
 
   if (userLocation === undefined) {
     return (
-      <ThemedView>
-        <ThemedText>Getting location...</ThemedText>
+      <ThemedView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#fff" />
+        <ThemedText style={styles.loadingText}>Loading the map...</ThemedText>
       </ThemedView>
     );
   }
@@ -119,5 +120,16 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+  },
+  loadingText: {
+    marginTop: 10,
+    color: "#fff",
+    fontSize: 16,
   },
 });
