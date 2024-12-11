@@ -45,7 +45,9 @@ export default function MapScreen({
     return (
       <ThemedView style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#fff" />
-        <ThemedText style={styles.loadingText}>Loading the map...</ThemedText>
+        <ThemedText style={styles.loadingText}>
+          Loading, this may take some time...
+        </ThemedText>
       </ThemedView>
     );
   }
