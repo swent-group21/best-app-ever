@@ -52,6 +52,12 @@ export default function CreateChallengeViewModel({
   // Create the challenge
   const makeChallenge = async () => {
     try {
+      if (group_id != "" && group_id != "home") {
+        if (!isLocationEnabled || location == null) {
+          alert("You need to enable location to create a challenge in a group");
+          return;
+        }
+      }
       const date = new Date();
       await createChallenge(
         firestoreCtrl,
