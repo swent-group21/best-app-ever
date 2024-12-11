@@ -53,7 +53,7 @@ describe("useGroupScreenViewModel", () => {
 
     // Wait for the state to update after the first useEffect runs
     await waitFor(() => {
-      result.current.groupChallenges.length > 0;
+      expect(result.current.groupChallenges.length).toBeGreaterThan(0);
     });
 
     expect(mockFirestoreCtrl.getAllPostsOfGroup).toHaveBeenCalledWith(
@@ -77,7 +77,7 @@ describe("useGroupScreenViewModel", () => {
 
     // Wait for the state to update after the second useEffect runs
     await waitFor(() => {
-      result.current.otherGroups.length > 0;
+      expect(result.current.otherGroups.length).toBeGreaterThan(0);
     });
 
     expect(mockFirestoreCtrl.getGroupsByUserId).toHaveBeenCalledWith(
