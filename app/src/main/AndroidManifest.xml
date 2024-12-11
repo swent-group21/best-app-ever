@@ -8,7 +8,9 @@
     <application
         android:usesCleartextTraffic="false"
         android:label="strive"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        >
 
         <meta-data
             android:name="com.google.android.geo.AIzaSyCEhgdrq6tfUEErN326j50qTIeV3uxzmDQ"
