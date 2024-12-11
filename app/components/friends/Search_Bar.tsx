@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     padding: 10,
     backgroundColor: "transparent",
+    width: "100%",
   },
   searchInput: {
     backgroundColor: "#222",
@@ -34,5 +35,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     fontSize: 16,
+    
   },
 });
