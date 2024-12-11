@@ -45,5 +45,8 @@ export default function CreateGroupViewModel({
     setChallengeTitle,
     makeGroup,
     setRadius,
+    radius,
+    MIN_RADIUS,
+    MAX_RADIUS,
   };
 }

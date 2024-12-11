@@ -7,6 +7,7 @@ import { BottomBar } from "@/components/navigation/BottomBar";
 import { ThemedView } from "@/components/theme/ThemedView";
 import CreateGroupViewModel from "@/src/viewmodels/group/CreateGroupViewModel";
 import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import Slider from "@react-native-community/slider";
 
 const { width, height } = Dimensions.get("window");
 
@@ -26,6 +27,9 @@ export default function CreateGroupScreen({
     setChallengeTitle,
     makeGroup,
     setRadius,
+    radius,
+    MIN_RADIUS,
+    MAX_RADIUS,
   } = CreateGroupViewModel({ user, navigation, firestoreCtrl });
 
   return (
@@ -62,6 +66,26 @@ export default function CreateGroupScreen({
           viewWidth="90%"
           title="Challenge Description"
           testID="Description-Input"
+        />
+
+        {/* Radius */}
+        <ThemedText
+          style={styles.radiusText}
+          colorType="textPrimary"
+          testID="Radius-Input"
+        >
+          Radius {radius / 1000}km
+        </ThemedText>
+        <Slider
+          style={{ width: "90%", paddingTop: 10 }}
+          minimumValue={MIN_RADIUS}
+          maximumValue={MAX_RADIUS}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#FFFFFF"
+          thumbTintColor="#FFFFFF"
+          onValueChange={(value) => setRadius(value)}
+          step={1000}
+          testID="Radius-Slider"
         />
 
         {/* Submit button */}
@@ -108,5 +132,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     padding: 16,
+  },
+  radiusText: {
+    textAlign: "left",
+    textAlignVertical: "center",
+    fontWeight: "600",
+    paddingTop: 10,
   },
 });
