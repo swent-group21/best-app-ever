@@ -1,12 +1,6 @@
-import { useState, useEffect } from "react";
-import {
-  requestForegroundPermissionsAsync,
-  getCurrentPositionAsync,
-  LocationObject,
-} from "expo-location";
-import { GeoPoint, Timestamp } from "firebase/firestore";
-import { createGroup } from "../../../types/GroupBuilder";
-import FirestoreCtrl, { DBUser } from "../../models/firebase/FirestoreCtrl";
+import { useState } from "react";
+import { createGroup } from "@/types/GroupBuilder";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 export default function CreateGroupViewModel({
   user,

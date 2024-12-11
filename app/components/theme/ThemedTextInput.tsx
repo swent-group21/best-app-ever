@@ -28,7 +28,7 @@ export function ThemedTextInput({
   type = "none",
   testID,
   ...props
-}: ThemedTextInputProps) {
+}: Readonly<ThemedTextInputProps>) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "textPrimary",
@@ -62,7 +62,7 @@ export function ThemedTextInput({
 
   return (
     <View testID={testID} style={{ gap: 5, width: viewWidth }}>
-      {title && (
+      {Boolean(title) && (
         <ThemedText style={titleStyle} type={"defaultSemiBold"}>
           {title}
         </ThemedText>

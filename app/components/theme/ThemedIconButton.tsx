@@ -25,7 +25,7 @@ export function ThemedIconButton({
   colorType,
   testID,
   ...props
-}: ThemedIconButtonProps) {
+}: Readonly<ThemedIconButtonProps>) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "backgroundPrimary",
