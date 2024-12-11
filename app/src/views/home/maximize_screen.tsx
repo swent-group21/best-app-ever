@@ -86,6 +86,7 @@ export default function MaximizeScreen({
         {challenge.location && (
           <ThemedIconButton
             name="location-outline"
+            testID="location-button"
             onPress={() => {
               navigation.navigate("MapScreen", {
                 navigation: navigation,
@@ -103,12 +104,14 @@ export default function MaximizeScreen({
           <Image
             source={postImage ? { uri: postImage } : noImageUri}
             style={styles.image}
+            testID="post-image"
           />
         </ThemedView>
 
         <ThemedView style={styles.likeSection} colorType="transparent">
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
+            testID="like-button"
             onPress={toggleLike}
             size={35}
             color={isLiked ? "red" : "white"}
@@ -133,6 +136,7 @@ export default function MaximizeScreen({
             size={25}
             colorType="white"
             onPress={addComment}
+            testID="send-comment-button"
           />
         </ThemedView>
 
