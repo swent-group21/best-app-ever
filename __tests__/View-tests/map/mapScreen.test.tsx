@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { render, waitFor } from "@testing-library/react-native";
 import MapScreen from "@/src/views/map/map_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -72,8 +72,10 @@ describe("MapScreen UI Tests", () => {
 
     expect(getByText("Map")).toBeTruthy();
 
-    expect(getByTestId("Challenge 1")).toBeTruthy();
-    expect(getByTestId("Challenge 2")).toBeTruthy();
+    waitFor(() => {
+      expect(getByTestId("Challenge 1")).toBeTruthy();
+      expect(getByTestId("Challenge 2")).toBeTruthy();
+    });
   });
 
   it("renders 'Getting location...' when location is loading", () => {
@@ -94,6 +96,8 @@ describe("MapScreen UI Tests", () => {
       />,
     );
 
-    expect(getByText("Getting location...")).toBeTruthy();
+    waitFor(() => {
+      expect(getByText("Getting location...")).toBeTruthy();
+    });
   });
 });
