@@ -5,7 +5,6 @@ import {
   CameraCapturedPicture,
   CameraPictureOptions,
   CameraView,
-  CameraOrientation,
 } from "expo-camera";
 import {
   getCurrentPositionAsync,

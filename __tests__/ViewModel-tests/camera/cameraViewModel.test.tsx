@@ -2,7 +2,7 @@ import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 import { createChallenge } from "@/types/ChallengeBuilder";
 import { renderHook, act, waitFor } from "@testing-library/react-native";
-import { useCameraPermissions, CameraCapturedPicture } from "expo-camera";
+import { useCameraPermissions } from "expo-camera";
 import {
   getCurrentPositionAsync,
   requestForegroundPermissionsAsync,
