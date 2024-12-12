@@ -51,6 +51,7 @@ const challengeDB: DBChallenge = {
   uid: "user123",
   image_id: "https://example.com/image.jpg",
   likes: ["12345", "67890"],
+  date: mockDate,
 };
 
 const mockFirestoreCtrl = new FirestoreCtrl();
@@ -107,7 +108,7 @@ describe("Challenge Component", () => {
   });
 
   it("toggles isOpen state when the challenge is pressed", async () => {
-    render(
+    const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -118,18 +119,19 @@ describe("Challenge Component", () => {
       />,
     );
 
-    const touchable = screen.getByTestId("challenge-touchable");
+    const touchable = getByTestId("challenge-touchable");
 
     // Initially, the detailed view should not be open
-    expect(() => screen.getByTestId("challenge-container")).toThrow();
+    expect(() => getByTestId("challenge-container")).toThrow();
 
     // Press the touchable to open the details
-    await waitFor(() => {
-      fireEvent.press(touchable);
-    });
+
+    fireEvent.press(touchable);
 
     // Now the detailed view should be visible
-    expect(screen.getByTestId("challenge-container")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId("challenge-container")).toBeTruthy();
+    });
   });
 
   it("navigates to Maximize screen when expand button is pressed", async () => {
