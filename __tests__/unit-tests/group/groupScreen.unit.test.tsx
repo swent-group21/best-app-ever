@@ -4,6 +4,7 @@ import GroupScreen from "@/src/views/group/GroupScreen";
 import FirestoreCtrl, {
   DBChallenge,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",
@@ -45,6 +46,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
     getUser: jest.fn(),
     getLikesOf: jest.fn().mockResolvedValue([]),
     updatesLikesOf: jest.fn(),
+    getCommentsOf: jest.fn().mockResolvedValue([]),
   }));
 });
 

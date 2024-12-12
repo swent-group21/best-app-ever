@@ -47,6 +47,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
     getUser: jest.fn(),
     getLikesOf: jest.fn().mockResolvedValue([]),
     updatesLikesOf: jest.fn(),
+    getCommentsOf: jest.fn().mockResolvedValue([]),
   }));
 });
 

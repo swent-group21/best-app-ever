@@ -144,6 +144,7 @@ describe("useMaximizeScreenViewModel", () => {
       user_name: "Test User",
       created_at: expect.any(Date),
       post_id: "1",
+      uid: "12345",
     });
 
     expect(result.current.commentList).toEqual([
@@ -152,6 +153,7 @@ describe("useMaximizeScreenViewModel", () => {
         user_name: "Test User",
         created_at: expect.any(Date),
         post_id: "1",
+        uid: "12345",
       },
     ]);
 

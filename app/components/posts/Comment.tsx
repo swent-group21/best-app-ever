@@ -1,7 +1,9 @@
-import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { DBComment } from "@/src/models/firebase/FirestoreCtrl";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import FirestoreCtrl, {
+  DBUser,
+  DBComment,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");
@@ -9,66 +11,114 @@ const { width, height } = Dimensions.get("window");
 /**
  * The SingleComment component displays a single comment.
  * @param comment : the comment object
+ * @param firestoreCtrl : FirestoreCtrl object to fetch user details
  * @returns : a component for the comment
  */
-export function SingleComment(comment: Readonly<DBComment>) {
+export function SingleComment({
+  comment,
+  firestoreCtrl,
+}: {
+  comment: Readonly<DBComment>;
+  firestoreCtrl: FirestoreCtrl;
+}) {
+  const [user, setUser] = useState<DBUser | null>(null);
+
+  // Fetch user data
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await firestoreCtrl.getUser(comment.uid); // Assuming `post_id` links to the user
+        setUser(userData);
+      } catch (error) {
+        console.error("Error fetching user data for comment:", error);
+      }
+    };
+
+    fetchUser();
+  }, [comment.post_id, firestoreCtrl]);
+
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingBottom: 15,
-        alignItems: "center",
-      }}
-    >
-      <ThemedIconButton
-        name="person-circle-outline"
-        onPress={() => {
-          /* user button */
-        }}
-        size={45}
-        color="white"
-      />
-      <View style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: 10,
-          }}
-        >
-          <Text style={styles.user} testID={`comment-text`}>
-            {" "}
-            {comment.user_name}{" "}
+    <View style={styles.commentContainer}>
+      {/* User Avatar */}
+      {user?.image_id ? (
+        <Image
+          source={{ uri: user.image_id }}
+          style={styles.userAvatar}
+          testID="comment-user-avatar"
+        />
+      ) : (
+        <View style={styles.defaultAvatar}>
+          <Text style={styles.avatarText}>
+            {user?.name?.charAt(0).toUpperCase() || "A"}
           </Text>
-          <Text style={styles.textofcomment}>
+        </View>
+      )}
+
+      {/* Comment Content */}
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
+          <Text style={styles.commentDate}>
             {comment.created_at.toLocaleString()}
           </Text>
         </View>
-        <Text style={styles.textofcomment}> {comment.comment_text} </Text>
+        <Text style={styles.commentText}>{comment.comment_text}</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  commentContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 15,
+    alignItems: "center",
+  },
+  userAvatar: {
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    marginRight: 10,
+  },
+  defaultAvatar: {
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    backgroundColor: "#555",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  avatarText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+  },
   container: {
-    width: width * 0.9,
-    height: height * 0.08,
-    flexDirection: "column",
+    flex: 1,
     padding: 10,
     backgroundColor: Colors.dark.backgroundPrimary,
     borderRadius: 15,
     borderColor: "black",
     borderWidth: 1,
   },
-  textofcomment: {
-    fontSize: 15,
-    color: "white",
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 10,
   },
-  user: {
+  userName: {
     fontSize: 15,
     color: "white",
     fontWeight: "bold",
+  },
+  commentDate: {
+    fontSize: 13,
+    color: "gray",
+  },
+  commentText: {
+    fontSize: 15,
+    color: "white",
   },
 });

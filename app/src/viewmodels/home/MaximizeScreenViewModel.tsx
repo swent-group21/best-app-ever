@@ -90,6 +90,7 @@ export function useMaximizeScreenViewModel(
         user_name: currentUserName ?? "",
         created_at: new Date(),
         post_id: challenge.challenge_id ?? "",
+        uid: currentUserId,
       };
       await firestoreCtrl.addComment(newComment);
       setCommentList([...commentList, newComment]);
