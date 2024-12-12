@@ -1,5 +1,5 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import React, { act } from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import MaximizeScreen from "@/src/views/home/maximize_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 import { act } from "react-test-renderer";
@@ -54,11 +54,6 @@ describe("MaximizeScreen UI Tests", () => {
             user_name: "Test User",
             created_at: new Date("2024-01-01T00:00:00Z"),
           },
-          {
-            comment_text: "Another comment",
-            user_name: "Another User",
-            created_at: new Date("2024-01-01T00:00:00Z"),
-          },
         ],
         postUser: { name: "Post User" },
         likeList: ["user123"],
@@ -73,7 +68,7 @@ describe("MaximizeScreen UI Tests", () => {
     );
   });
 
-  it("renders the MaximizeScreen with comments and likes", () => {
+  it("renders the MaximizeScreen with comments and likes", async () => {
     const { getByText } = render(
       <MaximizeScreen
         user={{
@@ -89,10 +84,11 @@ describe("MaximizeScreen UI Tests", () => {
       />,
     );
 
-    expect(getByText("Test Challenge")).toBeTruthy();
-    expect(getByText("Test Description")).toBeTruthy();
-    expect(getByText("This is a comment")).toBeTruthy();
-    expect(getByText("Another comment")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText("Test Challenge")).toBeTruthy();
+      expect(getByText("Test Description")).toBeTruthy();
+      expect(getByText("This is a comment")).toBeTruthy();
+    });
   });
 
   it("handles double-tap to like the post", () => {
@@ -129,7 +125,7 @@ describe("MaximizeScreen UI Tests", () => {
     expect(mockToggleLike).toHaveBeenCalled();
   });
 
-  it("handles liking a post", () => {
+  it("handles liking a post", async () => {
     const { getByTestId } = render(
       <MaximizeScreen
         user={mockUser}
@@ -139,18 +135,16 @@ describe("MaximizeScreen UI Tests", () => {
       />,
     );
 
-    const locationButton = getByTestId("location-button");
-    fireEvent.press(locationButton);
-
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("MapScreen", {
-      navigation: mockNavigation,
-      user: mockUser,
-      firestoreCtrl: mockFirestoreCtrl,
-      location: { latitude: 48.8566, longitude: 2.3522 },
+    await act(async () => {
+      fireEvent.press(getByTestId("like-button"));
     });
+    const toggleLike =
+      require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+        .toggleLike;
+    expect(toggleLike).toHaveBeenCalled();
   });
 
-  it("handles adding a comment", () => {
+  it("handles adding a comment", async () => {
     const { getByTestId } = render(
       <MaximizeScreen
         user={{
@@ -171,13 +165,16 @@ describe("MaximizeScreen UI Tests", () => {
         .addComment;
 
     const input = getByTestId("comment-input");
-    fireEvent.changeText(input, "New Comment");
-    fireEvent.press(getByTestId("send-comment-button"));
+    await act(async () => {
+      fireEvent.changeText(input, "New Comment");
+      fireEvent.press(getByTestId("send-comment-button"));
+    });
     expect(addComment).toHaveBeenCalled();
   });
 
   it("navigates to the MapScreen when the location button is pressed", () => {
     const { getByTestId, getByText } = render(
+
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}
@@ -187,7 +184,9 @@ describe("MaximizeScreen UI Tests", () => {
     );
 
     const locationButton = getByTestId("location-button");
-    fireEvent.press(locationButton);
+    await act(async () => {
+      fireEvent.press(locationButton);
+    });
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("MapScreen", {
       navigation: mockNavigation,

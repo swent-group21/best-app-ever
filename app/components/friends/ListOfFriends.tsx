@@ -1,6 +1,7 @@
 import { FlatList, Dimensions, StyleSheet } from "react-native";
 import { FriendListItem } from "@/components/friends/FriendListItem";
 import { ThemedText } from "@/components/theme/ThemedText";
+import { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 const { height, width } = Dimensions.get("window");
 
@@ -9,7 +10,13 @@ const { height, width } = Dimensions.get("window");
  * @param friends : list of friends
  * @param handleFriendPress : function to handle the press on a friend item
  */
-export default function ListOfFriends({ friends, handleFriendPress }: any) {
+export default function ListOfFriends({
+  friends,
+  handleFriendPress,
+}: {
+  readonly friends: DBUser[];
+  readonly handleFriendPress: (uid: string) => void;
+}) {
   return (
     <FlatList
       data={friends}
@@ -23,6 +30,7 @@ export default function ListOfFriends({ friends, handleFriendPress }: any) {
           onPress={() => handleFriendPress(item.uid)}
           testID={`friend-item-${item.name}`}
           height={height * 0.2}
+
         />
       )}
       horizontal

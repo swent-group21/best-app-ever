@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
@@ -33,6 +33,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       createdAt: new Date(),
     }),
     updateLikesOf: jest.fn().mockResolvedValue({}),
+    getCommentsOf: jest.fn().mockResolvedValue([]),
   }));
 });
 const mockUser = {
@@ -338,7 +339,7 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("No challenges to display")).toBeTruthy();
   });
 
-  it("handles double-tap to like a post in HomeScreen", () => {
+  it("handles double-tap to like a post in HomeScreen", async () => {
     const mockToggleLike = jest.fn();
     jest
       .spyOn(
@@ -379,6 +380,8 @@ describe("HomeScreen UI Tests", () => {
     fireEvent.press(postImage);
     fireEvent.press(postImage); // Simulate double-tap
 
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
+    await waitFor(async () => {
+      await expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
+    });
   });
 });

@@ -20,6 +20,13 @@ import GroupIcon from "@/components/home/GroupIcon";
 
 const { width, height } = Dimensions.get("window");
 
+/**
+ * Home screen
+ * @param user : user object
+ * @param navigation : navigation object
+ * @param firestoreCtrl : FirestoreCtrl object
+ * @returns : a screen for the user's home
+ */
 export default function HomeScreen({
   user,
   navigation,
@@ -101,7 +108,6 @@ export default function HomeScreen({
             : user.image_id
         }
         rightAction={() => navigateToProfile()}
-        testID="top-bar"
       />
 
       {/* Groups with snapping animation */}
@@ -121,6 +127,7 @@ export default function HomeScreen({
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
               key={index}
+              index={index}
               testID={`group-id-${index}`}
             />
           ))}
@@ -205,7 +212,6 @@ export default function HomeScreen({
       />
 
       <BottomBar
-        testID="bottom-bar"
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
