@@ -12,6 +12,9 @@ import {
   where,
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as FileSystem from "expo-file-system";
+import NetInfo from "@react-native-community/netinfo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type DBUser = {
   uid: string;
@@ -117,15 +120,25 @@ export default class FirestoreCtrl {
         throw new Error("No image URI provided.");
       }
 
-      const response = await fetch(imageUri);
-      const blob = await response.blob();
-
       const id_picture = (Math.random() + 1).toString(36).substring(2);
-      const storageRef = ref(getStorage(), "images/" + id_picture);
+      const localUri = `${FileSystem.cacheDirectory}${id_picture}`;
 
-      await uploadBytes(storageRef, blob);
+      try {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
 
-      return id_picture;
+        const storageRef = ref(getStorage(), "images/" + id_picture);
+        await uploadBytes(storageRef, blob);
+        return id_picture;
+        
+      } catch (error) {
+        console.error("Initial upload failed:", error);
+        // 3. Store image upload data locally for later upload
+        await this.storeImageUploadData(id_picture, localUri);
+        // Schedule background retry if offline        
+        this.scheduleBackgroundUpload();
+        return id_picture; // Return the ID even if the initial upload fails
+      }
     } catch (error) {
       console.error("Error uploading image: ", error);
       throw error;
@@ -133,27 +146,56 @@ export default class FirestoreCtrl {
   }
 
   /**
-   * Upload an image url to Firestore storage.
+   * Stores image upload data in AsyncStorage.
    */
-  async uploadImageFromUrl(imageUri: string) {
+  async storeImageUploadData(id_picture: string, localUri: string): Promise<void> {
     try {
-      if (!imageUri) {
-        throw new Error("No image URI provided.");
-      }
-
-      const response = await fetch(imageUri);
-      const blob = await response.blob();
-
-      const id_picture = (Math.random() + 1).toString(36).substring(2);
-      const storageRef = ref(getStorage(), "images/" + id_picture);
-
-      await uploadBytes(storageRef, blob);
-
-      const downloadUrl = await getDownloadURL(storageRef);
-      return downloadUrl;
+      const uploadData = { id: id_picture, uri: localUri };
+      const storedUploads = await this.getStoredImageUploads() || [];   
+      storedUploads.push(uploadData);    
+      AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(storedUploads));
+      console.log("Image upload data stored locally:", uploadData);
     } catch (error) {
-      console.error("Error uploading image: ", error);
-      throw error;
+      console.error("Error storing image upload data:", error);
+    }
+  }
+
+  /**
+   * Schedules a background task to upload stored images.
+   */
+  scheduleBackgroundUpload() {
+      NetInfo.addEventListener(networkState => {
+          if (networkState.isConnected && networkState.isInternetReachable) {
+               uploadStoredImages()
+               .catch(err => console.error("Background image upload failed:", err))    
+          }
+      });
+  }
+
+  /**
+   * Uploads all stored images.
+   */
+  async uploadStoredImages(): Promise<void> {
+    const storedUploads = await this.getStoredImageUploads();
+      
+    if (storedUploads && storedUploads.length > 0) {
+      for (const upload of storedUploads) {
+          try {
+              //Attempt to upload to firestore
+               await uploadImage(upload.uri, upload.id);
+              console.log("Stored image uploaded:", upload.id);
+              // Remove the successfully uploaded image from AsyncStorage
+                const updatedUploads = storedUploads.filter((item) => item.id !== upload.id);
+                AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(updatedUploads));
+          } catch (error) {
+                console.error("Error uploading stored image:", error, upload);
+                //If fails to upload because of any reason stop the loop and wait for the next background trigger
+                return;
+          }
+      }
+      console.log('Local images uploaded and cleared');
+    } else {
+      console.log('No stored images to upload.');
     }
   }
 
@@ -223,7 +265,7 @@ export default class FirestoreCtrl {
   ) {
     try {
       const user = await this.getUser(id);
-      user.image_id = await this.uploadImageFromUrl(imageUri);
+      user.image_id = await this.uploadImageFromUri(imageUri);
       await this.createUser(id, user);
       setUser(user);
     } catch (error) {
