@@ -101,7 +101,6 @@ export function Challenge({
 
       setLikes(newLikeList);
       firestoreCtrl.updateLikesOf(challengeDB.challenge_id ?? "", newLikeList);
-      console.log("Likes updated successfully");
     } catch (error) {
       console.error("Error updating likes:", error);
     }
