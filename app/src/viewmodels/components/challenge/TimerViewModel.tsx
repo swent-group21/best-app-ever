@@ -11,7 +11,7 @@ const HOURS_IN_DAY = 24;
  * @param onTimerFinished : function to call when the timer is finished
  * @returns : a component for the timer
  */
-function Timer({
+export function useTimerViewModel({
   endDate,
   onTimerFinished,
   testID,

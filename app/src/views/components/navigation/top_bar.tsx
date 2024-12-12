@@ -60,7 +60,7 @@ export function TopBar({
 
   // Determine the left content
   const leftContent = leftIcon ? (
-    isLeftPP ? (
+    isLeftPP(leftIcon) ? (
       <TouchableOpacity onPress={leftAction}>
         <Image
           source={{ uri: leftIcon }}
@@ -83,7 +83,7 @@ export function TopBar({
 
   // Determine the right content
   const rightContent = rightIcon ? (
-    isRightPP ? (
+    isRightPP(rightIcon) ? (
       <TouchableOpacity onPress={rightAction}>
         <Image
           source={{ uri: rightIcon }}

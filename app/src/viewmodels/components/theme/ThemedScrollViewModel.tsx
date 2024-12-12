@@ -16,15 +16,7 @@ export function useThemedScrollViewModel({
   lightColor?: string;
   darkColor?: string;
   colorType?: keyof typeof Colors.dark & keyof typeof Colors.light;
-};
-
-export function ThemedScrollView({
-  style,
-  lightColor,
-  darkColor,
-  colorType,
-  ...otherProps
-}: ThemedScrollViewProps) {
+}) {
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "backgroundPrimary",

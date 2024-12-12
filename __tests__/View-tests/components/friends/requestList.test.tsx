@@ -1,20 +1,27 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { RequestList } from "@/src/views/components/friends/request_list";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/components/friends/RequestListViewModel", () => ({
   useRequestListViewModel: jest.fn(),
 }));
 
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      acceptFriend: jest.fn(),
+      rejectFriend: jest.fn(),
+    };
+  });
+});
+
 describe("RequestList Component", () => {
   const mockUseRequestListViewModel =
     require("@/src/viewmodels/components/friends/RequestListViewModel").useRequestListViewModel;
 
-  const mockFirestoreCtrl = {
-    acceptFriend: jest.fn(),
-    rejectFriend: jest.fn(),
-  };
+  const mockFirestoreCtrl = new FirestoreCtrl();
 
   const uid = "current-user-id";
   const requests = [

@@ -14,7 +14,6 @@ export function useListOfFilteredUsersViewModel({
   uid,
 }: {
   readonly filteredUsers: DBUser[];
-  readonly searchText: string;
   readonly firestoreCtrl: FirestoreCtrl;
   readonly uid: string;
 }) {

@@ -7,7 +7,7 @@ import {
   act,
 } from "@testing-library/react-native";
 import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
@@ -21,9 +21,9 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   });
 });
 
-const mockFilteredUsers = [
-  { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png" },
-  { uid: "2", name: "Jane Smith", image_id: null },
+const mockFilteredUsers: DBUser[] = [
+  { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png", email: "john@example.com", createdAt: new Date() },
+  { uid: "2", name: "Jane Smith", image_id: null, email: "jane@example.com", createdAt: new Date() },
 ];
 
 // Mock du ViewModel
