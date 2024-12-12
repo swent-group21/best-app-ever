@@ -85,7 +85,10 @@ export function TopBar({
     ) : (
       <TouchableOpacity onPress={rightAction}>
         <View style={styles.defaultAvatar}>
-          <ThemedText style={styles.avatarText}>
+          <ThemedText
+            style={styles.avatarText}
+            testID={`topRightIcon-${rightIcon}`}
+          >
             {title?.charAt(0).toUpperCase() || "A"} {/* Default letter */}
           </ThemedText>
         </View>

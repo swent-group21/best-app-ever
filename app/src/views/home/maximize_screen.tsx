@@ -303,6 +303,7 @@ const styles = StyleSheet.create({
     width: width * 0.85,
   },
   commentList: {
-    width: "100%",
+    width: width * 0.9,
+    marginRight: width * 0.1,
   },
 });

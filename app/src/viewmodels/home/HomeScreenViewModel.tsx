@@ -59,7 +59,7 @@ export function useHomeScreenViewModel(
       };
       fetchChallenges();
     }
-  }, [user.uid, firestoreCtrl]);
+  }, [firestoreCtrl]);
 
   // Fetch the groups
   useEffect(() => {

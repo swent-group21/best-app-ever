@@ -72,7 +72,7 @@ export function Challenge({
     };
 
     fetchLikes();
-  }, [challengeDB.challenge_id, currentUser.uid, firestoreCtrl]);
+  });
 
   // Fetch comments
   useEffect(() => {
@@ -164,8 +164,8 @@ export function Challenge({
             name={isLiked ? "heart" : "heart-outline"}
             onPress={handleLikePress}
             size={30}
-            color={isLiked ? "red" : "white"}
             testID="like-button"
+            color={isLiked ? "red" : "white"}
           />
 
           {/* Comment Button */}

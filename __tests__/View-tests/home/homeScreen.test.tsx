@@ -32,6 +32,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       name: "Test User",
       createdAt: new Date(),
     }),
+    updateLikesOf: jest.fn().mockResolvedValue({}),
   }));
 });
 const mockUser = {
@@ -41,7 +42,6 @@ const mockUser = {
   email: "bla@gmail.com",
   createdAt: new Date(),
 };
-const mockOnDoubleTap = jest.fn();
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
@@ -170,8 +170,36 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("No challenges to display")).toBeTruthy();
   });
 
-  it("likes a post on double-tap in HomeScreen", () => {
-    const { getAllByTestId } = render(
+  it("handles double-tap to like a post in HomeScreen", () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/HomeScreenViewModel"),
+        "useHomeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        challenges: [
+          {
+            challenge_id: "challenge1",
+            title: "First Challenge",
+            description: "First Challenge",
+            image_id: "https://example.com/challenge-image.jpg",
+            likes: [],
+            uid: "user1",
+          },
+        ],
+        userIsGuest: false,
+        groups: [],
+        challengesFromFriends: [],
+        titleChallenge: {
+          title: "Current Challenge",
+          description: "Current Challenge Description",
+          endDate: new Date(2024, 1, 1),
+        },
+      });
+
+    const { getByTestId } = render(
       <HomeScreen
         user={mockUser}
         navigation={mockNavigation}
@@ -179,11 +207,10 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    const challengeComponents = getAllByTestId(/challenge-id-\d+/);
+    const postImage = getByTestId("challenge-id-0"); // Replace with the correct testID
+    fireEvent.press(postImage);
+    fireEvent.press(postImage); // Simulate double-tap
 
-    fireEvent.press(challengeComponents[0]);
-    fireEvent.press(challengeComponents[0]);
-
-    expect(challengeComponents[0]).toBeTruthy();
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
   });
 });
