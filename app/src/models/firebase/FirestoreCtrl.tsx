@@ -13,8 +13,10 @@ import {
 } from "./Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as FileSystem from "expo-file-system";
-import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
+import NetInfo from "@react-native-community/netinfo";
 
 export type DBUser = {
   uid: string;
@@ -61,6 +63,33 @@ export type DBChallengeDescription = {
   description: string;
   endDate: Date;
 };
+
+// Unique keys for AsyncStorage
+const CHALLENGE_STORAGE_KEY = '@challenges';
+const GROUP_STORAGE_KEY = '@groups';
+const IMAGE_STORAGE_KEY = '@images';
+
+/*
+ * Task Manager tasked with uploading local docs to firebase
+ */
+const BACKGROUND_UPLOAD_TASK = 'background-upload-task';
+TaskManager.defineTask(BACKGROUND_UPLOAD_TASK, async () => {
+  console.log('Background upload task started');
+  try {
+    const firestoreCtrl = new FirestoreCtrl();
+    await firestoreCtrl.uploadStoredImages();
+    await firestoreCtrl.uploadStoredChallenges();
+    await firestoreCtrl.uploadStoredGroups();
+     console.log('Background upload task finished successfully');
+
+    return BackgroundFetch.BackgroundFetchResult.NewData; // Indicate new data was processed
+  } catch (error) {
+    console.error("Error in background task:", error);
+        console.log('Background upload task failed');
+
+    return BackgroundFetch.BackgroundFetchResult.Failed; // Indicate task failed
+  }
+});
 
 export default class FirestoreCtrl {
   /**
@@ -111,18 +140,28 @@ export default class FirestoreCtrl {
     }
   }
 
-  /**
-   * Upload an image to Firestore storage.
-   */
-  async uploadImageFromUri(imageUri: string) {
+
+  async getStoredImageUploads(): Promise<any[]> {
+    const storedData = await AsyncStorage.getItem(IMAGE_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData): [];
+  }
+
+  async getStoredChallenges():Promise<DBChallenge[]>{
+     const storedData = await AsyncStorage.getItem(CHALLENGE_STORAGE_KEY);
+     return storedData ? JSON.parse(storedData): [];
+  }
+
+  async getStoredGroups():Promise<DBGroup[]>{
+      const storedData = await AsyncStorage.getItem(GROUP_STORAGE_KEY);
+      return storedData ? JSON.parse(storedData) : [];
+  }
+
+  async uploadImage(imageUri: string, id_picture: string) {
     try {
       if (!imageUri) {
         throw new Error("No image URI provided.");
       }
-
-      const id_picture = (Math.random() + 1).toString(36).substring(2);
-      const localUri = `${FileSystem.cacheDirectory}${id_picture}`;
-
+      console.log("Here is the imageUri: \n", imageUri)
       try {
         const response = await fetch(imageUri);
         const blob = await response.blob();
@@ -134,7 +173,7 @@ export default class FirestoreCtrl {
       } catch (error) {
         console.error("Initial upload failed:", error);
         // 3. Store image upload data locally for later upload
-        await this.storeImageUploadData(id_picture, localUri);
+        await this.storeImageLocally(id_picture);
         // Schedule background retry if offline        
         this.scheduleBackgroundUpload();
         return id_picture; // Return the ID even if the initial upload fails
@@ -146,9 +185,73 @@ export default class FirestoreCtrl {
   }
 
   /**
+   * Upload an image to Firestore storage.
+   */
+  async uploadImageFromUri(imageUri: string) {
+    try {
+      if (!imageUri) {
+        throw new Error("No image URI provided.");
+      }
+
+      const id_picture = (Math.random() + 1).toString(36).substring(2);
+      console.log("Here is the imageUri: \n", imageUri)
+
+      try {
+        const networkState = await NetInfo.fetch();
+        if (networkState.isConnected && networkState.isInternetReachable) {
+          const response = await fetch(imageUri);
+          const blob = await response.blob();
+
+          const storageRef = ref(getStorage(), "images/" + id_picture);
+          await uploadBytes(storageRef, blob);
+          return id_picture;
+        }
+
+        console.warn("No internet connection. Skipping image upload.");
+        //Store the image locally for background upload
+        await this.storeImageLocally(id_picture)
+        this.scheduleBackgroundUpload();
+        
+        } catch (error) {
+          console.error("Error uploading image to Firestore:", error);
+          throw error;
+        }
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+      throw error;
+    }
+  }
+
+
+  /**
+   * Schedules a background task to upload stored data.
+   */
+  async scheduleBackgroundUpload() {
+    try {
+      console.log("backgroundScheduler")
+      const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_UPLOAD_TASK);
+      if (!isRegistered) {
+        await BackgroundFetch.unregisterTaskAsync(BACKGROUND_UPLOAD_TASK)
+        console.log("Unregistering task")
+        await BackgroundFetch.registerTaskAsync(BACKGROUND_UPLOAD_TASK, {
+          minimumInterval: 15 * 60, // 15 minutes
+          stopOnTerminate: false, // Android only
+          startOnBoot: true, // Android only
+        });
+        console.log('Background upload task registered');
+      }
+      await BackgroundFetch.setMinimumIntervalAsync(15*60);
+    } catch (error) {
+      console.error("Error registering/scheduling task:", error.message);
+      // Handle error appropriately, e.g., display an error message to the user
+    }
+  }
+
+  /**
    * Stores image upload data in AsyncStorage.
    */
-  async storeImageUploadData(id_picture: string, localUri: string): Promise<void> {
+  async storeImageLocally(id_picture: string): Promise<void> {
+    const localUri = `${FileSystem.cacheDirectory}${id_picture}`;
     try {
       const uploadData = { id: id_picture, uri: localUri };
       const storedUploads = await this.getStoredImageUploads() || [];   
@@ -161,18 +264,6 @@ export default class FirestoreCtrl {
   }
 
   /**
-   * Schedules a background task to upload stored images.
-   */
-  scheduleBackgroundUpload() {
-      NetInfo.addEventListener(networkState => {
-          if (networkState.isConnected && networkState.isInternetReachable) {
-               uploadStoredImages()
-               .catch(err => console.error("Background image upload failed:", err))    
-          }
-      });
-  }
-
-  /**
    * Uploads all stored images.
    */
   async uploadStoredImages(): Promise<void> {
@@ -180,23 +271,78 @@ export default class FirestoreCtrl {
       
     if (storedUploads && storedUploads.length > 0) {
       for (const upload of storedUploads) {
-          try {
-              //Attempt to upload to firestore
-               await uploadImage(upload.uri, upload.id);
-              console.log("Stored image uploaded:", upload.id);
-              // Remove the successfully uploaded image from AsyncStorage
-                const updatedUploads = storedUploads.filter((item) => item.id !== upload.id);
-                AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(updatedUploads));
-          } catch (error) {
-                console.error("Error uploading stored image:", error, upload);
-                //If fails to upload because of any reason stop the loop and wait for the next background trigger
-                return;
-          }
+        try {
+          //Attempt to upload to firestore
+          await this.uploadImage(upload.uri, upload.id);
+          console.log("Stored image uploaded:", upload.id);
+          // Remove the successfully uploaded image from AsyncStorage
+          const updatedUploads = storedUploads.filter((item) => item.id !== upload.id);
+          AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(updatedUploads));
+        } catch (error) {
+          console.error("Error uploading stored image:", error, upload);
+          //If fails to upload because of any reason stop the loop and wait for the next background trigger
+          return;
+        }
       }
       console.log('Local images uploaded and cleared');
     } else {
       console.log('No stored images to upload.');
     }
+  }
+
+
+   /**
+   * Uploads all stored Challenges.
+   */
+  async uploadStoredChallenges(): Promise<void> {
+    const storedChallenges: DBChallenge[] = await this.getStoredChallenges();
+    if (storedChallenges && storedChallenges.length > 0) {
+      for (const challenge of storedChallenges) {
+        try {
+          //Attempt to upload to firestore
+          await this.newChallenge(challenge);
+          console.log("Stored challenge uploaded:", challenge.challenge_id);
+          // Remove the successfully uploaded challenge from AsyncStorage
+          const updatedChallenges = storedChallenges.filter(
+            (item) => item.challenge_id !== challenge.challenge_id);
+          AsyncStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(updatedChallenges));
+        } catch (error) {
+          console.error("Error uploading stored challenge:", error, challenge);
+        //If fails to upload because of any reason stop the loop and wait for the next background trigger
+        return;
+        }
+      }
+        console.log('Local challenges uploaded and cleared');
+ 
+    } else {
+      console.log('No stored challenges to upload.');
+    }
+  }
+
+  /**
+  * Uploads all stored Groups.
+  */
+  async uploadStoredGroups(): Promise<void> {
+    const storedGroups = await this.getStoredGroups();
+    if (storedGroups && storedGroups.length > 0) {
+      for (const group of storedGroups) {
+        try {
+          //Attempt to upload to firestore
+          await this.newGroup(group)
+          console.log("Stored group uploaded:", group.gid);
+           // Remove the successfully uploaded group from AsyncStorage
+          const updatedGroups = storedGroups.filter((item) => item.gid !== group.gid);
+         AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(updatedGroups));
+        } catch (error) {
+          console.error("Error uploading stored group:", error, group);
+          //If fails to upload because of any reason stop the loop and wait for the next background trigger
+          return;
+        }
+      }
+      console.log('Local groups uploaded and cleared');
+   } else {
+     console.log('No stored groups to upload.');
+   }
   }
 
   /**
@@ -279,13 +425,29 @@ export default class FirestoreCtrl {
    */
   async newChallenge(challengeData: DBChallenge): Promise<void> {
     try {
-      const docRef = await addDoc(
-        collection(firestore, "challenges"),
-        challengeData,
-      );
-      console.log("Challenge id: ", docRef.id);
+       const docRef = await addDoc(collection(firestore,"challenges"), challengeData);
+       console.log("Challenge successfully uploaded to Firestore:", docRef.id);
+
     } catch (error) {
-      console.error("Error writting challenge document: ", error);
+        console.error("Error writing challenge document to Firestore:", error);
+        try {
+          const storedChallenges = await this.getStoredChallenges();
+          storedChallenges.forEach((sChallenge) => {
+            if (sChallenge.challenge_id == challengeData.challenge_id){
+              console.log('Challenge already stored.')
+              return
+            }
+          })
+
+          storedChallenges.push(challengeData)
+          await AsyncStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(storedChallenges));
+          console.log('Challenge stored locally:', challengeData);
+          // Schedule background retry
+          this.scheduleBackgroundUpload();
+
+        } catch (storageError) {
+          console.error("Error storing challenge locally:", storageError);
+        }
       throw error;
     }
   }
@@ -502,13 +664,34 @@ export default class FirestoreCtrl {
    */
   async newGroup(groupData: DBGroup): Promise<void> {
     try {
-      const docRef = await addDoc(collection(firestore, "groups"), groupData);
-      console.log("Challenge id: ", docRef.id);
-    } catch (error) {
-      console.error("Error writting challenge document: ", error);
-      throw error;
-    }
-  }
+          // 1. Attempt firestore upload
+        const docRef = await addDoc(collection(firestore, "groups"), groupData);
+        console.log("Group successfully uploaded to Firestore:", docRef.id);
+      } catch (error) {
+        console.error("Error writing group document to Firestore:", error);
+
+        try{
+            // 2. Store group data locally for later upload
+          const storedGroups: DBGroup[] = await this.getStoredGroups();
+          storedGroups.forEach((sGroup) => {
+            if (sGroup.gid == groupData.gid) {
+              console.log('Group already stored')
+              return
+            }
+          })
+
+          storedGroups.push(groupData)
+          await AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(storedGroups));
+          console.log('Group stored locally:', groupData);
+           // Schedule background retry if offline        
+          this.scheduleBackgroundUpload();
+
+        } catch(storageError){
+           console.error("Error storing group locally:", storageError);
+        }
+        throw error;
+      }
+   }
 
   /**
    * Update a group in firestore with last post date
