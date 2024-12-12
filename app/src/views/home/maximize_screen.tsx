@@ -160,7 +160,7 @@ export default function MaximizeScreen({
             testID="like-button"
           />
           <ThemedText style={styles.likeCount}>
-            {likeList.length} {likeList.length === 1 ? "Like" : "Likes"}
+            {likeList.length} {likeList.length <= 1 ? "Like" : "Likes"}
           </ThemedText>
         </ThemedView>
 
