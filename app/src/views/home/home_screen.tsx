@@ -1,23 +1,31 @@
-import { useState } from "react";
 import {
   Dimensions,
   StyleSheet,
   Modal,
   TouchableOpacity,
   Text,
+import { useState, useRef } from "react";
+import {
+  Animated,
+  Dimensions,
+  StyleSheet,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
 } from "react-native";
 import { TopBar } from "@/components/navigation/TopBar";
 import { Challenge } from "@/components/home/Challenge";
 import { ChallengeDescription } from "@/components/home/Challenge_Description";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { BottomBar } from "@/components/navigation/BottomBar";
+import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import GroupIcon from "@/components/home/GroupIcon";
 import { ThemedText } from "@/components/theme/ThemedText";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -45,6 +53,36 @@ export default function HomeScreen({
   const [filterByFriends, setFilterByFriends] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false); // État pour le menu
 
+  // Animation for hiding groups
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleThreshold = 100; // Distance to toggle the groups visibility
+
+  const handleScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = e.nativeEvent.contentOffset.y;
+    const shouldCollapse = offsetY > toggleThreshold;
+
+    if (shouldCollapse !== isCollapsed) {
+      setIsCollapsed(shouldCollapse);
+      Animated.timing(scrollY, {
+        toValue: shouldCollapse ? 1 : 0,
+        duration: 220, // Reduced animation duration for snappier transitions
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  const groupOpacity = scrollY.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0],
+  });
+
+  const groupHeight = scrollY.interpolate({
+    inputRange: [0, 1],
+    outputRange: [height * 0.18, 0],
+  });
+
   // Determine displayed challenges
   const displayedChallenges = filterByFriends
     ? challengesFromFriends || []
@@ -65,38 +103,15 @@ export default function HomeScreen({
         testID="top-bar"
       />
 
-      {/* Groups */}
-      <ThemedScrollView style={styles.groupsContainer} horizontal>
-        {groups.map((group, index) => (
-          <GroupIcon
-            groupDB={group}
-            navigation={navigation}
-            firestoreCtrl={firestoreCtrl}
-            key={index}
-            testID={`group-id-${index}`}
-          />
-        ))}
-
-        <ThemedView
-          style={styles.createGroupContainer}
-          testID="create-group-button"
-        >
-          <ThemedTextButton
-            style={styles.createGroupButton}
-            onPress={() => navigation.navigate("CreateGroup")}
-            text="+"
-            textStyle={styles.createGroupText}
-            textColorType="textOverLight"
-            colorType="backgroundSecondary"
-          />
-        </ThemedView>
-      </ThemedScrollView>
-
-      {/* Challenges */}
-      <ThemedScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        colorType="transparent"
+      {/* Groups with snapping animation */}
+      <Animated.View
+        style={[
+          styles.groupsContainer,
+          {
+            opacity: groupOpacity,
+            height: groupHeight,
+          },
+        ]}
       >
         {/* Current Challenge Description  */}
         <ChallengeDescription
@@ -151,17 +166,63 @@ export default function HomeScreen({
         ) : (
           displayedChallenges.map((challenge, index) => (
             <Challenge
+        <ThemedScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {groups.map((group, index) => (
+            <GroupIcon
+              groupDB={group}
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
               key={index}
-              challengeDB={challenge}
-              testID={`challenge-id-${index}`}
-              currentUser={user}
-              index={index}
+              testID={`group-id-${index}`}
             />
-          ))
+          ))}
+          <ThemedView
+            style={styles.createGroupContainer}
+            testID="create-group-button"
+          >
+            <ThemedTextButton
+              style={styles.createGroupButton}
+              onPress={() => navigation.navigate("CreateGroup")}
+              text="+"
+              textStyle={styles.createGroupText}
+              textColorType="textOverLight"
+              colorType="backgroundSecondary"
+            />
+          </ThemedView>
+        </ThemedScrollView>
+      </Animated.View>
+
+      {/* Challenges */}
+      <Animated.FlatList
+        testID="scroll-view"
+        data={displayedChallenges}
+        onScrollEndDrag={handleScrollEnd}
+        keyExtractor={(item, index) => `challenge-${index}`}
+        renderItem={({ item, index }) => (
+          <Challenge
+            navigation={navigation}
+            firestoreCtrl={firestoreCtrl}
+            challengeDB={item}
+            key={index}
+            testID={`challenge-id-${index}`}
+            currentUser={user}
+            index={index}
+          />
         )}
-      </ThemedScrollView>
+        ListHeaderComponent={
+          <ChallengeDescription
+            dBChallengeDescription={titleChallenge}
+            onTimerFinished={() => console.info("Timer Finished")}
+            testID={`description-id`}
+          />
+        }
+        ListEmptyComponent={
+          <ThemedText style={styles.noChallengesText}>
+            No challenges to display
+          </ThemedText>
+        }
+        contentContainerStyle={styles.contentContainer}
+      />
 
       <BottomBar
         testID="bottom-bar"
@@ -214,12 +275,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: height * 0.04,
+    flex: 1,
+    backgroundColor: "#000",
   },
   groupsContainer: {
-    width: width - 20,
-    height: 0.18 * height,
-    borderRadius: 15,
+    overflow: "hidden",
     backgroundColor: "transparent",
+    marginBottom: 10,
   },
   createGroupContainer: {
     flex: 1,
@@ -273,5 +335,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#fff",
     textAlign: "center",
+      },
+  contentContainer: {
+    paddingBottom: 100,
+  },
+  noChallengesText: {
+    color: "#fff",
+    textAlign: "center",
+    marginTop: 20,
   },
 });

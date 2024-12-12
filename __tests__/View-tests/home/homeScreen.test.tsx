@@ -32,8 +32,16 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       name: "Test User",
       createdAt: new Date(),
     }),
+    updateLikesOf: jest.fn().mockResolvedValue({}),
   }));
 });
+const mockUser = {
+  uid: "user-1",
+  name: "Test User",
+  image_id: "https://example.com/user-image.jpg",
+  email: "bla@gmail.com",
+  createdAt: new Date(),
+};
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
@@ -159,6 +167,7 @@ describe("HomeScreen UI Tests", () => {
 
     expect(getByText("No challenges to display")).toBeTruthy();
   });
+
 
   it("opens the filter menu when the filter button is pressed", () => {
     const { getByTestId, getByText } = render(
@@ -378,10 +387,44 @@ describe("HomeScreen UI Tests", () => {
           email: "test@example.com",
           createdAt: new Date(),
         }}
+
+  it("handles double-tap to like a post in HomeScreen", () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/HomeScreenViewModel"),
+        "useHomeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        challenges: [
+          {
+            challenge_id: "challenge1",
+            title: "First Challenge",
+            description: "First Challenge",
+            image_id: "https://example.com/challenge-image.jpg",
+            likes: [],
+            uid: "user1",
+          },
+        ],
+        userIsGuest: false,
+        groups: [],
+        challengesFromFriends: [],
+        titleChallenge: {
+          title: "Current Challenge",
+          description: "Current Challenge Description",
+          endDate: new Date(2024, 1, 1),
+        },
+      });
+
+    const { getByTestId } = render(
+      <HomeScreen
+        user={mockUser}
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
       />,
     );
+
 
     // Désactiver le filtre "Filter by Friends" (par défaut)
     fireEvent.press(getByTestId("filter-icon"));
@@ -416,5 +459,11 @@ describe("HomeScreen UI Tests", () => {
 
     // Vérifie que le modal est fermé
     expect(queryByTestId("filter-modal")).toBeNull();
+
+    const postImage = getByTestId("challenge-id-0"); // Replace with the correct testID
+    fireEvent.press(postImage);
+    fireEvent.press(postImage); // Simulate double-tap
+
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
   });
 });

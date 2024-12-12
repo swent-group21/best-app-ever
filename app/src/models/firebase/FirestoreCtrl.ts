@@ -44,6 +44,7 @@ export type DBComment = {
   user_name: string;
   created_at: Date;
   post_id: string;
+  uid: string;
 };
 
 export type DBGroup = {
@@ -341,6 +342,7 @@ export default class FirestoreCtrl {
           user_name: data.user_name,
           created_at: data.created_at.toDate(),
           post_id: data.post_id,
+          uid: data.uid,
         } as DBComment;
       });
       return comments;
