@@ -4,7 +4,6 @@ import {
   fireEvent,
   waitFor,
   screen,
-  act,
 } from "@testing-library/react-native";
 import { Challenge } from "@/src/views/components/posts/challenge";
 import FirestoreCtrl, {
@@ -159,14 +158,7 @@ describe("Challenge Component", () => {
 
     // Open the detailed view
     await waitFor(() => {
-      fireEvent.press(screen.getByTestId("challenge-touchable"));
-    });
-
-    const expandButton = screen.getByTestId("expand-button");
-
-    // Press the expand button
-    await act(() => {
-      fireEvent.press(expandButton);
+      fireEvent.press(screen.getByTestId("add-a-comment"));
     });
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("Maximize", {
@@ -202,16 +194,9 @@ describe("Challenge Component", () => {
       />,
     );
 
-    // Open the detailed view
-    await waitFor(() => {
-      fireEvent.press(screen.getByTestId("challenge-touchable"));
-    });
-
-    let likeButton = screen.getByTestId("like-button");
-
     // Like the challenge
     await waitFor(() => {
-      fireEvent.press(likeButton);
+      fireEvent.press(screen.getByTestId("like-button"));
     });
 
     // Ensure updateLikesOf was called with the new likes list

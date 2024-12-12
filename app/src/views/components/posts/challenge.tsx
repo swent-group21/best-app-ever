@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, Dimensions, Image } from "react-native";
+import { StyleSheet, TouchableOpacity, Dimensions, Image, TouchableWithoutFeedback } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
@@ -7,21 +7,12 @@ import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_butto
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
+  DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
 
 const { width, height } = Dimensions.get("window");
 
-/**
- * The Challenge component displays a challenge.
- * @param challengeDB : the challenge object
- * @param index : the index of the challenge
- * @param firestoreCtrl : FirestoreCtrl object
- * @param navigation : navigation object
- * @param testID : testID for the component
- * @param currentUser : the current user object
- * @returns : a component for the challenge
- */
 export function Challenge({
   challengeDB,
   index,
@@ -38,182 +29,165 @@ export function Challenge({
   readonly currentUser: DBUser;
 }) {
   const {
-    isOpen,
-    setIsOpen,
     isLiked,
-    setIsLiked,
-    likes,
-    setLikes,
     user,
-    defaultUri,
-    challengeDate,
+    comments,
+    handleDoubleTap,
+    handleLikePress,
+    placeholderImage,
   } = useChallengeViewModel({ challengeDB, firestoreCtrl, currentUser });
 
-  // Display loading state or handle absence of challenge data
-  if (!challengeDB) {
-    return <ThemedText>Loading Challenge...</ThemedText>;
-  } else {
-    return (
-      <ThemedView
-        key={index}
-        testID={testID}
-        style={{ backgroundColor: "transparent" }}
-      >
-        <TouchableOpacity
-          testID="challenge-touchable"
-          onPress={() => setIsOpen(!isOpen)}
-          activeOpacity={0.8}
-        >
-          <ThemedView style={[styles.challenge]}>
-            <Image
-              testID="challenge-image"
-              source={
-                challengeDB.image_id
-                  ? { uri: challengeDB.image_id }
-                  : require(defaultUri)
-              }
-              style={styles.image}
-            />
 
-            {isOpen && (
-              <ThemedView testID="challenge-container" style={styles.container}>
-                <ThemedView
-                  style={[styles.user, { justifyContent: "space-between" }]}
-                >
-                  <ThemedView style={styles.user}>
-                    <ThemedIconButton
-                      name="person-circle-outline"
-                      onPress={() => {
-                        /* user button */
-                      }}
-                      size={45}
-                      color="white"
-                    />
-                    <ThemedView style={styles.userInfo}>
-                      <ThemedText
-                        lightColor="white"
-                        darkColor="white"
-                        type="smallSemiBold"
-                      >
-                        {user?.name}
-                      </ThemedText>
-                      <ThemedText
-                        lightColor="white"
-                        darkColor="white"
-                        type="small"
-                      >
-                        {"on " + challengeDate.toUTCString()}
-                      </ThemedText>
-                    </ThemedView>
-                  </ThemedView>
-                  <ThemedIconButton
-                    testID="expand-button"
-                    name="chevron-expand-outline"
-                    onPress={() => {
-                      navigation.navigate("Maximize", {
-                        navigation: navigation,
-                        firestoreCtrl: firestoreCtrl,
-                        challenge: challengeDB,
-                        user: currentUser,
-                      });
-                    }}
-                    size={25}
-                    style={{ paddingRight: 8 }}
-                    color="white"
-                  />
-                </ThemedView>
-                <ThemedView style={styles.bottomBar}>
-                  <ThemedIconButton
-                    testID="like-button"
-                    name={isLiked ? "heart" : "heart-outline"}
-                    color={isLiked ? "red" : "white"}
-                    size={25}
-                    onPress={() => {
-                      const newIsLiked = !isLiked;
-                      setIsLiked(newIsLiked);
+  return (
+    <TouchableWithoutFeedback onPress={handleDoubleTap}>
+      <ThemedView style={styles.challengeContainer} testID={testID}>
+        {/* User Info */}
+        <ThemedView style={styles.userInfo}>
+          {user?.image_id ? (
+            <Image source={{ uri: user.image_id }} style={styles.userAvatar} />
+          ) : (
+            <ThemedView style={styles.defaultAvatar}>
+              <ThemedText style={styles.avatarText}>
+                {user?.name?.charAt(0).toUpperCase() || "A"}
+              </ThemedText>
+            </ThemedView>
+          )}
+          <ThemedText style={styles.userName}>
+            {user?.name || "Anonymous"}
+          </ThemedText>
+        </ThemedView>
 
-                      const newLikeList = newIsLiked
-                        ? [...likes, currentUser.uid] // Liking
-                        : likes.filter((userId) => userId !== currentUser.uid); // Unliking
+        {/* Challenge Image */}
+        <Image
+          source={{
+            uri: challengeDB.image_id || placeholderImage,
+          }}
+          style={styles.challengeImage}
+        />
 
-                      setLikes(newLikeList);
+        {/* Challenge Description */}
+        {Boolean(challengeDB.description) && (
+          <ThemedText style={styles.challengeDescription}>
+            {challengeDB.description}
+          </ThemedText>
+        )}
 
-                      firestoreCtrl.updateLikesOf(
-                        challengeDB.challenge_id ?? "",
-                        newLikeList,
-                      );
-                    }}
-                  />
-                  {challengeDB.location && (
-                    <ThemedIconButton
-                      name="location-outline"
-                      onPress={() => {
-                        navigation.navigate("MapScreen", {
-                          navigation: navigation,
-                          firestoreCtrl: firestoreCtrl,
-                          user: currentUser,
-                          location: challengeDB.location,
-                        });
-                      }}
-                      size={25}
-                      color="white"
-                    />
-                  )}
-                </ThemedView>
-              </ThemedView>
-            )}
-          </ThemedView>
-        </TouchableOpacity>
+        {/* First Comment */}
+        {comments.length > 0 && (
+          <ThemedText style={styles.comment} testID="firstComment">
+            {comments[0].user_name}: {comments[0].comment_text}
+          </ThemedText>
+        )}
+
+        {/* Bottom Bar */}
+        <ThemedView style={styles.bottomBar}>
+          {/* Like Button */}
+          <ThemedIconButton
+            name={isLiked ? "heart" : "heart-outline"}
+            onPress={handleLikePress}
+            size={30}
+            testID="like-button"
+            color={isLiked ? "red" : "white"}
+          />
+
+          {/* Comment Button */}
+          <TouchableWithoutFeedback
+            onPress={() =>
+              navigation.navigate("Maximize", {
+                navigation,
+                firestoreCtrl,
+                challenge: challengeDB,
+                user: currentUser,
+              })
+            }
+          >
+            <ThemedText style={styles.commentText} testID="add-a-comment">
+              Add a comment...
+            </ThemedText>
+          </TouchableWithoutFeedback>
+        </ThemedView>
       </ThemedView>
-    );
-  }
+    </TouchableWithoutFeedback>
+  );
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-    marginRight: 24,
-  },
-  challenge: {
-    width: width - 20,
-    height: height / 3,
-    borderRadius: 15,
-    backgroundColor: Colors.light.transparent,
-  },
-  image: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    borderRadius: 15,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
+  challengeContainer: {
+    marginBottom: 20,
     backgroundColor: "transparent",
-  },
-  user: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 3,
-    padding: 5,
-    backgroundColor: "transparent",
+    borderRadius: 10,
+    overflow: "hidden",
+    padding: 10,
+    width: width,
+    alignSelf: "center",
   },
   userInfo: {
-    flexDirection: "column",
-    backgroundColor: "transparent",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  userAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  defaultAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  avatarText: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  likeCount: {
+    fontSize: 14,
+    color: "#fff",
+    marginLeft: 10,
+  },
+  userName: {
+    fontSize: 16,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  challengeImage: {
+    width: "100%",
+    height: height * 0.5,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  challengeDescription: {
+    fontSize: 14,
+    color: "#fff",
+    marginBottom: 10,
+  },
+  comment: {
+    fontSize: 14,
+    color: "#aaa",
+    marginBottom: 10,
+    fontStyle: "italic",
   },
   bottomBar: {
     flexDirection: "row",
-    verticalAlign: "middle",
     justifyContent: "space-between",
-    padding: 15,
-    gap: 3,
-    backgroundColor: "transparent",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  likeText: {
+    fontSize: 16,
+    color: "#fff",
+  },
+  likedText: {
+    color: "red",
+  },
+  commentText: {
+    fontSize: 16,
+    color: "#aaa",
   },
 });
