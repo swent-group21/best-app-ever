@@ -1,8 +1,17 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import RequestList from "@/components/friends/RequestList";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { RequestList } from "@/src/views/components/friends/request_list";
 
-describe("RequestList", () => {
+
+// Mock du ViewModel
+jest.mock("@/src/viewmodels/components/friends/RequestListViewModel", () => ({
+  useRequestListViewModel: jest.fn(),
+}));
+
+describe("RequestList Component", () => {
+  const mockUseRequestListViewModel =
+  require("@/src/viewmodels/components/friends/RequestListViewModel").useRequestListViewModel;
+
   const mockFirestoreCtrl = {
     acceptFriend: jest.fn(),
     rejectFriend: jest.fn(),
@@ -15,7 +24,12 @@ describe("RequestList", () => {
   ];
 
   it("renders the list of requests correctly", () => {
-    const { getByText } = render(
+    mockUseRequestListViewModel.mockReturnValue({
+      handleAccept: jest.fn(),
+      handleDecline: jest.fn(),
+    });
+
+    const { getByTestId } = render(
       <RequestList
         requests={requests}
         firestoreCtrl={mockFirestoreCtrl}
@@ -23,11 +37,20 @@ describe("RequestList", () => {
       />,
     );
 
-    expect(getByText("John")).toBeTruthy();
-    expect(getByText("Jane")).toBeTruthy();
+    expect(getByTestId("friend-request-list")).toBeTruthy();
+    expect(getByTestId("friend-request-buttons-0")).toBeTruthy(); // John's request
+    expect(getByTestId("friend-request-buttons-1")).toBeTruthy(); // Jane's request
   });
 
-  it("calls acceptFriend when accept button is pressed", () => {
+  it("calls the right methods button is pressed", async () => {
+    const mockHandleAccept = jest.fn();
+    const mockHandleDecline = jest.fn();
+
+    mockUseRequestListViewModel.mockReturnValue({
+      handleAccept: mockHandleAccept,
+      handleDecline: mockHandleDecline,
+    });
+
     const { getByTestId } = render(
       <RequestList
         requests={requests}
@@ -37,32 +60,16 @@ describe("RequestList", () => {
     );
 
     const acceptButton = getByTestId("accept-button-0");
-    fireEvent.press(acceptButton);
-
-    expect(mockFirestoreCtrl.acceptFriend).toHaveBeenCalledWith(uid, "user1");
-  });
-
-  it("calls rejectFriend when decline button is pressed", () => {
-    const { getByTestId } = render(
-      <RequestList
-        requests={requests}
-        firestoreCtrl={mockFirestoreCtrl}
-        uid={uid}
-      />,
-    );
-
     const declineButton = getByTestId("decline-button-1");
+    fireEvent.press(acceptButton);
     fireEvent.press(declineButton);
 
-    expect(mockFirestoreCtrl.rejectFriend).toHaveBeenCalledWith(uid, "user2");
-  });
-
-  it("renders empty state when no requests are provided", () => {
-    const { queryByText } = render(
-      <RequestList requests={[]} firestoreCtrl={mockFirestoreCtrl} uid={uid} />,
+    await waitFor(() =>
+      expect(mockHandleAccept).toHaveBeenCalledWith("user1"),
     );
 
-    expect(queryByText("John")).toBeNull();
-    expect(queryByText("Jane")).toBeNull();
+    await waitFor(() =>
+      expect(mockHandleDecline).toHaveBeenCalledWith("user2"),
+    );
   });
 });

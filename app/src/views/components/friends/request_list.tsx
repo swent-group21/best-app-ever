@@ -1,6 +1,6 @@
 import { FlatList } from "react-native";
 import { FriendRequestItem } from "@/src/views/components/friends/friend_request_item";
-import useRequestListViewModel from "@/src/viewmodels/components/friends/RequestListViewModel";
+import { useRequestListViewModel } from "@/src/viewmodels/components/friends/RequestListViewModel";
 
 /**
  * Request List with all users that have sent a friend request to the current user
@@ -8,7 +8,7 @@ import useRequestListViewModel from "@/src/viewmodels/components/friends/Request
  * @param firestoreCtrl : firestore controller
  * @param uid : current user's id
  */
-export default function RequestList({
+export function RequestList({
   requests,
   firestoreCtrl,
   uid,

@@ -4,7 +4,7 @@
  * @param firestoreCtrl : firestore controller
  * @param uid : current user's id
  */
-export default function useRequestListViewModel({
+export function useRequestListViewModel({
   firestoreCtrl,
   uid,
 }: {

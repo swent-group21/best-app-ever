@@ -1,106 +1,45 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { UserListItem } from "@/components/friends/UserListItems";
+import { UserListItem } from "@/src/views/components/friends/user_list_items";
+
+// Mock des ViewModel
+jest.mock("@/src/viewmodels/components/friends/FriendIconViewModel", () => ({
+  useFriendIconViewModel: jest.fn(),
+}));
+jest.mock("@/src/viewmodels/components/friends/UserListItemViewModel", () => ({
+  useUserListItemViewModel: jest.fn(),
+}));
 
 describe("UserListItem", () => {
+  const mockUseFriendIconViewModel =
+    require("@/src/viewmodels/components/friends/FriendIconViewModel").useFriendIconViewModel;
+  const mockUserListItemViewModel =
+    require("@/src/viewmodels/components/friends/UserListItemViewModel").useUserListItemViewModel;
+
   const mockOnAdd = jest.fn();
   const mockOnCancelRequest = jest.fn();
+  const mockOnPress = jest.fn();
+
+  beforeEach(() => {
+    mockUseFriendIconViewModel.mockReturnValue({
+      firstLetter: "J",
+    });
+
+    mockUserListItemViewModel.mockReturnValue({
+      handlePress: mockOnPress,
+      status: "ADD",
+    });
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('renders with default "ADD" status when not a friend or requested', () => {
-    const { getByText } = render(
-      <UserListItem
-        name="John Doe"
-        avatar={null}
-        isFriend={false}
-        isRequested={false}
-        onAdd={mockOnAdd}
-        onCancelRequest={mockOnCancelRequest}
-      />,
-    );
-
-    expect(getByText("ADD")).toBeTruthy();
-    expect(getByText("John Doe")).toBeTruthy();
-  });
-
-  it('renders with "REQUESTED" status when a friend request is pending', () => {
-    const { getByText } = render(
-      <UserListItem
-        name="Jane Smith"
-        avatar={null}
-        isFriend={false}
-        isRequested={true}
-        onAdd={mockOnAdd}
-        onCancelRequest={mockOnCancelRequest}
-      />,
-    );
-
-    expect(getByText("REQUESTED")).toBeTruthy();
-    expect(getByText("Jane Smith")).toBeTruthy();
-  });
-
-  it('renders with "FRIEND" status when already a friend', () => {
-    const { getByText } = render(
-      <UserListItem
-        name="Michael Johnson"
-        avatar={null}
-        isFriend={true}
-        isRequested={false}
-        onAdd={mockOnAdd}
-        onCancelRequest={mockOnCancelRequest}
-      />,
-    );
-
-    expect(getByText("✓")).toBeTruthy();
-    expect(getByText("Michael Johnson")).toBeTruthy();
-  });
-
-  it('calls onAdd when "ADD" button is pressed', () => {
+  it('renders with the correct texts', () => {
     const { getByText, getByTestId } = render(
       <UserListItem
         name="John Doe"
-        avatar={null}
-        isFriend={false}
-        isRequested={false}
-        onAdd={mockOnAdd}
-        onCancelRequest={mockOnCancelRequest}
-      />,
-    );
-
-    const addButton = getByTestId("add-button-John Doe");
-    fireEvent.press(addButton);
-
-    expect(mockOnAdd).toHaveBeenCalled();
-    expect(getByText("REQUESTED")).toBeTruthy();
-  });
-
-  it('calls onCancelRequest when "REQUESTED" button is pressed', () => {
-    const { getByText, getByTestId } = render(
-      <UserListItem
-        name="Jane Smith"
-        avatar={null}
-        isFriend={false}
-        isRequested={true}
-        onAdd={mockOnAdd}
-        onCancelRequest={mockOnCancelRequest}
-      />,
-    );
-
-    const cancelButton = getByTestId("add-button-Jane Smith");
-    fireEvent.press(cancelButton);
-
-    expect(mockOnCancelRequest).toHaveBeenCalled();
-    expect(getByText("ADD")).toBeTruthy();
-  });
-
-  it("renders default avatar when no avatar is provided", () => {
-    const { getByText } = render(
-      <UserListItem
-        name="Jane Smith"
-        avatar={null}
+        avatar={undefined}
         isFriend={false}
         isRequested={false}
         onAdd={mockOnAdd}
@@ -109,5 +48,48 @@ describe("UserListItem", () => {
     );
 
     expect(getByText("J")).toBeTruthy();
+    expect(getByText("John Doe")).toBeTruthy();
+    expect(getByTestId("add-button-John Doe")).toBeTruthy();
+    expect(getByText("ADD")).toBeTruthy();
+  });
+
+  it('renders the correct check when user is a friend', () => {
+    mockUserListItemViewModel.mockReturnValue({
+      handlePress: mockOnPress,
+      status: "FRIEND",
+    });
+
+    const { getByText } = render(
+      <UserListItem
+        name="John Doe"
+        avatar="https://example.com/avatar.jpg"
+        isFriend={true}
+        isRequested={false}
+        onAdd={mockOnAdd}
+        onCancelRequest={mockOnCancelRequest}
+      />,
+    );
+
+    expect(getByText("✓")).toBeTruthy();
+  });
+
+  it('renders the correct text when requested status', () => {
+    mockUserListItemViewModel.mockReturnValue({
+      handlePress: mockOnPress,
+      status: "REQUESTED",
+    });
+
+    const { getByText, getByTestId } = render(
+      <UserListItem
+        name="John Doe"
+        avatar={undefined}
+        isFriend={false}
+        isRequested={false}
+        onAdd={mockOnAdd}
+        onCancelRequest={mockOnCancelRequest}
+      />,
+    );
+
+    expect(getByText("REQUESTED")).toBeTruthy();
   });
 });

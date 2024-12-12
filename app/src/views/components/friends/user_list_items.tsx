@@ -3,7 +3,7 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { Colors } from "@/constants/Colors";
 import { useState, useEffect } from "react";
-import { useUserListItemViewModel } from "@/src/viewmodels/components/friends/UserListItemsViewModel";
+import { useUserListItemViewModel } from "@/src/viewmodels/components/friends/UserListItemViewModel";
 import { useFriendIconViewModel } from "@/src/viewmodels/components/friends/FriendIconViewModel";
 
 /**
