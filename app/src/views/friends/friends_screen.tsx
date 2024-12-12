@@ -8,8 +8,15 @@ import ListOfFriends from "@/src/views/components/friends/list_of_friends";
 import { RequestList } from "@/src/views/components/friends/request_list";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-export default function FriendsScreen({ navigation, firestoreCtrl }: any) {
+export default function FriendsScreen({
+  navigation,
+  firestoreCtrl,
+}: {
+  readonly navigation: any;
+  readonly firestoreCtrl: FirestoreCtrl;
+}) {
   const auth = getAuth();
   const uid = auth.currentUser?.uid;
 

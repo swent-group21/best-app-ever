@@ -11,7 +11,15 @@ const HOURS_IN_DAY = 24;
  * @param onTimerFinished : function to call when the timer is finished
  * @returns : a component for the timer
  */
-export function useTimerViewModel({ endDate, onTimerFinished }: any) {
+function Timer({
+  endDate,
+  onTimerFinished,
+  testID,
+}: {
+  readonly endDate: any;
+  readonly onTimerFinished: () => void;
+  readonly testID?: string;
+}) {
   const targetTime = endDate;
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(

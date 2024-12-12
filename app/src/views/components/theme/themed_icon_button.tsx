@@ -16,11 +16,16 @@ interface ThemedIconButtonProps extends IconProps {
 }
 
 /**
- * The ThemedIconButton display a icon button.
- * @param lightColor : the light color of the button
- * @param darkColor : the dark color of the button
- * @param colorType : the color type of the button
- * @returns : a component as a themed icon button
+ * ThemedIconButton component which wraps the Icon component from react-native-elements
+ * @param lightColor : light color for the icon
+ * @param darkColor : dark color for the icon
+ * @param onPress : function to execute on press
+ * @param iconType : type of the icon
+ * @param size : size of the icon
+ * @param paddingLeft : padding left for the icon
+ * @param colorType : color type for the icon
+ * @param testID : testID for the component
+ * @returns ThemedIconButton Component
  */
 export function ThemedIconButton({
   lightColor,

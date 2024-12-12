@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * List of filtered users ViewModel helps display the component
@@ -11,7 +12,12 @@ export function useListOfFilteredUsersViewModel({
   filteredUsers,
   firestoreCtrl,
   uid,
-}: any) {
+}: {
+  readonly filteredUsers: DBUser[];
+  readonly searchText: string;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly uid: string;
+}) {
   const [userStatuses, setUserStatuses] = useState<{
     [key: string]: { isFriend: boolean; isRequested: boolean };
   }>({});

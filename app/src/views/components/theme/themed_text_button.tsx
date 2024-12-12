@@ -21,11 +21,18 @@ interface ThemedTextButtonProps extends TouchableOpacityProps {
 }
 
 /**
- * The ThemedTextButton display a component.
- * @param lightColor : the light color of the button
- * @param darkColor : the dark color of the button
- * @param colorType : the color type of the button
- * @returns : a component as a themed text button
+ * ThemedTextButton component which wraps the TouchableOpacity component from react-native with a text
+ * @param lightColor : light color for the button
+ * @param darkColor : dark color for the button
+ * @param colorType : color type for the button
+ * @param text : text for the button
+ * @param onPress : function to execute on press
+ * @param style : style for the button
+ * @param textStyle : style for the text
+ * @param textColorType : color type for the text
+ * @param textType : type of the text
+ * @param testID : testID for the component
+ * @returns ThemedTextButton Component
  */
 export function ThemedTextButton({
   lightColor,

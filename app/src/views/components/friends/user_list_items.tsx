@@ -23,7 +23,14 @@ export const UserListItem = ({
   isRequested,
   onAdd,
   onCancelRequest,
-}: any) => {
+}: {
+  readonly name: string;
+  readonly avatar?: string;
+  readonly isFriend: boolean;
+  readonly isRequested: boolean;
+  readonly onAdd: () => void;
+  readonly onCancelRequest: () => void;
+}) => {
   const { handlePress, status } = useUserListItemViewModel({
     isFriend,
     isRequested,

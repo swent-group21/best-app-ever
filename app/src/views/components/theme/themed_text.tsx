@@ -13,11 +13,12 @@ export type ThemedTextProps = TextProps & {
 };
 
 /**
- * The ThemedText display a component.
- * @param lightColor : the light color of the text
- * @param darkColor : the dark color of the text
- * @param colorType : the color type of the text
- * @returns : a component as a themed text view
+ * ThemedText component which wraps the Text component from react-native
+ * @param lightColor : light color for the text
+ * @param darkColor : dark color for the text
+ * @param colorType : color type for the text
+ * @param type : type of the text
+ * @returns ThemedText Component
  */
 export function ThemedText({
   style,
