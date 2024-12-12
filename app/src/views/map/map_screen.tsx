@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet, Image } from "react-native";
 import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -88,7 +88,6 @@ export default function MapScreen({
                 latitude: challenge.location.latitude,
                 longitude: challenge.location.longitude,
               }}
-              image={require(uri)}
               flat={true}
               title={challenge.challenge_name}
               description={challenge.description}
@@ -99,6 +98,7 @@ export default function MapScreen({
                   firestoreCtrl: firestoreCtrl,
                 });
               }}
+              image={require(uri)}
             />
           ))}
 
