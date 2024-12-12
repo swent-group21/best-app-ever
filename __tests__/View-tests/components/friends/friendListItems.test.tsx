@@ -7,14 +7,11 @@ jest.mock("@/src/viewmodels/components/friends/FriendIconViewModel", () => ({
   useFriendIconViewModel: jest.fn(),
 }));
 
-
 describe("FriendListItem Component", () => {
   const mockUseFriendIconViewModel =
     require("@/src/viewmodels/components/friends/FriendIconViewModel").useFriendIconViewModel;
 
   const mockOnPress = jest.fn();
-
-
 
   it("renders the component at first", () => {
     mockUseFriendIconViewModel.mockReturnValue({
@@ -48,7 +45,6 @@ describe("FriendListItem Component", () => {
     const avatarImage = getByTestId("friend-avatar-image");
     expect(avatarImage.props.source.uri).toBe("https://example.com/avatar.jpg");
   });
-
 
   it("renders with a default avatar when no avatar is provided", () => {
     mockUseFriendIconViewModel.mockReturnValue({

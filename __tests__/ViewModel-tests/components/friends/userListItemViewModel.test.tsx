@@ -1,10 +1,14 @@
 import React from "react";
-import { render, fireEvent, renderHook, act, waitFor } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  renderHook,
+  act,
+  waitFor,
+} from "@testing-library/react-native";
 import { useUserListItemViewModel } from "@/src/viewmodels/components/friends/UserListItemViewModel";
 
-
 describe("UserListItem ViewModel", () => {
-
   const mockOnAdd = jest.fn();
   const mockOnCancelRequest = jest.fn();
   const mockOnPress = jest.fn();
@@ -19,10 +23,7 @@ describe("UserListItem ViewModel", () => {
     jest.clearAllMocks();
   });
 
-
-
-
-  it('renders with the correct default values', async () => {
+  it("renders with the correct default values", async () => {
     const { result } = renderHook(() =>
       useUserListItemViewModel({
         isFriend: false,
@@ -31,7 +32,6 @@ describe("UserListItem ViewModel", () => {
         onCancelRequest: mockOnCancelRequest,
       }),
     );
-
 
     await waitFor(() => {
       expect(result.current.status).toBeDefined();
@@ -54,9 +54,7 @@ describe("UserListItem ViewModel", () => {
     expect(result.current.status).toEqual("REQUESTED");
   });
 
-
-
-  it('renders with the correct values when friend', async () => {
+  it("renders with the correct values when friend", async () => {
     const { result } = renderHook(() =>
       useUserListItemViewModel({
         isFriend: true,
@@ -65,7 +63,6 @@ describe("UserListItem ViewModel", () => {
         onCancelRequest: mockOnCancelRequest,
       }),
     );
-
 
     await waitFor(() => {
       expect(result.current.status).toBeDefined();
@@ -86,7 +83,7 @@ describe("UserListItem ViewModel", () => {
     expect(result.current.status).toEqual("FRIEND");
   });
 
-  it('renders with the correct values when requested', async () => {
+  it("renders with the correct values when requested", async () => {
     const { result } = renderHook(() =>
       useUserListItemViewModel({
         isFriend: false,
@@ -95,7 +92,6 @@ describe("UserListItem ViewModel", () => {
         onCancelRequest: mockOnCancelRequest,
       }),
     );
-
 
     await waitFor(() => {
       expect(result.current.status).toBeDefined();

@@ -7,16 +7,14 @@ import { useThemeColor } from "@/hooks/useThemeColor";
  * @returns : a view model for the navigation bars
  */
 export function useTopBarViewModel({
-    leftIcon,
-    rightIcon,
-    colorType = "white",
+  leftIcon,
+  rightIcon,
+  colorType = "white",
 }: {
   leftIcon?: string;
   rightIcon?: string;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
-}
-) {
-
+}) {
   const color = useThemeColor({}, colorType);
 
   const isLeftPP = (icon?: string) =>
@@ -25,10 +23,9 @@ export function useTopBarViewModel({
   const isRightPP = (icon?: string) =>
     rightIcon?.startsWith("http://") || rightIcon?.startsWith("https://");
 
-
   return {
     color,
     isLeftPP,
-    isRightPP
-  }
+    isRightPP,
+  };
 }

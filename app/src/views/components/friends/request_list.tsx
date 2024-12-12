@@ -17,11 +17,10 @@ export function RequestList({
   readonly firestoreCtrl: any;
   readonly uid: string;
 }) {
-  
-  const {
-    handleAccept,
-    handleDecline
-  } = useRequestListViewModel({firestoreCtrl, uid});
+  const { handleAccept, handleDecline } = useRequestListViewModel({
+    firestoreCtrl,
+    uid,
+  });
 
   return (
     <FlatList

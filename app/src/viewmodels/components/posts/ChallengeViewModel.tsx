@@ -60,10 +60,10 @@ export function useChallengeViewModel({
     setIsOpen,
     isLiked,
     setIsLiked,
-    likes, 
+    likes,
     setLikes,
     user,
     defaultUri,
     challengeDate,
-  }
+  };
 }

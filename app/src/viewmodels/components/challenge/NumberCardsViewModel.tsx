@@ -8,11 +8,10 @@ const slice = -2;
  * @returns : a component for the number card
  */
 export function useNumberCardsViewModel({
-  number
+  number,
 }: {
   readonly number: number;
-}
-) {
+}) {
   function numberText() {
     if (number && Math.sign(number) >= initNumber) {
       if (number.toString().length === 1) {
@@ -27,5 +26,5 @@ export function useNumberCardsViewModel({
 
   const renderNumber = numberText();
 
-  return {renderNumber};
+  return { renderNumber };
 }

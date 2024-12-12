@@ -12,7 +12,6 @@ export function useListOfFilteredUsersViewModel({
   firestoreCtrl,
   uid,
 }: any) {
-
   const [userStatuses, setUserStatuses] = useState<{
     [key: string]: { isFriend: boolean; isRequested: boolean };
   }>({});
@@ -69,5 +68,5 @@ export function useListOfFilteredUsersViewModel({
     userStatuses,
     handleAdd,
     handleRemove,
-  }
+  };
 }

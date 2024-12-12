@@ -11,11 +11,9 @@ import { useFriendIconViewModel } from "@/src/viewmodels/components/friends/Frie
  * @param onPress : function to call when the user presses the friend item
  * @returns FriendListItem Component
  */
-export function FriendListItem ({ name, avatar, onPress }: any) {
+export function FriendListItem({ name, avatar, onPress }: any) {
+  const { firstLetter } = useFriendIconViewModel({ name });
 
-  const { firstLetter } = useFriendIconViewModel({name});
-
-  
   return (
     <TouchableOpacity
       style={styles.friendItem}

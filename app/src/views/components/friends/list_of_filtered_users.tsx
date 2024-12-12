@@ -19,12 +19,8 @@ export default function ListOfFilteredUsers({
   firestoreCtrl,
   uid,
 }: any) {
-
-  const {
-    userStatuses,
-    handleAdd,
-    handleRemove,
-  } = useListOfFilteredUsersViewModel({filteredUsers, firestoreCtrl, uid});
+  const { userStatuses, handleAdd, handleRemove } =
+    useListOfFilteredUsersViewModel({ filteredUsers, firestoreCtrl, uid });
 
   return (
     <ThemedView style={{ padding: 10, backgroundColor: "transparent" }}>

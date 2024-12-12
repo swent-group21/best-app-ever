@@ -17,11 +17,10 @@ export function useThemedViewModel({
   darkColor?: string;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
 }) {
-
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "backgroundPrimary",
   );
 
-  return {backgroundColor};
+  return { backgroundColor };
 }

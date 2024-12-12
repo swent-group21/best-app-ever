@@ -3,7 +3,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { SearchBar } from "@/src/views/components/friends/search_bar";
 
 describe("SearchBar", () => {
-  
   it("renders correctly", () => {
     const { getByPlaceholderText } = render(<SearchBar onSearch={() => {}} />);
 

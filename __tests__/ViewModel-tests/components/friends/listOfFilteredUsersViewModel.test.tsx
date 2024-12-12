@@ -1,8 +1,13 @@
 import React from "react";
-import { render, fireEvent, waitFor, renderHook, act } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  renderHook,
+  act,
+} from "@testing-library/react-native";
 import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
-
 
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
@@ -23,14 +28,12 @@ const mockFilteredUsers = [
 
 // Mock du ViewModel
 describe("ListOfFilteredUsers ViewModel", () => {
-  
   const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(console, "info").mockImplementation(() => {});
   });
-
 
   it("gets the correct statuses from filtered users", async () => {
     // Render the hook with basics values
@@ -39,8 +42,7 @@ describe("ListOfFilteredUsers ViewModel", () => {
         filteredUsers: mockFilteredUsers,
         firestoreCtrl: mockFirestoreCtrl,
         uid: "user-uid",
-      }
-      ),
+      }),
     );
 
     await waitFor(() => {
@@ -68,8 +70,7 @@ describe("ListOfFilteredUsers ViewModel", () => {
         filteredUsers: mockFilteredUsers,
         firestoreCtrl: mockFirestoreCtrl,
         uid: "user-uid",
-      }
-      ),
+      }),
     );
 
     await act(async () => {
@@ -86,14 +87,16 @@ describe("ListOfFilteredUsers ViewModel", () => {
         filteredUsers: mockFilteredUsers,
         firestoreCtrl: mockFirestoreCtrl,
         uid: "user-uid",
-      }
-      ),
+      }),
     );
 
     await act(async () => {
       await result.current.handleRemove("1");
     });
 
-    expect(mockFirestoreCtrl.removeFriendRequest).toHaveBeenCalledWith("user-uid", "1");
+    expect(mockFirestoreCtrl.removeFriendRequest).toHaveBeenCalledWith(
+      "user-uid",
+      "1",
+    );
   });
 });

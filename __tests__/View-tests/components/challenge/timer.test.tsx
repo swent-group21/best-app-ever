@@ -32,16 +32,20 @@ describe("Timer Component", () => {
       days: 1,
       hours: 1,
       minutes: 1,
-      seconds:1,
+      seconds: 1,
     });
 
     const endDate = new Date();
 
     const { getByTestId } = render(
-      <Timer endDate={endDate} onTimerFinished={jest.fn()} testID={"timer-test-id"} />,
+      <Timer
+        endDate={endDate}
+        onTimerFinished={jest.fn()}
+        testID={"timer-test-id"}
+      />,
     );
 
-    expect(getByTestId("timer-test-id")).toBeTruthy(); 
+    expect(getByTestId("timer-test-id")).toBeTruthy();
   });
 
   it("renders the initial timer values correctly", () => {
@@ -49,7 +53,7 @@ describe("Timer Component", () => {
       days: 1,
       hours: 1,
       minutes: 1,
-      seconds:1,
+      seconds: 1,
     });
 
     const endDate = new Date(Date.now() + 90061000); // 1 day, 1 hour, 1 minute, 1 second

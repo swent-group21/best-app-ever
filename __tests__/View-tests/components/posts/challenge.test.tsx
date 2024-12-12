@@ -17,7 +17,6 @@ jest.mock("@/src/viewmodels/components/posts/ChallengeViewModel", () => ({
   useChallengeViewModel: jest.fn(),
 }));
 
-
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
@@ -52,9 +51,7 @@ const challengeDB: DBChallenge = {
   likes: ["12345", "67890"],
 };
 
-
 describe("Challenge Component", () => {
-
   const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockUseChallengeViewModel =
@@ -62,8 +59,6 @@ describe("Challenge Component", () => {
   const mockDate = new Date();
 
   const mockSetIsOpen = jest.fn();
-
-
 
   const currentUser: DBUser = {
     uid: "user123",
@@ -89,16 +84,15 @@ describe("Challenge Component", () => {
       defaultUri: "@/assets/images/no-image.svg",
       challengeDate: mockDate,
     });
-    });
+  });
 
   beforeAll(() => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date(1466424490000));
   });
 
-
   it("renders the Challenge component", async () => {
-    const {getByTestId} = render(
+    const { getByTestId } = render(
       <Challenge
         challengeDB={challengeDB}
         index={0}
@@ -143,7 +137,7 @@ describe("Challenge Component", () => {
     mockUseChallengeViewModel.mockReturnValue({
       isOpen: true,
       setIsOpen: mockSetIsOpen,
-      isLiked: false,
+      isLiked: true,
       setIsLiked: jest.fn(),
       likes: ["12345", "67890"],
       setLikes: jest.fn(),
@@ -225,5 +219,33 @@ describe("Challenge Component", () => {
       "challenge123",
       ["12345", "67890", "user123"],
     );
+  });
+
+  it("renders correct text when no challenge", async () => {
+    // Mock les valeurs par défaut du ViewModel
+    mockUseChallengeViewModel.mockReturnValue({
+      isOpen: true,
+      setIsOpen: mockSetIsOpen,
+      isLiked: false,
+      setIsLiked: jest.fn(),
+      likes: ["12345", "67890"],
+      setLikes: jest.fn(),
+      user: currentUser,
+      defaultUri: "@/assets/images/no-image.svg",
+      challengeDate: mockDate,
+    });
+
+    render(
+      <Challenge
+        challengeDB={undefined}
+        index={0}
+        firestoreCtrl={mockFirestoreCtrl}
+        navigation={mockNavigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />,
+    );
+
+    expect(screen.getByText("Loading Challenge...")).toBeTruthy();
   });
 });

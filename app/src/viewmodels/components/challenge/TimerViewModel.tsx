@@ -59,11 +59,10 @@ export function useTimerViewModel({ endDate, onTimerFinished }: any) {
     return () => clearInterval(interval);
   }, [targetTime, onTimerFinished]);
 
-
   return {
     days,
     hours,
     minutes,
-    seconds
-  }
+    seconds,
+  };
 }

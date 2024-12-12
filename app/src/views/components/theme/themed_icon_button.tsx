@@ -15,7 +15,6 @@ interface ThemedIconButtonProps extends IconProps {
   testID?: string;
 }
 
-
 /**
  * The ThemedIconButton display a icon button.
  * @param lightColor : the light color of the button
@@ -34,8 +33,7 @@ export function ThemedIconButton({
   testID,
   ...props
 }: Readonly<ThemedIconButtonProps>) {
-
-  const {color} = useThemedIconButtonViewModel({
+  const { color } = useThemedIconButtonViewModel({
     lightColor,
     darkColor,
     colorType,

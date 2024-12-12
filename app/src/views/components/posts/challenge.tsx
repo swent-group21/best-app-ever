@@ -42,13 +42,12 @@ export function Challenge({
     setIsOpen,
     isLiked,
     setIsLiked,
-    likes, 
+    likes,
     setLikes,
     user,
     defaultUri,
     challengeDate,
   } = useChallengeViewModel({ challengeDB, firestoreCtrl, currentUser });
-  
 
   // Display loading state or handle absence of challenge data
   if (!challengeDB) {

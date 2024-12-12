@@ -4,14 +4,17 @@ import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
-jest.mock("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel", () => ({
-  useListOfFilteredUsersViewModel: jest.fn(),
-}));
+jest.mock(
+  "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel",
+  () => ({
+    useListOfFilteredUsersViewModel: jest.fn(),
+  }),
+);
 
 describe("ListOfFilteredUsers Component", () => {
   const mockUseListOfFilteredUsersViewModel =
-  require("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel").useListOfFilteredUsersViewModel;
-  
+    require("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel").useListOfFilteredUsersViewModel;
+
   const mockFilteredUsers = [
     { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png" },
     { uid: "2", name: "Jane Smith", image_id: null },
@@ -24,7 +27,6 @@ describe("ListOfFilteredUsers Component", () => {
     jest.spyOn(console, "info").mockImplementation(() => {});
   });
 
-
   it("renders filtered users with correct statuses", async () => {
     mockUseListOfFilteredUsersViewModel.mockReturnValue({
       userStatuses: {
@@ -34,7 +36,6 @@ describe("ListOfFilteredUsers Component", () => {
       handleAdd: jest.fn(),
       handleRemove: jest.fn(),
     });
-
 
     const { getByText } = render(
       <ListOfFilteredUsers
@@ -49,7 +50,6 @@ describe("ListOfFilteredUsers Component", () => {
     expect(getByText("Jane Smith")).toBeTruthy();
   });
 
-
   it("handles adding a friend", async () => {
     const mockHandleAdd = jest.fn();
     mockUseListOfFilteredUsersViewModel.mockReturnValue({
@@ -60,7 +60,7 @@ describe("ListOfFilteredUsers Component", () => {
       handleAdd: mockHandleAdd,
       handleRemove: jest.fn(),
     });
-    
+
     const { getByTestId } = render(
       <ListOfFilteredUsers
         filteredUsers={mockFilteredUsers}
@@ -73,8 +73,6 @@ describe("ListOfFilteredUsers Component", () => {
     const addButton = getByTestId("add-button-Jane Smith");
     fireEvent.press(addButton);
 
-    await waitFor(() =>
-      expect(mockHandleAdd).toHaveBeenCalledWith("2"),
-    );
+    await waitFor(() => expect(mockHandleAdd).toHaveBeenCalledWith("2"));
   });
 });

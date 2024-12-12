@@ -1,7 +1,6 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
 
-
 /**
  * The ThemedTextButton viewmodel helps display a component.
  * @param lightColor : the light color of the button
@@ -17,11 +16,11 @@ export function useThemedTextButtonViewModel({
   lightColor?: string;
   darkColor?: string;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
-}){
+}) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "backgroundSecondary",
   );
 
-  return {color};
+  return { color };
 }

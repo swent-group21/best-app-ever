@@ -23,14 +23,11 @@ export default function NumberCard({
   readonly number?: number;
   readonly testID?: string;
 }) {
-  
-  const {renderNumber} = useNumberCardsViewModel({number});
+  const { renderNumber } = useNumberCardsViewModel({ number });
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.number}>
-        {renderNumber}
-      </ThemedText>
+      <ThemedText style={styles.number}>{renderNumber}</ThemedText>
     </ThemedView>
   );
 }

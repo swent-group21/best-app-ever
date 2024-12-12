@@ -29,12 +29,7 @@ export function ThemedTextInput({
   testID,
   ...props
 }: Readonly<ThemedTextInputProps>) {
-
-  const {
-    color,
-    borderColor,
-    getInputProps,
-  } = useThemedTextInputViewModel({
+  const { color, borderColor, getInputProps } = useThemedTextInputViewModel({
     lightColor,
     darkColor,
     colorType,

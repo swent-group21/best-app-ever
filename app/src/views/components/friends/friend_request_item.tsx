@@ -13,14 +13,13 @@ import { useFriendIconViewModel } from "@/src/viewmodels/components/friends/Frie
  * @param onDecline : function to decline a friend request
  * @returns FriendRequestItem Component
  */
-export function FriendRequestItem ({
+export function FriendRequestItem({
   name,
   avatar,
   onAccept,
   onDecline,
   testID,
 }: any) {
-
   const { firstLetter } = useFriendIconViewModel({ name });
 
   return (

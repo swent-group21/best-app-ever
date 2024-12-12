@@ -16,11 +16,11 @@ export function useThemedTextViewModel({
   lightColor?: string;
   darkColor?: string;
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
-}){
+}) {
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "textPrimary",
   );
 
-  return {color};
+  return { color };
 }

@@ -24,9 +24,13 @@ export const UserListItem = ({
   onAdd,
   onCancelRequest,
 }: any) => {
-
-  const {handlePress, status} = useUserListItemViewModel({isFriend, isRequested, onAdd, onCancelRequest});
-  const { firstLetter } = useFriendIconViewModel({name});
+  const { handlePress, status } = useUserListItemViewModel({
+    isFriend,
+    isRequested,
+    onAdd,
+    onCancelRequest,
+  });
+  const { firstLetter } = useFriendIconViewModel({ name });
 
   return (
     <ThemedView style={styles.listItem}>
@@ -35,9 +39,7 @@ export const UserListItem = ({
       ) : (
         <ThemedView style={[styles.avatar, styles.defaultAvatar]}>
           {/* Display the first letter of the user's name */}
-          <ThemedText style={styles.avatarText}>
-            {firstLetter}
-          </ThemedText>
+          <ThemedText style={styles.avatarText}>{firstLetter}</ThemedText>
         </ThemedView>
       )}
 

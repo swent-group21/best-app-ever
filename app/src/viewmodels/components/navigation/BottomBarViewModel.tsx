@@ -8,12 +8,9 @@ import { useThemeColor } from "@/hooks/useThemeColor";
  */
 export function useBottomBarViewModel({
   colorType = "white",
-} : 
-{
+}: {
   colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
 }) {
-
   const color = useThemeColor({}, colorType);
-  return {color};
-
+  return { color };
 }

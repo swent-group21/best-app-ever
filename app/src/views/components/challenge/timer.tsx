@@ -16,14 +16,10 @@ const HOURS_IN_DAY = 24;
  * @returns : a component for the timer
  */
 function Timer({ endDate, onTimerFinished, testID }: any) {
-  
-  const {
-    days,
-    hours,
-    minutes,
-    seconds,
-  } = useTimerViewModel({ endDate, onTimerFinished });
-  
+  const { days, hours, minutes, seconds } = useTimerViewModel({
+    endDate,
+    onTimerFinished,
+  });
 
   return (
     <View style={styles.container} testID={testID}>

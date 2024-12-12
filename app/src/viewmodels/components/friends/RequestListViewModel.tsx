@@ -11,7 +11,6 @@ export function useRequestListViewModel({
   readonly firestoreCtrl: any;
   readonly uid: string;
 }) {
-
   const handleAccept = (requestId: string) => {
     firestoreCtrl.acceptFriend(uid, requestId);
   };
@@ -22,6 +21,6 @@ export function useRequestListViewModel({
 
   return {
     handleAccept,
-    handleDecline
+    handleDecline,
   };
 }

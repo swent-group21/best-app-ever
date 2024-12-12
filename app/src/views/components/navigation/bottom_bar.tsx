@@ -40,8 +40,7 @@ export function BottomBar({
   rightAction = () => {},
   colorType = "white",
 }: Readonly<BottomBarProps>) {
-
-  const {color} = useBottomBarViewModel({colorType});
+  const { color } = useBottomBarViewModel({ colorType });
 
   return (
     <View style={styles.container} testID="bottom-bar">

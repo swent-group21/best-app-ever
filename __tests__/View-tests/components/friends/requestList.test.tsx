@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { RequestList } from "@/src/views/components/friends/request_list";
 
-
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/components/friends/RequestListViewModel", () => ({
   useRequestListViewModel: jest.fn(),
@@ -10,7 +9,7 @@ jest.mock("@/src/viewmodels/components/friends/RequestListViewModel", () => ({
 
 describe("RequestList Component", () => {
   const mockUseRequestListViewModel =
-  require("@/src/viewmodels/components/friends/RequestListViewModel").useRequestListViewModel;
+    require("@/src/viewmodels/components/friends/RequestListViewModel").useRequestListViewModel;
 
   const mockFirestoreCtrl = {
     acceptFriend: jest.fn(),
@@ -64,9 +63,7 @@ describe("RequestList Component", () => {
     fireEvent.press(acceptButton);
     fireEvent.press(declineButton);
 
-    await waitFor(() =>
-      expect(mockHandleAccept).toHaveBeenCalledWith("user1"),
-    );
+    await waitFor(() => expect(mockHandleAccept).toHaveBeenCalledWith("user1"));
 
     await waitFor(() =>
       expect(mockHandleDecline).toHaveBeenCalledWith("user2"),

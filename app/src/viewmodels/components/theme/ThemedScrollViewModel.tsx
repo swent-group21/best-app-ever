@@ -1,7 +1,6 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
 
-
 /**
  * The ThemedScrollView viewmodel helps display a component.
  * @param lightColor : the light color of the scroll
@@ -17,12 +16,11 @@ export function useThemedScrollViewModel({
   lightColor?: string;
   darkColor?: string;
   colorType?: keyof typeof Colors.dark & keyof typeof Colors.light;
-}){
-
+}) {
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
     colorType ?? "backgroundPrimary",
   );
 
-  return {backgroundColor};
+  return { backgroundColor };
 }

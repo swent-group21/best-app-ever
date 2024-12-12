@@ -39,8 +39,7 @@ export function ThemedTextButton({
   textColorType = "backgroundPrimary",
   testID,
 }: Readonly<ThemedTextButtonProps>) {
-
-  const {color} = useThemedTextButtonViewModel({
+  const { color } = useThemedTextButtonViewModel({
     lightColor,
     darkColor,
     colorType,

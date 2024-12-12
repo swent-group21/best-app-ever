@@ -45,12 +45,11 @@ export function TopBar({
   title,
   colorType = "white",
 }: Readonly<TopbarProps>) {
-
-  const {
-    color,
-    isLeftPP,
-    isRightPP,
-  } = useTopBarViewModel({leftIcon, rightIcon, colorType});
+  const { color, isLeftPP, isRightPP } = useTopBarViewModel({
+    leftIcon,
+    rightIcon,
+    colorType,
+  });
 
   // Determine the left content
   const leftContent = leftIcon ? (

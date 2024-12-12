@@ -1,13 +1,9 @@
-import {
-  waitFor,
-  renderHook
-} from "@testing-library/react-native";
+import { waitFor, renderHook } from "@testing-library/react-native";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
-
 
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
@@ -52,10 +48,8 @@ const currentUser: DBUser = {
   createdAt: mockDate,
 };
 
-
 // Test for the use Challenge ViewModel
 describe("use Challenge ViewModel", () => {
-
   // Before each test, mock the console info and clear all mocks
   beforeEach(() => {
     jest.spyOn(console, "info").mockImplementation(() => {});
@@ -69,15 +63,13 @@ describe("use Challenge ViewModel", () => {
   });
 
   it("should initialize correctly and fetch user, and likes", async () => {
-
     // Render the hook with basics values
     const { result } = renderHook(() =>
       useChallengeViewModel({
         challengeDB: mockChallenge,
         firestoreCtrl: mockFirestoreCtrl,
         currentUser: currentUser,
-      }
-      ),
+      }),
     );
 
     await waitFor(() => {
@@ -104,8 +96,7 @@ describe("use Challenge ViewModel", () => {
         challengeDB: mockChallenge,
         firestoreCtrl: mockFirestoreCtrl,
         currentUser: currentUser,
-      }
-      ),
+      }),
     );
 
     await waitFor(() => {

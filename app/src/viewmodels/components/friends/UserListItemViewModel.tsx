@@ -12,13 +12,12 @@ import { useState, useEffect } from "react";
  * @param onCancelRequest : function to cancel a friend request
  * @returns UserListItem ViewModel Component
  */
-export function useUserListItemViewModel ({
+export function useUserListItemViewModel({
   isFriend,
   isRequested,
   onAdd,
   onCancelRequest,
 }: any) {
-
   const [status, setStatus] = useState("ADD");
 
   // Set the status of the user based on the friend and requested status

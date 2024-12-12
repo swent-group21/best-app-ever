@@ -17,12 +17,11 @@ export function ThemedView({
 
   ...otherProps
 }: ThemedViewProps) {
-
-  const {backgroundColor} = useThemedViewModel({
+  const { backgroundColor } = useThemedViewModel({
     lightColor,
     darkColor,
     colorType,
-  })
+  });
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }

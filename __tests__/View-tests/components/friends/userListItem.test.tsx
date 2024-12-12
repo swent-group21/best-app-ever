@@ -35,7 +35,7 @@ describe("UserListItem", () => {
     jest.clearAllMocks();
   });
 
-  it('renders with the correct texts', () => {
+  it("renders with the correct texts", () => {
     const { getByText, getByTestId } = render(
       <UserListItem
         name="John Doe"
@@ -53,7 +53,7 @@ describe("UserListItem", () => {
     expect(getByText("ADD")).toBeTruthy();
   });
 
-  it('renders the correct check when user is a friend', () => {
+  it("renders the correct check when user is a friend", () => {
     mockUserListItemViewModel.mockReturnValue({
       handlePress: mockOnPress,
       status: "FRIEND",
@@ -73,7 +73,7 @@ describe("UserListItem", () => {
     expect(getByText("✓")).toBeTruthy();
   });
 
-  it('renders the correct text when requested status', () => {
+  it("renders the correct text when requested status", () => {
     mockUserListItemViewModel.mockReturnValue({
       handlePress: mockOnPress,
       status: "REQUESTED",

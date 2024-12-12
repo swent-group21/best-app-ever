@@ -7,23 +7,16 @@ jest.mock("@/src/viewmodels/components/challenge/NumberCardsViewModel", () => ({
   useNumberCardsViewModel: jest.fn(),
 }));
 
-
 describe("NumberCard Component", () => {
   const mockUseNumberCardsViewModel =
     require("@/src/viewmodels/components/challenge/NumberCardsViewModel").useNumberCardsViewModel;
-
 
   it("renders correctly with default number", () => {
     mockUseNumberCardsViewModel.mockReturnValue({
       renderNumber: "00",
     });
-    
-    const { getByText } = render(
-    <NumberCard 
-      number={0} 
-      testID={""} 
-    />
-  );
+
+    const { getByText } = render(<NumberCard number={0} testID={""} />);
 
     // Check if the number is rendered correctly
     const numberElement = getByText("00"); // Default value

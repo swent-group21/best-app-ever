@@ -22,7 +22,6 @@ describe("FriendRequestItem Component", () => {
     testID: "test-id",
   };
 
-
   it("renders the component correctly", () => {
     mockUseFriendIconViewModel.mockReturnValue({
       firstLetter: "J",
@@ -32,7 +31,6 @@ describe("FriendRequestItem Component", () => {
 
     expect(getByTestId("friend-request-item")).toBeTruthy();
   });
-
 
   it("renders the component with an avatar", () => {
     mockUseFriendIconViewModel.mockReturnValue({
@@ -77,7 +75,7 @@ describe("FriendRequestItem Component", () => {
     mockUseFriendIconViewModel.mockReturnValue({
       firstLetter: "J",
     });
-    
+
     const { getByTestId } = render(<FriendRequestItem {...defaultProps} />);
 
     const declineButton = getByTestId("decline-button-test-id");
