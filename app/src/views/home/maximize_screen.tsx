@@ -33,7 +33,7 @@ export default function MaximizeScreen({
   readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const challenge: DBChallenge = route.params?.challenge;
-  const noImage = require("@/assets/images/no-image.svg");
+  const noImage = "@/assets/images/no-image.svg";
 
   const {
     commentText,
@@ -137,7 +137,7 @@ export default function MaximizeScreen({
           <ThemedView style={styles.imageContainer}>
             <Image
               testID="post-image"
-              source={postImage ? { uri: postImage } : noImage}
+              source={postImage ? { uri: postImage } : require(noImage)}
               style={styles.postImage}
             />
           </ThemedView>

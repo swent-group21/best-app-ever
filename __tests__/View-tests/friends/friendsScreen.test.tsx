@@ -100,7 +100,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
   it("renders FriendsScreen with all sections and no errors", () => {
     const { getByText } = render(
       <FriendsScreen
-        navigation={{ goBack: jest.fn() }}
+        navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
       />,
     );
