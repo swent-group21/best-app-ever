@@ -1,10 +1,4 @@
-import {
-  Text,
-  Button,
-  StyleSheet,
-  Dimensions,
-  Image,
-} from "react-native";
+import { Text, Button, StyleSheet, Dimensions, Image } from "react-native";
 import { CameraView } from "expo-camera";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
@@ -65,16 +59,10 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
   }
 
   return (
-    
     <ThemedView style={styles.container} colorType="backgroundPrimary">
-      <TopBar
-        title="Camera"
-        leftIcon="chevron-down"
-        leftAction={goBack}
-      />
+      <TopBar title="Camera" leftIcon="chevron-down" leftAction={goBack} />
       {isCameraEnabled ? (
         <ThemedView style={styles.cameraContainer} colorType="transparent">
-          
           <CameraView
             style={styles.camera}
             facing={facing}
@@ -127,18 +115,20 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
                   color="white"
                   testID="Location-Button"
                 />
-                <ThemedText colorType="textPrimary" >
-                  {isLocationEnabled ? " Location Enabled  " : " Location Disabled  "}
+                <ThemedText colorType="textPrimary">
+                  {isLocationEnabled
+                    ? " Location Enabled  "
+                    : " Location Disabled  "}
                 </ThemedText>
               </ThemedView>
 
-              <ThemedView style={[styles.buttonContainer, {gap: 10}]}>
+              <ThemedView style={[styles.buttonContainer, { gap: 10 }]}>
                 <ThemedIconButton
-                    onPress={toggleCameraState}
-                    name={"refresh-circle"}
-                    size={40}
-                    color="white"
-                    testID="Reload-Button"
+                  onPress={toggleCameraState}
+                  name={"refresh-circle"}
+                  size={40}
+                  color="white"
+                  testID="Reload-Button"
                 />
                 <ThemedIconButton
                   onPress={makeChallenge}
@@ -226,7 +216,7 @@ const styles = StyleSheet.create({
     width: "90%",
   },
 
-  buttonContainer : {
+  buttonContainer: {
     borderRadius: 90,
     backgroundColor: "#00000088",
     flexDirection: "row",

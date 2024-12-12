@@ -7,7 +7,11 @@ import {
   CameraView,
   CameraOrientation,
 } from "expo-camera";
-import { getCurrentPositionAsync, LocationObject, requestForegroundPermissionsAsync } from "expo-location";
+import {
+  getCurrentPositionAsync,
+  LocationObject,
+  requestForegroundPermissionsAsync,
+} from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
 import { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
@@ -43,12 +47,14 @@ export default function useCameraViewModel(
   const group_id = route.params?.group_id;
 
   // Go back to the previous screen
-  const goBack = () => { navigation.goBack(); };
+  const goBack = () => {
+    navigation.goBack();
+  };
 
   // Change the camera state
   const toggleCameraState = () => {
     setIsCameraEnabled((prev) => !prev);
-  }
+  };
 
   // Change the camera facing
   const toggleCameraFacing = () => {

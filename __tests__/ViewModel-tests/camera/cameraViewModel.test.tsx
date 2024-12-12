@@ -3,7 +3,10 @@ import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 import { createChallenge } from "@/types/ChallengeBuilder";
 import { renderHook, act, waitFor } from "@testing-library/react-native";
 import { useCameraPermissions, CameraCapturedPicture } from "expo-camera";
-import { getCurrentPositionAsync, requestForegroundPermissionsAsync } from "expo-location";
+import {
+  getCurrentPositionAsync,
+  requestForegroundPermissionsAsync,
+} from "expo-location";
 
 // Mock `expo-location`
 jest.mock("expo-location", () => ({
@@ -187,7 +190,9 @@ describe("useCameraViewModel", () => {
       expect.any(Date),
       "mock-image-id",
     );
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {"currentGroup": {"group_id": "mock-group-id"}});
+    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {
+      currentGroup: { group_id: "mock-group-id" },
+    });
   });
 
   it("should handle errors during challenge creation", async () => {
