@@ -35,6 +35,7 @@ export default function CreateChallengeScreen({
     isLocationEnabled,
     toggleLocation,
     makeChallenge,
+    isInHome,
   } = CreateChallengeViewModel({ navigation, route, firestoreCtrl });
 
   return (
@@ -74,29 +75,31 @@ export default function CreateChallengeScreen({
         />
 
         {/* Location toggle */}
-        <ThemedView style={styles.containerRow}>
-          <Switch
-            style={styles.switch}
-            trackColor={{
-              false: Colors.dark.icon,
-              true: Colors.light.tabIconDefault,
-            }}
-            thumbColor={
-              isLocationEnabled ? Colors.light.tint : Colors.dark.white
-            }
-            ios_backgroundColor={Colors.light.tint}
-            onValueChange={toggleLocation}
-            value={isLocationEnabled}
-            testID="switch-button"
-          />
-          <ThemedText
-            colorType="textPrimary"
-            style={styles.switchText}
-            testID="Location-validation"
-          >
-            Enable location ?
-          </ThemedText>
-        </ThemedView>
+        {isInHome && (
+          <ThemedView style={styles.containerRow}>
+            <Switch
+              style={styles.switch}
+              trackColor={{
+                false: Colors.dark.icon,
+                true: Colors.light.tabIconDefault,
+              }}
+              thumbColor={
+                isLocationEnabled ? Colors.light.tint : Colors.dark.white
+              }
+              ios_backgroundColor={Colors.light.tint}
+              onValueChange={toggleLocation}
+              value={isLocationEnabled}
+              testID="switch-button"
+            />
+            <ThemedText
+              colorType="textPrimary"
+              style={styles.switchText}
+              testID="Location-validation"
+            >
+              Enable location ?
+            </ThemedText>
+          </ThemedView>
+        )}
 
         {/* Submit button */}
         <BottomBar
