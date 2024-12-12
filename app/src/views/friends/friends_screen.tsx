@@ -1,12 +1,12 @@
 import { Text, StyleSheet } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { getAuth } from "firebase/auth";
-import { SearchBar } from "@/components/friends/Search_Bar";
-import ListOfFriends from "@/components/friends/ListOfFriends";
-import RequestList from "@/components/friends/RequestList";
-import ListOfFilteredUsers from "@/components/friends/ListOfFilteredUsers";
+import { SearchBar } from "@/src/views/components/friends/search_bar";
+import ListOfFriends from "@/src/views/components/friends/list_of_friends";
+import RequestList from "@/src/views/components/friends/request_list";
+import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 
 export default function FriendsScreen({ navigation, firestoreCtrl }: any) {

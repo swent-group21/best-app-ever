@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 

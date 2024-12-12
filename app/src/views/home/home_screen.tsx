@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { Challenge } from "@/components/home/Challenge";
-import { ChallengeDescription } from "@/components/home/Challenge_Description";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { Challenge } from "@/src/views/components/posts/challenge";
+import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-import GroupIcon from "@/components/home/GroupIcon";
-import { ThemedText } from "@/components/theme/ThemedText";
+import GroupIcon from "@/src/views/components/navigation/group_icon";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
 
 const { width, height } = Dimensions.get("window");
 

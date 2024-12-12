@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Dimensions, Image } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { SingleComment } from "@/components/posts/Comment";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
+import { SingleComment } from "@/src/views/components/posts/comment";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
 import FirestoreCtrl, {
   DBUser,

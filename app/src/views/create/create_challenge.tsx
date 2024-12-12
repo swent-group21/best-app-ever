@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Dimensions, Switch } from "react-native";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { Colors } from "@/constants/Colors";
 import CreateChallengeViewModel from "@/src/viewmodels/create/CreateChallengeViewModel";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";

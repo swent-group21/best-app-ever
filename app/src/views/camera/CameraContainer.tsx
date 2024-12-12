@@ -11,7 +11,7 @@ import {
 import { CameraView } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
 
 const { width, height } = Dimensions.get("window");
 

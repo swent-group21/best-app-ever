@@ -1,13 +1,13 @@
 import React from "react";
 import { Dimensions, StyleSheet, ViewStyle } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { Challenge } from "@/components/home/Challenge";
-import GroupIcon from "@/components/home/GroupIcon";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { Challenge } from "@/src/views/components/posts/challenge";
+import GroupIcon from "@/src/views/components/navigation/group_icon";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
 
 const { width, height } = Dimensions.get("window");

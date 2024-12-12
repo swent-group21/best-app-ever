@@ -389,7 +389,7 @@ describe("Consistency between screens", () => {
     });
 
     // Simulate user interactions
-    fireEvent.press(getByTestId("topRightIcon-uri"));
+    fireEvent.press(getByTestId("topRightImage-uri"));
 
     // Wait for the navigation to ProfileScreen
     await waitFor(() => {
