@@ -78,6 +78,7 @@ export default function MapScreen({
           setIsMapReady(true);
         }}
       >
+        {/* Draw the challenges on the map */}
         {isMapReady &&
           challengesWithLocation.map((challenge: any, index) => (
             <MapMarker
@@ -100,6 +101,8 @@ export default function MapScreen({
               }}
             />
           ))}
+
+        {/* Draw the challenge area on the map, if any */}
         {isMapReady && challengeArea && (
           <MapCircle
             center={{

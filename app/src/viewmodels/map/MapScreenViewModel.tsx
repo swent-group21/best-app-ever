@@ -36,6 +36,7 @@ export function useMapScreenViewModel(
   const navigateGoBack = () => {
     navigation.goBack();
   };
+  const uri = "@/assets/images/icon_trans.png";
 
   /**
    * Requests permission to access the user's location and fetches their current location, only if
@@ -91,5 +92,6 @@ export function useMapScreenViewModel(
     challengeArea,
     isMapReady,
     setIsMapReady,
+    uri,
   };
 }
