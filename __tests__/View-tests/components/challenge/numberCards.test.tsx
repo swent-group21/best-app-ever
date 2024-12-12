@@ -24,6 +24,8 @@ describe("NumberCard Component", () => {
       testID={""} 
     />
   );
+
+    // Check if the number is rendered correctly
     const numberElement = getByText("00"); // Default value
     expect(numberElement).toBeTruthy();
   });

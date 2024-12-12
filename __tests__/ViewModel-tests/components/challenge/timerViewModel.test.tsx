@@ -4,9 +4,10 @@ import Timer from "@/src/views/components/challenge/timer";
 import { useTimerViewModel } from "@/src/viewmodels/components/challenge/TimerViewModel";
 
 
+// Test for the Timer ViewModel
 describe("Timer ViewModel", () => {
-  
 
+  // Before each test, mock the console info and clear all mocks
   beforeEach(() => {
     jest.useFakeTimers(); // Use Jest's fake timer functionality to control time progression
     jest.spyOn(console, "info").mockImplementation(() => {});
@@ -17,10 +18,11 @@ describe("Timer ViewModel", () => {
     jest.useRealTimers(); // Restore real timers after tests
   });
 
+
   it("calculates the initial timer values correctly", () => {
     const { result } = renderHook(() =>
       useTimerViewModel({
-        endDate: new Date(Date.now() + 90061000),
+        endDate: new Date(Date.now() + 90061000), // 1 day, 1 hour, 1 minute, 1 second from now
         onTimerFinished: jest.fn(),
       }
       ),

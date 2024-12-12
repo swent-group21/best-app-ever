@@ -2,12 +2,12 @@ import {
     waitFor,
     renderHook
   } from "@testing-library/react-native";
-  import { useBottomBarViewModel } from "@/src/viewmodels/components/navigation/BottomBarViewModel";
   import { Colors } from "@/constants/Colors";
+  import { useThemedIconButtonViewModel } from "@/src/viewmodels/components/theme/ThemedIconButtonViewModel";
   
   
-  // Test for the use BottomBar ViewModel
-  describe("use Bottom Bar ViewModel", () => {
+  // Test for the use ThemedIconButton ViewModel
+  describe("use ThemedIconButton ViewModel", () => {
   
     // Before each test, mock the console info and clear all mocks
     beforeEach(() => {
@@ -17,9 +17,10 @@ import {
   
   
     it("renders the right color with default value", async () => {
-      // Render the hook with a default color
+        // Render the hook with a default color
       const { result } = renderHook(() =>
-        useBottomBarViewModel({
+        useThemedIconButtonViewModel({
+          //colorType: "white",
         }
         ),
       );
@@ -30,9 +31,9 @@ import {
     });
 
     it("renders the right color with defined value", async () => {
-      // Test with a defined color
+        // Test with a defined color
       const { result } = renderHook(() =>
-        useBottomBarViewModel({
+        useThemedIconButtonViewModel({
           colorType: "textPrimary",
         }
         ),

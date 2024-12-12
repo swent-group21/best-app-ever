@@ -48,6 +48,7 @@ describe("GroupIcon Component", () => {
             />
     );
 
+    // Check if the text is correct when the groupDB is undefined
     expect(getByText("Loading Group...")).toBeTruthy();
 
     });
@@ -69,6 +70,7 @@ describe("GroupIcon Component", () => {
         fireEvent.press(getByTestId("group-pressable-button"));
     });
 
-        expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", { currentGroup: mockGroup });
+    // Check if the onPress method has been called
+    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", { currentGroup: mockGroup });
     });
 });

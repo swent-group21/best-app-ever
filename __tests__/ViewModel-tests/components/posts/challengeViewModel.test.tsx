@@ -53,19 +53,24 @@ const currentUser: DBUser = {
 };
 
 
+// Test for the use Challenge ViewModel
 describe("use Challenge ViewModel", () => {
 
+  // Before each test, mock the console info and clear all mocks
   beforeEach(() => {
     jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();
   });
 
+  // Before all tests, set the system time to a specific date
   beforeAll(() => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date(1466424490000));
   });
 
   it("should initialize correctly and fetch user, and likes", async () => {
+
+    // Render the hook with basics values
     const { result } = renderHook(() =>
       useChallengeViewModel({
         challengeDB: mockChallenge,
@@ -93,6 +98,7 @@ describe("use Challenge ViewModel", () => {
   });
 
   it("should have the right image placeholder", async () => {
+    // Render the hook to check default uri
     const { result } = renderHook(() =>
       useChallengeViewModel({
         challengeDB: mockChallenge,

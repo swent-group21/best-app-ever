@@ -63,6 +63,7 @@ describe("BottomBar Component", () => {
     fireEvent.press(getByTestId("bottom-center-icon-center-icon"));
   });
 
+  // Check if the actions are called
     expect(mockLeftAction).toHaveBeenCalled();
     expect(mockCenterAction).toHaveBeenCalled();
     expect(mockRightAction).toHaveBeenCalled
@@ -87,6 +88,7 @@ describe("BottomBar Component", () => {
         />
   );
 
+  // Check if the empty bar is rendered when no icons are passed
   expect(getByTestId("empty-bar")).toBeTruthy();
 });
 });

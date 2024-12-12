@@ -2,8 +2,10 @@ import { renderHook } from "@testing-library/react-native";
 import { useNumberCardsViewModel } from "@/src/viewmodels/components/challenge/NumberCardsViewModel";
 
 
+// Test for the NumberCard ViewModel
 describe("NumberCard ViewModel", () => {
 
+  // Before each test, mock the console info and clear all mocks
   beforeEach(() => {
     jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();

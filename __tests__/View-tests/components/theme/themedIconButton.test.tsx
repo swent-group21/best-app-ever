@@ -22,6 +22,7 @@ describe("ThemedIconButton Component", () => {
 
     it("renders correctly the component", () => {
         
+        // Render the component with all basic values
         const { getByTestId } = render(
             <ThemedIconButton
                 lightColor=""
@@ -38,6 +39,7 @@ describe("ThemedIconButton Component", () => {
 
     expect(getByTestId("themed-icon-button")).toBeTruthy();
     });
+
 
     it("calls the right onPress method", async () => {
         const mockOnPress = jest.fn();
@@ -61,6 +63,7 @@ describe("ThemedIconButton Component", () => {
         fireEvent.press(getByTestId("themed-icon-button"));
     });
 
+    // Check if the onPress method has been called
     expect(mockOnPress).toHaveBeenCalled();
     });
 });

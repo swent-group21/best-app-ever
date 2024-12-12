@@ -72,6 +72,7 @@ describe("Challenge Component", () => {
     createdAt: mockDate,
   };
 
+  // Reset the mocks and set the default values for the ViewModel before each test
   beforeEach(() => {
     jest.spyOn(console, "info").mockImplementation(() => {});
     jest.clearAllMocks();

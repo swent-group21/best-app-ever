@@ -62,6 +62,7 @@ describe("TopBar Component", () => {
     fireEvent.press(getByTestId("topRightIcon-right-icon"));
   });
 
+  // Check if the actions are called
     expect(mockLeftAction).toHaveBeenCalled();
     expect(mockRightAction).toHaveBeenCalled
 

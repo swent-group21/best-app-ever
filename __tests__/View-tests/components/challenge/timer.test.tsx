@@ -58,6 +58,7 @@ describe("Timer Component", () => {
       <Timer endDate={endDate} onTimerFinished={jest.fn()} />,
     );
 
+    // Check if the timer values are rendered correctly
     expect(getByTestId("days").props.children).toBe(1); // Days
     expect(getByTestId("hours").props.children).toBe(1); // Hours
     expect(getByTestId("minutes").props.children).toBe(1); // Minutes

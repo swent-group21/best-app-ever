@@ -35,7 +35,7 @@ export function ThemedIconButton({
   ...props
 }: Readonly<ThemedIconButtonProps>) {
 
-  const color = useThemedIconButtonViewModel({
+  const {color} = useThemedIconButtonViewModel({
     lightColor,
     darkColor,
     colorType,
