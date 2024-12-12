@@ -75,7 +75,9 @@ export default function ListOfFilteredUsers({
       {filteredUsers.length > 0 ? (
         <FlatList
           data={filteredUsers}
-          keyExtractor={(item) => item.uid || item.id || Math.random().toString()}
+          keyExtractor={(item) =>
+            item.uid || item.id || Math.random().toString()
+          }
           renderItem={({ item }) => {
             const { isFriend, isRequested } = userStatuses[item.uid] || {
               isFriend: false,

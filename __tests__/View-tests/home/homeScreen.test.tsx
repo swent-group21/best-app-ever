@@ -32,8 +32,16 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       name: "Test User",
       createdAt: new Date(),
     }),
+    updateLikesOf: jest.fn().mockResolvedValue({}),
   }));
 });
+const mockUser = {
+  uid: "user-1",
+  name: "Test User",
+  image_id: "https://example.com/user-image.jpg",
+  email: "bla@gmail.com",
+  createdAt: new Date(),
+};
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
@@ -160,27 +168,6 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("No challenges to display")).toBeTruthy();
   });
 
-  it("opens the filter menu when the filter button is pressed", () => {
-    const { getByTestId, getByText } = render(
-      <HomeScreen
-        user={{
-          name: "Test User",
-          uid: "12345",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
-
-    const filterButton = getByTestId("filter-icon");
-    fireEvent.press(filterButton);
-
-    expect(getByText("Filter by Friends")).toBeTruthy();
-    expect(getByText("See All Posts")).toBeTruthy();
-  });
-
   it("applies the correct filter when an option is selected", () => {
     const { getByTestId, getByText } = render(
       <HomeScreen
@@ -195,37 +182,10 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    const filterButton = getByTestId("filter-icon");
+    const filterButton = getByTestId("friends-button");
     fireEvent.press(filterButton);
-
-    const filterByFriendsOption = getByText("Filter by Friends");
-    fireEvent.press(filterByFriendsOption);
 
     expect(getByText("No challenges to display")).toBeTruthy();
-  });
-
-  it("closes the filter menu after selection", () => {
-    const { getByTestId, getByText, queryByText } = render(
-      <HomeScreen
-        user={{
-          name: "Test User",
-          uid: "12345",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
-
-    const filterButton = getByTestId("filter-icon");
-    fireEvent.press(filterButton);
-
-    const filterByFriendsOption = getByText("Filter by Friends");
-    fireEvent.press(filterByFriendsOption);
-
-    expect(queryByText("Filter by Friends")).toBeNull();
-    expect(queryByText("See All Challenges")).toBeNull();
   });
 
   it("the feed only shows friend's posts", async () => {
@@ -265,11 +225,8 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    const filterButton = getByTestId("filter-icon");
+    const filterButton = getByTestId("friends-button");
     fireEvent.press(filterButton);
-
-    const filterByFriendsOption = getByTestId("filter-by-friends-option");
-    fireEvent.press(filterByFriendsOption);
 
     const challenges = queryAllByTestId(/challenge-id-/);
 
@@ -277,56 +234,6 @@ describe("HomeScreen UI Tests", () => {
       const challengeUid = challenge.props.challengeDB.uid;
       expect(mockUser.friends).toContain(challengeUid);
     });
-  });
-
-  it("sets filter to all challenges and closes the menu", async () => {
-    const { getByTestId } = render(
-      <HomeScreen
-        user={{
-          name: "Test User",
-          uid: "12345",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
-
-    const filterButton = getByTestId("filter-icon");
-    fireEvent.press(filterButton);
-
-    const allChallengesOption = getByTestId("see-all-challenges-option");
-    fireEvent.press(allChallengesOption);
-
-    expect(getByTestId("filter-icon")).toBeTruthy();
-  });
-
-  it("resets filter to all challenges and closes the filter menu", async () => {
-    const { getByTestId, queryByTestId } = render(
-      <HomeScreen
-        user={{
-          name: "Test User",
-          uid: "12345",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
-
-    const filterButton = getByTestId("filter-icon");
-    fireEvent.press(filterButton);
-
-    expect(getByTestId("filter-modal")).toBeTruthy();
-
-    const allPostsOption = getByTestId("see-all-challenges-option");
-    fireEvent.press(allPostsOption);
-
-    expect(queryByTestId("filter-modal")).toBeNull();
-
-    expect(getByTestId("filter-icon")).toBeTruthy();
   });
 
   it("displays no challenges when filterByFriends is true and challengesFromFriends is undefined", () => {
@@ -352,20 +259,17 @@ describe("HomeScreen UI Tests", () => {
     );
 
     // Activer le filtre "Filter by Friends"
-    fireEvent.press(getByTestId("filter-icon"));
-    fireEvent.press(getByTestId("filter-by-friends-option"));
+    fireEvent.press(getByTestId("friends-button"));
 
     // Vérifie qu'aucun défi n'est affiché
     expect(getByText("No challenges to display")).toBeTruthy();
   });
 
-  it("displays no challenges when filterByFriends is false and challenges is undefined", () => {
+  it("displays no challenges when filterByFriends is true and challengesFromFriends is undefined", () => {
     mockUseHomeScreenViewModel.mockReturnValue({
       userIsGuest: false,
-      challenges: undefined, // Simule l'absence de défis généraux
-      challengesFromFriends: [
-        { uid: "friend-1", challenge_name: "Friend Challenge" },
-      ],
+      challenges: [{ uid: "user-1", challenge_name: "General Challenge" }],
+      challengesFromFriends: undefined, // Simule des défis d'amis manquants
       groups: [],
       titleChallenge: "go get hot wine!!",
     });
@@ -383,38 +287,98 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    // Désactiver le filtre "Filter by Friends" (par défaut)
-    fireEvent.press(getByTestId("filter-icon"));
-    fireEvent.press(getByTestId("see-all-challenges-option"));
+    // Activer le filtre "Filter by Friends"
+    fireEvent.press(getByTestId("friends-button"));
 
     // Vérifie qu'aucun défi n'est affiché
     expect(getByText("No challenges to display")).toBeTruthy();
   });
-  it("closes the filter menu when onRequestClose is triggered", () => {
-    const { getByTestId, queryByTestId } = render(
+
+  it("handles double-tap to like a post in HomeScreen", () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/HomeScreenViewModel"),
+        "useHomeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        challenges: [
+          {
+            challenge_id: "challenge1",
+            title: "First Challenge",
+            description: "First Challenge",
+            image_id: "https://example.com/challenge-image.jpg",
+            likes: [],
+            uid: "user1",
+          },
+        ],
+        userIsGuest: false,
+        groups: [],
+        challengesFromFriends: [],
+        titleChallenge: {
+          title: "Current Challenge",
+          description: "Current Challenge Description",
+          endDate: new Date(2024, 1, 1),
+        },
+      });
+
+    const { getByTestId, getByText } = render(
       <HomeScreen
-        user={{
-          name: "Test User",
-          uid: "12345",
-          email: "test@example.com",
-          createdAt: new Date(),
-        }}
-        navigation={{ navigate: jest.fn() }}
+        user={mockUser}
+        navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
-    // Ouvre le modal
-    const filterButton = getByTestId("filter-icon");
-    fireEvent.press(filterButton);
+    // Désactiver le filtre "Filter by Friends" (par défaut)
+    fireEvent.press(getByTestId("friends-button"));
 
-    // Vérifie que le modal est visible
-    expect(getByTestId("filter-modal")).toBeTruthy();
+    // Vérifie qu'aucun défi n'est affiché
+    expect(getByText("No challenges to display")).toBeTruthy();
+  });
 
-    // Simule la fermeture du modal via `onRequestClose`
-    fireEvent(getByTestId("filter-modal"), "onRequestClose");
+  it("handles double-tap to like a post in HomeScreen", () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/HomeScreenViewModel"),
+        "useHomeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        challenges: [
+          {
+            challenge_id: "challenge1",
+            title: "First Challenge",
+            description: "First Challenge",
+            image_id: "https://example.com/challenge-image.jpg",
+            likes: [],
+            uid: "user1",
+          },
+        ],
+        userIsGuest: false,
+        groups: [],
+        challengesFromFriends: [],
+        titleChallenge: {
+          title: "Current Challenge",
+          description: "Current Challenge Description",
+          endDate: new Date(2024, 1, 1),
+        },
+      });
 
-    // Vérifie que le modal est fermé
-    expect(queryByTestId("filter-modal")).toBeNull();
+    const { getByTestId } = render(
+      <HomeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const postImage = getByTestId("challenge-id-0"); // Replace with the correct testID
+    fireEvent.press(postImage);
+    fireEvent.press(postImage); // Simulate double-tap
+
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
   });
 });

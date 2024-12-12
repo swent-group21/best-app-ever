@@ -1,10 +1,9 @@
 import React from "react";
-import { render, fireEvent} from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import { getAuth } from "firebase/auth";
-import FirestoreCtrl, {DBUser} from "@/src/models/firebase/FirestoreCtrl";
-
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock Firebase Auth
 jest.mock("firebase/auth", () => ({
@@ -16,7 +15,6 @@ jest.mock("@/src/viewmodels/friends/FriendsScreenViewModel", () => ({
   useFriendsScreenViewModel: jest.fn(),
 }));
 
-
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
@@ -27,7 +25,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       addFriend: jest.fn(),
       acceptFriend: jest.fn(),
       rejectFriend: jest.fn(),
-      isRequested : jest.fn(),
+      isRequested: jest.fn(),
     };
   });
 });
@@ -101,7 +99,10 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
 
   it("renders FriendsScreen with all sections and no errors", () => {
     const { getByText } = render(
-      <FriendsScreen navigation={{ goBack: jest.fn() }} firestoreCtrl={mockFirestoreCtrl} />
+      <FriendsScreen
+        navigation={{ goBack: jest.fn() }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
     );
 
     expect(getByText("Strive is better with friends")).toBeTruthy();
@@ -129,7 +130,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       <FriendsScreen
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     // Vérifie que les suggestions sont affichées
@@ -154,7 +155,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       <FriendsScreen
         navigation={mockNavigation}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     expect(getByText("Suggestions for you")).toBeTruthy();

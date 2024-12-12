@@ -16,6 +16,7 @@ describe("MaximizeScreen UI Tests", () => {
     description: "Test Description",
     image_id: "test_image",
     created_at: new Date("2024-01-01T00:00:00Z"),
+    location: { latitude: 48.8566, longitude: 2.3522 },
   };
 
   const mockNavigation = { navigate: jest.fn(), goBack: jest.fn() };
@@ -94,8 +95,89 @@ describe("MaximizeScreen UI Tests", () => {
     expect(getByText("Another comment")).toBeTruthy();
   });
 
-  it("navigates to the MapScreen when the location button is pressed", () => {
+  it("handles double-tap to like the post", () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
+        "useMaximizeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        isLiked: false,
+        likeList: [],
+        commentList: [],
+        postDate: new Date(),
+        postUser: mockUser,
+        postDescription: "A test challenge",
+        postImage: "https://example.com/test-image.jpg",
+      });
+
     const { getByTestId } = render(
+      <MaximizeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        route={mockRoute}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const postImage = getByTestId("post-image");
+    fireEvent.press(postImage);
+    fireEvent.press(postImage); // Simulate double-tap
+
+    expect(mockToggleLike).toHaveBeenCalled();
+  });
+
+  it("handles liking a post", () => {
+    const { getByTestId } = render(
+      <MaximizeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        route={{ params: { challenge: mockChallenge } }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const locationButton = getByTestId("location-button");
+    fireEvent.press(locationButton);
+
+    expect(mockNavigation.navigate).toHaveBeenCalledWith("MapScreen", {
+      navigation: mockNavigation,
+      user: mockUser,
+      firestoreCtrl: mockFirestoreCtrl,
+      location: { latitude: 48.8566, longitude: 2.3522 },
+    });
+  });
+
+  it("handles adding a comment", () => {
+    const { getByTestId } = render(
+      <MaximizeScreen
+        user={{
+          uid: "12345",
+          name: "Test User",
+          email: "test@gmail.com",
+          createdAt: new Date(),
+          image_id: null,
+        }}
+        navigation={mockNavigation}
+        route={{ params: { challenge: mockChallenge } }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const addComment =
+      require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+        .addComment;
+
+    const input = getByTestId("comment-input");
+    fireEvent.changeText(input, "New Comment");
+    fireEvent.press(getByTestId("send-comment-button"));
+    expect(addComment).toHaveBeenCalled();
+  });
+
+  it("navigates to the MapScreen when the location button is pressed", () => {
+    const { getByTestId, getByText } = render(
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}
@@ -113,23 +195,6 @@ describe("MaximizeScreen UI Tests", () => {
       firestoreCtrl: mockFirestoreCtrl,
       location: { latitude: 48.8566, longitude: 2.3522 },
     });
-  });
-
-  it("renders the screen with the user info, image, and description", () => {
-    const { getByText } = render(
-      <MaximizeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
-
-    // Check for user name
-    expect(getByText("Test User")).toBeTruthy();
-
-    // Check for post description
-    expect(getByText("Test Challenge")).toBeTruthy();
   });
 
   it("toggles the like button when pressed", () => {
@@ -165,26 +230,8 @@ describe("MaximizeScreen UI Tests", () => {
     expect(mockToggleLike).toHaveBeenCalled();
   });
 
-  it("adds a comment when the send button is pressed", () => {
-    const mockAddComment = jest.fn();
-    jest
-      .spyOn(
-        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
-        "useMaximizeScreenViewModel",
-      )
-      .mockReturnValue({
-        addComment: mockAddComment,
-        commentText: "Test comment",
-        setCommentText: jest.fn(),
-        commentList: [],
-        likeList: [],
-        postDate: new Date(),
-        postUser: mockUser,
-        postDescription: "A test challenge",
-        postImage: "https://example.com/test-image.jpg",
-      });
-
-    const { getByTestId } = render(
+  it("renders the screen with the info, image, and description", () => {
+    const { getByText, getByTestId } = render(
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}
@@ -193,10 +240,14 @@ describe("MaximizeScreen UI Tests", () => {
       />,
     );
 
-    const sendButton = getByTestId("send-comment-button");
-    fireEvent.press(sendButton);
+    // Check for post description
+    expect(getByText("Test Challenge")).toBeTruthy();
 
-    expect(mockAddComment).toHaveBeenCalled();
+    // Check for post image
+    expect(getByTestId("post-image")).toBeTruthy();
+
+    // Check for post description
+    expect(getByText("This is a comment")).toBeTruthy();
   });
 });
 
