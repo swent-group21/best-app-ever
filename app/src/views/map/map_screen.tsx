@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, Image } from "react-native";
+import { ActivityIndicator, StyleSheet, Image, View } from "react-native";
 import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -83,22 +83,20 @@ export default function MapScreen({
           challengesWithLocation.map((challenge: any, index) => (
             <MapMarker
               key={index}
-              testID={challenge.challenge_name}
               coordinate={{
                 latitude: challenge.location.latitude,
                 longitude: challenge.location.longitude,
               }}
-              flat={true}
               title={challenge.challenge_name}
               description={challenge.description}
               onCalloutPress={() => {
                 navigation.navigate("Maximize", {
-                  challenge: challenge,
-                  user: user,
-                  firestoreCtrl: firestoreCtrl,
+                  challenge,
+                  user,
+                  firestoreCtrl,
                 });
               }}
-              image={require(uri)}
+              pinColor="tan"
             />
           ))}
 
