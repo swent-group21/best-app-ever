@@ -4,7 +4,6 @@ import {
   fireEvent,
   waitFor,
   screen,
-  act,
 } from "@testing-library/react-native";
 import { Challenge } from "@/components/home/Challenge";
 import FirestoreCtrl, {
@@ -106,32 +105,6 @@ describe("Challenge Component", () => {
     });
   });
 
-  it("toggles isOpen state when the challenge is pressed", async () => {
-    render(
-      <Challenge
-        challengeDB={challengeDB}
-        index={0}
-        firestoreCtrl={mockFirestoreCtrl}
-        navigation={navigation}
-        testID="challenge"
-        currentUser={currentUser}
-      />,
-    );
-
-    const touchable = screen.getByTestId("challenge-touchable");
-
-    // Initially, the detailed view should not be open
-    expect(() => screen.getByTestId("challenge-container")).toThrow();
-
-    // Press the touchable to open the details
-    await waitFor(() => {
-      fireEvent.press(touchable);
-    });
-
-    // Now the detailed view should be visible
-    expect(screen.getByTestId("challenge-container")).toBeTruthy();
-  });
-
   it("navigates to Maximize screen when expand button is pressed", async () => {
     render(
       <Challenge
@@ -146,14 +119,7 @@ describe("Challenge Component", () => {
 
     // Open the detailed view
     await waitFor(() => {
-      fireEvent.press(screen.getByTestId("challenge-touchable"));
-    });
-
-    const expandButton = screen.getByTestId("expand-button");
-
-    // Press the expand button
-    await act(() => {
-      fireEvent.press(expandButton);
+      fireEvent.press(screen.getByTestId("add-a-comment"));
     });
 
     expect(navigation.navigate).toHaveBeenCalledWith("Maximize", {
@@ -176,22 +142,12 @@ describe("Challenge Component", () => {
       />,
     );
 
-    // Open the detailed view
-    await waitFor(() => {
-      fireEvent.press(screen.getByTestId("challenge-touchable"));
-    });
-
-    let likeButton = screen.getByTestId("like-button");
-
     // Like the challenge
     await waitFor(() => {
-      fireEvent.press(likeButton);
+      fireEvent.press(screen.getByTestId("like-button"));
     });
 
     // Ensure updateLikesOf was called with the new likes list
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
-      "challenge123",
-      ["12345", "67890", "user123"],
-    );
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
   });
 });

@@ -90,13 +90,16 @@ export function TopBar({
         />
       </TouchableOpacity>
     ) : (
-      <ThemedIconButton
-        name={rightIcon}
-        onPress={rightAction}
-        size={30}
-        color={color}
-        testID={`topRightIcon-${rightIcon}`}
-      />
+      <TouchableOpacity onPress={rightAction}>
+        <View style={styles.defaultAvatar}>
+          <ThemedText
+            style={styles.avatarText}
+            testID={`topRightIcon-${rightIcon}`}
+          >
+            {title?.charAt(0).toUpperCase() || "A"} {/* Default letter */}
+          </ThemedText>
+        </View>
+      </TouchableOpacity>
     )
   ) : (
     <View style={styles.placeholder} />
@@ -140,5 +143,21 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
+  },
+  defaultAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatarText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+    textAlignVertical: "center",
+    lineHeight: 40,
   },
 });
