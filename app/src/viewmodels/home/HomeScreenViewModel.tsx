@@ -26,11 +26,34 @@ export function useHomeScreenViewModel(
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
-  const navigateToProfile = () => navigation.navigate("Profile");
+  const navigateToProfile = () => {
+    if (!userIsGuest) {
+      navigation.navigate("Profile");
+    }
+  };
   const navigateToMap = () => navigation.navigate("MapScreen");
-  const navigateToCamera = () => navigation.navigate("Camera");
-  const navigateToFriends = () => navigation.navigate("Friends");
+  const navigateToCamera = () => {
+    if (!userIsGuest) {
+      navigation.navigate("Camera");
+    }
+  };
+  const navigateToFriends = () => {
+    if (!userIsGuest) {
+      navigation.navigate("Friends");
+    }
+  };
+  const navigateToCreateGroups = () => {
+    if (!userIsGuest) {
+      navigation.navigate("CreateGroup");
+    }
+  }
 
+  const blurredChallenges = userIsGuest
+    ? challenges.map((challenge, index) => ({
+        ...challenge,
+        isBlurred: index >= 10,
+      }))
+    : challenges;
   // Fetch the current challenge
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
@@ -83,13 +106,15 @@ export function useHomeScreenViewModel(
 
   return {
     userIsGuest,
-    challenges,
+    challenges : blurredChallenges,
     groups,
     titleChallenge,
     navigateToProfile,
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
+    navigateToCreateGroups,
     challengesFromFriends,
+    
   };
 }
