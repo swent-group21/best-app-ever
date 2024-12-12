@@ -73,15 +73,12 @@ describe("Challenge Component", () => {
 
     // Mock les valeurs par défaut du ViewModel
     mockUseChallengeViewModel.mockReturnValue({
-      isOpen: false,
-      setIsOpen: mockSetIsOpen,
       isLiked: false,
-      setIsLiked: jest.fn(),
-      likes: ["12345", "67890"],
-      setLikes: jest.fn(),
       user: currentUser,
-      defaultUri: "@/assets/images/no-image.svg",
-      challengeDate: mockDate,
+      comments: [],
+      handleDoubleTap: jest.fn(),
+      handleLikePress: jest.fn(),
+      placeholderImage: "@/assets/images/no-image.svg",
     });
   });
 
@@ -102,85 +99,18 @@ describe("Challenge Component", () => {
       />,
     );
 
-    expect(getByTestId("challenge")).toBeTruthy();
+    expect(getByTestId("challenge-id-0")).toBeTruthy();
   });
 
-  it("toggles isOpen state when the challenge is pressed", async () => {
-    render(
-      <Challenge
-        challengeDB={challengeDB}
-        index={0}
-        firestoreCtrl={mockFirestoreCtrl}
-        navigation={mockNavigation}
-        testID="challenge"
-        currentUser={currentUser}
-      />,
-    );
-
-    const touchable = screen.getByTestId("challenge-touchable");
-
-    // Initially, the detailed view should not be open
-    expect(() => screen.getByTestId("challenge-container")).toThrow();
-
-    // Press the touchable to open the details
-    await waitFor(() => {
-      fireEvent.press(touchable);
-    });
-
-    // Now the detailed view should be visible
-    expect(mockSetIsOpen).toHaveBeenCalled();
-  });
-
-  it("navigates to Maximize screen when open and expand button is pressed", async () => {
-    // Mock les valeurs par défaut du ViewModel
+  it("handles double click to like", async () => {
+    const mockHandleDoubleTap = jest.fn();
     mockUseChallengeViewModel.mockReturnValue({
-      isOpen: true,
-      setIsOpen: mockSetIsOpen,
-      isLiked: true,
-      setIsLiked: jest.fn(),
-      likes: ["12345", "67890"],
-      setLikes: jest.fn(),
-      user: currentUser,
-      defaultUri: "@/assets/images/no-image.svg",
-      challengeDate: mockDate,
-    });
-
-    render(
-      <Challenge
-        challengeDB={challengeDB}
-        index={0}
-        firestoreCtrl={mockFirestoreCtrl}
-        navigation={mockNavigation}
-        testID="challenge"
-        currentUser={currentUser}
-      />,
-    );
-
-    // Open the detailed view
-    await waitFor(() => {
-      fireEvent.press(screen.getByTestId("add-a-comment"));
-    });
-
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("Maximize", {
-      navigation: mockNavigation,
-      firestoreCtrl: mockFirestoreCtrl,
-      challenge: challengeDB,
-      user: currentUser,
-    });
-  });
-
-  it("toggles like state and updates likes list", async () => {
-    // Mock les valeurs par défaut du ViewModel
-    mockUseChallengeViewModel.mockReturnValue({
-      isOpen: true,
-      setIsOpen: mockSetIsOpen,
       isLiked: false,
-      setIsLiked: jest.fn(),
-      likes: ["12345", "67890"],
-      setLikes: jest.fn(),
       user: currentUser,
-      defaultUri: "@/assets/images/no-image.svg",
-      challengeDate: mockDate,
+      comments: [],
+      handleDoubleTap: mockHandleDoubleTap,
+      handleLikePress: jest.fn(),
+      placeholderImage: "@/assets/images/no-image.svg",
     });
 
     render(
@@ -194,35 +124,28 @@ describe("Challenge Component", () => {
       />,
     );
 
-    // Like the challenge
-    await waitFor(() => {
-      fireEvent.press(screen.getByTestId("like-button"));
-    });
+    const touchable = screen.getByTestId("challenge-id-0");
 
-    // Ensure updateLikesOf was called with the new likes list
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
-      "challenge123",
-      ["12345", "67890", "user123"],
-    );
+    fireEvent.press(touchable);
+    fireEvent.press(touchable); // Simulate double-tap
+
+    expect(mockHandleDoubleTap).toHaveBeenCalled();
   });
 
-  it("renders correct text when no challenge", async () => {
-    // Mock les valeurs par défaut du ViewModel
+  it("handles like by clicking on like button", async () => {
+    const mockHandleLikePress = jest.fn();
     mockUseChallengeViewModel.mockReturnValue({
-      isOpen: true,
-      setIsOpen: mockSetIsOpen,
       isLiked: false,
-      setIsLiked: jest.fn(),
-      likes: ["12345", "67890"],
-      setLikes: jest.fn(),
       user: currentUser,
-      defaultUri: "@/assets/images/no-image.svg",
-      challengeDate: mockDate,
+      comments: [],
+      handleDoubleTap: jest.fn(),
+      handleLikePress: mockHandleLikePress,
+      placeholderImage: "@/assets/images/no-image.svg",
     });
 
     render(
       <Challenge
-        challengeDB={undefined}
+        challengeDB={challengeDB}
         index={0}
         firestoreCtrl={mockFirestoreCtrl}
         navigation={mockNavigation}
@@ -231,6 +154,41 @@ describe("Challenge Component", () => {
       />,
     );
 
-    expect(screen.getByText("Loading Challenge...")).toBeTruthy();
+    const touchable = screen.getByTestId("like-button");
+
+    fireEvent.press(touchable);
+    expect(mockHandleLikePress).toHaveBeenCalled();
+  });
+
+  it("renders comment", async () => {
+    mockUseChallengeViewModel.mockReturnValue({
+      isLiked: false,
+      user: currentUser,
+      comments: [
+        {
+          uid: "12345",
+          name: "Test User",
+          comment: "This is a test comment",
+          created_at: new Date(),
+        },
+      ],
+      handleDoubleTap: jest.fn(),
+      handleLikePress: jest.fn(),
+      placeholderImage: "@/assets/images/no-image.svg",
+    });
+
+    render(
+      <Challenge
+        challengeDB={challengeDB}
+        index={0}
+        firestoreCtrl={mockFirestoreCtrl}
+        navigation={mockNavigation}
+        testID="challenge"
+        currentUser={currentUser}
+      />,
+    );
+
+    const touchable = screen.getByTestId("firstComment");
+    expect(touchable).toBeTruthy();
   });
 });

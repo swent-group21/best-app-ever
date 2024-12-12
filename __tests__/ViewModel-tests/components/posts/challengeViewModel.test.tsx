@@ -1,9 +1,11 @@
-import { waitFor, renderHook } from "@testing-library/react-native";
+import { waitFor, renderHook, act } from "@testing-library/react-native";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
+
+const mockDate = new Date();
 
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
@@ -13,7 +15,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         uid: "user123",
         name: "Current User",
         email: "test@test.com",
-        createdAt: new Date(),
+        createdAt: mockDate,
       }),
       getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
       getCommentsOf: jest.fn().mockResolvedValue([
@@ -21,7 +23,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
           uid: "12345",
           name: "Test User",
           comment: "This is a test comment",
-          created_at: new Date(),
+          created_at: mockDate,
         },
       ]),
       updateLikesOf: jest
@@ -40,7 +42,6 @@ const mockChallenge: DBChallenge = {
   likes: ["12345", "67890"],
 };
 
-const mockDate = new Date();
 const currentUser: DBUser = {
   uid: "user123",
   name: "Current User",
@@ -78,6 +79,9 @@ describe("use Challenge ViewModel", () => {
 
     expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith("user123");
     expect(mockFirestoreCtrl.getLikesOf).toHaveBeenCalledWith("challenge123");
+    expect(mockFirestoreCtrl.getCommentsOf).toHaveBeenCalledWith(
+      "challenge123",
+    );
 
     expect(result.current.user).toEqual({
       uid: "user123",
@@ -86,7 +90,14 @@ describe("use Challenge ViewModel", () => {
       createdAt: expect.any(Date),
     });
 
-    expect(result.current.likes).toEqual(["12345", "67890"]);
+    expect(result.current.comments).toEqual([
+      {
+        uid: "12345",
+        name: "Test User",
+        comment: "This is a test comment",
+        created_at: mockDate,
+      },
+    ]);
   });
 
   it("should have the right image placeholder", async () => {
@@ -100,9 +111,37 @@ describe("use Challenge ViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(result.current.defaultUri).toBeDefined();
+      expect(result.current.placeholderImage).toBeDefined();
     });
 
-    expect(result.current.defaultUri).toEqual("@/assets/images/no-image.svg");
+    expect(result.current.placeholderImage).toEqual(
+      "https://via.placeholder.com/300",
+    );
+  });
+
+  it("handles like actions", async () => {
+    const mockHandleLikePress = jest.fn();
+
+    // Render the hook with basics values
+    const { result } = renderHook(() =>
+      useChallengeViewModel({
+        challengeDB: mockChallenge,
+        firestoreCtrl: mockFirestoreCtrl,
+        currentUser: currentUser,
+      }),
+    );
+
+    // Spy on handleLikePress
+    const handleLikePressSpy = jest.spyOn(result.current, "handleLikePress");
+
+    await act(async () => {
+      await result.current.handleDoubleTap();
+      await result.current.handleDoubleTap(); // to call handleLikePress
+    });
+
+    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
+      "challenge123",
+      ["12345", "67890", "user123"],
+    );
   });
 });

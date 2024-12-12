@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-import FirestoreCtrl, { DBUser, DBComment } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBUser,
+  DBComment,
+} from "@/src/models/firebase/FirestoreCtrl";
 import { Colors } from "@/constants/Colors";
 
 const { width, height } = Dimensions.get("window");

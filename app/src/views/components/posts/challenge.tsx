@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, Dimensions, Image, TouchableWithoutFeedback } from "react-native";
-import { Colors } from "@/constants/Colors";
+import React from "react";
+import {
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,
-  DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
 
@@ -37,9 +40,11 @@ export function Challenge({
     placeholderImage,
   } = useChallengeViewModel({ challengeDB, firestoreCtrl, currentUser });
 
-
   return (
-    <TouchableWithoutFeedback onPress={handleDoubleTap}>
+    <TouchableWithoutFeedback
+      onPress={handleDoubleTap}
+      testID={`challenge-id-${index}`}
+    >
       <ThemedView style={styles.challengeContainer} testID={testID}>
         {/* User Info */}
         <ThemedView style={styles.userInfo}>
