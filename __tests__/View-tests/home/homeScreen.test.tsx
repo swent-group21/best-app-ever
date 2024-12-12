@@ -1,7 +1,8 @@
-import React from "react";
+import React, { act } from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
@@ -33,6 +34,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       createdAt: new Date(),
     }),
     updateLikesOf: jest.fn().mockResolvedValue({}),
+    getCommentsOf: jest.fn().mockResolvedValue([]),
   }));
 });
 const mockUser = {
@@ -170,7 +172,7 @@ describe("HomeScreen UI Tests", () => {
     expect(getByText("No challenges to display")).toBeTruthy();
   });
 
-  it("handles double-tap to like a post in HomeScreen", () => {
+  it("handles double-tap to like a post in HomeScreen", async () => {
     const mockToggleLike = jest.fn();
     jest
       .spyOn(
@@ -207,10 +209,12 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    const postImage = getByTestId("challenge-id-0"); // Replace with the correct testID
-    fireEvent.press(postImage);
+    const postImage = getByTestId("challenge-id-0");
+    fireEvent.press(postImage); // Simulate double-tap
     fireEvent.press(postImage); // Simulate double-tap
 
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
+    await waitFor(async () => {
+      await expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
+    });
   });
 });
