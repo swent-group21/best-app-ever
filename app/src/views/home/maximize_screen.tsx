@@ -190,7 +190,8 @@ export default function MaximizeScreen({
             commentList.map((comment, index) => (
               <SingleComment
                 key={comment.created_at.getTime().toPrecision(21)}
-                {...comment}
+                comment={comment} // Add the 'comment' property
+                firestoreCtrl={firestoreCtrl} // Add the 'firestoreCtrl' property
               />
             ))
           )}
