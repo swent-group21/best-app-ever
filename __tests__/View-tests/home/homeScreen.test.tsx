@@ -1,5 +1,5 @@
-import React from "react";
-import { render, waitFor } from "@testing-library/react-native";
+import React, { act } from "react";
+import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -32,8 +32,17 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       name: "Test User",
       createdAt: new Date(),
     }),
+    updateLikesOf: jest.fn().mockResolvedValue({}),
+    getCommentsOf: jest.fn().mockResolvedValue([]),
   }));
 });
+const mockUser = {
+  uid: "user-1",
+  name: "Test User",
+  image_id: "https://example.com/user-image.jpg",
+  email: "bla@gmail.com",
+  createdAt: new Date(),
+};
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
@@ -160,5 +169,51 @@ describe("HomeScreen UI Tests", () => {
 
     // Vérifie que les défis et groupes ne sont pas affichés
     expect(getByText("No challenges to display")).toBeTruthy();
+  });
+
+  it("handles double-tap to like a post in HomeScreen", async () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/HomeScreenViewModel"),
+        "useHomeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        challenges: [
+          {
+            challenge_id: "challenge1",
+            title: "First Challenge",
+            description: "First Challenge",
+            image_id: "https://example.com/challenge-image.jpg",
+            likes: [],
+            uid: "user1",
+          },
+        ],
+        userIsGuest: false,
+        groups: [],
+        challengesFromFriends: [],
+        titleChallenge: {
+          title: "Current Challenge",
+          description: "Current Challenge Description",
+          endDate: new Date(2024, 1, 1),
+        },
+      });
+
+    const { getByTestId } = render(
+      <HomeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const postImage = getByTestId("challenge-id-0"); // Replace with the correct testID
+    fireEvent.press(postImage);
+    fireEvent.press(postImage); // Simulate double-tap
+
+    await waitFor(async () => {
+      await expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
+    });
   });
 });

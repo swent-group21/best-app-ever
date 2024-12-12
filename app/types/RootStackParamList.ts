@@ -1,5 +1,8 @@
 import { DBChallenge, DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
+/*
+ * RootStackParamList defines the types for the navigation stack
+ */
 export type RootStackParamList = {
   Welcome: undefined;
   WelcomeFinal: undefined;
@@ -15,10 +18,6 @@ export type RootStackParamList = {
   Friends: undefined;
   Maximize: {
     challenge: DBChallenge;
-  };
-  CreateChallenge: {
-    picture_id: string;
-    group_id: string;
   };
   Profile: undefined;
   MapScreen: undefined;

@@ -10,6 +10,7 @@ import FirestoreCtrl, {
  * @param user : the user object
  * @param challenge : the challenge object
  * @param firestoreCtrl : FirestoreCtrl object
+ * @param navigation : navigation object
  * @returns : commentText, setCommentText, commentList, postUser, likeList, isLiked, toggleLike, addComment, postDate, postTitle, postImage, and postDescription
  */
 export function useMaximizeScreenViewModel(
@@ -72,6 +73,7 @@ export function useMaximizeScreenViewModel(
         user_name: currentUserName ?? "",
         created_at: new Date(),
         post_id: challenge.challenge_id ?? "",
+        uid: currentUserId,
       };
       await firestoreCtrl.addComment(newComment);
       setCommentList([...commentList, newComment]);

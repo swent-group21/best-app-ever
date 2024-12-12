@@ -14,10 +14,11 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import BackgroundService from 'react-native-background-actions';
-import * as TaskManager from 'expo-task-manager';
 import NetInfo from "@react-native-community/netinfo";
 
+/*
+ * The type definition for a user in the Firestore database.
+ */
 export type DBUser = {
   uid: string;
   name: string;
@@ -32,6 +33,9 @@ export type DBUser = {
   friendsRequestedUser?: string[];
 };
 
+/*
+ * The type definitions for a challenge in the Firestore database.
+ */
 export type DBChallenge = {
   challenge_id?: string; // Add this line
   challenge_name: string;
@@ -44,13 +48,20 @@ export type DBChallenge = {
   group_id?: string;
 };
 
+/*
+ * The type definitions for a comment in the Firestore database.
+ */
 export type DBComment = {
   comment_text: string;
   user_name: string;
   created_at: Date;
   post_id: string;
+  uid: string;
 };
 
+/*
+ * The type definitions for a group in the Firestore database.
+ */
 export type DBGroup = {
   gid?: string;
   name: string;
@@ -58,6 +69,10 @@ export type DBGroup = {
   members: string[];
   updateDate: Date;
 };
+
+/*
+ * The type definitions for a challenge description in the Firestore database.
+ */
 export type DBChallengeDescription = {
   title: string;
   description: string;
@@ -110,11 +125,15 @@ export const scheduleUploadTask = async () => {
   }
 };
 
+/**
+ * The FirestoreCtrl class is used to interact with Firestore.
+ */
 export default class FirestoreCtrl {
   /**
    * Creates or updates a user document in Firestore.
    * @param userId The UID of the user.
    * @param userData The user data to store or update.
+   * @returns A promise that resolves when the user is created or updated.
    */
   async createUser(userId: string, userData: DBUser): Promise<void> {
     try {
@@ -205,8 +224,10 @@ export default class FirestoreCtrl {
 
   /**
    * Upload an image to Firestore storage.
+   * @param imageUri The URI of the image to upload.
+   * @returns The ID of the image.
    */
-  async uploadImageFromUri(imageUri: string) {
+  async uploadImageFromUri(imageUri: string): Promise<string> {
     try {
       if (!imageUri) {
         throw new Error("No image URI provided.");
@@ -239,6 +260,8 @@ export default class FirestoreCtrl {
 
   /**
    * Stores image upload data in AsyncStorage.
+   * @param id_picture The id of the image to upload.
+   * @returns The download URL of the image.
    */
   async storeImageLocally(id_picture: string): Promise<void> {
     const localUri = `${FileSystem.cacheDirectory}${id_picture}`;
@@ -337,8 +360,10 @@ export default class FirestoreCtrl {
 
   /**
    * Get the url of an image
+   * @param id_picture The id of the image
+   * @returns The download URL of the image.
    */
-  async getImageUrl(id_picture: string) {
+  async getImageUrl(id_picture: string): Promise<string> {
     const storageRef = ref(getStorage(), "images/" + id_picture);
     const url = await getDownloadURL(storageRef);
     return url;
@@ -346,8 +371,10 @@ export default class FirestoreCtrl {
 
   /**
    * Get the name of a user by their UID.
+   * @param id The UID of the user.
+   * @returns The name of the user.
    */
-  async getName(id: string) {
+  async getName(id: string): Promise<string | undefined> {
     try {
       const user = await this.getUser(id);
       return user?.name;
@@ -359,12 +386,16 @@ export default class FirestoreCtrl {
 
   /**
    * Set the name of a user by their UID.
+   * @param id The UID of the user.
+   * @param name The name to set.
+   * @param setUser The function to set the user.
+   * @returns A promise that resolves when the name is set.
    */
   async setName(
     id: string,
     name: string,
     setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
-  ) {
+  ): Promise<void> {
     try {
       const user = await this.getUser(id);
       user.name = name;
@@ -379,8 +410,10 @@ export default class FirestoreCtrl {
 
   /**
    * Get the profile picture of a user by their UID.
+   * @param id The UID of the user.
+   * @returns The ID of the image.
    */
-  async getProfilePicture(id: string) {
+  async getProfilePicture(id: string): Promise<string | undefined> {
     try {
       const user = await this.getUser(id);
       return user?.image_id;
@@ -392,13 +425,16 @@ export default class FirestoreCtrl {
 
   /**
    * Set the profile picture of a user by their UID.
+   * @param id The UID of the user.
+   * @param imageUri The URI of the image to set.
+   * @param setUser The function to set the user.
+   * @returns A promise that resolves when the profile picture is set.
    */
-
   async setProfilePicture(
     id: string,
     imageUri: string,
     setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
-  ) {
+  ): Promise<void> {
     try {
       const user = await this.getUser(id);
       user.image_id = await this.uploadImageFromUri(imageUri);
@@ -412,6 +448,8 @@ export default class FirestoreCtrl {
 
   /**
    * Create a challenge using the challenge_id and DBChallenge
+   * @param challengeData The challenge data to add.
+   * @returns A promise that resolves when the challenge is created.
    */
   async newChallenge(challengeData: DBChallenge): Promise<void> {
     try {
@@ -450,6 +488,8 @@ export default class FirestoreCtrl {
 
   /**
    * Create a challenge using the challenge_id and DBChallenge
+   * @param challengeId The ID of the challenge to update.
+   * @returns A promise that resolves when the challenge is updated.
    */
   async getChallenge(challengeId: string): Promise<DBChallenge> {
     try {
@@ -498,7 +538,6 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves the first k challenges from Firestore.
-   *
    * @param k The number of challenges to retrieve.
    * @returns A promise that resolves to an array of challenges.
    */
@@ -541,6 +580,7 @@ export default class FirestoreCtrl {
           user_name: data.user_name,
           created_at: data.created_at.toDate(),
           post_id: data.post_id,
+          uid: data.uid,
         } as DBComment;
       });
       return comments;
@@ -552,7 +592,6 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves all groups assigned to a specific user.
-   *
    * @param uid The UID of the user whose groups are to be fetched.
    * @returns A promise that resolves to an array of groups.
    */
@@ -593,7 +632,6 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves all members assigned to a specific group.
-   *
    * @param uid The UID of the group whose members are to be fetched.
    * @returns A promise that resolves to an array of groups.
    */
@@ -657,6 +695,7 @@ export default class FirestoreCtrl {
   /**
    * Create a group in firestore
    * @param groupData The group data to add.
+   * @returns A promise that resolves when the group is created.
    */
   async newGroup(groupData: DBGroup): Promise<void> {
     try {
@@ -696,6 +735,7 @@ export default class FirestoreCtrl {
    * Update a group in firestore with last post date
    * @param gid The ID of the group to update.
    * @param updateTime The time of the last post.
+   * @returns A promise that resolves when the group is updated.
    */
   async updateGroup(gid: string, updateTime: Date): Promise<void> {
     try {
@@ -717,6 +757,7 @@ export default class FirestoreCtrl {
    * Update a group in firestore with last post date
    * @param gid The ID of the group to update.
    * @param updateTime The time of the last post.
+   * @returns A promise that resolves when the group is updated.
    */
   async addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
     try {
@@ -752,6 +793,7 @@ export default class FirestoreCtrl {
   /**
    * Add a new comment to a challenge.
    * @param commentData The comment data to add.
+   * @returns A promise that resolves when the comment is added.
    */
   async addComment(commentData: DBComment): Promise<void> {
     try {
@@ -795,6 +837,7 @@ export default class FirestoreCtrl {
 
   /**
    * Retrieves the current challenge description from Firestore
+   * @returns A promise that resolves to the current challenge description.
    */
   async getChallengeDescription(): Promise<DBChallengeDescription> {
     try {
@@ -823,7 +866,6 @@ export default class FirestoreCtrl {
    * Retrieves all users from Firestore.
    * @returns A promise that resolves to an array of users.
    * */
-
   async getAllUsers(): Promise<DBUser[]> {
     try {
       const usersRef = collection(firestore, "users");
@@ -846,9 +888,9 @@ export default class FirestoreCtrl {
    * Add a friend to the user's friend list.
    * @param userId The UID of the user.
    * @param friendId The UID of the friend to add.
+   * @returns A promise that resolves when the friend is added.
    */
-
-  async addFriend(userId: string, friendId: string) {
+  async addFriend(userId: string, friendId: string): Promise<void> {
     try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
@@ -871,8 +913,9 @@ export default class FirestoreCtrl {
    * Accept a friend request.
    * @param userId The UID of the user.
    * @param friendId The UID of the friend to accept.
+   * @returns A promise that resolves when the friend request is accepted.
    * */
-  async acceptFriend(userId: string, friendId: string) {
+  async acceptFriend(userId: string, friendId: string): Promise<void> {
     try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
@@ -901,9 +944,9 @@ export default class FirestoreCtrl {
    * Reject a friend request.
    * @param userId The UID of the user.
    * @param friendId The UID of the user to reject.
+   * @returns A promise that resolves when the friend request is rejected.
    * */
-
-  async rejectFriend(userId: string, friendId: string) {
+  async rejectFriend(userId: string, friendId: string): Promise<void> {
     try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
@@ -929,6 +972,7 @@ export default class FirestoreCtrl {
   /**
    *Retrieve the friends of a user.
    * @param userId The UID of the user.
+   * @returns The friends of the user.
    */
   async getFriends(userId: string): Promise<DBUser[]> {
     try {
@@ -946,6 +990,7 @@ export default class FirestoreCtrl {
   /**
    *Retrieve the users that the user has requested to be friends with.
    * @param userId The UID of the user.
+   * @returns The users that the user has requested to be friends with.
    */
   async getRequestedFriends(userId: string): Promise<DBUser[]> {
     try {
@@ -962,9 +1007,9 @@ export default class FirestoreCtrl {
   }
 
   /**
-
    *Retrieve the friends requests of a user.
    * @param userId The UID of the user.
+   * @returns The friend requests of the user.
    */
   async getFriendRequests(userId: string): Promise<DBUser[]> {
     try {
@@ -984,8 +1029,9 @@ export default class FirestoreCtrl {
    * Remove a friend from the user's friend list.
    * @param userId The UID of the user.
    * @param friendId The UID of the friend to remove.
+   * @returns A promise that resolves when the friend is removed.
    */
-  async removeFriendRequest(userId: string, friendId: string) {
+  async removeFriendRequest(userId: string, friendId: string): Promise<void> {
     try {
       const user = await this.getUser(userId);
       const friend = await this.getUser(friendId);
@@ -1012,9 +1058,9 @@ export default class FirestoreCtrl {
    * Check if a user is a friend of another user.
    * @param userId The UID of the user.
    * @param friendId The UID of the friend to check.
-   * @returns
+   * @returns if the user is a friend of another user.
    */
-  async isFriend(userId: string, friendId: string) {
+  async isFriend(userId: string, friendId: string): Promise<boolean> {
     try {
       const user = await this.getUser(userId);
       return user.friends?.includes(friendId);
@@ -1029,7 +1075,7 @@ export default class FirestoreCtrl {
    * @param friendId The UID of the friend to check.
    * @returns if the user has requested to be friends with another user.
    */
-  async isRequested(userId: string, friendId: string) {
+  async isRequested(userId: string, friendId: string): Promise<boolean> {
     try {
       const user = await this.getUser(userId);
       return user.userRequestedFriends?.includes(friendId);
