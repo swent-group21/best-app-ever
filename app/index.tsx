@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Nav } from "@/navigation/Navigation";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser, backgroundTask, uploadTaskScheduled } from "@/src/models/firebase/FirestoreCtrl";
 import { NavigationIndependentTree } from "@react-navigation/native";
 import "../gesture-handler";
 import { registerRootComponent } from "expo";
@@ -11,6 +11,14 @@ function App() {
   const [user, setUser] = useState<DBUser | null>(null);
 
   const firestoreCtrl = new FirestoreCtrl();
+
+  (async () => {
+    try{
+       await backgroundTask();
+    } catch(error){
+      console.log("Error in background task:", error);
+    }
+  })();
 
   return (
     <NavigationIndependentTree>

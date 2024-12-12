@@ -14,8 +14,8 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BackgroundService from 'react-native-background-actions';
 import * as TaskManager from 'expo-task-manager';
-import * as BackgroundFetch from 'expo-background-fetch';
 import NetInfo from "@react-native-community/netinfo";
 
 export type DBUser = {
@@ -69,27 +69,46 @@ const CHALLENGE_STORAGE_KEY = '@challenges';
 const GROUP_STORAGE_KEY = '@groups';
 const IMAGE_STORAGE_KEY = '@images';
 
+export let uploadTaskScheduled = false;
+
 /*
- * Task Manager tasked with uploading local docs to firebase
+ * Background checker
  */
-const BACKGROUND_UPLOAD_TASK = 'background-upload-task';
-TaskManager.defineTask(BACKGROUND_UPLOAD_TASK, async () => {
-  console.log('Background upload task started');
-  try {
+
+export const backgroundTask = async () => {
+  while (true) {
+    try {
+      const networkState = await NetInfo.fetch();
+      if (networkState.isConnected && networkState.isInternetReachable && uploadTaskScheduled) {
+        console.log("Starting scheduled upload task...");
+        await scheduleUploadTask();
+        uploadTaskScheduled = false; // Reset the flag after task completion
+        console.log("Scheduled upload task completed. uploadTaskScheduled set to false.");
+      }
+      await new Promise(resolve => setTimeout(resolve, 5000)); // Check every 5 seconds
+    } catch (error) {
+      console.error("Error in background task:", error);
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait even on error to avoid busy loop
+    }
+  }
+};
+
+/*
+ * Function to start the uploading task
+ */
+export const scheduleUploadTask = async () => {
+  try{
+    // Execute your upload logic here if there is internet connectivity
+    console.log("Internet is available. Executing uploads.");
     const firestoreCtrl = new FirestoreCtrl();
     await firestoreCtrl.uploadStoredImages();
     await firestoreCtrl.uploadStoredChallenges();
     await firestoreCtrl.uploadStoredGroups();
-     console.log('Background upload task finished successfully');
-
-    return BackgroundFetch.BackgroundFetchResult.NewData; // Indicate new data was processed
-  } catch (error) {
-    console.error("Error in background task:", error);
-        console.log('Background upload task failed');
-
-    return BackgroundFetch.BackgroundFetchResult.Failed; // Indicate task failed
+    console.log('Background upload task finished successfully');
+  } catch(error){
+      console.error("Error in background task:", error)
   }
-});
+};
 
 export default class FirestoreCtrl {
   /**
@@ -175,7 +194,7 @@ export default class FirestoreCtrl {
         // 3. Store image upload data locally for later upload
         await this.storeImageLocally(id_picture);
         // Schedule background retry if offline        
-        this.scheduleBackgroundUpload();
+        uploadTaskScheduled = true;
         return id_picture; // Return the ID even if the initial upload fails
       }
     } catch (error) {
@@ -196,56 +215,27 @@ export default class FirestoreCtrl {
       const id_picture = (Math.random() + 1).toString(36).substring(2);
       console.log("Here is the imageUri: \n", imageUri)
 
-      try {
-        const networkState = await NetInfo.fetch();
-        if (networkState.isConnected && networkState.isInternetReachable) {
-          const response = await fetch(imageUri);
-          const blob = await response.blob();
+      const networkState = await NetInfo.fetch();
+      if (networkState.isConnected && networkState.isInternetReachable) {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
 
-          const storageRef = ref(getStorage(), "images/" + id_picture);
-          await uploadBytes(storageRef, blob);
-          return id_picture;
-        }
+        const storageRef = ref(getStorage(), "images/" + id_picture);
+        await uploadBytes(storageRef, blob);
+        return id_picture;
+      }
 
-        console.warn("No internet connection. Skipping image upload.");
-        //Store the image locally for background upload
-        await this.storeImageLocally(id_picture)
-        this.scheduleBackgroundUpload();
+      console.warn("No internet connection. Skipping image upload.");
+      //Store the image locally for background upload
+      await this.storeImageLocally(id_picture)
+      uploadTaskScheduled = true;
         
-        } catch (error) {
-          console.error("Error uploading image to Firestore:", error);
-          throw error;
-        }
     } catch (error) {
       console.error("Error uploading image: ", error);
       throw error;
     }
   }
 
-
-  /**
-   * Schedules a background task to upload stored data.
-   */
-  async scheduleBackgroundUpload() {
-    try {
-      console.log("backgroundScheduler")
-      const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_UPLOAD_TASK);
-      if (!isRegistered) {
-        await BackgroundFetch.unregisterTaskAsync(BACKGROUND_UPLOAD_TASK)
-        console.log("Unregistering task")
-        await BackgroundFetch.registerTaskAsync(BACKGROUND_UPLOAD_TASK, {
-          minimumInterval: 15 * 60, // 15 minutes
-          stopOnTerminate: false, // Android only
-          startOnBoot: true, // Android only
-        });
-        console.log('Background upload task registered');
-      }
-      await BackgroundFetch.setMinimumIntervalAsync(15*60);
-    } catch (error) {
-      console.error("Error registering/scheduling task:", error.message);
-      // Handle error appropriately, e.g., display an error message to the user
-    }
-  }
 
   /**
    * Stores image upload data in AsyncStorage.
@@ -425,29 +415,35 @@ export default class FirestoreCtrl {
    */
   async newChallenge(challengeData: DBChallenge): Promise<void> {
     try {
-       const docRef = await addDoc(collection(firestore,"challenges"), challengeData);
-       console.log("Challenge successfully uploaded to Firestore:", docRef.id);
+
+      const networkState = await NetInfo.fetch();
+      if (networkState.isConnected && networkState.isInternetReachable) {
+        console.log("Network State: ", networkState.isConnected)
+        const docRef = await addDoc(collection(firestore,"challenges"), challengeData);
+        console.log("Challenge successfully uploaded to Firestore:", docRef.id);
+        return
+      }
+      try {
+        const storedChallenges = await this.getStoredChallenges();
+        storedChallenges.forEach((sChallenge) => {
+          if (sChallenge.challenge_id == challengeData.challenge_id){
+            console.log('Challenge already stored.')
+            return
+          }
+        })
+
+        storedChallenges.push(challengeData)
+        await AsyncStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(storedChallenges));
+        console.log('Challenge stored locally:', challengeData);
+        // Schedule background retry
+        uploadTaskScheduled = true;
+
+      } catch (storageError) {
+        console.error("Error storing challenge locally:", storageError);
+      }
 
     } catch (error) {
         console.error("Error writing challenge document to Firestore:", error);
-        try {
-          const storedChallenges = await this.getStoredChallenges();
-          storedChallenges.forEach((sChallenge) => {
-            if (sChallenge.challenge_id == challengeData.challenge_id){
-              console.log('Challenge already stored.')
-              return
-            }
-          })
-
-          storedChallenges.push(challengeData)
-          await AsyncStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify(storedChallenges));
-          console.log('Challenge stored locally:', challengeData);
-          // Schedule background retry
-          this.scheduleBackgroundUpload();
-
-        } catch (storageError) {
-          console.error("Error storing challenge locally:", storageError);
-        }
       throw error;
     }
   }
@@ -664,11 +660,12 @@ export default class FirestoreCtrl {
    */
   async newGroup(groupData: DBGroup): Promise<void> {
     try {
-          // 1. Attempt firestore upload
-        const docRef = await addDoc(collection(firestore, "groups"), groupData);
-        console.log("Group successfully uploaded to Firestore:", docRef.id);
-      } catch (error) {
-        console.error("Error writing group document to Firestore:", error);
+        const networkState = await NetInfo.fetch();
+        if (networkState.isConnected && networkState.isInternetReachable) {
+          const docRef = await addDoc(collection(firestore, "groups"), groupData);
+          console.log("Group successfully uploaded to Firestore:", docRef.id);
+          return
+        }
 
         try{
             // 2. Store group data locally for later upload
@@ -683,12 +680,14 @@ export default class FirestoreCtrl {
           storedGroups.push(groupData)
           await AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(storedGroups));
           console.log('Group stored locally:', groupData);
-           // Schedule background retry if offline        
-          this.scheduleBackgroundUpload();
+          // Schedule background retry if offline        
+          uploadTaskScheduled = true;
 
         } catch(storageError){
            console.error("Error storing group locally:", storageError);
         }
+      } catch (error) {
+        console.error("Error writing group document to Firestore:", error);
         throw error;
       }
    }
