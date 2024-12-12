@@ -25,7 +25,7 @@ export const UserListItem = ({
   onCancelRequest,
 }: any) => {
 
-  const handlePress = useUserListItemViewModel({isFriend, isRequested, onAdd, onCancelRequest});
+  const {handlePress, status} = useUserListItemViewModel({isFriend, isRequested, onAdd, onCancelRequest});
   const { firstLetter } = useFriendIconViewModel({name});
 
   return (

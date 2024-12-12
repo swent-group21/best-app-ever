@@ -61,8 +61,10 @@ describe("FriendListItem Component", () => {
 
     const defaultAvatar = getByTestId("friend-default-avatar");
     const initialText = getByText("J");
+    const textAvatarPlaceholder = getByTestId("friend-avatar-text");
     expect(defaultAvatar).toBeTruthy();
     expect(initialText).toBeTruthy();
+    expect(textAvatarPlaceholder).toBeTruthy();
   });
 
   it("displays the friend's name correctly", () => {

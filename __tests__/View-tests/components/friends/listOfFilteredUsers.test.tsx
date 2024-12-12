@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel", () => ({
@@ -15,12 +16,8 @@ describe("ListOfFilteredUsers Component", () => {
     { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png" },
     { uid: "2", name: "Jane Smith", image_id: null },
   ];
-  const mockFirestoreCtrl = {
-    isFriend: jest.fn((uid, friendId) => Promise.resolve(friendId === "1")), // John is a friend
-    isRequested: jest.fn(() => Promise.resolve(false)),
-    addFriend: jest.fn(() => Promise.resolve()),
-    removeFriendRequest: jest.fn(() => Promise.resolve()),
-  };
+
+  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -58,7 +55,7 @@ describe("ListOfFilteredUsers Component", () => {
     mockUseListOfFilteredUsersViewModel.mockReturnValue({
       userStatuses: {
         "1": { isFriend: true, isRequested: false },
-        "2": { isFriend: true, isRequested: false },
+        "2": { isFriend: false, isRequested: false },
       },
       handleAdd: mockHandleAdd,
       handleRemove: jest.fn(),
@@ -77,7 +74,7 @@ describe("ListOfFilteredUsers Component", () => {
     fireEvent.press(addButton);
 
     await waitFor(() =>
-      expect(mockHandleAdd).toHaveBeenCalledWith("user-uid", "2"),
+      expect(mockHandleAdd).toHaveBeenCalledWith("2"),
     );
   });
 });

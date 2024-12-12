@@ -33,5 +33,5 @@ export function ThemedText({
     darkColor,
     colorType,
   });
-  return <Text style={[{ color }, TextStyles[type], style]} {...rest} testID="themed-text-id"/>;
+  return <Text style={[{ color }, TextStyles[type], style]} {...rest}/>;
 }

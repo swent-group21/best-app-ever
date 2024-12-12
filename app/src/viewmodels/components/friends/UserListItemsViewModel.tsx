@@ -43,5 +43,8 @@ export const useUserListItemViewModel = ({
     }
   };
 
-  return (handlePress);
+  return {
+    handlePress,
+    status,
+  };
 }

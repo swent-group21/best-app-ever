@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
  * @param uid : user id of the current user
  * @returns ListOfFilteredUsers Component
  */
-export default function useListOfFilteredUsersViewModel({
+export function useListOfFilteredUsersViewModel({
   filteredUsers,
   firestoreCtrl,
   uid,

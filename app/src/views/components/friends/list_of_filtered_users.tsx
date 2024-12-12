@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from "react-native";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { UserListItem } from "@/src/views/components/friends/user_list_items";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import useListOfFilteredUsersViewModel from "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel";
+import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel";
 
 /**
  * List of filtered users component

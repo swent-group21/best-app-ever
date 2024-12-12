@@ -24,5 +24,5 @@ export function ThemedView({
     colorType,
   })
 
-  return <View style={[{ backgroundColor }, style]} {...otherProps} testID="themed-view-id"/>;
+  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }
