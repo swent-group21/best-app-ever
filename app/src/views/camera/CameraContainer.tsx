@@ -10,6 +10,8 @@ import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { TopBar } from "@/components/navigation/TopBar";
+import { ThemedText } from "@/components/theme/ThemedText";
+import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 
 const { width, height } = Dimensions.get("window");
 
@@ -26,13 +28,17 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     requestPermission,
     camera,
     picture,
+    description,
     isCameraEnabled,
     isFlashEnabled,
+    isLocationEnabled,
     toggleCameraFacing,
     toggleFlashMode,
+    toggleLocation,
+    toggleCameraState,
+    setDescription,
     takePicture,
-    imageUrlGen,
-    setIsCameraEnabled,
+    makeChallenge,
     goBack,
   } = useCameraViewModel(firestoreCtrl, navigation, route);
 
@@ -74,6 +80,8 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
             facing={facing}
             enableTorch={isFlashEnabled}
             ref={camera}
+            zoom={0}
+            mirror={facing === "front"}
             testID="camera-view"
           />
 
@@ -108,37 +116,53 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
         </ThemedView>
       ) : (
         <ThemedView style={styles.cameraContainer} colorType="transparent">
-          <Image source={{ uri: picture?.uri }} style={styles.camera} />
-          <ThemedView style={styles.buttonPlaceHolder} colorType="transparent">
-            <ThemedIconButton
-              style={styles.changeOrientationAndFlash}
-              onPress={() => setIsCameraEnabled(true)}
-              name={"reload"}
-              size={30}
-              color="white"
-              testID="Reload-Button"
-            />
+          <ThemedView style={styles.camera} colorType="transparent">
+            <Image source={{ uri: picture?.uri }} style={styles.preview} />
+            <ThemedView style={styles.button} colorType="transparent">
+              <ThemedView style={styles.buttonContainer}>
+                <ThemedIconButton
+                  onPress={toggleLocation}
+                  name={`navigate-circle${isLocationEnabled ? "" : "-outline"}`}
+                  size={35}
+                  color="white"
+                  testID="Location-Button"
+                />
+                <ThemedText colorType="textPrimary" >
+                  {isLocationEnabled ? " Location Enabled  " : " Location Disabled  "}
+                </ThemedText>
+              </ThemedView>
 
-            <ThemedIconButton
-              onPress={() => {}}
-              name=""
-              size={100}
-              color="transparent"
-            />
-
-            <ThemedIconButton
-              onPress={imageUrlGen}
-              testID="Send-Button"
-              style={styles.changeOrientationAndFlash}
-              name="send"
-              size={30}
-              color="white"
-            />
+              <ThemedView style={[styles.buttonContainer, {gap: 10}]}>
+                <ThemedIconButton
+                    onPress={toggleCameraState}
+                    name={"refresh-circle"}
+                    size={40}
+                    color="white"
+                    testID="Reload-Button"
+                />
+                <ThemedIconButton
+                  onPress={makeChallenge}
+                  name="arrow-redo-circle"
+                  size={40}
+                  color="white"
+                  testID="Submit-Button"
+                />
+              </ThemedView>
+            </ThemedView>
           </ThemedView>
+
+          <ThemedTextInput
+            style={styles.input}
+            placeholder="Caption"
+            onChangeText={setDescription}
+            value={description}
+            viewWidth="98%"
+            colorType="white"
+            testID="Caption-Input"
+          />
         </ThemedView>
       )}
     </ThemedView>
-    
   );
 }
 
@@ -147,10 +171,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+
   message: {
     textAlign: "center",
     paddingBottom: 10,
   },
+
   camera: {
     flex: 3,
     alignSelf: "center",
@@ -159,54 +185,9 @@ const styles = StyleSheet.create({
     width: width,
     borderRadius: 30,
     marginTop: 10,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-  },
-  button: {
-    flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
+    justifyContent: "flex-end",
   },
 
-  picture: {
-    width: width,
-    height: height,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-  },
-
-  pictureBackround: {
-    width: width,
-    height: height,
-    resizeMode: "cover",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  goBack: {
-    position: "absolute",
-    top: height * 0.0,
-    left: width * 0.0,
-    width: width * 0.3,
-    height: width * 0.3,
-    backgroundColor: "transparent",
-    borderRadius: 90,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  send: {
-  
-  },
   takePicture: {
     backgroundColor: "transparent",
     borderRadius: 90,
@@ -226,6 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+
   buttonPlaceHolder: {
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -233,5 +215,58 @@ const styles = StyleSheet.create({
     width: width,
     marginTop: 30,
     marginBottom: 60,
+  },
+
+  button: {
+    margin: 10,
+    borderRadius: 90,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+  },
+
+  buttonContainer : {
+    borderRadius: 90,
+    backgroundColor: "#00000088",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  preview: {
+    height: height * 0.65,
+    width: width,
+    bottom: 0,
+    left: 0,
+    borderRadius: 30,
+    position: "absolute",
+  },
+
+  input: {
+    alignSelf: "center",
+    width: "100%",
+    padding: 10,
+    marginVertical: 30,
+    textAlign: "center",
+    fontSize: 20,
+  },
+  switch: {
+    alignSelf: "flex-start",
+    width: "15%",
+    borderWidth: 2,
+    borderRadius: 15,
+  },
+  switchText: {
+    width: "90%",
+    padding: 15,
+    alignSelf: "center",
+  },
+  containerRow: {
+    width: "90%",
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "baseline",
+    padding: 15,
   },
 });
