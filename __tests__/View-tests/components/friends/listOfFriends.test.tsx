@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import ListOfFriends from "@/components/friends/ListOfFriends";
+import ListOfFriends from "@/src/views/components/friends/list_of_friends";
 
 describe("ListOfFriends", () => {
   const mockFriends = [

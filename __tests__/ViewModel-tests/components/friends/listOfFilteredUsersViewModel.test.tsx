@@ -1,27 +1,30 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
+import { render, fireEvent, waitFor, renderHook, act } from "@testing-library/react-native";
+import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel";
+import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+
+
+// Mock FirestoreCtrl methods
+jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      isFriend: jest.fn((uid, friendId) => Promise.resolve(friendId === "1")), // John is a friend
+      isRequested: jest.fn(() => Promise.resolve(false)),
+      addFriend: jest.fn(() => Promise.resolve()),
+      removeFriendRequest: jest.fn(() => Promise.resolve()),
+    };
+  });
+});
+
+const mockFilteredUsers = [
+  { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png" },
+  { uid: "2", name: "Jane Smith", image_id: null },
+];
 
 // Mock du ViewModel
-jest.mock("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel", () => ({
-  useListOfFilteredUsersViewModel: jest.fn(),
-}));
-
-describe("ListOfFilteredUsers Component", () => {
-  const mockUseListOfFilteredUsersViewModel =
-  require("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel").useListOfFilteredUsersViewModel;
+describe("ListOfFilteredUsers ViewModel", () => {
   
-  const mockFilteredUsers = [
-    { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png" },
-    { uid: "2", name: "Jane Smith", image_id: null },
-  ];
-  
-  const mockFirestoreCtrl = {
-    isFriend: jest.fn((uid, friendId) => Promise.resolve(friendId === "1")), // John is a friend
-    isRequested: jest.fn(() => Promise.resolve(false)),
-    addFriend: jest.fn(() => Promise.resolve()),
-    removeFriendRequest: jest.fn(() => Promise.resolve()),
-  };
+  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -29,55 +32,68 @@ describe("ListOfFilteredUsers Component", () => {
   });
 
 
-  it("renders filtered users with correct statuses", async () => {
-    mockUseListOfFilteredUsersViewModel.mockReturnValue({
-      userStatuses: {
-        "2": { isFriend: true, isRequested: false },
-      },
-      handleAdd: jest.fn(),
-      handleRemove: jest.fn(),
-    });
-
-
-    const { getByText } = render(
-      <ListOfFilteredUsers
-        filteredUsers={mockFilteredUsers}
-        searchText="John"
-        firestoreCtrl={mockFirestoreCtrl}
-        uid="user-uid"
-      />,
+  it("gets the correct statuses from filtered users", async () => {
+    // Render the hook with basics values
+    const { result } = renderHook(() =>
+      useListOfFilteredUsersViewModel({
+        filteredUsers: mockFilteredUsers,
+        firestoreCtrl: mockFirestoreCtrl,
+        uid: "user-uid",
+      }
+      ),
     );
 
-    expect(getByText("John Doe")).toBeTruthy();
-    expect(getByText("Jane Smith")).toBeTruthy();
+    await waitFor(() => {
+      expect(result.current.userStatuses).toBeDefined();
+    });
+
+    expect(mockFirestoreCtrl.isFriend).toHaveBeenCalledWith("user-uid", "1");
+    expect(mockFirestoreCtrl.isRequested).toHaveBeenCalledWith("user-uid", "2");
+
+    // Wait for the promise to resolve
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(result.current.userStatuses).toEqual({
+      "1": { isFriend: true, isRequested: false },
+      "2": { isFriend: false, isRequested: false },
+    });
   });
 
-
   it("handles adding a friend", async () => {
-    const mockHandleAdd = jest.fn();
-    mockUseListOfFilteredUsersViewModel.mockReturnValue({
-      userStatuses: {
-        "1": { isFriend: true, isRequested: false },
-        "2": { isFriend: true, isRequested: false },
-      },
-      handleAdd: mockHandleAdd,
-      handleRemove: jest.fn(),
+    // Render the hook with basics values
+    const { result } = renderHook(() =>
+      useListOfFilteredUsersViewModel({
+        filteredUsers: mockFilteredUsers,
+        firestoreCtrl: mockFirestoreCtrl,
+        uid: "user-uid",
+      }
+      ),
+    );
+
+    await act(async () => {
+      await result.current.handleAdd("2");
     });
-    
-    const { getByTestId } = render(
-      <ListOfFilteredUsers
-        filteredUsers={mockFilteredUsers}
-        searchText="Jane"
-        firestoreCtrl={mockFirestoreCtrl}
-        uid="user-uid"
-      />,
+
+    expect(mockFirestoreCtrl.addFriend).toHaveBeenCalledWith("user-uid", "2");
+  });
+
+  it("handles removing a friend", async () => {
+    // Render the hook with basics values
+    const { result } = renderHook(() =>
+      useListOfFilteredUsersViewModel({
+        filteredUsers: mockFilteredUsers,
+        firestoreCtrl: mockFirestoreCtrl,
+        uid: "user-uid",
+      }
+      ),
     );
 
-    const addButton = getByTestId("add-button-Jane Smith");
-    fireEvent.press(addButton);
+    await act(async () => {
+      await result.current.handleRemove("1");
+    });
 
-    await waitFor(() =>
-      expect(mockHandleAdd).toHaveBeenCalledWith("user-uid", "2"),
-    );
+    expect(mockFirestoreCtrl.removeFriendRequest).toHaveBeenCalledWith("user-uid", "1");
   });
 });
