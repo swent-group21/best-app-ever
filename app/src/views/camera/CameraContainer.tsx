@@ -1,17 +1,15 @@
-import React from "react";
 import {
-  View,
   Text,
   Button,
   StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
   Dimensions,
+  Image,
 } from "react-native";
 import { CameraView } from "expo-camera";
-import { Ionicons } from "@expo/vector-icons";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
+import { ThemedView } from "@/components/theme/ThemedView";
+import { TopBar } from "@/components/navigation/TopBar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,55 +28,63 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     picture,
     isCameraEnabled,
     isFlashEnabled,
-    zoom,
     toggleCameraFacing,
     toggleFlashMode,
     takePicture,
     imageUrlGen,
     setIsCameraEnabled,
+    goBack,
   } = useCameraViewModel(firestoreCtrl, navigation, route);
 
   if (!permission) {
     return (
-      <View style={styles.container}>
+      <ThemedView style={styles.container}>
         <Text style={styles.message}>
           Errors occurred while requesting permission
         </Text>
         <Button onPress={requestPermission} title="Grant Permission" />
-      </View>
+      </ThemedView>
     );
   }
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
+      <ThemedView style={styles.container}>
         <Text style={styles.message}>
           We need your permission to show the camera
         </Text>
         <Button onPress={requestPermission} title="Grant Permission" />
-      </View>
+      </ThemedView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    
+    <ThemedView style={styles.container} colorType="backgroundPrimary">
+      <TopBar
+        title="Camera"
+        leftIcon="chevron-down"
+        leftAction={goBack}
+      />
       {isCameraEnabled ? (
-        <CameraView
-          style={styles.camera}
-          facing={facing}
-          enableTorch={isFlashEnabled}
-          ref={camera}
-          zoom={zoom}
-          testID="camera-view"
-        >
-          <View style={styles.buttonPlaceHolder}>
+        <ThemedView style={styles.cameraContainer} colorType="transparent">
+          
+          <CameraView
+            style={styles.camera}
+            facing={facing}
+            enableTorch={isFlashEnabled}
+            ref={camera}
+            testID="camera-view"
+          />
+
+          <ThemedView style={styles.buttonPlaceHolder} colorType="transparent">
             <ThemedIconButton
-              onPress={toggleCameraFacing}
-              testID="Switch-Button"
               style={styles.changeOrientationAndFlash}
-              name="camera-reverse"
+              onPress={toggleFlashMode}
+              name={isFlashEnabled ? "flash" : "flash-off"}
               size={24}
               color="white"
+              testID="Flash-Button"
             />
 
             <ThemedIconButton
@@ -91,33 +97,48 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
             />
 
             <ThemedIconButton
+              onPress={toggleCameraFacing}
+              testID="Switch-Button"
               style={styles.changeOrientationAndFlash}
-              onPress={toggleFlashMode}
-              name={isFlashEnabled ? "flash-off" : "flash"}
+              name="camera-reverse"
               size={24}
               color="white"
-              testID="Flash-Button"
             />
-          </View>
-        </CameraView>
+          </ThemedView>
+        </ThemedView>
       ) : (
-        <View>
-          <ImageBackground
-            source={{ uri: picture?.uri }}
-            style={styles.pictureBackround}
-          />
-          <TouchableOpacity
-            style={styles.goBack}
-            onPress={() => setIsCameraEnabled(true)}
-          >
-            <Ionicons name="close" size={30} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.send} onPress={imageUrlGen}>
-            <Ionicons name="send" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
+        <ThemedView style={styles.cameraContainer} colorType="transparent">
+          <Image source={{ uri: picture?.uri }} style={styles.camera} />
+          <ThemedView style={styles.buttonPlaceHolder} colorType="transparent">
+            <ThemedIconButton
+              style={styles.changeOrientationAndFlash}
+              onPress={() => setIsCameraEnabled(true)}
+              name={"reload"}
+              size={30}
+              color="white"
+              testID="Reload-Button"
+            />
+
+            <ThemedIconButton
+              onPress={() => {}}
+              name=""
+              size={100}
+              color="transparent"
+            />
+
+            <ThemedIconButton
+              onPress={imageUrlGen}
+              testID="Send-Button"
+              style={styles.changeOrientationAndFlash}
+              name="send"
+              size={30}
+              color="white"
+            />
+          </ThemedView>
+        </ThemedView>
       )}
-    </View>
+    </ThemedView>
+    
   );
 }
 
@@ -131,7 +152,13 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   camera: {
-    flex: 1,
+    flex: 3,
+    alignSelf: "center",
+    alignItems: "center",
+    maxHeight: height * 0.65,
+    width: width,
+    borderRadius: 30,
+    marginTop: 10,
   },
   buttonContainer: {
     flex: 1,
@@ -178,15 +205,7 @@ const styles = StyleSheet.create({
   },
 
   send: {
-    position: "absolute",
-    bottom: height * 0.0,
-    right: width * 0.0,
-    width: width * 0.3,
-    height: width * 0.3,
-    backgroundColor: "transparent",
-    borderRadius: 90,
-    justifyContent: "center",
-    alignItems: "center",
+  
   },
   takePicture: {
     backgroundColor: "transparent",
@@ -203,13 +222,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  cameraContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
   buttonPlaceHolder: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
+    alignItems: "center",
     width: width,
-    height: height * 0.3,
-    bottom: height * -0.1,
-    position: "absolute",
-    flex: 1,
+    marginTop: 30,
+    marginBottom: 60,
   },
 });

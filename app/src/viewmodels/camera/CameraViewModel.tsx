@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 import {
   CameraType,
   useCameraPermissions,
@@ -7,7 +7,6 @@ import {
   FlashMode,
   CameraView,
 } from "expo-camera";
-import { Platform } from "react-native";
 
 /**
  * ViewModel for the camera screen.
@@ -27,27 +26,10 @@ export default function useCameraViewModel(
   const [isCameraEnabled, setIsCameraEnabled] = useState(true);
   const [flashMode, setFlashMode] = useState<FlashMode>("off");
   const [isFlashEnabled, setIsFlashEnabled] = useState(false);
-  const [zoom, setZoom] = useState(0);
-  const [lastZoom] = useState(0);
 
   const group_id = route.params?.group_id;
 
   const cameraPictureOptions: CameraPictureOptions = { base64: true };
-
-  // Calculate the zoom level
-  const calculateZoom = (event: any, velocity: number, outFactor: number) => {
-    const scaleFactor = Platform.OS === "ios" ? 0.01 : 25;
-    const reduceFactor = Platform.OS === "ios" ? 0.02 : 50;
-
-    if (velocity > 0) {
-      return zoom + event.scale * velocity * scaleFactor;
-    } else {
-      return (
-        zoom -
-        event.scale * (outFactor || 1) * Math.abs(velocity) * reduceFactor
-      );
-    }
-  };
 
   // Change the camera facing
   const toggleCameraFacing = () => {
@@ -59,22 +41,6 @@ export default function useCameraViewModel(
     setFlashMode((current) => (current === "off" ? "on" : "off"));
     setIsFlashEnabled((prev) => !prev);
   };
-
-  // Function not used in the current implementation but can be used to zoom in/out
-  useCallback(
-    (event: any) => {
-      const velocity = event.velocity / 20;
-      const outFactor = lastZoom * (Platform.OS === "ios" ? 40 : 15);
-
-      let newZoom = calculateZoom(event, velocity, outFactor);
-
-      if (newZoom < 0) newZoom = 0;
-      else if (newZoom > 0.7) newZoom = 0.7;
-
-      setZoom(newZoom);
-    },
-    [zoom, lastZoom],
-  );
 
   // Take a picture with the camera
   const takePicture = async () => {
@@ -99,6 +65,8 @@ export default function useCameraViewModel(
     });
   };
 
+  const goBack = () => { navigation.goBack(); };
+
   return {
     facing,
     permission,
@@ -108,11 +76,11 @@ export default function useCameraViewModel(
     isCameraEnabled,
     flashMode,
     isFlashEnabled,
-    zoom,
     toggleCameraFacing,
     toggleFlashMode,
     takePicture,
     imageUrlGen,
     setIsCameraEnabled,
+    goBack,
   };
 }
