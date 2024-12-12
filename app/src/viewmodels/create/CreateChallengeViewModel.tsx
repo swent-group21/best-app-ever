@@ -22,7 +22,17 @@ export default function CreateChallengeViewModel({
   firestoreCtrl: FirestoreCtrl;
   navigation: any;
   route: any;
-}) {
+
+}): {
+  challengeName: string;
+  setChallengeName: React.Dispatch<React.SetStateAction<string>>;
+  description: string;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  location: LocationObject | null;
+  isLocationEnabled: boolean;
+  toggleLocation: () => void;
+  makeChallenge: () => Promise<void>;
+} {
   const [location, setLocation] = useState<LocationObject | null>(null);
   const [isLocationEnabled, setIsLocationEnabled] = useState(true);
   const [caption, setCaption] = useState("");

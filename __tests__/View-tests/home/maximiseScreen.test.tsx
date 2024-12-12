@@ -84,6 +84,7 @@ describe("MaximizeScreen UI Tests", () => {
 
     await waitFor(() => {
       expect(getByText("Test Challenge")).toBeTruthy();
+
       expect(getByText("This is a comment")).toBeTruthy();
     });
   });
@@ -134,12 +135,10 @@ describe("MaximizeScreen UI Tests", () => {
         .addComment;
 
     const input = getByTestId("comment-input");
-
     await act(async () => {
       fireEvent.changeText(input, "New Comment");
       fireEvent.press(getByTestId("send-comment-button"));
     });
-
     expect(addComment).toHaveBeenCalled();
   });
 

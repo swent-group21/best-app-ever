@@ -12,6 +12,7 @@ import FirestoreCtrl, { DBChallenge, DBUser } from "@/src/models/firebase/Firest
  * @param user : user object
  * @param navigation : navigation object
  * @param firestoreCtrl : FirestoreCtrl object
+ * @param route : route object
  * @returns : a screen for the map
  */
 export default function MapScreen({
