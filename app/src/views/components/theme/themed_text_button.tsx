@@ -40,7 +40,7 @@ export function ThemedTextButton({
   testID,
 }: Readonly<ThemedTextButtonProps>) {
 
-  const color = useThemedTextButtonViewModel({
+  const {color} = useThemedTextButtonViewModel({
     lightColor,
     darkColor,
     colorType,

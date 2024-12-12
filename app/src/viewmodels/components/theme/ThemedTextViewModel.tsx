@@ -22,5 +22,5 @@ export function useThemedTextViewModel({
     colorType ?? "textPrimary",
   );
 
-  return color;
+  return {color};
 }

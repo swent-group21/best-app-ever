@@ -23,5 +23,5 @@ export function useThemedViewModel({
     colorType ?? "backgroundPrimary",
   );
 
-  return backgroundColor;
+  return {backgroundColor};
 }

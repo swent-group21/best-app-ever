@@ -28,10 +28,10 @@ export function ThemedText({
   ...rest
 }: ThemedTextProps) {
 
-  const color = useThemedTextViewModel({
+  const {color} = useThemedTextViewModel({
     lightColor,
     darkColor,
     colorType,
   });
-  return <Text style={[{ color }, TextStyles[type], style]} {...rest} />;
+  return <Text style={[{ color }, TextStyles[type], style]} {...rest} testID="themed-text-id"/>;
 }

@@ -3,11 +3,10 @@ import {
     renderHook
   } from "@testing-library/react-native";
   import { Colors } from "@/constants/Colors";
-  import { useThemedIconButtonViewModel } from "@/src/viewmodels/components/theme/ThemedIconButtonViewModel";
+import { useThemedTextButtonViewModel } from "@/src/viewmodels/components/theme/ThemedTextButtonViewModel";  
   
-  
-  // Test for the use ThemedIconButton ViewModel
-  describe("use ThemedIconButton ViewModel", () => {
+  // Test for the use ThemedTextButton ViewModel
+  describe("use ThemedTextButton ViewModel", () => {
   
     // Before each test, mock the console info and clear all mocks
     beforeEach(() => {
@@ -19,21 +18,21 @@ import {
     it("renders the right color with default value", async () => {
         // Render the hook with a default color
       const { result } = renderHook(() =>
-        useThemedIconButtonViewModel({
+        useThemedTextButtonViewModel({
           colorType: undefined,
         }
         ),
       );
   
       await waitFor(() => {
-        expect(result.current.color).toEqual(Colors["light"]["backgroundPrimary"]);
+        expect(result.current.color).toEqual(Colors["light"]["backgroundSecondary"]);
       });
     });
 
     it("renders the right color with defined value", async () => {
         // Test with a defined color
       const { result } = renderHook(() =>
-        useThemedIconButtonViewModel({
+        useThemedTextButtonViewModel({
           colorType: "textPrimary",
         }
         ),

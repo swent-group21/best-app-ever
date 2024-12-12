@@ -23,5 +23,5 @@ export function useThemedTextButtonViewModel({
     colorType ?? "backgroundSecondary",
   );
 
-  return color;
+  return {color};
 }

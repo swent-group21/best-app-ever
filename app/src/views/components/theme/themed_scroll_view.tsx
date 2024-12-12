@@ -24,11 +24,11 @@ export function ThemedScrollView({
   colorType,
   ...otherProps
 }: ThemedScrollViewProps) {
-  const backgroundColor = useThemedScrollViewModel({
+  const {backgroundColor} = useThemedScrollViewModel({
     lightColor: lightColor,
     darkColor: darkColor,
     colorType: colorType,
   });
 
-  return <ScrollView style={[{ backgroundColor }, style]} {...otherProps} />;
+  return <ScrollView style={[{ backgroundColor }, style]} {...otherProps} testID="scroll-view-id"/>;
 }

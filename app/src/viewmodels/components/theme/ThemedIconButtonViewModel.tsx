@@ -14,7 +14,7 @@ import { Colors } from "@/constants/Colors";
 export function useThemedIconButtonViewModel({
   lightColor,
   darkColor,
-  colorType = "white",
+  colorType,
 }:{
   lightColor?: string;
   darkColor?: string;

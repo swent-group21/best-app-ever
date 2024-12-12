@@ -14,9 +14,9 @@ export function useThemedScrollViewModel({
   darkColor,
   colorType,
 }: {
-  lightColor: string;
-  darkColor: string;
-  colorType: keyof typeof Colors.dark & keyof typeof Colors.light;
+  lightColor?: string;
+  darkColor?: string;
+  colorType?: keyof typeof Colors.dark & keyof typeof Colors.light;
 }){
 
   const backgroundColor = useThemeColor(
@@ -24,5 +24,5 @@ export function useThemedScrollViewModel({
     colorType ?? "backgroundPrimary",
   );
 
-  return backgroundColor;
+  return {backgroundColor};
 }
