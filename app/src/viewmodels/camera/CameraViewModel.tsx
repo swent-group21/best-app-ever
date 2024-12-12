@@ -47,7 +47,7 @@ export default function useCameraViewModel(
 
   // Go back to the previous screen
   const goBack = () => {
-    navigation.goBack();
+    navigation.navigate("Home");
   };
 
   // Change the camera state
