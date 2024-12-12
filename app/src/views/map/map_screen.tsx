@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, Image, View } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/components/theme/ThemedView";
 import { ThemedText } from "@/components/theme/ThemedText";
@@ -40,8 +40,6 @@ export default function MapScreen({
     firstLocation,
     geoRestriction,
   );
-
-  const uri = "@/assets/images/icon_trans.png";
 
   if (userLocation === undefined || challengesWithLocation === undefined) {
     return (
@@ -96,7 +94,6 @@ export default function MapScreen({
                   firestoreCtrl,
                 });
               }}
-              pinColor="tan"
             />
           ))}
 
