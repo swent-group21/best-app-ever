@@ -32,6 +32,8 @@ export default function MapScreen({
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
+    isMapReady,
+    setIsMapReady,
   } = useMapScreenViewModel(
     firestoreCtrl,
     navigation,
@@ -72,30 +74,33 @@ export default function MapScreen({
         showsUserLocation={true}
         showsCompass={true}
         loadingEnabled={true}
+        onMapReady={() => {
+          setIsMapReady(true);
+        }}
       >
-        {challengesWithLocation.map((challenge: any, index) => (
-          <MapMarker
-            key={index}
-            testID={challenge.challenge_name}
-            coordinate={{
-              latitude: challenge.location.latitude,
-              longitude: challenge.location.longitude,
-            }}
-            image={require(uri)}
-            flat={true}
-            title={challenge.challenge_name}
-            description={challenge.description}
-            onCalloutPress={() => {
-              navigation.navigate("Maximize", {
-                challenge: challenge,
-                user: user,
-                firestoreCtrl: firestoreCtrl,
-              });
-            }}
-          />
-        ))}
-
-        {geoRestriction && (
+        {isMapReady &&
+          challengesWithLocation.map((challenge: any, index) => (
+            <MapMarker
+              key={index}
+              testID={challenge.challenge_name}
+              coordinate={{
+                latitude: challenge.location.latitude,
+                longitude: challenge.location.longitude,
+              }}
+              image={require(uri)}
+              flat={true}
+              title={challenge.challenge_name}
+              description={challenge.description}
+              onCalloutPress={() => {
+                navigation.navigate("Maximize", {
+                  challenge: challenge,
+                  user: user,
+                  firestoreCtrl: firestoreCtrl,
+                });
+              }}
+            />
+          ))}
+        {isMapReady && challengeArea && (
           <MapCircle
             center={{
               latitude: challengeArea.center.latitude,

@@ -31,6 +31,7 @@ export function useMapScreenViewModel(
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
   >([]);
+  const [isMapReady, setIsMapReady] = useState<boolean>(false);
 
   const navigateGoBack = () => {
     navigation.goBack();
@@ -88,5 +89,7 @@ export function useMapScreenViewModel(
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
+    isMapReady,
+    setIsMapReady,
   };
 }
