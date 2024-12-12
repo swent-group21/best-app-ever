@@ -117,6 +117,7 @@ export default function HomeScreen({
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
               key={index}
+              index={index}
               testID={`group-id-${index}`}
             />
           ))}
