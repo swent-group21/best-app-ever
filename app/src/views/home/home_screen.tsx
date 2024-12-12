@@ -109,7 +109,6 @@ export default function HomeScreen({
           },
         ]}
       >
-        
         <ThemedScrollView horizontal showsHorizontalScrollIndicator={false}>
           {groups.map((group, index) => (
             <GroupIcon
