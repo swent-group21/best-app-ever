@@ -101,8 +101,8 @@ describe("useCameraViewModel", () => {
       useCameraViewModel(mockFirestoreCtrl, mockNavigation, mockRoute),
     );
 
-    await act(() => {
-      result.current.toggleFlashMode();
+    await act(async () => {
+      await result.current.toggleFlashMode();
     });
 
     expect(result.current.isFlashEnabled).toBe(true);

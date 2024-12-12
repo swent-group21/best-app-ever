@@ -114,7 +114,6 @@ export default function useCameraViewModel(
         navigation.navigate("Home");
       } else {
         const group: DBGroup = await firestoreCtrl.getGroup(group_id);
-        console.log("group in create challenge: ", group);
         navigation.navigate("GroupScreen", { currentGroup: group });
       }
     } catch (error) {
