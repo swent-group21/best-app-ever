@@ -41,6 +41,8 @@ export default function MapScreen({
     firstLocation,
     geoRestriction,
   );
+  console.info("--> AREA", challengeArea);
+  console.info("--> CHALLENGES", challengesWithLocation);
 
   if (userLocation === undefined || challengesWithLocation === undefined) {
     return (
@@ -73,33 +75,30 @@ export default function MapScreen({
         showsUserLocation={true}
         showsCompass={true}
         loadingEnabled={true}
-        onMapReady={() => {
-          setIsMapReady(true);
-        }}
+        onMapReady={() => setIsMapReady(true)}
       >
         {/* Draw the challenges on the map */}
-        {isMapReady &&
-          challengesWithLocation.map((challenge: any, index) => (
-            <MapMarker
-              key={index}
-              coordinate={{
-                latitude: challenge.location.latitude,
-                longitude: challenge.location.longitude,
-              }}
-              title={challenge.challenge_name}
-              description={challenge.description}
-              onCalloutPress={() => {
-                navigation.navigate("Maximize", {
-                  challenge,
-                  user,
-                  firestoreCtrl,
-                });
-              }}
-            />
-          ))}
+        {challengesWithLocation.map((challenge: any, index: number) => (
+          <MapMarker
+            key={index}
+            coordinate={{
+              latitude: challenge.location.latitude,
+              longitude: challenge.location.longitude,
+            }}
+            title={challenge.challenge_name}
+            description={challenge.description}
+            onCalloutPress={() => {
+              navigation.navigate("Maximize", {
+                challenge,
+                user,
+                firestoreCtrl,
+              });
+            }}
+          />
+        ))}
 
         {/* Draw the challenge area on the map, if any */}
-        {isMapReady && challengeArea && (
+        {challengeArea && (
           <MapCircle
             center={{
               latitude: challengeArea.center.latitude,

@@ -71,7 +71,7 @@ export function useMapScreenViewModel(
       }
     }
     if (userLocation === undefined) getCurrentLocation();
-  }, []);
+  });
 
   /**
    * Fetches challenges with valid locations from Firestore.

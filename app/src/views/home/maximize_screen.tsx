@@ -64,6 +64,8 @@ export default function MaximizeScreen({
     setLastTap(now);
   };
 
+  console.log("Area: ", groupCenter, groupRadius);
+
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
