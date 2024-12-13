@@ -34,7 +34,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getGroup: jest.fn(),
     createChallenge: jest.fn(),
-    uploadImageFromUri: jest.fn(async () => "mock-image-id"),
+    uploadImage: jest.fn(async () => "mock-image-id"),
   }));
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
@@ -180,7 +180,7 @@ describe("useCameraViewModel", () => {
       await result.current.makeChallenge();
     });
 
-    expect(mockFirestoreCtrl.uploadImageFromUri).toHaveBeenCalled();
+    expect(mockFirestoreCtrl.uploadImage).toHaveBeenCalled();
     expect(createChallenge).toHaveBeenCalledWith(
       mockFirestoreCtrl,
       mockRoute.params.group_id,
