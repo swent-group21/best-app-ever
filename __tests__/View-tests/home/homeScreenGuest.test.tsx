@@ -86,24 +86,4 @@ describe("HomeScreen - Guest User", () => {
     expect(mockNavigation.navigate).toHaveBeenCalledWith("SignUp");
   });
 
-//   it("prevents guests from liking posts", async () => {
-//     const { getByTestId } = render(
-//       <HomeScreen
-//         user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }}
-//         navigation={mockNavigation}
-//         firestoreCtrl={mockFirestoreCtrl}
-//       />,
-//     );
-
-//     await waitFor(() => {
-//       const post = getByTestId("challenge-id-0");
-
-//       // Simule un double tap
-//       fireEvent.press(post);
-//       fireEvent.press(post);
-
-//       // Vérifie qu'aucune action de like n'est déclenchée
-//       expect(mockFirestoreCtrl.updateLikesOf).not.toHaveBeenCalled();
-//     });
-//   });
 });
