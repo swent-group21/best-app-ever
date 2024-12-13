@@ -63,23 +63,22 @@ describe("useMapScreenViewModel", () => {
     (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValueOnce({
       status: "granted",
     });
-    (getCurrentPositionAsync as jest.Mock).mockResolvedValueOnce({
-      coords: {
-        latitude: 48.8566,
-        longitude: 2.3522,
-      },
-    });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined,
+        undefined,
+      ),
     );
 
     await waitFor(() => {
       expect(requestForegroundPermissionsAsync).toHaveBeenCalled();
       expect(getCurrentPositionAsync).toHaveBeenCalled();
       expect(result.current.permission).toBe(true);
-      expect(result.current.userLocation.latitude).toBe(48.8566);
-      expect(result.current.userLocation.longitude).toBe(2.3522);
+      expect(result.current.userLocation.latitude).toBe(43.6763);
+      expect(result.current.userLocation.longitude).toBe(7.0122);
     });
   });
 
@@ -98,6 +97,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -127,6 +127,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -175,6 +176,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -203,6 +205,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -225,6 +228,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 

@@ -5,11 +5,13 @@ import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
 import { color } from "react-native-elements/dist/helpers";
 import GroupIcon from "@/src/views/components/navigation/group_icon";
 import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import { GeoPoint } from "firebase/firestore";
 
 describe("GroupIcon Component", () => {
   const mockNavigation = { navigate: jest.fn() };
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockDate = new Date();
+  const mockLoc = undefined;
 
   const mockGroup: DBGroup = {
     name: "groupName",
@@ -17,6 +19,8 @@ describe("GroupIcon Component", () => {
     challengeTitle: "Group Test Challenge",
     members: [],
     updateDate: mockDate,
+    location: mockLoc,
+    radius: 100,
   };
 
   it("renders correctly the component", () => {
