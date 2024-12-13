@@ -1,12 +1,12 @@
-import { Text, StyleSheet } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
+import { FlatList, StyleSheet, Text } from "react-native";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { getAuth } from "firebase/auth";
-import { SearchBar } from "@/components/friends/Search_Bar";
-import ListOfFriends from "@/components/friends/ListOfFriends";
-import RequestList from "@/components/friends/RequestList";
-import ListOfFilteredUsers from "@/components/friends/ListOfFilteredUsers";
+import { SearchBar } from "@/src/views/components/friends/search_bar";
+import ListOfFriends from "@/src/views/components/friends/list_of_friends";
+import { RequestList } from "@/src/views/components/friends/request_list";
+import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -25,37 +25,41 @@ export default function FriendsScreen({
     setSearchText,
     friends,
     requests,
-    filteredUsers,
+    filteredUsers = [],
+    suggestions,
     handleFriendPress,
   } = useFriendsScreenViewModel(firestoreCtrl, uid);
 
-  return (
-    <ThemedView style={styles.container}>
-      <TopBar
-        title="Strive is better with friends"
-        leftIcon="arrow-back"
-        leftAction={navigation.goBack}
-      />
+  // Sections configuration
+  const sections = [
+    {
+      id: "search-results",
+      title: null,
+      content: (
+        <ListOfFilteredUsers
+          searchText={searchText}
+          uid={uid}
+          firestoreCtrl={firestoreCtrl}
+          filteredUsers={filteredUsers}
+        />
+      ),
+    },
 
-      {/* Search Bar*/}
-      <SearchBar onSearch={setSearchText} />
-
-      {/* List of filtered users */}
-      <ListOfFilteredUsers
-        searchText={searchText}
-        uid={uid}
-        firestoreCtrl={firestoreCtrl}
-        filteredUsers={filteredUsers}
-      />
-
-      {/* List of friends */}
-      <Text style={styles.friendsTitle}>Your friends</Text>
-      <ListOfFriends friends={friends} handleFriendPress={handleFriendPress} />
-
-      {/* Friend Requests Section */}
-      <ThemedView style={styles.requestsContainer}>
-        <ThemedText style={styles.sectionTitle}>Requests</ThemedText>
-        {requests.length > 0 ? (
+    {
+      id: "friends",
+      title: "Your friends",
+      content: (
+        <ListOfFriends
+          friends={friends}
+          handleFriendPress={handleFriendPress}
+        />
+      ),
+    },
+    {
+      id: "requests",
+      title: "Requests",
+      content:
+        requests.length > 0 ? (
           <RequestList
             requests={requests}
             firestoreCtrl={firestoreCtrl}
@@ -65,8 +69,46 @@ export default function FriendsScreen({
           <ThemedText style={styles.noRequests}>
             No friends request for now
           </ThemedText>
+        ),
+    },
+
+    {
+      id: "suggestions",
+      title: "Suggestions for you",
+      content: (
+        <ListOfFilteredUsers
+          filteredUsers={suggestions}
+          searchText=""
+          uid={uid}
+          firestoreCtrl={firestoreCtrl}
+        />
+      ),
+    },
+  ];
+
+  return (
+    <ThemedView style={styles.bigContainer}>
+      {/* Barre de recherche */}
+      <TopBar
+        title="Strive is better with friends"
+        leftIcon="arrow-back"
+        leftAction={navigation.goBack}
+      />
+      <SearchBar onSearch={setSearchText} />
+
+      <FlatList
+        style={styles.container}
+        data={sections}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <ThemedView style={styles.sectionContainer}>
+            {item.title && (
+              <Text style={styles.sectionTitle}>{item.title}</Text>
+            )}
+            {item.content}
+          </ThemedView>
         )}
-      </ThemedView>
+      />
     </ThemedView>
   );
 }
@@ -77,7 +119,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#000",
   },
-  friendsTitle: {
+  sectionContainer: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
@@ -90,18 +135,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
   },
-  sectionTitle: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 20,
-    marginLeft: 10,
-    marginBottom: 10,
-  },
-  requestsContainer: {
-    flexShrink: 0,
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#333",
+  bigContainer: {
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

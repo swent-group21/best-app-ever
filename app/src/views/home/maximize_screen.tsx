@@ -6,13 +6,13 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { SingleComment } from "@/components/posts/Comment";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
+import { SingleComment } from "@/src/views/components/posts/comment";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
 import FirestoreCtrl, {
   DBUser,
@@ -153,10 +153,10 @@ export default function MaximizeScreen({
         <ThemedView style={styles.likeSection}>
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
+            testID="like-button"
             onPress={toggleLike}
             size={30}
             color={isLiked ? "red" : "white"}
-            testID="like-button"
           />
           <ThemedText style={styles.likeCount}>
             {likeList.length} {likeList.length <= 1 ? "Like" : "Likes"}

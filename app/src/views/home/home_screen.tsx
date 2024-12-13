@@ -5,28 +5,23 @@ import {
   StyleSheet,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  View,
+  TouchableOpacity,
 } from "react-native";
-import { TopBar } from "@/components/navigation/TopBar";
-import { Challenge } from "@/components/home/Challenge";
-import { ChallengeDescription } from "@/components/home/Challenge_Description";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { Challenge } from "@/src/views/components/posts/challenge";
+import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-import GroupIcon from "@/components/home/GroupIcon";
+import GroupIcon from "@/src/views/components/navigation/group_icon";
 
 const { width, height } = Dimensions.get("window");
 
-/**
- * Home screen
- * @param user : user object
- * @param navigation : navigation object
- * @param firestoreCtrl : FirestoreCtrl object
- * @returns : a screen for the user's home
- */
 export default function HomeScreen({
   user,
   navigation,
@@ -48,13 +43,25 @@ export default function HomeScreen({
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
-  const [filterByFriends] = useState(false);
+  const [filterByFriends, setFilterByFriends] = useState(false);
+  const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
   // Animation for hiding groups
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleThreshold = 100; // Distance to toggle the groups visibility
+
+  const underlineAnim = useRef(new Animated.Value(0)).current;
+
+  const handleFilterChange = (isFriends: boolean) => {
+    Animated.timing(underlineAnim, {
+      toValue: isFriends ? width * 0.5 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setFilterByFriends(isFriends);
+  };
 
   const handleScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = e.nativeEvent.contentOffset.y;
@@ -80,6 +87,15 @@ export default function HomeScreen({
     outputRange: [height * 0.18, 0],
   });
 
+  // Handle restricted navigation for guest users
+  const handleRestrictedAccess = (screenName: string) => {
+    if (userIsGuest) {
+      setShowGuestPopup(screenName);
+    } else {
+      navigation.navigate(screenName);
+    }
+  };
+
   // Determine displayed challenges
   const displayedChallenges = filterByFriends
     ? challengesFromFriends
@@ -90,13 +106,14 @@ export default function HomeScreen({
       <TopBar
         title="Strive"
         leftIcon="people-outline"
-        leftAction={() => navigateToFriends()}
+        leftAction={() => handleRestrictedAccess("Friends")}
         rightIcon={
           userIsGuest || !user.image_id
             ? "person-circle-outline"
             : user.image_id
         }
-        rightAction={() => navigateToProfile()}
+        rightAction={() => handleRestrictedAccess("Profile")}
+        testID="top-bar"
       />
 
       {/* Groups with snapping animation */}
@@ -113,10 +130,10 @@ export default function HomeScreen({
           {groups.map((group, index) => (
             <GroupIcon
               groupDB={group}
+              index={index}
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
               key={index}
-              index={index}
               testID={`group-id-${index}`}
             />
           ))}
@@ -126,7 +143,11 @@ export default function HomeScreen({
           >
             <ThemedTextButton
               style={styles.createGroupButton}
-              onPress={() => navigation.navigate("CreateGroup")}
+              onPress={() =>
+                userIsGuest
+                  ? handleRestrictedAccess("CreateGroup")
+                  : navigation.navigate("CreateGroup")
+              }
               text="+"
               textStyle={styles.createGroupText}
               textColorType="textOverLight"
@@ -136,10 +157,46 @@ export default function HomeScreen({
         </ThemedScrollView>
       </Animated.View>
 
+      {/* Filter Buttons with Underline */}
+      <ThemedView style={styles.filterContainer}>
+        <TouchableOpacity
+          onPress={() => handleFilterChange(false)}
+          style={styles.filterButton}
+        >
+          <ThemedText
+            style={[
+              styles.filterText,
+              !filterByFriends && styles.activeFilterText,
+            ]}
+            testID="all-posts-button"
+          >
+            All Posts
+          </ThemedText>
+          {!filterByFriends && <Animated.View style={[styles.underline]} />}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleFilterChange(true)}
+          style={styles.filterButton}
+        >
+          <ThemedText
+            style={[
+              styles.filterText,
+              filterByFriends && styles.activeFilterText,
+            ]}
+            testID="friends-button"
+          >
+            My Friends
+          </ThemedText>
+          {filterByFriends && <Animated.View style={[styles.underline]} />}
+        </TouchableOpacity>
+      </ThemedView>
+
       {/* Challenges */}
       <Animated.FlatList
         testID="scroll-view"
-        data={displayedChallenges}
+        data={
+          userIsGuest ? displayedChallenges.slice(0, 10) : displayedChallenges
+        }
         onScrollEndDrag={handleScrollEnd}
         keyExtractor={(item, index) => `challenge-${index}`}
         renderItem={({ item, index }) => (
@@ -160,6 +217,21 @@ export default function HomeScreen({
             testID={`description-id`}
           />
         }
+        ListFooterComponent={
+          userIsGuest && (
+            <View style={styles.guestFooter}>
+              <ThemedText style={styles.guestFooterText}>
+                Create an account to see more challenges!
+              </ThemedText>
+              <TouchableOpacity
+                style={styles.signUpButton}
+                onPress={() => navigation.navigate("SignUp")}
+              >
+                <ThemedText style={styles.signUpButtonText}>Sign Up</ThemedText>
+              </TouchableOpacity>
+            </View>
+          )
+        }
         ListEmptyComponent={
           <ThemedText style={styles.noChallengesText}>
             No challenges to display
@@ -168,12 +240,37 @@ export default function HomeScreen({
         contentContainerStyle={styles.contentContainer}
       />
 
+      {/* Guest User Pop-Up */}
+      {showGuestPopup && (
+        <Animated.View style={styles.guestPopup}>
+          <ThemedText style={styles.popupText}>
+            {showGuestPopup === "Profile"
+              ? "Sign up to create your profile!"
+              : showGuestPopup === "Friends"
+                ? "Find and add friends with an account!"
+                : "Access exclusive features with an account!"}
+          </ThemedText>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("SignUp")}
+            style={styles.popupButton}
+          >
+            <ThemedText style={styles.popupButtonText}>Sign Up</ThemedText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowGuestPopup(null)}
+            style={styles.popupCloseButton}
+          >
+            <ThemedText style={styles.popupCloseText}>Close</ThemedText>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+
       <BottomBar
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-        leftAction={() => navigateToMap()}
-        centerAction={() => navigateToCamera()}
+        leftAction={() => handleRestrictedAccess("MapScreen")}
+        centerAction={() => handleRestrictedAccess("Camera")}
       />
     </ThemedView>
   );
@@ -216,5 +313,88 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     marginTop: 20,
+  },
+  guestFooter: {
+    alignItems: "center",
+    paddingVertical: 20,
+    backgroundColor: "#111",
+    borderRadius: 10,
+    margin: 20,
+  },
+  guestFooterText: {
+    color: "#fff",
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  signUpButton: {
+    backgroundColor: "#00000044",
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  signUpButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  guestPopup: {
+    position: "relative",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#00000077",
+    padding: 20,
+    alignItems: "center",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  popupText: {
+    color: "#fff",
+    fontSize: 16,
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
+  popupButton: {
+    backgroundColor: "#00000044",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  popupButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  popupCloseButton: {
+    padding: 5,
+  },
+  popupCloseText: {
+    color: "#aaa",
+    textDecorationLine: "underline",
+  },
+  filterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  filterButton: {
+    alignItems: "center",
+    width: width * 0.5,
+  },
+  filterText: {
+    fontSize: 16,
+    color: "#888",
+  },
+  activeFilterText: {
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  underline: {
+    marginTop: 5,
+    height: 2,
+    width: 0.2 * width,
+    backgroundColor: "#fff",
   },
 });

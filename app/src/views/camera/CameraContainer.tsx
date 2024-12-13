@@ -1,11 +1,11 @@
 import { Text, Button, StyleSheet, Dimensions, Image } from "react-native";
 import { CameraView } from "expo-camera";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 
 const { width, height } = Dimensions.get("window");
 
