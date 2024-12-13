@@ -106,7 +106,6 @@ describe("Challenge Component", () => {
     });
   });
 
-
   it("navigates to Maximize screen when expand button is pressed", async () => {
     const { getByTestId } = render(
       <Challenge

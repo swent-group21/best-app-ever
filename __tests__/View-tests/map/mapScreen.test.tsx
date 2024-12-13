@@ -20,9 +20,9 @@ jest.mock("react-native-maps", () => {
 });
 
 describe("MapScreen UI Tests", () => {
-  const mockNavigation = { 
-    goBack: jest.fn() ,
-    navigate: jest.fn()
+  const mockNavigation = {
+    goBack: jest.fn(),
+    navigate: jest.fn(),
   };
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockDate = new Date();
@@ -39,13 +39,13 @@ describe("MapScreen UI Tests", () => {
     caption: "Challenge 1",
     date: mockDate,
     location: { latitude: 43.6763, longitude: 7.0122 },
-  }
+  };
   const mockChallenge2 = {
     challenge_id: "2",
     caption: "Challenge 2",
     date: mockDate,
     location: { latitude: 43.7, longitude: 7.015 },
-  }
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -60,10 +60,7 @@ describe("MapScreen UI Tests", () => {
             longitude: 7.0122,
           },
         },
-        challengesWithLocation: [
-          mockChallenge1,
-          mockChallenge2,
-        ],
+        challengesWithLocation: [mockChallenge1, mockChallenge2],
       },
     );
   });

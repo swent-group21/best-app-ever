@@ -66,7 +66,9 @@ export function useHomeScreenViewModel(
             );
             // Sort challenges by date
             const sortedChallenges = challenge.sort((a, b) =>
-              a.date && b.date ? new Date(b.date).getTime() - new Date(a.date).getTime() : 0,
+              a.date && b.date
+                ? new Date(b.date).getTime() - new Date(a.date).getTime()
+                : 0,
             );
             setChallenges(sortedChallenges);
           });

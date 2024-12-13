@@ -74,7 +74,7 @@ describe("useCameraViewModel", () => {
       expect(result.current.isCameraEnabled).toBe(true);
       expect(result.current.picture).toBeUndefined();
       expect(result.current.isLocationEnabled).toBe(true);
-      expect(result.current.description).toBe("");
+      expect(result.current.caption).toBe("");
     });
   });
 
@@ -183,10 +183,10 @@ describe("useCameraViewModel", () => {
     expect(mockFirestoreCtrl.uploadImageFromUri).toHaveBeenCalled();
     expect(createChallenge).toHaveBeenCalledWith(
       mockFirestoreCtrl,
-      mockRoute.params.group_id,
       "",
       null,
       mockRoute.params.group_id,
+      "Challenge Title",
       expect.any(Date),
       "mock-image-id",
     );

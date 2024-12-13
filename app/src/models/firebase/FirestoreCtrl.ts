@@ -486,7 +486,6 @@ export default class FirestoreCtrl {
           challenge_id: doc.id,
           date: data.date.toDate(),
         } as DBChallenge;
-        
       });
       return posts;
     } catch (error) {

@@ -309,7 +309,6 @@ const styles = StyleSheet.create({
     marginRight: width * 0.1,
   },
 
-
   iconImage: {
     width: 40,
     height: 40,

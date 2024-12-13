@@ -105,8 +105,6 @@ export function useMapScreenViewModel(
     });
   }, [firestoreCtrl]);
 
-  
-
   return {
     permission,
     userLocation,

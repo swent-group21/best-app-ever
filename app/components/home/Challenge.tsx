@@ -47,12 +47,12 @@ export function Challenge({
     const fetchUser = async () => {
       try {
         const userData = await firestoreCtrl.getUser(challengeDB.uid);
-          if (
-            userData.image_id?.startsWith("http") ||
-            userData.image_id?.startsWith("https://")
-          ) {
-            setUserPp(userData.image_id);
-          }
+        if (
+          userData.image_id?.startsWith("http") ||
+          userData.image_id?.startsWith("https://")
+        ) {
+          setUserPp(userData.image_id);
+        }
         setUser(userData || null);
       } catch (error) {
         console.error("Error fetching user data:", error);

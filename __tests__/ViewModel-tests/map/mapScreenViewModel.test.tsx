@@ -14,11 +14,14 @@ import { GeoPoint } from "firebase/firestore";
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getKChallenges: jest.fn(() => []),
-    getChallengeDescription: jest.fn(() => (
-      { title: "Description Test", 
-        description: "Description", 
-        endDate: new Date(2024, 1, 1, 0, 0, 0, 0) 
-      } as DBChallengeDescription)),
+    getChallengeDescription: jest.fn(
+      () =>
+        ({
+          title: "Description Test",
+          description: "Description",
+          endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+        }) as DBChallengeDescription,
+    ),
     getPostsByChallengeTitle: jest.fn(() => []),
   }));
 });
@@ -149,7 +152,7 @@ describe("useMapScreenViewModel", () => {
         uid: "12345",
         date: mockDate,
         location: new GeoPoint(48.8566, 2.3522),
-        challenge_description: "Description test"
+        challenge_description: "Description test",
       },
       {
         challenge_id: "2",
@@ -157,13 +160,13 @@ describe("useMapScreenViewModel", () => {
         uid: "67890",
         date: mockDate,
         location: null, // Invalid location
-        challenge_description: "Description test"
+        challenge_description: "Description test",
       },
     ];
 
-    (mockFirestoreCtrl.getPostsByChallengeTitle as jest.Mock).mockResolvedValueOnce(
-      mockChallenges,
-    );
+    (
+      mockFirestoreCtrl.getPostsByChallengeTitle as jest.Mock
+    ).mockResolvedValueOnce(mockChallenges);
 
     const undefined_firstLocation = undefined;
 
@@ -176,7 +179,9 @@ describe("useMapScreenViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith("Description Test");
+      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith(
+        "Description Test",
+      );
       expect(result.current.challengesWithLocation).toEqual([
         mockChallenges[0],
       ]); // Only valid locations should be included
@@ -202,7 +207,9 @@ describe("useMapScreenViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith("Description Test");
+      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith(
+        "Description Test",
+      );
       expect(result.current.challengesWithLocation).toEqual([]);
     });
   });

@@ -7,7 +7,6 @@ import FirestoreCtrl, {
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
 
-
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",
   uid: "1234",
