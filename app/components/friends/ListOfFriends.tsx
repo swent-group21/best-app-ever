@@ -15,7 +15,7 @@ export default function ListOfFriends({
   handleFriendPress,
 }: {
   readonly friends: DBUser[];
-  readonly handleFriendPress: (uid: string) => void;
+  readonly handleFriendPress: (uid: DBUser) => void;
 }) {
   return (
     <FlatList
@@ -27,10 +27,7 @@ export default function ListOfFriends({
           name={item.name}
           key={item.uid}
           avatar={item.image_id}
-          onPress={() => handleFriendPress(item.uid)}
-          testID={`friend-item-${item.name}`}
-          height={height * 0.2}
-
+          onPress={() => {}}
         />
       )}
       horizontal

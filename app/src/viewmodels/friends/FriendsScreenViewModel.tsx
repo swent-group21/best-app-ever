@@ -17,7 +17,8 @@ export function useFriendsScreenViewModel(
   friends: DBUser[];
   requests: DBUser[];
   filteredUsers: DBUser[];
-  handleFriendPress: (friendId: string) => void;
+  suggestions: DBUser[];
+  handleFriendPress: (friendId: DBUser) => void;
 } {
   const [searchText, setSearchText] = useState("");
   const [users, setUsers] = useState<DBUser[]>([]);
@@ -98,7 +99,7 @@ export function useFriendsScreenViewModel(
     friends,
     requests,
     filteredUsers,
-    handleFriendPress,
     suggestions,
+    handleFriendPress,
   };
 }

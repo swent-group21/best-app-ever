@@ -26,8 +26,8 @@ export default function FriendsScreen({
     friends,
     requests,
     filteredUsers,
-    handleFriendPress,
     suggestions,
+    handleFriendPress,
   } = useFriendsScreenViewModel(firestoreCtrl, uid);
 
   // Sections configuration
@@ -81,7 +81,6 @@ export default function FriendsScreen({
           searchText=""
           uid={uid}
           firestoreCtrl={firestoreCtrl}
-          testID="suggestions-list"
         />
       ),
     },

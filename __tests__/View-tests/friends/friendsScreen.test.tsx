@@ -120,8 +120,20 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       requests: [],
       filteredUsers: [],
       suggestions: [
-        { uid: "user1", name: "User 1", email: "user1@example.com" },
-        { uid: "user2", name: "User 2", email: "user2@example.com" },
+        {
+          uid: "user1",
+          name: "User 1",
+          email: "user1@example.com",
+          image: null,
+          createdAt: new Date(),
+        },
+        {
+          uid: "user2",
+          name: "User 2",
+          email: "user2@example.com",
+          image: null,
+          createdAt: new Date(),
+        },
       ],
       handleFriendPress: jest.fn(),
     });

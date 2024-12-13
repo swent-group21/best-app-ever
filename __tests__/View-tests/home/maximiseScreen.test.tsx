@@ -2,7 +2,6 @@ import React, { act } from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import MaximizeScreen from "@/src/views/home/maximize_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
-import { act } from "react-test-renderer";
 
 jest.mock("@/src/viewmodels/home/MaximizeScreenViewModel", () => ({
   useMaximizeScreenViewModel: jest.fn(),
@@ -172,9 +171,8 @@ describe("MaximizeScreen UI Tests", () => {
     expect(addComment).toHaveBeenCalled();
   });
 
-  it("navigates to the MapScreen when the location button is pressed", () => {
+  it("navigates to the MapScreen when the location button is pressed", async () => {
     const { getByTestId, getByText } = render(
-
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}

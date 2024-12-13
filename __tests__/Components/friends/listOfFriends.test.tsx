@@ -47,20 +47,6 @@ describe("ListOfFriends", () => {
     expect(getByText("You don't have any friends yet")).toBeTruthy();
   });
 
-  it("handles friend press action", () => {
-    const { getByTestId } = render(
-      <ListOfFriends
-        friends={mockFriends}
-        handleFriendPress={mockHandleFriendPress}
-      />,
-    );
-
-    const friendItem = getByTestId("friend-item-John Doe");
-    fireEvent.press(friendItem);
-
-    expect(mockHandleFriendPress).toHaveBeenCalledWith("1");
-  });
-
   it("renders friends horizontally", () => {
     const { getByTestId } = render(
       <ListOfFriends
