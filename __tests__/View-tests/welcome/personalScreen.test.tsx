@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import WelcomeConceptScreen from "@/src/views/welcome/personal_screen";
 
-describe("WelcomeConceptScreen UI Tests", () => {
+describe("WelcomePersonalScreen UI Tests", () => {
   it("renders the main container", () => {
     const { getByTestId } = render(<WelcomeConceptScreen />);
     const container = getByTestId("welcome-concept-screen");

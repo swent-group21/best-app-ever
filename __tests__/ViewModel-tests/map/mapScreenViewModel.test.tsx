@@ -59,7 +59,12 @@ describe("useMapScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockFirestoreCtrl, mockNavigation, undefined),
+      useMapScreenViewModel(
+        mockFirestoreCtrl,
+        mockNavigation,
+        undefined,
+        undefined,
+      ),
     );
 
     await waitFor(() => {
@@ -86,6 +91,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -115,6 +121,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -161,6 +168,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -187,6 +195,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 
@@ -207,6 +216,7 @@ describe("useMapScreenViewModel", () => {
         mockFirestoreCtrl,
         mockNavigation,
         undefined_firstLocation,
+        undefined,
       ),
     );
 

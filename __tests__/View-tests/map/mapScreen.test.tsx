@@ -70,9 +70,9 @@ describe("MapScreen UI Tests", () => {
       />,
     );
 
-    expect(getByText("Map")).toBeTruthy();
-
     waitFor(() => {
+      expect(getByText("Map")).toBeTruthy();
+
       expect(getByTestId("Challenge 1")).toBeTruthy();
       expect(getByTestId("Challenge 2")).toBeTruthy();
     });
