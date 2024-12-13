@@ -52,26 +52,27 @@ export function useMapScreenViewModel(
    * the user's location is not already set.
    */
   useEffect(() => {
-    async function getCurrentLocation() {
-      try {
-        const { status } = await requestForegroundPermissionsAsync();
-        if (status === "granted") {
-          setPermission(true);
-          const location = await getCurrentPositionAsync();
-          setUserLocation(
-            new GeoPoint(location.coords.latitude, location.coords.longitude),
-          );
-        } else {
-          setPermission(false);
-          setUserLocation(defaultLocation);
-        }
-      } catch (error) {
-        console.error("Error getting location permission or location:", error);
+    getCurrentLocation();
+  }, [userLocation]);
+
+  async function getCurrentLocation() {
+    try {
+      const { status } = await requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        setPermission(true);
+        const location = await getCurrentPositionAsync();
+        setUserLocation(
+          new GeoPoint(location.coords.latitude, location.coords.longitude),
+        );
+      } else {
+        setPermission(false);
         setUserLocation(defaultLocation);
       }
+    } catch (error) {
+      console.error("Error getting location permission or location:", error);
+      setUserLocation(defaultLocation);
     }
-    if (userLocation === undefined) getCurrentLocation();
-  });
+  }
 
   /**
    * Fetches challenges with valid locations from Firestore.
