@@ -14,7 +14,7 @@ import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
  * @returns ListOfFilteredUsers Component
  */
 export default function ListOfFilteredUsers({
-  filteredUsers,
+  filteredUsers = [],
   searchText,
   firestoreCtrl,
   uid,
@@ -81,7 +81,7 @@ export default function ListOfFilteredUsers({
       {filteredUsers.length > 0 ? (
         <FlatList
           data={filteredUsers}
-          keyExtractor={(item) => item.uid}
+          keyExtractor={(item) => item.uid || Math.random().toString()}
           renderItem={({ item }) => {
             const { isFriend, isRequested } = userStatuses[item.uid] || {
               isFriend: false,

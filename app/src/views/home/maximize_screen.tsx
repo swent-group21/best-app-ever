@@ -154,10 +154,10 @@ export default function MaximizeScreen({
         <ThemedView style={styles.likeSection}>
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
+            testID="like-button"
             onPress={toggleLike}
             size={30}
             color={isLiked ? "red" : "white"}
-            testID="like-button"
           />
           <ThemedText style={styles.likeCount}>
             {likeList.length} {likeList.length <= 1 ? "Like" : "Likes"}

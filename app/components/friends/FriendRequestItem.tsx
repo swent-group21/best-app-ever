@@ -54,7 +54,7 @@ export const FriendRequestItem = ({
     >
       {/* Accept Button with Icon */}
       <ThemedIconButton
-        name="check"
+        name="checkmark"
         onPress={onAccept}
         testID={`accept-button-${testID}`}
         color="#fff"

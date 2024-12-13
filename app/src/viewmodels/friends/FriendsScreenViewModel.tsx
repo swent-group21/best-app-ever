@@ -17,12 +17,28 @@ export function useFriendsScreenViewModel(
   friends: DBUser[];
   requests: DBUser[];
   filteredUsers: DBUser[];
-  handleFriendPress: (friendId: string) => void;
+  suggestions: DBUser[];
+  handleFriendPress: (friendId: DBUser) => void;
 } {
   const [searchText, setSearchText] = useState("");
   const [users, setUsers] = useState<DBUser[]>([]);
   const [friends, setFriends] = useState<DBUser[]>([]);
   const [requests, setRequests] = useState<DBUser[]>([]);
+
+  const [suggestions, setSuggestions] = useState<DBUser[]>([]);
+
+  // Fetch friend suggestions
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        const suggestions = await firestoreCtrl.getFriendSuggestions(uid);
+        setSuggestions(suggestions);
+      } catch (error) {
+        console.error("Error fetching friend suggestions: ", error);
+      }
+    };
+    fetchSuggestions();
+  }, [firestoreCtrl, uid]);
 
   // Fetch users
   useEffect(() => {
@@ -72,8 +88,8 @@ export function useFriendsScreenViewModel(
       )
     : [];
 
-  const handleFriendPress = (friendId: string) => {
-    console.log(`Navigate to friend ${friendId}'s profile`);
+  const handleFriendPress = (friend: DBUser) => {
+    console.log("Friend pressed: ", friend);
   };
 
   return {
@@ -83,6 +99,7 @@ export function useFriendsScreenViewModel(
     friends,
     requests,
     filteredUsers,
+    suggestions,
     handleFriendPress,
   };
 }
