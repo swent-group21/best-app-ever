@@ -502,7 +502,7 @@ export default class FirestoreCtrl {
       await updateDoc(doc(firestore, "users", uid), {
         groups: arrayUnion(group_name),
       });
-   } catch (error) {
+    } catch (error) {
       console.error("Error setting name: ", error);
       throw error;
     }
