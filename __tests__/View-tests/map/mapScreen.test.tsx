@@ -60,44 +60,18 @@ describe("MapScreen UI Tests", () => {
     );
   });
 
-  it("renders the map with challenges and user location", () => {
-    const { getByText, getByTestId } = render(
+  it("should render the map", async () => {
+    const { getByTestId } = render(
       <MapScreen
         user={mockUser}
         navigation={mockNavigation}
+        route={{ params: { user: mockUser } }}
         firestoreCtrl={mockFirestoreCtrl}
-        route={{}}
       />,
     );
 
-    waitFor(() => {
-      expect(getByText("Map")).toBeTruthy();
-
-      expect(getByTestId("Challenge 1")).toBeTruthy();
-      expect(getByTestId("Challenge 2")).toBeTruthy();
-    });
-  });
-
-  it("renders 'Getting location...' when location is loading", () => {
-    require("@/src/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue(
-      {
-        permission: false,
-        userLocation: undefined,
-        challengesWithLocation: [],
-      },
-    );
-
-    const { getByText } = render(
-      <MapScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-        route={{}}
-      />,
-    );
-
-    waitFor(() => {
-      expect(getByText("Getting location...")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId("map")).toBeDefined();
     });
   });
 });

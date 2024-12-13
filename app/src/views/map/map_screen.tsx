@@ -75,6 +75,7 @@ export default function MapScreen({
           showsCompass={true}
           loadingEnabled={true}
           onMapReady={() => setIsMapReady(true)}
+          testID="map"
         >
           {/* Draw the challenges on the map */}
           {challengesWithLocation.map((challenge: any, index: number) => (
