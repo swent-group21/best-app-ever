@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import MapView, { MapMarker } from "react-native-maps";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { TopBar } from "@/components/navigation/TopBar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 

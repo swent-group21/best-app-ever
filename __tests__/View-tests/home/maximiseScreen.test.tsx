@@ -176,7 +176,7 @@ describe("MaximizeScreen UI Tests", () => {
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}
-        route={mockRoute}
+        route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
       />,
     );
