@@ -24,11 +24,15 @@ export function useMapScreenViewModel(
   firestoreCtrl: FirestoreCtrl,
   navigation: any,
   firstLocation: GeoPoint | undefined,
+  challengeArea: { center: GeoPoint; radius: number } | undefined,
 ): {
   permission: boolean;
   userLocation: GeoPoint | undefined;
   challengesWithLocation: DBChallenge[];
   navigateGoBack: () => void;
+  challengeArea: { center: GeoPoint; radius: number } | undefined;
+  isMapReady: boolean;
+  setIsMapReady: (isReady: boolean) => void;
 } {
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<GeoPoint | undefined>(
@@ -37,6 +41,7 @@ export function useMapScreenViewModel(
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
   >([]);
+  const [isMapReady, setIsMapReady] = useState<boolean>(false);
 
   const navigateGoBack = () => {
     navigation.goBack();
@@ -93,5 +98,8 @@ export function useMapScreenViewModel(
     userLocation,
     challengesWithLocation,
     navigateGoBack,
+    challengeArea,
+    isMapReady,
+    setIsMapReady,
   };
 }
