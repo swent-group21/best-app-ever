@@ -34,6 +34,7 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     takePicture,
     makeChallenge,
     goBack,
+    isInHome,
   } = useCameraViewModel(firestoreCtrl, navigation, route);
 
   if (!permission) {
@@ -107,21 +108,22 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
           <ThemedView style={styles.camera} colorType="transparent">
             <Image source={{ uri: picture?.uri }} style={styles.preview} />
             <ThemedView style={styles.button} colorType="transparent">
-              <ThemedView style={styles.buttonContainer}>
-                <ThemedIconButton
-                  onPress={toggleLocation}
-                  name={`navigate-circle${isLocationEnabled ? "" : "-outline"}`}
-                  size={35}
-                  color="white"
-                  testID="Location-Button"
-                />
-                <ThemedText colorType="textPrimary">
-                  {isLocationEnabled
-                    ? " Location Enabled  "
-                    : " Location Disabled  "}
-                </ThemedText>
-              </ThemedView>
-
+              {isInHome && (
+                <ThemedView style={styles.buttonContainer}>
+                  <ThemedIconButton
+                    onPress={toggleLocation}
+                    name={`navigate-circle${isLocationEnabled ? "" : "-outline"}`}
+                    size={35}
+                    color="white"
+                    testID="Location-Button"
+                  />
+                  <ThemedText colorType="textPrimary">
+                    {isLocationEnabled
+                      ? " Location Enabled  "
+                      : " Location Disabled  "}
+                  </ThemedText>
+                </ThemedView>
+              )}
               <ThemedView style={[styles.buttonContainer, { gap: 10 }]}>
                 <ThemedIconButton
                   onPress={toggleCameraState}
