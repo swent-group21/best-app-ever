@@ -53,9 +53,9 @@ export default function useCameraViewModel(
       endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
     });
 
-  const group_id = route.params?.group_id;
+  let group_id = "home";
+  let isInHome = true;
   console.log("group_id: ", group_id);
-  const isInHome = group_id == "home";
 
   // Go back to the previous screen
   const goBack = () => {
@@ -145,7 +145,7 @@ export default function useCameraViewModel(
         }
       }
 
-      const imageId = await firestoreCtrl.uploadImageFromUri(picture?.uri);
+      const imageId = await firestoreCtrl.uploadImage(picture?.uri);
       await createChallenge(
         firestoreCtrl,
         caption,
