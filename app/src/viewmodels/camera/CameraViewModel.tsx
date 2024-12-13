@@ -43,9 +43,9 @@ export default function useCameraViewModel(
   // Challenge state
   const [description, setDescription] = useState("");
 
-  const group_id = route.params?.group_id;
-  console.log("group_id: ", group_id);
-  const isInHome = group_id == "home";
+  let group_id = "home";
+  let isInHome = true;
+  console.log("group_id: ", group_id)
 
   // Go back to the previous screen
   const goBack = () => {

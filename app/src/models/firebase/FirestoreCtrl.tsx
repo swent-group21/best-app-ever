@@ -37,7 +37,7 @@ export type DBUser = {
  * The type definitions for a challenge in the Firestore database.
  */
 export type DBChallenge = {
-  challenge_id?: string; // Add this line
+  challenge_id?: string;
   challenge_name: string;
   description?: string;
   uid: string;
@@ -466,14 +466,16 @@ export default class FirestoreCtrl {
           "Network State in newChallenge: ",
           networkState.isConnected,
         );
-        const duplicate_query = query(
-          collection(firestore, "challenges"),
-          where("challenge_id", "==", challengeData.challenge_id),
-        );
-        const docSnap = await getDocs(duplicate_query);
-        if (!docSnap.empty) {
-          console.log("Challenge already exists");
-          return;
+        if (challengeData.challenge_id){
+          const duplicate_query = query(
+            collection(firestore, "challenges"),
+            where("challenge_id", "==", challengeData.challenge_id),
+          );
+          const docSnap = await getDocs(duplicate_query);
+          if (!docSnap.empty) {
+            console.log("Challenge already exists");
+            return;
+          }
         }
         const docRef = await addDoc(
           collection(firestore, "challenges"),
