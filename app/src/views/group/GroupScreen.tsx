@@ -122,6 +122,7 @@ export default function GroupScreen({
         rightIcon="trophy-outline"
         leftAction={() =>
           navigation.navigate("MapScreen", {
+            location: groupCenter,
             challengeArea: { center: groupCenter, radius: groupRadius },
           })
         }

@@ -44,7 +44,7 @@ export default function MapScreen({
   console.info("--> AREA", challengeArea);
   console.info("--> CHALLENGES", challengesWithLocation);
 
-  if (userLocation === undefined || challengesWithLocation === undefined) {
+  if (userLocation === undefined || challengesWithLocation.length === 0) {
     return (
       <ThemedView style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#fff" />
@@ -53,66 +53,66 @@ export default function MapScreen({
         </ThemedText>
       </ThemedView>
     );
+  } else {
+    return (
+      <ThemedView style={styles.container}>
+        <TopBar
+          title="Map"
+          leftIcon="arrow-back"
+          leftAction={() => navigateGoBack()}
+        />
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          zoomControlEnabled={true}
+          mapType="standard"
+          showsUserLocation={true}
+          showsCompass={true}
+          loadingEnabled={true}
+          onMapReady={() => setIsMapReady(true)}
+        >
+          {/* Draw the challenges on the map */}
+          {challengesWithLocation.map((challenge: any, index: number) => (
+            <MapMarker
+              key={index}
+              coordinate={{
+                latitude: challenge.location.latitude,
+                longitude: challenge.location.longitude,
+              }}
+              title={challenge.challenge_name}
+              description={challenge.description}
+              onCalloutPress={() => {
+                navigation.navigate("Maximize", {
+                  challenge,
+                  user,
+                  firestoreCtrl,
+                });
+              }}
+            />
+          ))}
+
+          {/* Draw the challenge area on the map, if any */}
+          {challengeArea && (
+            <MapCircle
+              center={{
+                latitude: challengeArea.center.latitude,
+                longitude: challengeArea.center.longitude,
+              }}
+              radius={challengeArea.radius}
+              strokeWidth={1}
+              strokeColor="#000000"
+              fillColor="rgba(0,0,0,0.2)"
+            />
+          )}
+        </MapView>
+      </ThemedView>
+    );
   }
-
-  return (
-    <ThemedView style={styles.container}>
-      <TopBar
-        title="Map"
-        leftIcon="arrow-back"
-        leftAction={() => navigateGoBack()}
-      />
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        zoomControlEnabled={true}
-        mapType="standard"
-        showsUserLocation={true}
-        showsCompass={true}
-        loadingEnabled={true}
-        onMapReady={() => setIsMapReady(true)}
-      >
-        {/* Draw the challenges on the map */}
-        {challengesWithLocation.map((challenge: any, index: number) => (
-          <MapMarker
-            key={index}
-            coordinate={{
-              latitude: challenge.location.latitude,
-              longitude: challenge.location.longitude,
-            }}
-            title={challenge.challenge_name}
-            description={challenge.description}
-            onCalloutPress={() => {
-              navigation.navigate("Maximize", {
-                challenge,
-                user,
-                firestoreCtrl,
-              });
-            }}
-          />
-        ))}
-
-        {/* Draw the challenge area on the map, if any */}
-        {challengeArea && (
-          <MapCircle
-            center={{
-              latitude: challengeArea.center.latitude,
-              longitude: challengeArea.center.longitude,
-            }}
-            radius={challengeArea.radius}
-            strokeWidth={1}
-            strokeColor="#000000"
-            fillColor="rgba(0,0,0,0.2)"
-          />
-        )}
-      </MapView>
-    </ThemedView>
-  );
 }
 
 const styles = StyleSheet.create({
