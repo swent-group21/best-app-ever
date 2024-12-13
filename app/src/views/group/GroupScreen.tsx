@@ -30,6 +30,8 @@ export default function GroupScreen({
     groupName,
     groupChallengeTitle,
     groupId,
+    groupCenter,
+    groupRadius,
   } = useGroupScreenViewModel(user, firestoreCtrl, route);
 
   return (
@@ -118,7 +120,11 @@ export default function GroupScreen({
         leftIcon="map-outline"
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
-        leftAction={() => navigation.navigate("MapScreen")}
+        leftAction={() =>
+          navigation.navigate("MapScreen", {
+            challengeArea: { center: groupCenter, radius: groupRadius },
+          })
+        }
         centerAction={() =>
           navigation.navigate("Camera", { group_id: groupId })
         }

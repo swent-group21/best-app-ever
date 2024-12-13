@@ -65,7 +65,6 @@ export default function CreateGroupScreen({
         <BottomBar
           rightIcon="arrow-back"
           rightAction={() => navigation.navigate("Home")}
-          testID="go-back-home-button"
         />
       </ThemedView>
     );
