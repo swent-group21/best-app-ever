@@ -22,8 +22,20 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 });
 
 const mockFilteredUsers: DBUser[] = [
-  { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png", email: "john@example.com", createdAt: new Date() },
-  { uid: "2", name: "Jane Smith", image_id: null, email: "jane@example.com", createdAt: new Date() },
+  {
+    uid: "1",
+    name: "John Doe",
+    image_id: "https://example.com/avatar1.png",
+    email: "john@example.com",
+    createdAt: new Date(),
+  },
+  {
+    uid: "2",
+    name: "Jane Smith",
+    image_id: null,
+    email: "jane@example.com",
+    createdAt: new Date(),
+  },
 ];
 
 // Mock du ViewModel
