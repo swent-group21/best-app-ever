@@ -36,7 +36,7 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         postTitle: "Test Challenge",
         postImage: "test_image",
         postDescription: "Test Description",
-      }
+      },
     );
   });
 
@@ -47,7 +47,7 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     fireEvent.press(getByTestId("like-button"));
@@ -62,7 +62,7 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     fireEvent.press(getByTestId("send-comment-button"));
@@ -77,7 +77,7 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     fireEvent.press(getByTestId("like-button"));
@@ -93,7 +93,7 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
-      />
+      />,
     );
 
     fireEvent.press(getByTestId("like-button"));

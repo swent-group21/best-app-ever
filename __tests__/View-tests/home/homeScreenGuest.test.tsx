@@ -85,5 +85,4 @@ describe("HomeScreen - Guest User", () => {
     fireEvent.press(getByText("Sign Up"));
     expect(mockNavigation.navigate).toHaveBeenCalledWith("SignUp");
   });
-
 });

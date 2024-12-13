@@ -46,7 +46,7 @@ export function useHomeScreenViewModel(
     if (!userIsGuest) {
       navigation.navigate("CreateGroup");
     }
-  }
+  };
 
   const blurredChallenges = userIsGuest
     ? challenges.map((challenge, index) => ({
@@ -106,7 +106,7 @@ export function useHomeScreenViewModel(
 
   return {
     userIsGuest,
-    challenges : blurredChallenges,
+    challenges: blurredChallenges,
     groups,
     titleChallenge,
     navigateToProfile,
@@ -115,6 +115,5 @@ export function useHomeScreenViewModel(
     navigateToFriends,
     navigateToCreateGroups,
     challengesFromFriends,
-    
   };
 }

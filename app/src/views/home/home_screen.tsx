@@ -131,7 +131,11 @@ export default function HomeScreen({
           >
             <ThemedTextButton
               style={styles.createGroupButton}
-              onPress={() => userIsGuest ? handleRestrictedAccess('CreateGroup') : navigation.navigate("CreateGroup")}
+              onPress={() =>
+                userIsGuest
+                  ? handleRestrictedAccess("CreateGroup")
+                  : navigation.navigate("CreateGroup")
+              }
               text="+"
               textStyle={styles.createGroupText}
               textColorType="textOverLight"
@@ -145,9 +149,7 @@ export default function HomeScreen({
       <Animated.FlatList
         testID="scroll-view"
         data={
-          userIsGuest
-            ? displayedChallenges.slice(0, 10)
-            : displayedChallenges
+          userIsGuest ? displayedChallenges.slice(0, 10) : displayedChallenges
         }
         onScrollEndDrag={handleScrollEnd}
         keyExtractor={(item, index) => `challenge-${index}`}
@@ -179,9 +181,7 @@ export default function HomeScreen({
                 style={styles.signUpButton}
                 onPress={() => navigation.navigate("SignUp")}
               >
-                <ThemedText style={styles.signUpButtonText}>
-                  Sign Up
-                </ThemedText>
+                <ThemedText style={styles.signUpButtonText}>Sign Up</ThemedText>
               </TouchableOpacity>
             </View>
           )
@@ -210,8 +210,8 @@ export default function HomeScreen({
             {showGuestPopup === "Profile"
               ? "Sign up to create your profile!"
               : showGuestPopup === "Friends"
-              ? "Find and add friends with an account!"
-              : "Access exclusive features with an account!"}
+                ? "Find and add friends with an account!"
+                : "Access exclusive features with an account!"}
           </ThemedText>
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUp")}

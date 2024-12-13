@@ -20,9 +20,8 @@ describe("Challenge Component - Guest User Restrictions", () => {
   const mockCurrentUserGuest = {
     name: "Guest",
     uid: "guest-1",
-    email : "guest@gmail.com",
+    email: "guest@gmail.com",
     createdAt: new Date(),
-
   };
 
   it("does not allow guest users to like a challenge", () => {
@@ -34,7 +33,7 @@ describe("Challenge Component - Guest User Restrictions", () => {
         navigation={mockNavigation}
         testID="challenge-test"
         currentUser={mockCurrentUserGuest}
-      />
+      />,
     );
 
     const likeButton = getByTestId("like-button");
@@ -47,7 +46,6 @@ describe("Challenge Component - Guest User Restrictions", () => {
     expect(queryByText("1 Like")).toBeNull();
   });
 
-
   it("does not allow guest users to double-tap like a challenge", () => {
     const { getByTestId } = render(
       <Challenge
@@ -57,7 +55,7 @@ describe("Challenge Component - Guest User Restrictions", () => {
         navigation={mockNavigation}
         testID="challenge-test"
         currentUser={mockCurrentUserGuest}
-      />
+      />,
     );
 
     const challengeContainer = getByTestId("challenge-test");
