@@ -44,6 +44,7 @@ export function TopBar({
   rightAction = () => {},
   title,
   colorType = "white",
+  testID,
 }: {
   readonly leftIcon?: string;
   readonly leftAction?: () => void;
@@ -51,6 +52,7 @@ export function TopBar({
   readonly rightAction?: () => void;
   readonly title?: string;
   readonly colorType?: keyof typeof Colors.light & keyof typeof Colors.dark;
+  testID?: string;
 }) {
   const { color, isLeftPP, isRightPP } = useTopBarViewModel({
     leftIcon,
@@ -61,7 +63,7 @@ export function TopBar({
   // Determine the left content
   const leftContent = leftIcon ? (
     isLeftPP(leftIcon) ? (
-      <TouchableOpacity onPress={leftAction}>
+      <TouchableOpacity onPress={leftAction} testID={testID}>
         <Image
           source={{ uri: leftIcon }}
           style={styles.iconImage}
