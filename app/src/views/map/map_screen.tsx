@@ -89,8 +89,13 @@ export default function MapScreen({
                 latitude: challenge.location.latitude,
                 longitude: challenge.location.longitude,
               }}
-              title={challenge.challenge_name}
-              description={challenge.description}
+              title={challenge.caption}
+              description={challenge.date?.toLocaleString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
               onCalloutPress={() => {
                 navigation.navigate("Maximize", {
                   challenge,
