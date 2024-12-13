@@ -4,6 +4,7 @@ import FirestoreCtrl, {
   DBUser,
   DBGroup,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { GeoPoint } from "firebase/firestore";
 
 /**
  * View model for the group screen.
@@ -22,6 +23,8 @@ export default function useGroupScreenViewModel(
   groupName: string;
   groupChallengeTitle: string;
   groupId: string;
+  groupCenter: GeoPoint;
+  groupRadius: number;
 } {
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
@@ -64,6 +67,8 @@ export default function useGroupScreenViewModel(
 
   const groupName = group.name ?? "";
   const groupChallengeTitle = group.challengeTitle ?? "";
+  const groupCenter = group.location;
+  const groupRadius = group.radius;
 
   return {
     groupChallenges,
@@ -71,5 +76,7 @@ export default function useGroupScreenViewModel(
     groupName,
     groupChallengeTitle,
     groupId,
+    groupCenter,
+    groupRadius,
   };
 }
