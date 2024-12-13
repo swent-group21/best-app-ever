@@ -24,7 +24,7 @@ export function FriendRequestItem({
 
   return (
     <ThemedView style={styles.requestItem} testID="friend-request-item">
-      {avatar ? (
+      {Boolean(avatar) ? (
         <Image
           source={{ uri: avatar }}
           style={styles.avatar}

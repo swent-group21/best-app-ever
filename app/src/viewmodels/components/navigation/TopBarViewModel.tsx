@@ -17,9 +17,11 @@ export function useTopBarViewModel({
 }) {
   const color = useThemeColor({}, colorType);
 
+  // Check if the left icon is a profile picture
   const isLeftPP = (icon?: string) =>
     leftIcon?.startsWith("http://") || leftIcon?.startsWith("https://");
 
+  // Check if the right icon is a profile picture
   const isRightPP = (icon?: string) =>
     rightIcon?.startsWith("http://") || rightIcon?.startsWith("https://");
 

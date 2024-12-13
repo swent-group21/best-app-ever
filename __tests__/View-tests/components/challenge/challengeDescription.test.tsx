@@ -21,7 +21,7 @@ describe("ChallengeDescription Component", () => {
     expect(getByTestId("Description-test-id")).toBeTruthy();
   });
 
-  it("renders correctly the title and descriptio ", () => {
+  it("renders correctly the title and description", () => {
     const { getByText } = render(
       <ChallengeDescription
         dBChallengeDescription={{
