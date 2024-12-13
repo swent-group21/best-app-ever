@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import WelcomeFinalViewModel from "@/src/viewmodels/welcome/FinalScreenViewModel";
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import ForgotPasswordViewModel from "@/src/viewmodels/auth/ForgotPasswordViewModel";
 
 const { width, height } = Dimensions.get("window");

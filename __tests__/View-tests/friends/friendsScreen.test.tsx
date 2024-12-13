@@ -30,6 +30,15 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   });
 });
 
+const mockFilteredUsers: DBUser[] = [
+  {
+    uid: "user0",
+    name: "User 0",
+    email: "user1@example.com",
+    createdAt: new Date(),
+  },
+];
+
 describe("FriendsScreen Tests - Various Scenarios", () => {
   const mockNavigation = {
     goBack: jest.fn(),
@@ -55,7 +64,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       setSearchText: jest.fn(),
       friends: [],
       requests: [],
-      filteredUsers: [],
+      filteredUsers: mockFilteredUsers,
       handleFriendPress: jest.fn(),
     });
 
@@ -80,7 +89,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
         { uid: "friend1", name: "Friend 1", email: "friend1@example.com" },
       ],
       requests: [],
-      filteredUsers: [],
+      filteredUsers: mockFilteredUsers,
       handleFriendPress: jest.fn(),
     });
 
@@ -98,6 +107,16 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
   });
 
   it("renders FriendsScreen with all sections and no errors", () => {
+    // Mock ViewModel for no requests and no friends
+    (useFriendsScreenViewModel as jest.Mock).mockReturnValue({
+      searchText: "",
+      setSearchText: jest.fn(),
+      friends: [],
+      requests: [],
+      filteredUsers: mockFilteredUsers,
+      handleFriendPress: jest.fn(),
+    });
+
     const { getByText } = render(
       <FriendsScreen
         navigation={mockNavigation}
@@ -118,7 +137,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       setSearchText: jest.fn(),
       friends: [],
       requests: [],
-      filteredUsers: [],
+      filteredUsers: mockFilteredUsers,
       suggestions: [
         {
           uid: "user1",
@@ -158,7 +177,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       setSearchText: jest.fn(),
       friends: [],
       requests: [],
-      filteredUsers: [],
+      filteredUsers: mockFilteredUsers,
       suggestions: [],
       handleFriendPress: jest.fn(),
     });
