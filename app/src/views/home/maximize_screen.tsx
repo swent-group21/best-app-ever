@@ -49,6 +49,8 @@ export default function MaximizeScreen({
     postImage,
     postDescription,
     navigateGoBack,
+    groupCenter,
+    groupRadius,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
@@ -61,6 +63,8 @@ export default function MaximizeScreen({
     }
     setLastTap(now);
   };
+
+  console.log("Area: ", groupCenter, groupRadius);
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -122,6 +126,11 @@ export default function MaximizeScreen({
                     user: user,
                     firestoreCtrl: firestoreCtrl,
                     location: challenge.location,
+                    challengeArea: groupCenter &&
+                      groupRadius && {
+                        center: groupCenter,
+                        radius: groupRadius,
+                      },
                   });
                 }}
                 size={30}
