@@ -1,4 +1,4 @@
-import { limit, GeoPoint } from "firebase/firestore";
+import { limit, GeoPoint, updateDoc, arrayUnion } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -65,6 +65,8 @@ export type DBGroup = {
   challengeTitle: string;
   members: string[];
   updateDate: Date;
+  location: GeoPoint;
+  radius: number;
 };
 
 /*
@@ -485,6 +487,7 @@ export default class FirestoreCtrl {
         return {
           ...data,
           challenge_id: doc.id,
+          date: data.date.toDate(),
         } as DBChallenge;
       });
       return posts;
@@ -539,9 +542,9 @@ export default class FirestoreCtrl {
    */
   async addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
     try {
-      const user = await this.getUser(uid);
-      user.groups?.push(group_name);
-      await this.createUser(uid, user);
+      await updateDoc(doc(firestore, "users", uid), {
+        groups: arrayUnion(group_name),
+      });
     } catch (error) {
       console.error("Error setting name: ", error);
       throw error;
