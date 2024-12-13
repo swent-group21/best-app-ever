@@ -5,6 +5,7 @@ import {
 } from "expo-location";
 import FirestoreCtrl, {
   DBChallenge,
+  DBChallengeDescription,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
 import { GeoPoint } from "firebase/firestore";
@@ -13,6 +14,15 @@ import { GeoPoint } from "firebase/firestore";
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getKChallenges: jest.fn(() => []),
+    getChallengeDescription: jest.fn(
+      () =>
+        ({
+          title: "Description Test",
+          description: "Description",
+          endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+        }) as DBChallengeDescription,
+    ),
+    getPostsByChallengeTitle: jest.fn(() => []),
   }));
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
@@ -41,6 +51,8 @@ const mockNavigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
 };
+
+const mockDate = new Date();
 
 describe("useMapScreenViewModel", () => {
   beforeEach(() => {
@@ -137,23 +149,25 @@ describe("useMapScreenViewModel", () => {
     const mockChallenges: DBChallenge[] = [
       {
         challenge_id: "1",
-        challenge_name: "Challenge 1",
-        description: "Test Challenge 1",
+        caption: "Challenge 1",
         uid: "12345",
+        date: mockDate,
         location: new GeoPoint(48.8566, 2.3522),
+        challenge_description: "Description test",
       },
       {
         challenge_id: "2",
-        challenge_name: "Challenge 2",
-        description: "Test Challenge 2",
+        caption: "Challenge 2",
         uid: "67890",
+        date: mockDate,
         location: null, // Invalid location
+        challenge_description: "Description test",
       },
     ];
 
-    (mockFirestoreCtrl.getKChallenges as jest.Mock).mockResolvedValueOnce(
-      mockChallenges,
-    );
+    (
+      mockFirestoreCtrl.getPostsByChallengeTitle as jest.Mock
+    ).mockResolvedValueOnce(mockChallenges);
 
     const undefined_firstLocation = undefined;
 
@@ -167,7 +181,9 @@ describe("useMapScreenViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
+      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith(
+        "Description Test",
+      );
       expect(result.current.challengesWithLocation).toEqual([
         mockChallenges[0],
       ]); // Only valid locations should be included
@@ -194,7 +210,9 @@ describe("useMapScreenViewModel", () => {
     );
 
     await waitFor(() => {
-      expect(mockFirestoreCtrl.getKChallenges).toHaveBeenCalledWith(100);
+      expect(mockFirestoreCtrl.getPostsByChallengeTitle).toHaveBeenCalledWith(
+        "Description Test",
+      );
       expect(result.current.challengesWithLocation).toEqual([]);
     });
   });

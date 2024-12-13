@@ -12,7 +12,10 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
-import { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBGroup,
+  DBChallengeDescription,
+} from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * ViewModel for the camera screen.
@@ -21,7 +24,7 @@ import { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
  * @returns : functions for the camera screen
  */
 export default function useCameraViewModel(
-  firestoreCtrl: any,
+  firestoreCtrl: FirestoreCtrl,
   navigation: any,
   route: any,
 ) {
@@ -41,7 +44,14 @@ export default function useCameraViewModel(
   const [isLocationEnabled, setIsLocationEnabled] = useState(true);
 
   // Challenge state
-  const [description, setDescription] = useState("");
+  const [caption, setCaption] = useState("");
+
+  const [descriptionTitle, setDescriptionTitle] =
+    useState<DBChallengeDescription>({
+      title: "Challenge Title",
+      description: "Challenge Description",
+      endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
+    });
 
   const group_id = route.params?.group_id;
   console.log("group_id: ", group_id);
@@ -98,6 +108,23 @@ export default function useCameraViewModel(
     fetchLocation();
   }, []);
 
+  // Fetch the description title
+  useEffect(() => {
+    async function fetchDescriptionTitle() {
+      try {
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+
+        setDescriptionTitle(currentChallengeData);
+      } catch (error) {
+        console.error("Error fetching description id");
+        return error;
+      }
+    }
+
+    fetchDescriptionTitle();
+  }, []);
+
   // Create the challenge
   const makeChallenge = async () => {
     try {
@@ -121,10 +148,10 @@ export default function useCameraViewModel(
       const imageId = await firestoreCtrl.uploadImageFromUri(picture?.uri);
       await createChallenge(
         firestoreCtrl,
-        group_id,
-        description,
+        caption,
         isLocationEnabled ? location : null,
         group_id,
+        descriptionTitle.title ?? "",
         new Date(),
         imageId,
       );
@@ -146,7 +173,7 @@ export default function useCameraViewModel(
     requestPermission,
     camera,
     picture,
-    description,
+    caption,
     location,
     isCameraEnabled,
     isFlashEnabled,
@@ -155,7 +182,7 @@ export default function useCameraViewModel(
     toggleFlashMode,
     toggleLocation,
     toggleCameraState,
-    setDescription,
+    setCaption,
     takePicture,
     makeChallenge,
     goBack,

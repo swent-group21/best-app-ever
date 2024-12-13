@@ -2,7 +2,7 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { GeoPoint } from "firebase/firestore";
+import { GeoPoint } from "@/src/models/firebase/Firebase";
 import { LocationObject } from "expo-location";
 
 /**
@@ -26,11 +26,14 @@ export const buildChallenge = async (
     await firestoreCtrl.getName(challenge.uid);
 
     const challengeData: DBChallenge = {
-      challenge_name: challenge.challenge_name,
-      description: challenge.description,
+      caption: challenge.caption,
       uid: challenge.uid,
+      image_id: challenge.image_id,
+      likes: challenge.likes,
       date: challenge.date,
       location: challenge.location,
+      challenge_description: challenge.challenge_description,
+      group_id: challenge.group_id,
     };
 
     return challengeData;
@@ -52,11 +55,11 @@ export const buildChallenge = async (
  */
 export const createChallenge = async (
   firestoreCtrl: FirestoreCtrl,
-  challenge_name: string,
-  description: string,
+  caption: string,
   location: LocationObject | null,
   group_id: string,
-  date?: Date,
+  challenge_description: string,
+  date: Date,
   image_id?: string,
   likes?: string[],
 ): Promise<void> => {
@@ -71,13 +74,14 @@ export const createChallenge = async (
         : new GeoPoint(location.coords.latitude, location.coords.longitude);
 
     const newChallenge: DBChallenge = {
-      challenge_name: challenge_name,
-      description: description || "",
+      caption: caption || "",
       uid: user.uid,
       image_id: image_id,
       likes: likes || [],
       location: locationFirebase,
       group_id: group_id,
+      challenge_description: challenge_description,
+      date: date,
     };
 
     if (image_id) {
@@ -85,15 +89,11 @@ export const createChallenge = async (
       newChallenge.image_id = image_url;
     }
 
-    if (date) {
-      newChallenge.date = date;
-    }
-
     // Save the challenge to Firestore
     await firestoreCtrl.newChallenge(newChallenge);
 
-    const updateTime = new Date();
     if (group_id !== "" && group_id !== "home") {
+      const updateTime = new Date();
       await firestoreCtrl.updateGroup(group_id, updateTime);
     }
   } catch (error) {

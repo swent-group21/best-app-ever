@@ -1,4 +1,4 @@
-import React, { act } from "react";
+import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
@@ -376,8 +376,8 @@ describe("HomeScreen UI Tests", () => {
       />,
     );
 
-    const postImage = getByTestId("challenge-id-0"); // Replace with the correct testID
-    fireEvent.press(postImage);
+    const postImage = getByTestId("challenge-id-0");
+    fireEvent.press(postImage); // Simulate double-tap
     fireEvent.press(postImage); // Simulate double-tap
 
     await waitFor(async () => {

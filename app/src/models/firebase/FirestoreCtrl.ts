@@ -35,14 +35,14 @@ export type DBUser = {
  */
 export type DBChallenge = {
   challenge_id?: string; // Add this line
-  challenge_name: string;
-  description?: string;
+  caption: string;
   uid: string;
   image_id?: string;
   date?: Date;
   likes?: string[]; // User IDs
   location?: GeoPoint | null;
   group_id?: string;
+  challenge_description: string;
 };
 
 /*
@@ -406,7 +406,6 @@ export default class FirestoreCtrl {
 
       const userData = userDoc.data() as DBUser;
 
-      console.log("userGroups [" + uid + "]", userData.groups);
       if (!userData.groups || userData.groups.length === 0) {
         return [];
       }
@@ -547,6 +546,38 @@ export default class FirestoreCtrl {
       });
     } catch (error) {
       console.error("Error setting name: ", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieves the posts of a specific challenge.
+   *
+   * @param challengeTitle The title of the challenge to get posts for.
+   * @returns A promise that resolves to an array of posts.
+   */
+  async getPostsByChallengeTitle(
+    challengeTitle: string,
+  ): Promise<DBChallenge[]> {
+    try {
+      const postsRef = collection(firestore, "challenges");
+      const q = query(
+        postsRef,
+        where("challenge_description", "==", challengeTitle),
+      );
+
+      const querySnapshot = await getDocs(q);
+      const posts = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          challenge_id: doc.id,
+          date: data.date.toDate(),
+        } as DBChallenge;
+      });
+      return posts;
+    } catch (error) {
+      console.error("Error getting posts by challenge: ", error);
       throw error;
     }
   }

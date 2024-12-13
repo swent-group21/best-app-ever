@@ -71,9 +71,9 @@ export function Challenge({
         />
 
         {/* Challenge Description */}
-        {Boolean(challengeDB.description) && (
+        {Boolean(challengeDB.caption) && (
           <ThemedText style={styles.challengeDescription}>
-            {challengeDB.description}
+            {challengeDB.caption}
           </ThemedText>
         )}
 
@@ -194,5 +194,10 @@ const styles = StyleSheet.create({
   commentText: {
     fontSize: 16,
     color: "#aaa",
+  },
+  iconImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
 });

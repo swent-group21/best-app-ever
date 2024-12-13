@@ -270,7 +270,13 @@ export default function HomeScreen({
         centerIcon="camera-outline"
         rightIcon="trophy-outline"
         leftAction={() => handleRestrictedAccess("MapScreen")}
-        centerAction={() => handleRestrictedAccess("Camera")}
+        centerAction={() => {
+          if (userIsGuest) {
+            setShowGuestPopup("Camera");
+          } else {
+            navigateToCamera();
+          }
+        }}
       />
     </ThemedView>
   );

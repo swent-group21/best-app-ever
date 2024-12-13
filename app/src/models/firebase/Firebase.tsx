@@ -29,6 +29,7 @@ import {
   where,
   Firestore,
   onSnapshot,
+  GeoPoint,
 } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -83,4 +84,5 @@ export {
   signInAnonymously,
   updateEmail,
   signOut,
+  GeoPoint,
 };

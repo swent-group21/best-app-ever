@@ -5,6 +5,7 @@ import {
 } from "expo-location";
 import FirestoreCtrl, {
   DBChallenge,
+  DBChallengeDescription,
 } from "@/src/models/firebase/FirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
 
@@ -74,13 +75,24 @@ export function useMapScreenViewModel(
     }
   }
 
-  /**
-   * Fetches challenges with valid locations from Firestore.
-   */
+  // Fetches challenges with valid locations from Firestore.
   useEffect(() => {
-    const fetchChallenges = async () => {
+    // Fetches the current challenge and its title.
+    const fetchCurrentChallenge = async () => {
       try {
-        const challengesData = await firestoreCtrl.getKChallenges(100);
+        const currentChallengeData =
+          await firestoreCtrl.getChallengeDescription();
+        return currentChallengeData.title;
+      } catch (error) {
+        console.error("Error fetching current challenge: ", error);
+      }
+    };
+
+    // Fetches challenges with valid locations from Firestore.
+    const fetchChallenges = async (challengeTitle: string) => {
+      try {
+        const challengesData =
+          await firestoreCtrl.getPostsByChallengeTitle(challengeTitle);
         const filteredChallenges = challengesData.filter(
           (challenge) =>
             challenge.location !== undefined && challenge.location !== null,
@@ -91,7 +103,9 @@ export function useMapScreenViewModel(
       }
     };
 
-    fetchChallenges();
+    fetchCurrentChallenge().then((challengeTitle) => {
+      fetchChallenges(challengeTitle);
+    });
   }, [firestoreCtrl]);
 
   return {

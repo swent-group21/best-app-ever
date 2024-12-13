@@ -34,7 +34,7 @@ export function useHomeScreenViewModel(
   const navigateToMap = () => navigation.navigate("MapScreen");
   const navigateToCamera = () => {
     if (!userIsGuest) {
-      navigation.navigate("Camera");
+      navigation.navigate("Camera", { group_id: "home" });
     }
   };
   const navigateToFriends = () => {
@@ -48,49 +48,62 @@ export function useHomeScreenViewModel(
     }
   };
 
-  const blurredChallenges = userIsGuest
-    ? challenges.map((challenge, index) => ({
-        ...challenge,
-        isBlurred: index >= 10,
-      }))
-    : challenges;
-  // Fetch the current challenge
+  // Fetch the current challenge and the challenges
   useEffect(() => {
+    // Fetch the current challenge
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
         setTitleChallenge(currentChallengeData);
+        return currentChallengeData.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
 
-    fetchCurrentChallenge();
-  }, [firestoreCtrl]);
+    // Fetch challenges
+    const fetchChallenges = async (challengeTitle: string) => {
+      try {
+        await firestoreCtrl
+          .getPostsByChallengeTitle(challengeTitle)
+          .then((challenge: DBChallenge[]) => {
+            // Sort challenges by date
+            const sortedChallenges = challenge.sort((a, b) =>
+              a.date && b.date
+                ? new Date(b.date).getTime() - new Date(a.date).getTime()
+                : 0,
+            );
+            setChallenges(sortedChallenges);
+          });
+      } catch (error) {
+        console.error("Error fetching challenges: ", error);
+      }
+    };
 
-  // Fetch the challenges
-  useEffect(() => {
-    if (user.uid) {
-      const fetchChallenges = async () => {
-        try {
-          const challengesData = await firestoreCtrl.getKChallenges(100);
-          setChallenges(challengesData);
-        } catch (error) {
-          console.error("Error fetching challenges: ", error);
-        }
-      };
-      fetchChallenges();
-    }
-  }, [firestoreCtrl]);
+    fetchCurrentChallenge().then((challengeTitle) => {
+      console.log("Current challenge fetched : ", challengeTitle);
+      if (user.uid) fetchChallenges(challengeTitle);
+    });
+  }, [user.uid, firestoreCtrl]);
 
   // Fetch the groups
   useEffect(() => {
     if (user.uid) {
       const fetchGroups = async () => {
         try {
-          const groupsData = await firestoreCtrl.getGroupsByUserId(user.uid);
-          setGroups(groupsData);
+          await firestoreCtrl
+            .getGroupsByUserId(user.uid)
+            .then((group: DBGroup[]) => {
+              // Sort challenges by date
+              const sortedGroups = group.sort((a, b) =>
+                a.updateDate && b.updateDate
+                  ? new Date(b.updateDate).getTime() -
+                    new Date(a.updateDate).getTime()
+                  : 0,
+              );
+              setGroups(sortedGroups);
+            });
         } catch (error) {
           console.error("Error fetching groups: ", error);
         }
@@ -106,7 +119,7 @@ export function useHomeScreenViewModel(
 
   return {
     userIsGuest,
-    challenges: blurredChallenges,
+    challenges,
     groups,
     titleChallenge,
     navigateToProfile,

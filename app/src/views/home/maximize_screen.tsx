@@ -45,9 +45,8 @@ export default function MaximizeScreen({
     toggleLike,
     addComment,
     postDate,
-    postTitle,
     postImage,
-    postDescription,
+    postCaption,
     navigateGoBack,
     groupCenter,
     groupRadius,
@@ -69,7 +68,7 @@ export default function MaximizeScreen({
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
-        title={postTitle}
+        title=""
         leftIcon="arrow-back-outline"
         leftAction={navigateGoBack}
       />
@@ -153,9 +152,9 @@ export default function MaximizeScreen({
         </TouchableWithoutFeedback>
 
         {/* Post Description */}
-        {Boolean(postDescription) && (
+        {Boolean(postCaption) && (
           <ThemedText style={styles.postDescription} colorType="white">
-            {postDescription}
+            {postCaption}
           </ThemedText>
         )}
 
@@ -231,6 +230,7 @@ const styles = StyleSheet.create({
     width: width * 0.9,
     marginLeft: 10,
   },
+
   userAvatar: {
     width: 50,
     height: 50,
@@ -315,5 +315,11 @@ const styles = StyleSheet.create({
   commentList: {
     width: width * 0.9,
     marginRight: width * 0.1,
+  },
+
+  iconImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
 });

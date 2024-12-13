@@ -22,7 +22,7 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     requestPermission,
     camera,
     picture,
-    description,
+    caption,
     isCameraEnabled,
     isFlashEnabled,
     isLocationEnabled,
@@ -30,7 +30,7 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     toggleFlashMode,
     toggleLocation,
     toggleCameraState,
-    setDescription,
+    setCaption,
     takePicture,
     makeChallenge,
     goBack,
@@ -146,8 +146,8 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
           <ThemedTextInput
             style={styles.input}
             placeholder="Caption"
-            onChangeText={setDescription}
-            value={description}
+            onChangeText={setCaption}
+            value={caption}
             viewWidth="98%"
             colorType="white"
             testID="Caption-Input"

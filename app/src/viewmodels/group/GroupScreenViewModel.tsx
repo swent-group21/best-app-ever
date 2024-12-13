@@ -36,9 +36,17 @@ export default function useGroupScreenViewModel(
     if (user.uid) {
       const fetchGroupChallenges = async () => {
         try {
-          const challengesData =
-            await firestoreCtrl.getAllPostsOfGroup(groupId);
-          setGroupChallenges(challengesData);
+          await firestoreCtrl
+            .getAllPostsOfGroup(groupId)
+            .then((challenge: DBChallenge[]) => {
+              // Sort challenges by date
+              const sortedChallenges = challenge.sort((a, b) =>
+                a.date && b.date
+                  ? new Date(b.date).getTime() - new Date(a.date).getTime()
+                  : 0,
+              );
+              setGroupChallenges(sortedChallenges);
+            });
         } catch (error) {
           console.error("Error fetching challenges: ", error);
         }
