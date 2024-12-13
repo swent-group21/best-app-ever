@@ -283,6 +283,7 @@ export default class FirestoreCtrl {
           const updatedUploads = storedUploads.filter(
             (item) => item.id !== upload.id,
           );
+
           AsyncStorage.setItem(
             IMAGE_STORAGE_KEY,
             JSON.stringify(updatedUploads),
@@ -463,6 +464,12 @@ export default class FirestoreCtrl {
           "Network State in newChallenge: ",
           networkState.isConnected,
         );
+        const duplicate_query = query(collection(firestore, "challenges"), where("challenge_id", "==", challengeData.challenge_id))
+        const docSnap = await getDocs(duplicate_query);
+        if (!docSnap.empty) {
+          console.log("Challenge already exists")
+          return
+        }
         const docRef = await addDoc(
           collection(firestore, "challenges"),
           challengeData,
@@ -710,6 +717,12 @@ export default class FirestoreCtrl {
     try {
       const networkState = await NetInfo.fetch();
       if (networkState.isConnected && networkState.isInternetReachable) {
+        const duplicate_query = query(collection(firestore, "groups"), where("gid", "==", groupData.gid))
+        const docSnap = await getDocs(duplicate_query);
+        if (!docSnap.empty) {
+          console.log("Group already exists")
+          return
+        }
         const docRef = await addDoc(collection(firestore, "groups"), groupData);
         console.log("Group successfully uploaded to Firestore:", docRef.id);
         return;
@@ -810,6 +823,12 @@ export default class FirestoreCtrl {
     try {
       const networkState = await NetInfo.fetch();
       if (networkState.isConnected && networkState.isInternetReachable) {
+        const duplicate_query = query(collection(firestore, "comments"), where("created_at", "==", commentData.created_at))
+        const docSnap = await getDocs(duplicate_query);
+        if (!docSnap.empty) {
+          console.log("Comment already exists")
+          return
+        }
         await addDoc(collection(firestore, "comments"), commentData);
         return;
       }
