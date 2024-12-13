@@ -25,7 +25,7 @@ export default function FriendsScreen({
     setSearchText,
     friends,
     requests,
-    filteredUsers,
+    filteredUsers = [],
     suggestions,
     handleFriendPress,
   } = useFriendsScreenViewModel(firestoreCtrl, uid);
