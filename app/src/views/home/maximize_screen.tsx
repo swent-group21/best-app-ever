@@ -5,8 +5,6 @@ import {
   Image,
   Text,
   TouchableWithoutFeedback,
-  View,
-  TouchableOpacity,
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
@@ -16,6 +14,10 @@ import { SingleComment } from "@/src/views/components/posts/comment";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
+import FirestoreCtrl, {
+  DBUser,
+  DBChallenge,
+} from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,12 +27,12 @@ export default function MaximizeScreen({
   route,
   firestoreCtrl,
 }: {
-  readonly user: any;
+  readonly user: DBUser;
   readonly navigation: any;
   readonly route: any;
-  readonly firestoreCtrl: any;
+  readonly firestoreCtrl: FirestoreCtrl;
 }) {
-  const challenge = route.params?.challenge;
+  const challenge: DBChallenge = route.params?.challenge;
   const noImage = "@/assets/images/no-image.svg";
 
   const {
@@ -50,26 +52,14 @@ export default function MaximizeScreen({
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
-  const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
   const handleDoubleTap = () => {
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
-      if (user.name === "Guest") {
-        setShowGuestPopup("like");
-      } else {
-        toggleLike();
-      }
+      // Double-tap detected
+      toggleLike();
     }
     setLastTap(now);
-  };
-
-  const handleComment = () => {
-    if (user.name === "Guest") {
-      setShowGuestPopup("comment");
-    } else {
-      addComment();
-    }
   };
 
   return (
@@ -118,6 +108,28 @@ export default function MaximizeScreen({
               </ThemedText>
             </ThemedView>
           </ThemedView>
+          <ThemedView
+            style={{ position: "absolute", right: 15, top: 30 }}
+            colorType="transparent"
+          >
+            {challenge.location && (
+              <ThemedIconButton
+                name="location-outline"
+                testID="location-button"
+                onPress={() => {
+                  navigation.navigate("MapScreen", {
+                    navigation: navigation,
+                    user: user,
+                    firestoreCtrl: firestoreCtrl,
+                    location: challenge.location,
+                  });
+                }}
+                size={30}
+                style={styles.locationButton}
+                colorType="white"
+              />
+            )}
+          </ThemedView>
         </ThemedView>
 
         {/* Post Image with Double Tap */}
@@ -143,13 +155,7 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
             testID="like-button"
-            onPress={() => {
-              if (user.name === "Guest") {
-                setShowGuestPopup("like");
-              } else {
-                toggleLike();
-              }
-            }}
+            onPress={toggleLike}
             size={30}
             color={isLiked ? "red" : "white"}
           />
@@ -170,7 +176,7 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name="send"
             size={25}
-            onPress={handleComment}
+            onPress={addComment}
             colorType="white"
             testID="send-comment-button"
           />
@@ -191,29 +197,6 @@ export default function MaximizeScreen({
           )}
         </ThemedView>
       </ThemedScrollView>
-
-      {/* Guest Pop-Up */}
-      {showGuestPopup && (
-        <View style={styles.guestPopup}>
-          <Text style={styles.popupText}>
-            {showGuestPopup === "like"
-              ? "Sign up to like this post!"
-              : "Sign up to comment on this post!"}
-          </Text>
-          <TouchableOpacity
-            style={styles.popupButton}
-            onPress={() => navigation.navigate("SignUp")}
-          >
-            <Text style={styles.popupButtonText}>Sign Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.popupCloseButton}
-            onPress={() => setShowGuestPopup(null)}
-          >
-            <Text style={styles.popupCloseText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      )}
     </ThemedView>
   );
 }
@@ -283,6 +266,9 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 10,
   },
+  locationButton: {
+    position: "relative",
+  },
   postDescription: {
     fontSize: 16,
     color: "#fff",
@@ -320,39 +306,5 @@ const styles = StyleSheet.create({
   commentList: {
     width: width * 0.9,
     marginRight: width * 0.1,
-  },
-  guestPopup: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "#00000077",
-    padding: 20,
-    alignItems: "center",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-  },
-  popupText: {
-    color: "#fff",
-    fontSize: 16,
-    marginBottom: 10,
-    fontWeight: "bold",
-  },
-  popupButton: {
-    backgroundColor: "#444",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  popupButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  popupCloseButton: {
-    padding: 5,
-  },
-  popupCloseText: {
-    color: "#aaa",
-    textDecorationLine: "underline",
   },
 });

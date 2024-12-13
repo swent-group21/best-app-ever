@@ -30,7 +30,6 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   });
 });
 
-
 const mockFilteredUsers: DBUser[] = [
   {
     uid: "user0",
@@ -38,7 +37,7 @@ const mockFilteredUsers: DBUser[] = [
     email: "user1@example.com",
     createdAt: new Date(),
   },
-]
+];
 
 describe("FriendsScreen Tests - Various Scenarios", () => {
   const mockNavigation = {
@@ -59,7 +58,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
   });
 
   it("renders FriendsScreen with no requests and no friends", () => {
-
     // Mock ViewModel for no requests and no friends
     (useFriendsScreenViewModel as jest.Mock).mockReturnValue({
       searchText: "",
@@ -109,7 +107,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
   });
 
   it("renders FriendsScreen with all sections and no errors", () => {
-
     // Mock ViewModel for no requests and no friends
     (useFriendsScreenViewModel as jest.Mock).mockReturnValue({
       searchText: "",
@@ -119,7 +116,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       filteredUsers: mockFilteredUsers,
       handleFriendPress: jest.fn(),
     });
-
 
     const { getByText } = render(
       <FriendsScreen

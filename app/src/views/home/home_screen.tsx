@@ -43,7 +43,7 @@ export default function HomeScreen({
     navigateToFriends,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
-  const [filterByFriends] = useState(false);
+  const [filterByFriends, setFilterByFriends] = useState(false);
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
   // Animation for hiding groups
@@ -51,6 +51,17 @@ export default function HomeScreen({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleThreshold = 100; // Distance to toggle the groups visibility
+
+  const underlineAnim = useRef(new Animated.Value(0)).current;
+
+  const handleFilterChange = (isFriends: boolean) => {
+    Animated.timing(underlineAnim, {
+      toValue: isFriends ? width * 0.5 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setFilterByFriends(isFriends);
+  };
 
   const handleScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = e.nativeEvent.contentOffset.y;
@@ -119,7 +130,7 @@ export default function HomeScreen({
           {groups.map((group, index) => (
             <GroupIcon
               groupDB={group}
-              index = {index}
+              index={index}
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
               key={index}
@@ -132,7 +143,11 @@ export default function HomeScreen({
           >
             <ThemedTextButton
               style={styles.createGroupButton}
-              onPress={() => userIsGuest ? handleRestrictedAccess('CreateGroup') : navigation.navigate("CreateGroup")}
+              onPress={() =>
+                userIsGuest
+                  ? handleRestrictedAccess("CreateGroup")
+                  : navigation.navigate("CreateGroup")
+              }
               text="+"
               textStyle={styles.createGroupText}
               textColorType="textOverLight"
@@ -142,13 +157,45 @@ export default function HomeScreen({
         </ThemedScrollView>
       </Animated.View>
 
+      {/* Filter Buttons with Underline */}
+      <ThemedView style={styles.filterContainer}>
+        <TouchableOpacity
+          onPress={() => handleFilterChange(false)}
+          style={styles.filterButton}
+        >
+          <ThemedText
+            style={[
+              styles.filterText,
+              !filterByFriends && styles.activeFilterText,
+            ]}
+            testID="all-posts-button"
+          >
+            All Posts
+          </ThemedText>
+          {!filterByFriends && <Animated.View style={[styles.underline]} />}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleFilterChange(true)}
+          style={styles.filterButton}
+        >
+          <ThemedText
+            style={[
+              styles.filterText,
+              filterByFriends && styles.activeFilterText,
+            ]}
+            testID="friends-button"
+          >
+            My Friends
+          </ThemedText>
+          {filterByFriends && <Animated.View style={[styles.underline]} />}
+        </TouchableOpacity>
+      </ThemedView>
+
       {/* Challenges */}
       <Animated.FlatList
         testID="scroll-view"
         data={
-          userIsGuest
-            ? displayedChallenges.slice(0, 10)
-            : displayedChallenges
+          userIsGuest ? displayedChallenges.slice(0, 10) : displayedChallenges
         }
         onScrollEndDrag={handleScrollEnd}
         keyExtractor={(item, index) => `challenge-${index}`}
@@ -180,9 +227,7 @@ export default function HomeScreen({
                 style={styles.signUpButton}
                 onPress={() => navigation.navigate("SignUp")}
               >
-                <ThemedText style={styles.signUpButtonText}>
-                  Sign Up
-                </ThemedText>
+                <ThemedText style={styles.signUpButtonText}>Sign Up</ThemedText>
               </TouchableOpacity>
             </View>
           )
@@ -202,8 +247,8 @@ export default function HomeScreen({
             {showGuestPopup === "Profile"
               ? "Sign up to create your profile!"
               : showGuestPopup === "Friends"
-              ? "Find and add friends with an account!"
-              : "Access exclusive features with an account!"}
+                ? "Find and add friends with an account!"
+                : "Access exclusive features with an account!"}
           </ThemedText>
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUp")}
@@ -227,8 +272,6 @@ export default function HomeScreen({
         leftAction={() => handleRestrictedAccess("MapScreen")}
         centerAction={() => handleRestrictedAccess("Camera")}
       />
-
-      
     </ThemedView>
   );
 }
@@ -329,5 +372,29 @@ const styles = StyleSheet.create({
   popupCloseText: {
     color: "#aaa",
     textDecorationLine: "underline",
+  },
+  filterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  filterButton: {
+    alignItems: "center",
+    width: width * 0.5,
+  },
+  filterText: {
+    fontSize: 16,
+    color: "#888",
+  },
+  activeFilterText: {
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  underline: {
+    marginTop: 5,
+    height: 2,
+    width: 0.2 * width,
+    backgroundColor: "#fff",
   },
 });

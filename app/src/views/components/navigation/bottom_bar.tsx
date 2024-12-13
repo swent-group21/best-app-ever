@@ -39,7 +39,6 @@ export function BottomBar({
   rightIcon,
   rightAction = () => {},
   colorType = "white",
-  
 }: {
   readonly leftIcon?: string;
   readonly leftAction?: () => void;

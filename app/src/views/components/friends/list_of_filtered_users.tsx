@@ -14,7 +14,7 @@ import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/fri
  * @returns ListOfFilteredUsers Component
  */
 export default function ListOfFilteredUsers({
-  filteredUsers= [],
+  filteredUsers = [],
   searchText,
   firestoreCtrl,
   uid,
