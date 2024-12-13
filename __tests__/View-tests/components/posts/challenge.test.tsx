@@ -43,11 +43,12 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 });
 
 const challengeDB: DBChallenge = {
-  challenge_name: "challengeName",
+  caption: "challengeName",
   challenge_id: "challenge123",
   uid: "user123",
   image_id: "https://example.com/image.jpg",
   likes: ["12345", "67890"],
+  challenge_description: "challengeTitle",
 };
 
 describe("Challenge Component", () => {

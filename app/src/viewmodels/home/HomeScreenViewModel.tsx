@@ -87,7 +87,6 @@ export function useHomeScreenViewModel(
     });
   }, [user.uid, firestoreCtrl]);
 
-
   // Fetch the groups
   useEffect(() => {
     if (user.uid) {
@@ -110,7 +109,7 @@ export function useHomeScreenViewModel(
 
   return {
     userIsGuest,
-    challenges: blurredChallenges,
+    challenges,
     groups,
     titleChallenge,
     navigateToProfile,
