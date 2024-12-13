@@ -9,7 +9,7 @@ import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
  * @returns ListOfFilteredUsers Component
  */
 export function useListOfFilteredUsersViewModel({
-  filteredUsers,
+  filteredUsers = [],
   firestoreCtrl,
   uid,
 }: {
