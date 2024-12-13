@@ -12,7 +12,7 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
-import {
+import FirestoreCtrl, {
   DBGroup,
   DBChallengeDescription,
 } from "@/src/models/firebase/FirestoreCtrl";
@@ -24,7 +24,7 @@ import {
  * @returns : functions for the camera screen
  */
 export default function useCameraViewModel(
-  firestoreCtrl: any,
+  firestoreCtrl: FirestoreCtrl,
   navigation: any,
   route: any,
 ) {
@@ -127,7 +127,6 @@ export default function useCameraViewModel(
   const makeChallenge = async () => {
     try {
       const imageId = await firestoreCtrl.uploadImageFromUri(picture?.uri);
-      const imageURL = await firestoreCtrl.getImageURL(imageId);
       const date = new Date();
       await createChallenge(
         firestoreCtrl,
@@ -136,7 +135,7 @@ export default function useCameraViewModel(
         group_id,
         descriptionTitle.title ?? "",
         date,
-        imageURL,
+        imageId,
       );
       if (group_id == "" || group_id == "home") {
         navigation.navigate("Home");
