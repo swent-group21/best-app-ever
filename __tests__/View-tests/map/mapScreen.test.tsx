@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import MapScreen from "@/src/views/map/map_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
-import { Timestamp } from "firebase/firestore";
 
 jest.mock("@/src/viewmodels/map/MapScreenViewModel", () => ({
   useMapScreenViewModel: jest.fn(),

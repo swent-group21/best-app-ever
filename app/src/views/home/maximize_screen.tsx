@@ -48,7 +48,6 @@ export default function MaximizeScreen({
     postImage,
     postCaption,
     navigateGoBack,
-    userProfilePicture,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);

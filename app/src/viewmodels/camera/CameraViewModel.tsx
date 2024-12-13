@@ -114,9 +114,8 @@ export default function useCameraViewModel(
           await firestoreCtrl.getChallengeDescription();
 
         setDescriptionTitle(currentChallengeData);
-        console.log("Description title: ", currentChallengeData.title);
       } catch (error) {
-        console.log("Error fetching description id");
+        console.error("Error fetching description id");
         return error;
       }
     }
@@ -128,6 +127,7 @@ export default function useCameraViewModel(
   const makeChallenge = async () => {
     try {
       const imageId = await firestoreCtrl.uploadImageFromUri(picture?.uri);
+      const imageURL = await firestoreCtrl.getImageURL(imageId);
       const date = new Date();
       await createChallenge(
         firestoreCtrl,
@@ -136,7 +136,7 @@ export default function useCameraViewModel(
         group_id,
         descriptionTitle.title ?? "",
         date,
-        imageId,
+        imageURL,
       );
       if (group_id == "" || group_id == "home") {
         navigation.navigate("Home");

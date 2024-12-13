@@ -38,11 +38,6 @@ export function useMapScreenViewModel(
   const [challengesWithLocation, setChallengesWithLocation] = useState<
     DBChallenge[]
   >([]);
-  const [titleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
-    title: "Challenge Title",
-    description: "Challenge Description",
-    endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-  });
 
   const navigateGoBack = () => {
     navigation.goBack();
@@ -74,18 +69,20 @@ export function useMapScreenViewModel(
     if (userLocation === undefined) getCurrentLocation();
   }, []);
 
+  // Fetches challenges with valid locations from Firestore.
   useEffect(() => {
+    // Fetches the current challenge and its title.
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =
           await firestoreCtrl.getChallengeDescription();
-        setTitleChallenge(currentChallengeData);
         return currentChallengeData.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
       }
     };
 
+    // Fetches challenges with valid locations from Firestore.
     const fetchChallenges = async (challengeTitle: string) => {
       try {
         const challengesData =

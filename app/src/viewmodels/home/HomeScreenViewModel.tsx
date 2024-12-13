@@ -43,8 +43,9 @@ export function useHomeScreenViewModel(
     navigation.navigate("Camera", { group_id: "home" });
   const navigateToFriends = () => navigation.navigate("Friends");
 
-  // Fetch the current challenge
+  // Fetch the current challenge and the challenges
   useEffect(() => {
+    // Fetch the current challenge
     const fetchCurrentChallenge = async () => {
       try {
         const currentChallengeData =
@@ -56,14 +57,12 @@ export function useHomeScreenViewModel(
       }
     };
 
+    // Fetch challenges
     const fetchChallenges = async (challengeTitle: string) => {
       try {
         await firestoreCtrl
           .getPostsByChallengeTitle(challengeTitle)
           .then((challenge: DBChallenge[]) => {
-            const homeChallenges = challenge.filter(
-              (challenge) => challenge.group_id === "home",
-            );
             // Sort challenges by date
             const sortedChallenges = challenge.sort((a, b) =>
               a.date && b.date
@@ -83,6 +82,8 @@ export function useHomeScreenViewModel(
     });
   }, [user.uid, firestoreCtrl]);
 
+
+  // Fetch the groups
   useEffect(() => {
     if (user.uid) {
       const fetchGroups = async () => {

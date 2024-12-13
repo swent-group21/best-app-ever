@@ -5,7 +5,6 @@ import FirestoreCtrl, {
   DBChallenge,
   DBUser,
 } from "@/src/models/firebase/FirestoreCtrl";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",

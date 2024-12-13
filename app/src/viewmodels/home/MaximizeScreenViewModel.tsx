@@ -24,7 +24,6 @@ export function useMaximizeScreenViewModel(
   const [postUser, setPostUser] = useState<DBUser>();
   const [likeList, setLikeList] = useState<string[]>([]);
   const [isLiked, setIsLiked] = useState(false);
-  const [userProfilePicture, setUserProfilePicture] = useState<string>("");
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
@@ -56,23 +55,6 @@ export function useMaximizeScreenViewModel(
       setIsLiked(likes.includes(currentUserId));
     });
   }, [challenge, firestoreCtrl, currentUserId]);
-
-  // Fetch user data
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        if (
-          user.image_id?.startsWith("http") ||
-          user.image_id?.startsWith("https://")
-        ) {
-          setUserProfilePicture(user.image_id);
-        }
-      } catch (error) {
-        console.error("Error fetching challenges: ", error);
-      }
-    };
-    fetchUser();
-  }, [user]);
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
@@ -117,6 +99,5 @@ export function useMaximizeScreenViewModel(
     postImage,
     postCaption,
     navigateGoBack,
-    userProfilePicture,
   };
 }

@@ -38,7 +38,6 @@ export function Challenge({
 
   // Double-tap logic
   const [lastTap, setLastTap] = useState<number | null>(null);
-  const [userPp, setUserPp] = useState<string>("");
 
   const placeholderImage = "https://via.placeholder.com/300";
 
@@ -47,12 +46,6 @@ export function Challenge({
     const fetchUser = async () => {
       try {
         const userData = await firestoreCtrl.getUser(challengeDB.uid);
-        if (
-          userData.image_id?.startsWith("http") ||
-          userData.image_id?.startsWith("https://")
-        ) {
-          setUserPp(userData.image_id);
-        }
         setUser(userData || null);
       } catch (error) {
         console.error("Error fetching user data:", error);
