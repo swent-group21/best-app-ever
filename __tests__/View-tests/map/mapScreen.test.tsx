@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import MapScreen from "@/src/views/map/map_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -19,7 +19,10 @@ jest.mock("react-native-maps", () => {
 });
 
 describe("MapScreen UI Tests", () => {
-  const mockNavigation = { goBack: jest.fn() };
+  const mockNavigation = {
+    goBack: jest.fn(),
+    navigate: jest.fn(),
+  };
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockUser = {
     uid: "123",
@@ -72,6 +75,22 @@ describe("MapScreen UI Tests", () => {
 
     await waitFor(() => {
       expect(getByTestId("map")).toBeDefined();
+    });
+  });
+
+  it("should render the map markers", async () => {
+    const { getByTestId } = render(
+      <MapScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        route={{ params: { user: mockUser } }}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(getByTestId("map-marker-0")).toBeDefined();
+      expect(getByTestId("map-marker-1")).toBeDefined();
     });
   });
 });

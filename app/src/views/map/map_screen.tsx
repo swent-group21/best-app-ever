@@ -80,6 +80,7 @@ export default function MapScreen({
           {/* Draw the challenges on the map */}
           {challengesWithLocation.map((challenge: any, index: number) => (
             <MapMarker
+              testID={`map-marker-${index}`}
               key={index}
               coordinate={{
                 latitude: challenge.location.latitude,
