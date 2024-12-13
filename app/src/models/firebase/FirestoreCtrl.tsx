@@ -194,62 +194,39 @@ export default class FirestoreCtrl {
       return storedData ? JSON.parse(storedData) : [];
   }
 
-  async uploadImage(imageUri: string, id_picture: string) {
-    try {
-      if (!imageUri) {
-        throw new Error("No image URI provided.");
-      }
-      console.log("Here is the imageUri: \n", imageUri)
-      try {
-        const response = await fetch(imageUri);
-        const blob = await response.blob();
-
-        const storageRef = ref(getStorage(), "images/" + id_picture);
-        await uploadBytes(storageRef, blob);
-        return id_picture;
-        
-      } catch (error) {
-        console.error("Initial upload failed:", error);
-        // 3. Store image upload data locally for later upload
-        await this.storeImageLocally(id_picture);
-        // Schedule background retry if offline        
-        uploadTaskScheduled = true;
-        return id_picture; // Return the ID even if the initial upload fails
-      }
-    } catch (error) {
-      console.error("Error uploading image: ", error);
-      throw error;
-    }
-  }
-
   /**
    * Upload an image to Firestore storage.
    * @param imageUri The URI of the image to upload.
    * @returns The ID of the image.
    */
-  async uploadImageFromUri(imageUri: string): Promise<string> {
+  async uploadImage(imageUri: string, id_picture?: string): Promise<string> {
     try {
       if (!imageUri) {
         throw new Error("No image URI provided.");
       }
-
-      const id_picture = (Math.random() + 1).toString(36).substring(2);
-      console.log("Here is the imageUri: \n", imageUri)
+      let img_id: string = id_picture;
+      if (id_picture === undefined){
+        img_id = (Math.random() + 1).toString(36).substring(2);
+        console.log("New id_picture: ", img_id);
+      } 
 
       const networkState = await NetInfo.fetch();
+      console.log("Network State Image: ", networkState.isConnected, networkState.isInternetReachable);
       if (networkState.isConnected && networkState.isInternetReachable) {
         const response = await fetch(imageUri);
         const blob = await response.blob();
 
-        const storageRef = ref(getStorage(), "images/" + id_picture);
+        const storageRef = ref(getStorage(), "images/" + img_id);
         await uploadBytes(storageRef, blob);
-        return id_picture;
+        console.log("uploaded")
+        return img_id;
       }
 
       console.warn("No internet connection. Skipping image upload.");
       //Store the image locally for background upload
-      await this.storeImageLocally(id_picture)
+      await this.storeImageLocally(img_id)
       uploadTaskScheduled = true;
+      return img_id;
         
     } catch (error) {
       console.error("Error uploading image: ", error);
@@ -364,6 +341,7 @@ export default class FirestoreCtrl {
    * @returns The download URL of the image.
    */
   async getImageUrl(id_picture: string): Promise<string> {
+    console.log("getImageUrl id_picture: ", id_picture)
     const storageRef = ref(getStorage(), "images/" + id_picture);
     const url = await getDownloadURL(storageRef);
     return url;
@@ -437,7 +415,7 @@ export default class FirestoreCtrl {
   ): Promise<void> {
     try {
       const user = await this.getUser(id);
-      user.image_id = await this.uploadImageFromUri(imageUri);
+      user.image_id = await this.uploadImage(imageUri);
       await this.createUser(id, user);
       setUser(user);
     } catch (error) {
@@ -456,7 +434,7 @@ export default class FirestoreCtrl {
 
       const networkState = await NetInfo.fetch();
       if (networkState.isConnected && networkState.isInternetReachable) {
-        console.log("Network State: ", networkState.isConnected)
+        console.log("Network State in newChallenge: ", networkState.isConnected)
         const docRef = await addDoc(collection(firestore,"challenges"), challengeData);
         console.log("Challenge successfully uploaded to Firestore:", docRef.id);
         return
@@ -554,7 +532,6 @@ export default class FirestoreCtrl {
           date: data.date.toDate(),
         } as DBChallenge;
       });
-      console.log("Challenges retrieved:", challenges);
       return challenges;
     } catch (error) {
       console.error("Error getting challenges: ", error);
