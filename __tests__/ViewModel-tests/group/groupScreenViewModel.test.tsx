@@ -146,4 +146,27 @@ describe("useGroupScreenViewModel", () => {
       expect(result.current.groupId).toBe("test-group-id");
     });
   });
+
+  it("should sort the challenges by latest first", async () => {
+    const mockDate1 = new Date(2021, 1, 1, 0, 0, 0, 0);
+    const mockDate2 = new Date(2023, 1, 2, 0, 0, 0, 0);
+
+    const mockChallenges = [
+      { challenge_id: "1", challenge_name: "Challenge 1", date: mockDate1 },
+      { challenge_id: "2", challenge_name: "Challenge 2", date: mockDate2 },
+    ];
+    (mockFirestoreCtrl.getAllPostsOfGroup as jest.Mock).mockResolvedValue(
+      mockChallenges,
+    );
+    const { result } = renderHook(() =>
+      useGroupScreenViewModel(mockUser, mockFirestoreCtrl, mockRoute),
+    );
+
+    await waitFor(() => {
+      expect(result.current.groupChallenges).toEqual([
+        { challenge_id: "2", challenge_name: "Challenge 2", date: mockDate2 },
+        { challenge_id: "1", challenge_name: "Challenge 1", date: mockDate1 },
+      ]);
+    });
+  });
 });

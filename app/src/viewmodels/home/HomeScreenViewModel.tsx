@@ -92,8 +92,18 @@ export function useHomeScreenViewModel(
     if (user.uid) {
       const fetchGroups = async () => {
         try {
-          const groupsData = await firestoreCtrl.getGroupsByUserId(user.uid);
-          setGroups(groupsData);
+          await firestoreCtrl
+            .getGroupsByUserId(user.uid)
+            .then((group: DBGroup[]) => {
+              // Sort challenges by date
+              const sortedGroups = group.sort((a, b) =>
+                a.updateDate && b.updateDate
+                  ? new Date(b.updateDate).getTime() -
+                    new Date(a.updateDate).getTime()
+                  : 0,
+              );
+              setGroups(sortedGroups);
+            });
         } catch (error) {
           console.error("Error fetching groups: ", error);
         }
