@@ -57,6 +57,8 @@ describe("CreateGroupViewModel", () => {
       "Test Challenge",
       ["test-user-id"],
       expect.any(Date), // Timestamp or Date
+      expect.any(Object), // Location
+      2000, // Radius
     );
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("Home");
