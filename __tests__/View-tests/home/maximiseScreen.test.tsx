@@ -8,8 +8,6 @@ jest.mock("@/src/viewmodels/home/MaximizeScreenViewModel", () => ({
 }));
 
 describe("MaximizeScreen UI Tests", () => {
-  const mockNavigation = { goBack: jest.fn(), navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockChallenge = {
     challenge_id: "challenge123",
     uid: "user456",
@@ -17,14 +15,10 @@ describe("MaximizeScreen UI Tests", () => {
     description: "Test Description",
     image_id: "test_image",
     created_at: new Date("2024-01-01T00:00:00Z"),
+    location: { latitude: 48.8566, longitude: 2.3522 },
   };
-  const mockUser = {
-    uid: "user-1",
-    name: "Test User",
-    image_id: "https://example.com/user-image.jpg",
-    email: "bla@gmail.com",
-    createdAt: new Date(),
-  };
+
+  const mockNavigation = { navigate: jest.fn(), goBack: jest.fn() };
   const mockRoute = {
     params: {
       challenge: {
@@ -34,6 +28,15 @@ describe("MaximizeScreen UI Tests", () => {
         location: { latitude: 48.8566, longitude: 2.3522 },
       },
     },
+  };
+  const mockFirestoreCtrl = new FirestoreCtrl();
+
+  const mockUser = {
+    uid: "user-1",
+    name: "Test User",
+    image_id: "https://example.com/user-image.jpg",
+    email: "bla.gmail.com",
+    createdAt: new Date(),
   };
 
   beforeEach(() => {
@@ -87,16 +90,44 @@ describe("MaximizeScreen UI Tests", () => {
     });
   });
 
+  it("handles double-tap to like the post", () => {
+    const mockToggleLike = jest.fn();
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
+        "useMaximizeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        isLiked: false,
+        likeList: [],
+        commentList: [],
+        postDate: new Date(),
+        postUser: mockUser,
+        postDescription: "A test challenge",
+        postImage: "https://example.com/test-image.jpg",
+      });
+
+    const { getByTestId } = render(
+      <MaximizeScreen
+        user={mockUser}
+        navigation={mockNavigation}
+        route={mockRoute}
+        firestoreCtrl={mockFirestoreCtrl}
+      />,
+    );
+
+    const postImage = getByTestId("post-image");
+    fireEvent.press(postImage);
+    fireEvent.press(postImage); // Simulate double-tap
+
+    expect(mockToggleLike).toHaveBeenCalled();
+  });
+
   it("handles liking a post", async () => {
     const { getByTestId } = render(
       <MaximizeScreen
-        user={{
-          uid: "12345",
-          name: "Test User",
-          email: "test@gmail.com",
-          createdAt: new Date(),
-          image_id: null,
-        }}
+        user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
@@ -141,11 +172,11 @@ describe("MaximizeScreen UI Tests", () => {
   });
 
   it("navigates to the MapScreen when the location button is pressed", async () => {
-    const { getByTestId } = render(
+    const { getByTestId, getByText } = render(
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}
-        route={mockRoute}
+        route={{ params: { challenge: mockChallenge } }}
         firestoreCtrl={mockFirestoreCtrl}
       />,
     );
@@ -196,25 +227,8 @@ describe("MaximizeScreen UI Tests", () => {
     expect(mockToggleLike).toHaveBeenCalled();
   });
 
-  it("handles double-tap to like the post", () => {
-    const mockToggleLike = jest.fn();
-    jest
-      .spyOn(
-        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
-        "useMaximizeScreenViewModel",
-      )
-      .mockReturnValue({
-        toggleLike: mockToggleLike,
-        isLiked: false,
-        likeList: [],
-        commentList: [],
-        postDate: new Date(),
-        postUser: mockUser,
-        postDescription: "A test challenge",
-        postImage: "https://example.com/test-image.jpg",
-      });
-
-    const { getByTestId } = render(
+  it("renders the screen with the info, image, and description", () => {
+    const { getByText, getByTestId } = render(
       <MaximizeScreen
         user={mockUser}
         navigation={mockNavigation}
@@ -223,10 +237,62 @@ describe("MaximizeScreen UI Tests", () => {
       />,
     );
 
-    const postImage = getByTestId("post-image");
-    fireEvent.press(postImage);
-    fireEvent.press(postImage); // Simulate double-tap
+    // Check for post description
+    expect(getByText("Test Challenge")).toBeTruthy();
 
-    expect(mockToggleLike).toHaveBeenCalled();
+    // Check for post image
+    expect(getByTestId("post-image")).toBeTruthy();
+
+    // Check for post description
+    expect(getByText("This is a comment")).toBeTruthy();
   });
 });
+
+// it("handles liking a post", () => {
+//   const { getByText } = render(
+//     <MaximizeScreen
+//       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
+//       navigation={mockNavigation}
+//       route={{ params: { challenge: mockChallenge } }}
+//       firestoreCtrl={mockFirestoreCtrl}
+//     />
+//   );
+
+//   fireEvent.press(getByText("heart-outline"));
+//   const toggleLike = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+//     .toggleLike;
+//   expect(toggleLike).toHaveBeenCalled();
+// });
+
+// it("handles adding a comment", () => {
+//   const { getByText, getByPlaceholderText } = render(
+//     <MaximizeScreen
+//       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
+//       navigation={mockNavigation}
+//       route={{ params: { challenge: mockChallenge } }}
+//       firestoreCtrl={mockFirestoreCtrl}
+//     />
+//   );
+
+//   const addComment = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
+//     .addComment;
+
+//   const input = getByPlaceholderText("Write a comment...");
+//   fireEvent.changeText(input, "New Comment");
+//   fireEvent.press(getByText("send"));
+//   expect(addComment).toHaveBeenCalled();
+// });
+
+// it("handles navigation back", () => {
+//   const { getByText } = render(
+//     <MaximizeScreen
+//       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
+//       navigation={mockNavigation}
+//       route={{ params: { challenge: mockChallenge } }}
+//       firestoreCtrl={mockFirestoreCtrl}
+//     />
+//   );
+
+//   fireEvent.press(getByText("arrow-back-outline"));
+//   expect(mockNavigation.goBack).toHaveBeenCalled();
+// });

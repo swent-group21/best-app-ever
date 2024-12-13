@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, Image } from "react-native";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedTextButton } from "@/components/theme/ThemedTextButton";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { TopBar } from "@/components/navigation/TopBar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
+import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
+import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { Icon } from "react-native-elements";
 import { useProfileScreenViewModel } from "@/src/viewmodels/home/ProfileScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";

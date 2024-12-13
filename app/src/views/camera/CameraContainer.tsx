@@ -1,11 +1,11 @@
 import { Text, Button, StyleSheet, Dimensions, Image } from "react-native";
 import { CameraView } from "expo-camera";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
-import { ThemedIconButton } from "@/components/theme/ThemedIconButton";
-import { ThemedView } from "@/components/theme/ThemedView";
-import { TopBar } from "@/components/navigation/TopBar";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
+import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,6 +34,7 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     takePicture,
     makeChallenge,
     goBack,
+    isInHome,
   } = useCameraViewModel(firestoreCtrl, navigation, route);
 
   if (!permission) {
@@ -107,21 +108,22 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
           <ThemedView style={styles.camera} colorType="transparent">
             <Image source={{ uri: picture?.uri }} style={styles.preview} />
             <ThemedView style={styles.button} colorType="transparent">
-              <ThemedView style={styles.buttonContainer}>
-                <ThemedIconButton
-                  onPress={toggleLocation}
-                  name={`navigate-circle${isLocationEnabled ? "" : "-outline"}`}
-                  size={35}
-                  color="white"
-                  testID="Location-Button"
-                />
-                <ThemedText colorType="textPrimary">
-                  {isLocationEnabled
-                    ? " Location Enabled  "
-                    : " Location Disabled  "}
-                </ThemedText>
-              </ThemedView>
-
+              {isInHome && (
+                <ThemedView style={styles.buttonContainer}>
+                  <ThemedIconButton
+                    onPress={toggleLocation}
+                    name={`navigate-circle${isLocationEnabled ? "" : "-outline"}`}
+                    size={35}
+                    color="white"
+                    testID="Location-Button"
+                  />
+                  <ThemedText colorType="textPrimary">
+                    {isLocationEnabled
+                      ? " Location Enabled  "
+                      : " Location Disabled  "}
+                  </ThemedText>
+                </ThemedView>
+              )}
               <ThemedView style={[styles.buttonContainer, { gap: 10 }]}>
                 <ThemedIconButton
                   onPress={toggleCameraState}

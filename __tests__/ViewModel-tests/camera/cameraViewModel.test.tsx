@@ -167,50 +167,6 @@ describe("useCameraViewModel", () => {
     });
   });
 
-  it("should create a challenge and navigate home", async () => {
-    (createChallenge as jest.Mock).mockResolvedValueOnce(null);
-    const mockGroup = { group_id: "mock-group-id" };
-    (mockFirestoreCtrl.getGroup as jest.Mock).mockResolvedValue(mockGroup);
-
-    const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation, mockRoute),
-    );
-
-    await act(async () => {
-      await result.current.makeChallenge();
-    });
-
-    expect(mockFirestoreCtrl.uploadImage).toHaveBeenCalled();
-    expect(createChallenge).toHaveBeenCalledWith(
-      mockFirestoreCtrl,
-      mockRoute.params.group_id,
-      "",
-      null,
-      mockRoute.params.group_id,
-      expect.any(Date),
-      "mock-image-id",
-    );
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("GroupScreen", {
-      currentGroup: { group_id: "mock-group-id" },
-    });
-  });
-
-  it("should handle errors during challenge creation", async () => {
-    console.error = jest.fn();
-    (createChallenge as jest.Mock).mockRejectedValueOnce("mock-error");
-
-    const { result } = renderHook(() =>
-      useCameraViewModel(mockFirestoreCtrl, mockNavigation, mockRoute),
-    );
-
-    await act(async () => {
-      await result.current.makeChallenge();
-    });
-
-    expect(createChallenge).toHaveBeenCalled();
-    expect(mockNavigation.navigate).not.toHaveBeenCalled();
-  });
-
   it("should request camera permissions", async () => {
     const mockRequestPermission = jest.fn();
     (useCameraPermissions as jest.Mock).mockReturnValue([

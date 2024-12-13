@@ -1,4 +1,4 @@
-import { limit, GeoPoint } from "firebase/firestore";
+import { limit, GeoPoint, updateDoc, arrayUnion } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -68,6 +68,8 @@ export type DBGroup = {
   challengeTitle: string;
   members: string[];
   updateDate: Date;
+  location: GeoPoint;
+  radius: number;
 };
 
 /*
@@ -702,6 +704,7 @@ export default class FirestoreCtrl {
         return {
           ...data,
           challenge_id: doc.id,
+          date: data.date.toDate(),
         } as DBChallenge;
       });
       return posts;
@@ -791,9 +794,9 @@ export default class FirestoreCtrl {
    */
   async addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
     try {
-      const user = await this.getUser(uid);
-      user.groups?.push(group_name);
-      await this.createUser(uid, user);
+      await updateDoc(doc(firestore, "users", uid), {
+        groups: arrayUnion(group_name),
+      });
     } catch (error) {
       console.error("Error setting name: ", error);
       throw error;
@@ -960,6 +963,10 @@ export default class FirestoreCtrl {
       user.userRequestedFriends = user.userRequestedFriends || [];
       friend.friendsRequestedUser = friend.friendsRequestedUser || [];
 
+      if (user.friends?.includes(friendId)) {
+        return;
+      }
+
       user.userRequestedFriends?.push(friendId);
       friend.friendsRequestedUser?.push(userId);
 
@@ -984,6 +991,10 @@ export default class FirestoreCtrl {
 
       user.friends = user.friends || [];
       friend.friends = friend.friends || [];
+
+      if (user.friends?.includes(friendId)) {
+        return;
+      }
 
       user.friends?.push(friendId);
       friend.friends?.push(userId);
@@ -1145,5 +1156,45 @@ export default class FirestoreCtrl {
       console.error("Error checking if requested: ", error);
       throw error;
     }
+  }
+
+  /**
+   * Get friend suggestions for a user.
+   * @param uid The UID of the user.
+   * @returns An array of user suggestions.
+   */
+  async getFriendSuggestions(uid: string): Promise<DBUser[]> {
+    const allUsers = await this.getAllUsers();
+    const userFriends = await this.getFriends(uid);
+
+    const friendSuggestions = new Set<DBUser>();
+
+    // get friends of friends
+    for (const friend of userFriends) {
+      const friendsOfFriend = await this.getFriends(friend.uid);
+      for (const fof of friendsOfFriend) {
+        if (fof.uid !== uid && !userFriends.some((f) => f.uid === fof.uid)) {
+          friendSuggestions.add(fof);
+        }
+      }
+    }
+
+    // complete with random users
+    const neededSuggestions = 10 - friendSuggestions.size;
+    if (neededSuggestions > 0) {
+      const randomUsers = allUsers
+        .filter(
+          (user) =>
+            user.uid !== uid &&
+            user.name !== "Guest" &&
+            !userFriends.some((f) => f.uid === user.uid) &&
+            !Array.from(friendSuggestions).some((f) => f.uid === user.uid),
+        )
+        .slice(0, neededSuggestions);
+
+      randomUsers.forEach((user) => friendSuggestions.add(user));
+    }
+
+    return Array.from(friendSuggestions).slice(0, 10);
   }
 }

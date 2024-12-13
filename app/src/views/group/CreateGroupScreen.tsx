@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
-import { ThemedText } from "@/components/theme/ThemedText";
-import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
-import { BottomBar } from "@/components/navigation/BottomBar";
-import { ThemedView } from "@/components/theme/ThemedView";
+import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
+import { ThemedText } from "@/src/views/components/theme/themed_text";
+import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
+import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
+import { ThemedView } from "@/src/views/components/theme/themed_view";
 import CreateGroupViewModel from "@/src/viewmodels/group/CreateGroupViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import Slider from "@react-native-community/slider";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,7 +26,49 @@ export default function CreateGroupScreen({
     challengeTitle,
     setChallengeTitle,
     makeGroup,
+    setRadius,
+    radius,
+    MIN_RADIUS,
+    MAX_RADIUS,
+    permission,
   } = CreateGroupViewModel({ user, navigation, firestoreCtrl });
+
+  if (permission === "WAITING") {
+    return (
+      <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
+        <ThemedText
+          style={styles.title}
+          colorType="textPrimary"
+          type="title"
+          testID="permission-waiting-text"
+        >
+          Allow location to create a group
+        </ThemedText>
+      </ThemedView>
+    );
+  }
+
+  if (permission === "REFUSED") {
+    return (
+      <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
+        <ThemedText
+          style={styles.title}
+          colorType="textPrimary"
+          type="title"
+          testID="permission-denied-text"
+        >
+          Permission not granted.
+        </ThemedText>
+        <ThemedText style={styles.permissionRefusedText} type="description">
+          You need to allow location permissions to create a group.
+        </ThemedText>
+        <BottomBar
+          rightIcon="arrow-back"
+          rightAction={() => navigation.navigate("Home")}
+        />
+      </ThemedView>
+    );
+  }
 
   return (
     <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
@@ -61,6 +104,26 @@ export default function CreateGroupScreen({
           viewWidth="90%"
           title="Challenge Description"
           testID="Description-Input"
+        />
+
+        {/* Radius */}
+        <ThemedText
+          style={styles.radiusText}
+          colorType="textPrimary"
+          testID="Radius-Input"
+        >
+          Radius {radius / 1000}km
+        </ThemedText>
+        <Slider
+          style={{ width: "90%", paddingTop: 10 }}
+          minimumValue={MIN_RADIUS}
+          maximumValue={MAX_RADIUS}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#FFFFFF"
+          thumbTintColor="#FFFFFF"
+          onValueChange={(value) => setRadius(value)}
+          step={1000}
+          testID="Radius-Slider"
         />
 
         {/* Submit button */}
@@ -103,5 +166,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     padding: 16,
+  },
+  radiusText: {
+    textAlign: "left",
+    textAlignVertical: "center",
+    fontWeight: "600",
+    paddingTop: 10,
+  },
+  permissionRefusedText: {
+    flex: 1,
+    textAlign: "center",
+    textAlignVertical: "center",
+    paddingTop: 10,
   },
 });

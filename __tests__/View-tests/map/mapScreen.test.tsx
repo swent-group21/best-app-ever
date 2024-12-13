@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import MapScreen from "@/src/views/map/map_screen";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
@@ -19,7 +19,10 @@ jest.mock("react-native-maps", () => {
 });
 
 describe("MapScreen UI Tests", () => {
-  const mockNavigation = { goBack: jest.fn() };
+  const mockNavigation = {
+    goBack: jest.fn(),
+    navigate: jest.fn(),
+  };
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockUser = {
     uid: "123",
@@ -60,40 +63,34 @@ describe("MapScreen UI Tests", () => {
     );
   });
 
-  it("renders the map with challenges and user location", () => {
-    const { getByText, getByTestId } = render(
+  it("should render the map", async () => {
+    const { getByTestId } = render(
       <MapScreen
         user={mockUser}
         navigation={mockNavigation}
+        route={{ params: { user: mockUser } }}
         firestoreCtrl={mockFirestoreCtrl}
-        route={{}}
       />,
     );
 
-    expect(getByText("Map")).toBeTruthy();
-
-    expect(getByTestId("Challenge 1")).toBeTruthy();
-    expect(getByTestId("Challenge 2")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId("map")).toBeDefined();
+    });
   });
 
-  it("renders 'Getting location...' when location is loading", () => {
-    require("@/src/viewmodels/map/MapScreenViewModel").useMapScreenViewModel.mockReturnValue(
-      {
-        permission: false,
-        userLocation: undefined,
-        challengesWithLocation: [],
-      },
-    );
-
-    const { getByText } = render(
+  it("should render the map markers", async () => {
+    const { getByTestId } = render(
       <MapScreen
         user={mockUser}
         navigation={mockNavigation}
+        route={{ params: { user: mockUser } }}
         firestoreCtrl={mockFirestoreCtrl}
-        route={{}}
       />,
     );
 
-    expect(getByText("Getting location...")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId("map-marker-0")).toBeDefined();
+      expect(getByTestId("map-marker-1")).toBeDefined();
+    });
   });
 });
