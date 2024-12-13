@@ -91,6 +91,9 @@ export function Challenge({
   }, [challengeDB.challenge_id, firestoreCtrl]);
 
   const handleLikePress = async () => {
+    if (currentUser.name === "Guest") {
+      return;
+    }
     try {
       const newIsLiked = !isLiked;
       setIsLiked(newIsLiked);
@@ -108,6 +111,9 @@ export function Challenge({
   };
 
   const handleDoubleTap = () => {
+    if (currentUser.name === "Guest") {
+      return;
+    }
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
       // Double tap detected
