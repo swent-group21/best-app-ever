@@ -11,11 +11,12 @@ describe("MaximizeScreen UI Tests", () => {
   const mockChallenge = {
     challenge_id: "challenge123",
     uid: "user456",
-    challenge_name: "Test Challenge",
-    description: "Test Description",
+    caption: "Test Challenge",
     image_id: "test_image",
     created_at: new Date("2024-01-01T00:00:00Z"),
     location: { latitude: 48.8566, longitude: 2.3522 },
+    description: "Test Description",
+    group_id: "group123",
   };
 
   const mockNavigation = { navigate: jest.fn(), goBack: jest.fn() };
@@ -60,9 +61,10 @@ describe("MaximizeScreen UI Tests", () => {
         toggleLike: jest.fn(),
         addComment: jest.fn(),
         postDate: new Date("2024-01-01T00:00:00Z"),
-        postTitle: "Test Challenge",
         postImage: "test_image",
-        postDescription: "Test Description",
+        postCaption: "Test Challenge",
+        navigateGoBack: jest.fn(),
+        userProfilePicture: "test_pp",
       },
     );
   });
@@ -72,8 +74,8 @@ describe("MaximizeScreen UI Tests", () => {
       <MaximizeScreen
         user={{
           uid: "12345",
-          name: "Test User",
-          email: "test@gmail.com",
+          name: "TestUser",
+          email: "test1@gmail.com",
           createdAt: new Date(),
           image_id: null,
         }}
@@ -85,7 +87,7 @@ describe("MaximizeScreen UI Tests", () => {
 
     await waitFor(() => {
       expect(getByText("Test Challenge")).toBeTruthy();
-      expect(getByText("Test Description")).toBeTruthy();
+
       expect(getByText("This is a comment")).toBeTruthy();
     });
   });

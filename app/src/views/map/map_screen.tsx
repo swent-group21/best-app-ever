@@ -5,7 +5,10 @@ import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBChallenge,
+  DBUser,
+} from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * Screen for the map
@@ -86,8 +89,13 @@ export default function MapScreen({
                 latitude: challenge.location.latitude,
                 longitude: challenge.location.longitude,
               }}
-              title={challenge.challenge_name}
-              description={challenge.description}
+              title={challenge.caption}
+              description={challenge.date?.toLocaleString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
               onCalloutPress={() => {
                 navigation.navigate("Maximize", {
                   challenge,

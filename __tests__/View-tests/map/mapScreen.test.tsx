@@ -24,12 +24,26 @@ describe("MapScreen UI Tests", () => {
     navigate: jest.fn(),
   };
   const mockFirestoreCtrl = new FirestoreCtrl();
+  const mockDate = new Date();
   const mockUser = {
     uid: "123",
     name: "Test User",
     email: "test@gmail.com",
     createdAt: new Date(),
     image_id: null,
+  };
+
+  const mockChallenge1 = {
+    challenge_id: "1",
+    caption: "Challenge 1",
+    date: mockDate,
+    location: { latitude: 43.6763, longitude: 7.0122 },
+  };
+  const mockChallenge2 = {
+    challenge_id: "2",
+    caption: "Challenge 2",
+    date: mockDate,
+    location: { latitude: 43.7, longitude: 7.015 },
   };
 
   beforeEach(() => {
@@ -45,20 +59,7 @@ describe("MapScreen UI Tests", () => {
             longitude: 7.0122,
           },
         },
-        challengesWithLocation: [
-          {
-            challenge_id: "1",
-            challenge_name: "Challenge 1",
-            description: "Description for Challenge 1",
-            location: { latitude: 43.6763, longitude: 7.0122 },
-          },
-          {
-            challenge_id: "2",
-            challenge_name: "Challenge 2",
-            description: "Description for Challenge 2",
-            location: { latitude: 43.7, longitude: 7.015 },
-          },
-        ],
+        challengesWithLocation: [mockChallenge1, mockChallenge2],
       },
     );
   });

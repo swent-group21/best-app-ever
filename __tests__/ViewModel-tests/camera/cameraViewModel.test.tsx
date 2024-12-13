@@ -74,7 +74,7 @@ describe("useCameraViewModel", () => {
       expect(result.current.isCameraEnabled).toBe(true);
       expect(result.current.picture).toBeUndefined();
       expect(result.current.isLocationEnabled).toBe(true);
-      expect(result.current.description).toBe("");
+      expect(result.current.caption).toBe("");
     });
   });
 
@@ -165,6 +165,21 @@ describe("useCameraViewModel", () => {
     await waitFor(() => {
       expect(result.current.isLocationEnabled).toBe(false);
     });
+  });
+
+  it("should handle errors during challenge creation", async () => {
+    console.error = jest.fn();
+    (createChallenge as jest.Mock).mockRejectedValueOnce("mock-error");
+
+    const { result } = renderHook(() =>
+      useCameraViewModel(mockFirestoreCtrl, mockNavigation, mockRoute),
+    );
+
+    await act(async () => {
+      await result.current.makeChallenge();
+    });
+
+    expect(mockNavigation.navigate).not.toHaveBeenCalled();
   });
 
   it("should request camera permissions", async () => {
