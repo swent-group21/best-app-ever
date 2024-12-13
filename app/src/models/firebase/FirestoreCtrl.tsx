@@ -83,6 +83,7 @@ export type DBChallengeDescription = {
 const CHALLENGE_STORAGE_KEY = "@challenges";
 const GROUP_STORAGE_KEY = "@groups";
 const IMAGE_STORAGE_KEY = "@images";
+const COMMENT_STORAGE_KEY = "@comment";
 
 export let uploadTaskScheduled = false;
 
@@ -125,6 +126,7 @@ export const scheduleUploadTask = async () => {
     await firestoreCtrl.uploadStoredImages();
     await firestoreCtrl.uploadStoredChallenges();
     await firestoreCtrl.uploadStoredGroups();
+
     console.log("Background upload task finished successfully");
   } catch (error) {
     console.error("Error in background task:", error);
@@ -196,6 +198,11 @@ export default class FirestoreCtrl {
 
   async getStoredGroups(): Promise<DBGroup[]> {
     const storedData = await AsyncStorage.getItem(GROUP_STORAGE_KEY);
+    return storedData ? JSON.parse(storedData) : [];
+  }
+
+  async getStoredComments(): Promise<DBComment[]> {
+    const storedData = await AsyncStorage.getItem(COMMENT_STORAGE_KEY);
     return storedData ? JSON.parse(storedData) : [];
   }
 
@@ -271,7 +278,7 @@ export default class FirestoreCtrl {
         try {
           //Attempt to upload to firestore
           await this.uploadImage(upload.uri, upload.id);
-          console.log("Stored image uploaded:", upload.id);
+
           // Remove the successfully uploaded image from AsyncStorage
           const updatedUploads = storedUploads.filter(
             (item) => item.id !== upload.id,
@@ -801,9 +808,32 @@ export default class FirestoreCtrl {
    */
   async addComment(commentData: DBComment): Promise<void> {
     try {
-      await addDoc(collection(firestore, "comments"), commentData);
+      const networkState = await NetInfo.fetch();
+      if (networkState.isConnected && networkState.isInternetReachable) {
+        await addDoc(collection(firestore, "comments"), commentData);
+        return;
+      }
+      try {
+        const storedComments = await this.getStoredComments();
+        storedComments.forEach((sComment) => {
+          if (sComment.created_at == commentData.created_at) {
+            console.log("Comment already stored.");
+            return;
+          }
+        });
+
+        storedComments.push(commentData);
+        await AsyncStorage.setItem(
+          COMMENT_STORAGE_KEY,
+          JSON.stringify(storedComments),
+        );
+        // Schedule background retry
+        uploadTaskScheduled = true;
+      } catch (storageError) {
+        console.error("Error storing comment locally:", storageError);
+      }
     } catch (error) {
-      console.error("Error writing comment document: ", error);
+      console.error("Error writing comment document to Firestore:", error);
       throw error;
     }
   }
