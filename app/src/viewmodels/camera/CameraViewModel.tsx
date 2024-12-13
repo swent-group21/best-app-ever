@@ -99,9 +99,9 @@ export default function useCameraViewModel(
   // Create the challenge
   const makeChallenge = async () => {
     try {
-      console.log("Making Challenge...")
+      console.log("Making Challenge...");
       const imageId = await firestoreCtrl.uploadImage(picture?.uri);
-      console.log("makeChallenge imageId: ", imageId)
+      console.log("makeChallenge imageId: ", imageId);
       const date = new Date();
       await createChallenge(
         firestoreCtrl,
