@@ -10,7 +10,7 @@ import {
   collection,
   query,
   where,
-} from "./Firebase";
+} from "@/src/models/firebase/Firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
