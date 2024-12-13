@@ -55,7 +55,7 @@ export default function useCameraViewModel(
 
   let group_id = "home";
   let isInHome = true;
-  console.log("group_id: ", group_id)
+  console.log("group_id: ", group_id);
 
   // Go back to the previous screen
   const goBack = () => {

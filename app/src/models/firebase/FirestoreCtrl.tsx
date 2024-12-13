@@ -466,7 +466,7 @@ export default class FirestoreCtrl {
           "Network State in newChallenge: ",
           networkState.isConnected,
         );
-        if (challengeData.challenge_id){
+        if (challengeData.challenge_id) {
           const duplicate_query = query(
             collection(firestore, "challenges"),
             where("challenge_id", "==", challengeData.challenge_id),
