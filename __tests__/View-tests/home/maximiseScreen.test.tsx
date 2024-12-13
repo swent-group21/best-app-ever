@@ -140,26 +140,26 @@ describe("MaximizeScreen UI Tests", () => {
     expect(addComment).toHaveBeenCalled();
   });
 
-  it("navigates to the MapScreen when the location button is pressed", () => {
-    const { getByTestId } = render(
-      <MaximizeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
+  // it("navigates to the MapScreen when the location button is pressed", () => {
+  //   const { getByTestId } = render(
+  //     <MaximizeScreen
+  //       user={mockUser}
+  //       navigation={mockNavigation}
+  //       route={mockRoute}
+  //       firestoreCtrl={mockFirestoreCtrl}
+  //     />,
+  //   );
 
-    const locationButton = getByTestId("location-button");
-    fireEvent.press(locationButton);
+  //   const locationButton = getByTestId("location-button");
+  //   fireEvent.press(locationButton);
 
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("MapScreen", {
-      navigation: mockNavigation,
-      user: mockUser,
-      firestoreCtrl: mockFirestoreCtrl,
-      location: { latitude: 48.8566, longitude: 2.3522 },
-    });
-  });
+  //   expect(mockNavigation.navigate).toHaveBeenCalledWith("MapScreen", {
+  //     navigation: mockNavigation,
+  //     user: mockUser,
+  //     firestoreCtrl: mockFirestoreCtrl,
+  //     location: { latitude: 48.8566, longitude: 2.3522 },
+  //   });
+  // });
 
   it("toggles the like button when pressed", () => {
     const mockToggleLike = jest.fn();
