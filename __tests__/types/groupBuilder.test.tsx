@@ -29,6 +29,7 @@ describe("createGroup Function", () => {
     const challengeTitle = "Test Challenge";
     const members = ["member-1", "member-2"];
     const updateDate = new Date();
+    const location = { latitude: 10, longitude: 20 };
 
     await createGroup(
       firestoreCtrl,
@@ -36,6 +37,8 @@ describe("createGroup Function", () => {
       challengeTitle,
       members,
       updateDate,
+      null,
+      100,
     );
 
     expect(firestoreCtrl.getUser).toHaveBeenCalledTimes(1);
@@ -44,6 +47,8 @@ describe("createGroup Function", () => {
       challengeTitle: challengeTitle,
       members: members,
       updateDate: updateDate,
+      location: null,
+      radius: 100,
     });
     expect(firestoreCtrl.addGroupToMemberGroups).toHaveBeenCalledWith(
       "user-123",
@@ -68,6 +73,8 @@ describe("createGroup Function", () => {
       challengeTitle,
       members,
       updateDate,
+      null,
+      100,
     );
 
     expect(firestoreCtrl.getUser).toHaveBeenCalledTimes(1);

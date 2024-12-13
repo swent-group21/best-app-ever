@@ -152,7 +152,7 @@ export default function useCameraViewModel(
         isLocationEnabled ? location : null,
         group_id,
         descriptionTitle.title ?? "",
-        date,
+        new Date(),
         imageId,
       );
       if (group_id == "" || group_id == "home") {
