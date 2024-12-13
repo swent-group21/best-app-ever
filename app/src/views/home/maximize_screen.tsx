@@ -16,6 +16,7 @@ import { SingleComment } from "@/components/posts/Comment";
 import { ThemedScrollView } from "@/components/theme/ThemedScrollView";
 import { ThemedTextInput } from "@/components/theme/ThemedTextInput";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
+import { DBChallenge } from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,7 +31,7 @@ export default function MaximizeScreen({
   readonly route: any;
   readonly firestoreCtrl: any;
 }) {
-  const challenge = route.params?.challenge;
+  const challenge: DBChallenge = route.params?.challenge;
   const noImage = "@/assets/images/no-image.svg";
 
   const {

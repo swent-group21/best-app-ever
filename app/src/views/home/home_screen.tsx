@@ -131,11 +131,7 @@ export default function HomeScreen({
           >
             <ThemedTextButton
               style={styles.createGroupButton}
-              onPress={() =>
-                userIsGuest
-                  ? handleRestrictedAccess("CreateGroup")
-                  : navigation.navigate("CreateGroup")
-              }
+              onPress={() => handleRestrictedAccess("CreateGroup")}
               text="+"
               textStyle={styles.createGroupText}
               textColorType="textOverLight"

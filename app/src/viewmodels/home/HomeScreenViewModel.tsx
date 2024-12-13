@@ -48,12 +48,6 @@ export function useHomeScreenViewModel(
     }
   };
 
-  const blurredChallenges = userIsGuest
-    ? challenges.map((challenge, index) => ({
-        ...challenge,
-        isBlurred: index >= 10,
-      }))
-    : challenges;
   // Fetch the current challenge
   useEffect(() => {
     const fetchCurrentChallenge = async () => {
@@ -106,7 +100,7 @@ export function useHomeScreenViewModel(
 
   return {
     userIsGuest,
-    challenges: blurredChallenges,
+    challenges,
     groups,
     titleChallenge,
     navigateToProfile,
