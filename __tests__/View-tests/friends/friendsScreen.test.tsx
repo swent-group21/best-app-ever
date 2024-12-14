@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import { getAuth } from "firebase/auth";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 // Mock Firebase Auth
 jest.mock("firebase/auth", () => ({
@@ -16,19 +16,18 @@ jest.mock("@/src/viewmodels/friends/FriendsScreenViewModel", () => ({
 }));
 
 // Mock FirestoreCtrl methods
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getFriends: jest.fn(),
-      getFriendRequests: jest.fn(),
-      isFriend: jest.fn(),
-      addFriend: jest.fn(),
-      acceptFriend: jest.fn(),
-      rejectFriend: jest.fn(),
-      isRequested: jest.fn(),
-    };
-  });
-});
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getFriends: jest.fn(),
+  getFriendRequests: jest.fn(),
+  isFriend: jest.fn(),
+  isRequested: jest.fn(),
+}))
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  addFriend: jest.fn(),
+  acceptFriend: jest.fn(),
+  rejectFriend: jest.fn(),
+}))
 
 const mockFilteredUsers: DBUser[] = [
   {
@@ -43,8 +42,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
   const mockNavigation = {
     goBack: jest.fn(),
   };
-
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -71,7 +68,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     const { getByText } = render(
       <FriendsScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -96,7 +92,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     const { getByText } = render(
       <FriendsScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -120,7 +115,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     const { getByText } = render(
       <FriendsScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -160,7 +154,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     const { getByText } = render(
       <FriendsScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -185,7 +178,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
     const { getByText } = render(
       <FriendsScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

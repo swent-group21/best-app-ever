@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 // Mock de useGroupScreenViewModel
 
@@ -19,13 +19,14 @@ jest.mock("@/src/viewmodels/group/CreateGroupViewModel", () =>
   })),
 );
 
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => ({
-    getUser: jest.fn(),
-    getLikesOf: jest.fn().mockResolvedValue([]),
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn(),
+  getLikesOf: jest.fn().mockResolvedValue([]),
+}))
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
     updatesLikesOf: jest.fn(),
-  }));
-});
+}))
 
 const mockDate = new Date();
 
@@ -37,7 +38,6 @@ const mockUser: DBUser = {
 };
 
 describe("Create Group Screen renders", () => {
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -52,7 +52,6 @@ describe("Create Group Screen renders", () => {
       <CreateGroupScreen
         user={mockUser}
         navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
     expect(getByTestId("create-group-screen")).toBeTruthy();
@@ -63,7 +62,6 @@ describe("Create Group Screen renders", () => {
       <CreateGroupScreen
         user={mockUser}
         navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
     expect(getByTestId("Group-Name-Input")).toBeTruthy();
@@ -77,7 +75,6 @@ describe("Create Group Screen renders", () => {
       <CreateGroupScreen
         user={mockUser}
         navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
     expect(getByTestId("Description-Input")).toBeTruthy();
@@ -91,7 +88,6 @@ describe("Create Group Screen renders", () => {
       <CreateGroupScreen
         user={mockUser}
         navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
     expect(getByTestId("bottom-right-icon-arrow-forward")).toBeTruthy();

@@ -1,10 +1,10 @@
 import React, { act } from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/group/GroupScreen";
-import FirestoreCtrl, {
+import {
   DBChallenge,
   DBUser,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",
@@ -48,18 +48,18 @@ jest.mock("expo-font", () => ({
   isLoaded: jest.fn(() => true),
 }));
 
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => ({
-    getUser: jest.fn(),
-    getLikesOf: jest.fn().mockResolvedValue([]),
-    updatesLikesOf: jest.fn(),
-    getCommentsOf: jest.fn().mockResolvedValue([]),
-  }));
-});
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn(),
+  getLikesOf: jest.fn().mockResolvedValue([]),
+  getCommentsOf: jest.fn().mockResolvedValue([]),
+}))
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  updatesLikesOf: jest.fn(),
+}))
 
 describe("Group Screen renders challenges", () => {
   const mockNavigation = { navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -75,7 +75,6 @@ describe("Group Screen renders challenges", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -93,7 +92,6 @@ describe("Group Screen renders challenges", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -112,7 +110,6 @@ describe("Group Screen renders challenges", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -129,7 +126,6 @@ describe("Group Screen renders challenges", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

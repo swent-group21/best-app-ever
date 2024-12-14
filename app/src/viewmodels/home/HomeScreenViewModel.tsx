@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, {
+import {
   DBChallenge,
   DBUser,
   DBGroup,
   DBChallengeDescription,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getChallengeDescription, getGroupsByUserId, getPostsByChallengeTitle } from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * View model for the home screen.
  * @param user : the user object
- * @param firestoreCtrl : FirestoreCtrl object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
 export function useHomeScreenViewModel(
   user: DBUser,
-  firestoreCtrl: FirestoreCtrl,
   navigation: any,
 ) {
   const userIsGuest = user.name === "Guest";
@@ -53,8 +52,7 @@ export function useHomeScreenViewModel(
     // Fetch the current challenge
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData = await getChallengeDescription();
         setTitleChallenge(currentChallengeData);
         return currentChallengeData.title;
       } catch (error) {
@@ -65,8 +63,7 @@ export function useHomeScreenViewModel(
     // Fetch challenges
     const fetchChallenges = async (challengeTitle: string) => {
       try {
-        await firestoreCtrl
-          .getPostsByChallengeTitle(challengeTitle)
+        await getPostsByChallengeTitle(challengeTitle)
           .then((challenge: DBChallenge[]) => {
             // Sort challenges by date
             const sortedChallenges = challenge.sort((a, b) =>
@@ -85,15 +82,14 @@ export function useHomeScreenViewModel(
       console.log("Current challenge fetched : ", challengeTitle);
       if (user.uid) fetchChallenges(challengeTitle);
     });
-  }, [user.uid, firestoreCtrl]);
+  }, [user.uid]);
 
   // Fetch the groups
   useEffect(() => {
     if (user.uid) {
       const fetchGroups = async () => {
         try {
-          await firestoreCtrl
-            .getGroupsByUserId(user.uid)
+          await getGroupsByUserId(user.uid)
             .then((group: DBGroup[]) => {
               // Sort challenges by date
               const sortedGroups = group.sort((a, b) =>
@@ -110,7 +106,7 @@ export function useHomeScreenViewModel(
       };
       fetchGroups();
     }
-  }, [user.uid, firestoreCtrl]);
+  }, [user.uid]);
 
   useEffect(() => {
 

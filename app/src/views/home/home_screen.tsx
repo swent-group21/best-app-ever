@@ -17,7 +17,7 @@ import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_vie
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import GroupIcon from "@/src/views/components/navigation/group_icon";
 
 const { width, height } = Dimensions.get("window");
@@ -25,11 +25,9 @@ const { width, height } = Dimensions.get("window");
 export default function HomeScreen({
   user,
   navigation,
-  firestoreCtrl,
 }: {
   readonly user: DBUser;
   readonly navigation: any;
-  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     userIsGuest,
@@ -41,7 +39,7 @@ export default function HomeScreen({
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
-  } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
+  } = useHomeScreenViewModel(user, navigation);
 
   const [filterByFriends, setFilterByFriends] = useState(false);
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
@@ -132,7 +130,6 @@ export default function HomeScreen({
               groupDB={group}
               index={index}
               navigation={navigation}
-              firestoreCtrl={firestoreCtrl}
               key={index}
               testID={`group-id-${index}`}
             />
@@ -202,7 +199,6 @@ export default function HomeScreen({
         renderItem={({ item, index }) => (
           <Challenge
             navigation={navigation}
-            firestoreCtrl={firestoreCtrl}
             challengeDB={item}
             key={index}
             testID={`challenge-id-${index}`}

@@ -6,22 +6,14 @@ import {
   act,
 } from "@testing-library/react-native";
 import { useRequestListViewModel } from "@/src/viewmodels/components/friends/RequestListViewModel";
+import { acceptFriend, rejectFriend } from "@/src/models/firebase/SetFirestoreCtrl";
 
-// Mock FirestoreCtrl methods
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      acceptFriend: jest.fn(() => Promise.resolve()),
-      rejectFriend: jest.fn(() => Promise.resolve()),
-    };
-  });
-});
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  acceptFriend: jest.fn(),
+  rejectFriend: jest.fn(),
+}))
 
 describe("RequestList ViewModel", () => {
-  const mockFirestoreCtrl = {
-    acceptFriend: jest.fn(),
-    rejectFriend: jest.fn(),
-  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -32,8 +24,7 @@ describe("RequestList ViewModel", () => {
     // Render the hook with basics values
     const { result } = renderHook(() =>
       useRequestListViewModel({
-        firestoreCtrl: mockFirestoreCtrl,
-        uid: "user-uid",
+        uid: "user-uid"
       }),
     );
 
@@ -41,7 +32,7 @@ describe("RequestList ViewModel", () => {
       await result.current.handleAccept("user1");
     });
 
-    expect(mockFirestoreCtrl.acceptFriend).toHaveBeenCalledWith(
+    expect(acceptFriend).toHaveBeenCalledWith(
       "user-uid",
       "user1",
     );
@@ -51,7 +42,6 @@ describe("RequestList ViewModel", () => {
     // Render the hook with basics values
     const { result } = renderHook(() =>
       useRequestListViewModel({
-        firestoreCtrl: mockFirestoreCtrl,
         uid: "user-uid",
       }),
     );
@@ -60,7 +50,7 @@ describe("RequestList ViewModel", () => {
       await result.current.handleDecline("user2");
     });
 
-    expect(mockFirestoreCtrl.rejectFriend).toHaveBeenCalledWith(
+    expect(rejectFriend).toHaveBeenCalledWith(
       "user-uid",
       "user2",
     );

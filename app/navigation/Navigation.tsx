@@ -1,8 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/types/RootStackParamList";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 // Screens
 import WelcomeScreens from "@/src/views/welcome/welcome_screen";
 import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
@@ -28,14 +27,12 @@ interface AppStackProps {
   isLoggedIn: "Welcome" | "Home";
   user?: DBUser | null;
   setUser?: React.Dispatch<React.SetStateAction<DBUser | null>>;
-  firestoreCtrl: FirestoreCtrl;
 }
 
 export const Nav: React.FC<AppStackProps> = ({
   isLoggedIn,
   user,
   setUser,
-  firestoreCtrl,
 }) => {
   return (
     <NavigationContainer>
@@ -59,7 +56,6 @@ export const Nav: React.FC<AppStackProps> = ({
               <WelcomeScreens
                 {...props}
                 setUser={setUser}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -69,7 +65,6 @@ export const Nav: React.FC<AppStackProps> = ({
               <WelcomeFinalScreen
                 {...props}
                 setUser={setUser}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -79,7 +74,6 @@ export const Nav: React.FC<AppStackProps> = ({
               <SignUp
                 {...props}
                 setUser={setUser}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -89,14 +83,15 @@ export const Nav: React.FC<AppStackProps> = ({
               <SignInScreen
                 {...props}
                 setUser={setUser}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
 
           <Screen name="ForgotPassword">
             {(props: any) => (
-              <ForgotPasswordScreen {...props} firestoreCtrl={firestoreCtrl} />
+              <ForgotPasswordScreen 
+                {...props} 
+              />
             )}
           </Screen>
 
@@ -106,7 +101,6 @@ export const Nav: React.FC<AppStackProps> = ({
                 {...props}
                 user={user}
                 setUser={setUser}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -118,14 +112,16 @@ export const Nav: React.FC<AppStackProps> = ({
               <HomeScreen
                 {...props}
                 user={user}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
 
           <Screen name="Camera">
             {(props: any) => (
-              <Camera {...props} user={user} firestoreCtrl={firestoreCtrl} />
+              <Camera 
+                {...props} 
+                user={user} 
+              />
             )}
           </Screen>
 
@@ -134,7 +130,6 @@ export const Nav: React.FC<AppStackProps> = ({
               <MaximizeScreen
                 {...props}
                 user={user}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -145,7 +140,6 @@ export const Nav: React.FC<AppStackProps> = ({
                 {...props}
                 user={user}
                 setUser={setUser}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -155,14 +149,16 @@ export const Nav: React.FC<AppStackProps> = ({
               <FriendsScreen
                 {...props}
                 user={user}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
 
           <Screen name="MapScreen">
             {(props: any) => (
-              <MapScreen {...props} user={user} firestoreCtrl={firestoreCtrl} />
+              <MapScreen 
+                {...props} 
+                user={user} 
+              />
             )}
           </Screen>
 
@@ -171,7 +167,6 @@ export const Nav: React.FC<AppStackProps> = ({
               <GroupScreen
                 {...props}
                 user={user}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>
@@ -181,7 +176,6 @@ export const Nav: React.FC<AppStackProps> = ({
               <CreateGroupScreen
                 {...props}
                 user={user}
-                firestoreCtrl={firestoreCtrl}
               />
             )}
           </Screen>

@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, {
+import {
   DBChallenge,
   DBUser,
   DBGroup,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
+import { getAllPostsOfGroup, getGroupsByUserId } from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * View model for the group screen.
  * @param user : the user object
- * @param firestoreCtrl : FirestoreCtrl object
  * @param route : the route object
  * @returns : groupChallenges, otherGroups, groupName, groupChallengeTitle, and groupId
  */
 export default function useGroupScreenViewModel(
   user: DBUser,
-  firestoreCtrl: FirestoreCtrl,
   route: any,
 ): {
   groupChallenges: DBChallenge[];
@@ -36,8 +35,7 @@ export default function useGroupScreenViewModel(
     if (user.uid) {
       const fetchGroupChallenges = async () => {
         try {
-          await firestoreCtrl
-            .getAllPostsOfGroup(groupId)
+          await getAllPostsOfGroup(groupId)
             .then((challenge: DBChallenge[]) => {
               // Sort challenges by date
               const sortedChallenges = challenge.sort((a, b) =>
@@ -53,12 +51,12 @@ export default function useGroupScreenViewModel(
       };
       fetchGroupChallenges();
     }
-  }, [user.uid, firestoreCtrl, groupId]);
+  }, [user.uid, groupId]);
 
   useEffect(() => {
     const fetchGroups = async (uid) => {
       try {
-        const groups = await firestoreCtrl.getGroupsByUserId(uid);
+        const groups = await getGroupsByUserId(uid);
         return groups.filter(
           (group) => groupId !== group.gid && group.updateDate !== undefined,
         );
@@ -71,7 +69,7 @@ export default function useGroupScreenViewModel(
     if (user.uid) {
       fetchGroups(user.uid).then(setOtherGroups);
     }
-  }, [user.uid, firestoreCtrl, group]);
+  }, [user.uid, group]);
 
   const groupName = group.name ?? "";
   const groupChallengeTitle = group.challengeTitle ?? "";

@@ -1,18 +1,20 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
 import { launchImageLibraryAsync } from "expo-image-picker";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 import { useProfileScreenViewModel } from "@/src/viewmodels/home/ProfileScreenViewModel";
+import { getProfilePicture } from "@/src/models/firebase/GetFirestoreCtrl";
+import { setName, setProfilePicture } from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Mock FirestoreCtrl
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => ({
-    getProfilePicture: jest.fn(),
-    setName: jest.fn(),
-    setProfilePicture: jest.fn(),
-  }));
-});
-const mockFirestoreCtrl = new FirestoreCtrl();
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getProfilePicture: jest.fn(),
+}))
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  setName: jest.fn(),
+  setProfilePicture: jest.fn(),
+}))
 
 // Mock `expo-image-picker`
 jest.mock("expo-image-picker", () => ({
@@ -51,7 +53,7 @@ describe("useProfileScreenViewModel", () => {
   });
 
   it("should initialize with user's name and image", async () => {
-    (mockFirestoreCtrl.getProfilePicture as jest.Mock).mockResolvedValueOnce(
+    (getProfilePicture as jest.Mock).mockResolvedValueOnce(
       "test-image-uri",
     );
 
@@ -59,7 +61,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
@@ -80,7 +81,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
@@ -101,7 +101,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
@@ -114,8 +113,8 @@ describe("useProfileScreenViewModel", () => {
   });
 
   it("should upload the name and profile picture", async () => {
-    (mockFirestoreCtrl.setName as jest.Mock).mockResolvedValueOnce(null);
-    (mockFirestoreCtrl.setProfilePicture as jest.Mock).mockResolvedValueOnce(
+    (setName as jest.Mock).mockResolvedValueOnce(null);
+    (setProfilePicture as jest.Mock).mockResolvedValueOnce(
       null,
     );
 
@@ -123,25 +122,24 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
 
     act(() => {
-      result.current.setName("Updated Name");
+      result.current.sName("Updated Name");
     });
 
     await act(async () => {
       await result.current.upload();
     });
 
-    expect(mockFirestoreCtrl.setName).toHaveBeenCalledWith(
+    expect(setName).toHaveBeenCalledWith(
       "12345",
       "Updated Name",
       mockSetUser,
     );
-    expect(mockFirestoreCtrl.setProfilePicture).not.toHaveBeenCalled();
+    expect(setProfilePicture).not.toHaveBeenCalled();
   });
 
   it("should display an alert if name is not entered during upload", async () => {
@@ -151,13 +149,12 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
 
     act(() => {
-      result.current.setName("");
+      result.current.sName("");
     });
 
     await act(async () => {
@@ -173,7 +170,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
@@ -190,7 +186,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
@@ -207,7 +202,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );
@@ -224,7 +218,6 @@ describe("useProfileScreenViewModel", () => {
       useProfileScreenViewModel(
         mockUser,
         mockSetUser,
-        mockFirestoreCtrl,
         mockNavigation,
       ),
     );

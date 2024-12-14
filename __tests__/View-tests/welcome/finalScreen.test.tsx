@@ -1,22 +1,15 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-// Mock FirestoreCtrl
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getUser: jest.fn().mockResolvedValue({
-        uid: "user123",
-        email: "test@example.com",
-        name: "Test User",
-        createdAt: new Date(),
-      }),
-    };
-  });
-});
-const mockFirestoreCtrl = new FirestoreCtrl();
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn().mockResolvedValue({
+    uid: "user123",
+    email: "test@example.com",
+    name: "Test User",
+    createdAt: new Date(),
+  }),
+}))
 
 describe("WelcomeFinalScreen UI Tests", () => {
   const mockNavigation = {
@@ -30,7 +23,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -43,7 +35,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -59,7 +50,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -72,7 +62,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -85,7 +74,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -98,7 +86,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -111,7 +98,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -126,7 +112,6 @@ describe("WelcomeFinalScreen UI Tests", () => {
       <WelcomeFinalScreen
         setUser={mockSetUser}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

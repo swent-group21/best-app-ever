@@ -14,10 +14,10 @@ import { SingleComment } from "@/src/views/components/posts/comment";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
-import FirestoreCtrl, {
+import {
   DBUser,
   DBChallenge,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,12 +25,10 @@ export default function MaximizeScreen({
   user,
   navigation,
   route,
-  firestoreCtrl,
 }: {
   readonly user: DBUser;
   readonly navigation: any;
   readonly route: any;
-  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const challenge: DBChallenge = route.params?.challenge;
   const noImage = "@/assets/images/no-image.svg";
@@ -50,7 +48,7 @@ export default function MaximizeScreen({
     navigateGoBack,
     groupCenter,
     groupRadius,
-  } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
+  } = useMaximizeScreenViewModel(user, challenge, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
 
@@ -123,7 +121,6 @@ export default function MaximizeScreen({
                   navigation.navigate("MapScreen", {
                     navigation: navigation,
                     user: user,
-                    firestoreCtrl: firestoreCtrl,
                     location: challenge.location,
                     challengeArea: groupCenter &&
                       groupRadius && {
@@ -199,7 +196,6 @@ export default function MaximizeScreen({
               <SingleComment
                 key={comment.created_at.getTime().toPrecision(21)}
                 comment={comment} // Add the 'comment' property
-                firestoreCtrl={firestoreCtrl} // Add the 'firestoreCtrl' property
               />
             ))
           )}

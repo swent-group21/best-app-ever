@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, {
+import {
   DBChallenge,
   DBComment,
   DBUser,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
+import { getCommentsOf, getGroup, getLikesOf, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
+import { appendComment, updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * View model for the maximize screen.
  * @param user : the user object
  * @param challenge : the challenge object
- * @param firestoreCtrl : FirestoreCtrl object
  * @param navigation : navigation object
  * @returns : commentText, setCommentText, commentList, postUser, likeList, isLiked, toggleLike, addComment, postDate, postTitle, postImage, and postDescription
  */
 export function useMaximizeScreenViewModel(
   user: DBUser,
   challenge: DBChallenge,
-  firestoreCtrl: FirestoreCtrl,
   navigation: any,
 ) {
   const [commentText, setCommentText] = useState("");
@@ -39,13 +39,12 @@ export function useMaximizeScreenViewModel(
   useEffect(() => {
     // Fetch post user data
     const postUid = challenge.uid;
-    firestoreCtrl.getUser(postUid).then((user) => {
+    getUser(postUid).then((user) => {
       setPostUser(user);
     });
 
     // Fetch comments
-    firestoreCtrl
-      .getCommentsOf(challenge.challenge_id ?? "")
+    getCommentsOf(challenge.challenge_id ?? "")
       .then((comments) => {
         const sortedComments = comments.sort(
           (a, b) => a.created_at.getTime() - b.created_at.getTime(),
@@ -54,16 +53,16 @@ export function useMaximizeScreenViewModel(
       });
 
     // Fetch likes
-    firestoreCtrl.getLikesOf(challenge.challenge_id ?? "").then((likes) => {
+    getLikesOf(challenge.challenge_id ?? "").then((likes) => {
       setLikeList(likes);
       setIsLiked(likes.includes(currentUserId));
     });
-  }, [challenge, firestoreCtrl, currentUserId]);
+  }, [challenge, currentUserId]);
 
   // Gets the challenge's group area, if it exists
   useEffect(() => {
     if (groupId) {
-      firestoreCtrl.getGroup(groupId).then((group) => {
+      getGroup(groupId).then((group) => {
         setGroupCenter(group.location);
         setGroupRadius(group.radius);
       });
@@ -77,20 +76,20 @@ export function useMaximizeScreenViewModel(
       : [...likeList, currentUserId];
 
     setLikeList(updatedLikeList);
-    firestoreCtrl.updateLikesOf(challenge.challenge_id ?? "", updatedLikeList);
+    updateLikesOf(challenge.challenge_id ?? "", updatedLikeList);
   };
 
   const addComment = async () => {
     if (commentText.length > 0) {
-      const newComment: DBComment = {
+      const commentData: DBComment = {
         comment_text: commentText,
         user_name: currentUserName ?? "",
         created_at: new Date(),
         post_id: challenge.challenge_id ?? "",
         uid: currentUserId,
       };
-      await firestoreCtrl.addComment(newComment);
-      setCommentList([...commentList, newComment]);
+      await appendComment(commentData);
+      setCommentList([...commentList, commentData]);
       setCommentText("");
     }
   };

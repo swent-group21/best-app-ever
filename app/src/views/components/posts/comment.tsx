@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-import FirestoreCtrl, {
+import {
   DBUser,
   DBComment,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import { Colors } from "@/constants/Colors";
+import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
 /**
  * The SingleComment component displays a single comment.
  * @param comment : the comment object
- * @param firestoreCtrl : FirestoreCtrl object to fetch user details
  * @returns : a component for the comment
  */
 export function SingleComment({
   comment,
-  firestoreCtrl,
 }: {
   comment: Readonly<DBComment>;
-  firestoreCtrl: FirestoreCtrl;
 }) {
   const [user, setUser] = useState<DBUser | null>(null);
 
@@ -27,7 +25,7 @@ export function SingleComment({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await firestoreCtrl.getUser(comment.uid); // Assuming `post_id` links to the user
+        const userData = await getUser(comment.uid); // Assuming `post_id` links to the user
         setUser(userData);
       } catch (error) {
         console.error("Error fetching user data for comment:", error);
@@ -35,7 +33,7 @@ export function SingleComment({
     };
 
     fetchUser();
-  }, [comment.post_id, firestoreCtrl]);
+  }, [comment.post_id]);
 
   return (
     <View style={styles.commentContainer}>

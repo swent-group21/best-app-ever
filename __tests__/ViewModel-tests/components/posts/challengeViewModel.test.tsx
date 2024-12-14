@@ -1,38 +1,35 @@
 import { waitFor, renderHook, act } from "@testing-library/react-native";
-import FirestoreCtrl, {
+import {
   DBChallenge,
   DBUser,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getUser, getLikesOf, getCommentsOf } from "@/src/models/firebase/GetFirestoreCtrl";
+import { updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
 
-const mockDate = new Date();
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn().mockResolvedValue({
+    uid: "user123",
+    name: "Current User",
+    email: "test@test.com",
+    createdAt: new Date(),
+  }),
+  getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
+  getCommentsOf: jest.fn().mockResolvedValue([
+    {
+      uid: "12345",
+      name: "Test User",
+      comment: "This is a test comment",
+      created_at: new Date(),
+    },
+  ]),
+}))
 
-// Mock FirestoreCtrl methods
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getUser: jest.fn().mockResolvedValue({
-        uid: "user123",
-        name: "Current User",
-        email: "test@test.com",
-        createdAt: mockDate,
-      }),
-      getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
-      getCommentsOf: jest.fn().mockResolvedValue([
-        {
-          uid: "12345",
-          name: "Test User",
-          comment: "This is a test comment",
-          created_at: mockDate,
-        },
-      ]),
-      updateLikesOf: jest
-        .fn()
-        .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
-    };
-  });
-});
-const mockFirestoreCtrl = new FirestoreCtrl();
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  updateLikesOf: jest.fn().mockResolvedValue(
+    ["challenge123", ["12345", "67890", "user123"]]
+  )
+}))
 
 const mockChallenge: DBChallenge = {
   caption: "challengeName",
@@ -47,7 +44,7 @@ const currentUser: DBUser = {
   uid: "user123",
   name: "Current User",
   email: "test@test.com",
-  createdAt: mockDate,
+  createdAt: new Date(),
 };
 
 // Test for the use Challenge ViewModel
@@ -69,7 +66,6 @@ describe("use Challenge ViewModel", () => {
     const { result } = renderHook(() =>
       useChallengeViewModel({
         challengeDB: mockChallenge,
-        firestoreCtrl: mockFirestoreCtrl,
         currentUser: currentUser,
       }),
     );
@@ -78,9 +74,9 @@ describe("use Challenge ViewModel", () => {
       expect(result.current.user).toBeDefined();
     });
 
-    expect(mockFirestoreCtrl.getUser).toHaveBeenCalledWith("user123");
-    expect(mockFirestoreCtrl.getLikesOf).toHaveBeenCalledWith("challenge123");
-    expect(mockFirestoreCtrl.getCommentsOf).toHaveBeenCalledWith(
+    expect(getUser).toHaveBeenCalledWith("user123");
+    expect(getLikesOf).toHaveBeenCalledWith("challenge123");
+    expect(getCommentsOf).toHaveBeenCalledWith(
       "challenge123",
     );
 
@@ -96,7 +92,7 @@ describe("use Challenge ViewModel", () => {
         uid: "12345",
         name: "Test User",
         comment: "This is a test comment",
-        created_at: mockDate,
+        created_at: expect.any(Date),
       },
     ]);
   });
@@ -106,7 +102,6 @@ describe("use Challenge ViewModel", () => {
     const { result } = renderHook(() =>
       useChallengeViewModel({
         challengeDB: mockChallenge,
-        firestoreCtrl: mockFirestoreCtrl,
         currentUser: currentUser,
       }),
     );
@@ -127,7 +122,6 @@ describe("use Challenge ViewModel", () => {
     const { result } = renderHook(() =>
       useChallengeViewModel({
         challengeDB: mockChallenge,
-        firestoreCtrl: mockFirestoreCtrl,
         currentUser: currentUser,
       }),
     );
@@ -140,7 +134,7 @@ describe("use Challenge ViewModel", () => {
       await result.current.handleDoubleTap(); // to call handleLikePress
     });
 
-    expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith(
+    expect(updateLikesOf).toHaveBeenCalledWith(
       "challenge123",
       ["12345", "67890", "user123"],
     );

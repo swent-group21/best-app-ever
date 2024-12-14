@@ -2,14 +2,12 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import SignInScreen from "@/src/views/auth/sign_in_screen";
 import SignInViewModel from "@/src/viewmodels/auth/SignInViewModel";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/auth/SignInViewModel", () => jest.fn());
 
 describe("SignInScreen Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockSetUser = jest.fn();
 
   beforeEach(() => {
@@ -42,7 +40,6 @@ describe("SignInScreen Tests", () => {
     const { getByTestId } = render(
       <SignInScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
       />,
     );
@@ -72,7 +69,6 @@ describe("SignInScreen Tests", () => {
     const { getByText } = render(
       <SignInScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
       />,
     );
@@ -97,7 +93,6 @@ describe("SignInScreen Tests", () => {
     const { getByTestId } = render(
       <SignInScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
       />,
     );
@@ -113,7 +108,6 @@ describe("SignInScreen Tests", () => {
     const { getByText } = render(
       <SignInScreen
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         setUser={mockSetUser}
       />,
     );

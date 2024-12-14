@@ -41,8 +41,7 @@ export async function getUser(userId?: string): Promise<DBUser> {
       throw new Error("User not found.");
     }
   } catch (error) {
-    console.error("Error getting user: ", error);
-    throw error;
+    throw new Error("Error getting user");
   }
 }
 
@@ -66,7 +65,7 @@ export async function getImageUrl(id_picture: string): Promise<string> {
  */
 export async function getName(id: string): Promise<string | undefined> {
   try {
-    const user = await this.getUser(id);
+    const user = await getUser(id);
     return user?.name;
   } catch (error) {
     console.error("Error getting name: ", error);
@@ -81,7 +80,7 @@ export async function getName(id: string): Promise<string | undefined> {
  */
 export async function getProfilePicture(id: string): Promise<string | undefined> {
   try {
-    const user = await this.getUser(id);
+    const user = await getUser(id);
     return user?.image_id;
   } catch (error) {
     console.error("Error getting profile picture: ", error);
@@ -321,7 +320,7 @@ export async function getGroup(gid: string): Promise<DBGroup> {
  */
 export async function getLikesOf(challengeId: string): Promise<string[]> {
   try {
-    const challenge = await this.getChallenge(challengeId);
+    const challenge = await getChallenge(challengeId);
     return challenge.likes || [];
   } catch (error) {
     console.error("Error getting likes: ", error);
@@ -364,7 +363,7 @@ export async function getAllUsers(): Promise<DBUser[]> {
   try {
     const usersRef = collection(firestore, "users");
     const querySnapshot = await getDocs(usersRef);
-    const users = querySnapshot.docs.map((doc) => {
+    const users: DBUser[] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         ...data,
@@ -385,9 +384,9 @@ export async function getAllUsers(): Promise<DBUser[]> {
  */
 export async function getFriends(userId: string): Promise<DBUser[]> {
   try {
-    const user = await this.getUser(userId);
+    const user = await getUser(userId);
     const friends = await Promise.all(
-      user.friends?.map(async (id) => await this.getUser(id)) || [],
+      user.friends?.map(async (id) => await getUser(id)) || [],
     );
     return friends;
   } catch (error) {
@@ -403,9 +402,9 @@ export async function getFriends(userId: string): Promise<DBUser[]> {
  */
 export async function getRequestedFriends(userId: string): Promise<DBUser[]> {
   try {
-    const user = await this.getUser(userId);
+    const user = await getUser(userId);
     const friends = await Promise.all(
-      user.userRequestedFriends?.map(async (id) => await this.getUser(id)) ||
+      user.userRequestedFriends?.map(async (id) => await getUser(id)) ||
         [],
     );
     return friends;
@@ -422,9 +421,9 @@ export async function getRequestedFriends(userId: string): Promise<DBUser[]> {
  */
 export async function getFriendRequests(userId: string): Promise<DBUser[]> {
   try {
-    const user = await this.getUser(userId);
+    const user = await getUser(userId);
     const friends = await Promise.all(
-      user.friendsRequestedUser?.map(async (id) => await this.getUser(id)) ||
+      user.friendsRequestedUser?.map(async (id) => await getUser(id)) ||
         [],
     );
     return friends;
@@ -474,7 +473,7 @@ export async function getPostsByChallengeTitle(
  */
 export async function isFriend(userId: string, friendId: string): Promise<boolean> {
   try {
-    const user = await this.getUser(userId);
+    const user = await getUser(userId);
     return user.friends?.includes(friendId);
   } catch (error) {
     console.error("Error checking if friend: ", error);
@@ -489,7 +488,7 @@ export async function isFriend(userId: string, friendId: string): Promise<boolea
  */
 export async function isRequested(userId: string, friendId: string): Promise<boolean> {
   try {
-    const user = await this.getUser(userId);
+    const user = await getUser(userId);
     return user.userRequestedFriends?.includes(friendId);
   } catch (error) {
     console.error("Error checking if requested: ", error);
@@ -503,23 +502,23 @@ export async function isRequested(userId: string, friendId: string): Promise<boo
  * @returns An array of user suggestions.
  */
 export async function getFriendSuggestions(uid: string): Promise<DBUser[]> {
-  const allUsers = await this.getAllUsers();
-  const userFriends = await this.getFriends(uid);
+  const allUsers = await getAllUsers();
+  const userFriends = await getFriends(uid);
                                                                             
-  const friendSuggestions = new Set<DBUser>();
+  const friendSuggestions: DBUser[] = [];
                                                                             
   // get friends of friends
   for (const friend of userFriends) {
-    const friendsOfFriend = await this.getFriends(friend.uid);
+    const friendsOfFriend = await getFriends(friend.uid);
     for (const fof of friendsOfFriend) {
       if (fof.uid !== uid && !userFriends.some((f) => f.uid === fof.uid)) {
-        friendSuggestions.add(fof);
+        friendSuggestions.push(fof);
       }
     }
   }
                                                                             
   // complete with random users
-  const neededSuggestions = 10 - friendSuggestions.size;
+  const neededSuggestions = 10 - friendSuggestions.length;
   if (neededSuggestions > 0) {
     const randomUsers = allUsers
       .filter(
@@ -531,8 +530,8 @@ export async function getFriendSuggestions(uid: string): Promise<DBUser[]> {
       )
       .slice(0, neededSuggestions);
                                                                             
-    randomUsers.forEach((user) => friendSuggestions.add(user));
+    randomUsers.forEach((user) => friendSuggestions.push(user));
   }
                                                                             
-  return Array.from(friendSuggestions).slice(0, 10);
+  return friendSuggestions.slice(0, 10);
 }

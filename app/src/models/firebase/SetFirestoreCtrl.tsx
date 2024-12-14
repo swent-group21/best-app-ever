@@ -15,6 +15,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { DBUser, DBChallenge, DBComment, DBGroup } from "./TypeFirestoreCtrl";
 import { storeChallengeLocally, storeCommentLocally, storeGroupLocally, storeImageLocally } from "@/src/models/firebase/LocalStorageCtrl";
 import { arrayUnion, updateDoc } from "firebase/firestore";
+import { getUser } from "./GetFirestoreCtrl";
 
 export let uploadTaskScheduled = false;
 
@@ -89,14 +90,13 @@ export async function setName(
   setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
 ): Promise<void> {
   try {
-    const user = await this.getUser(id);
+    const user = await getUser(id);
     user.name = name;
-    await this.createUser(id, user);
+    await createUser(id, user);
     console.log("User: ", user);
     setUser(user);
   } catch (error) {
-    console.error("Error setting name: ", error);
-    throw error;
+    throw new Error("Error setting name");
   }
 }
 
@@ -113,9 +113,9 @@ export async function setProfilePicture(
   setUser: React.Dispatch<React.SetStateAction<DBUser | null>>,
 ): Promise<void> {
   try {
-    const user = await this.getUser(id);
-    user.image_id = await this.uploadImage(imageUri);
-    await this.createUser(id, user);
+    const user = await getUser(id);
+    user.image_id = await uploadImage(imageUri);
+    await createUser(id, user);
     setUser(user);
   } catch (error) {
     console.error("Error setting profile picture: ", error);
@@ -250,7 +250,7 @@ export async function addGroupToMemberGroups(uid: string, group_name: string): P
  * @param commentData The comment data to add.
  * @returns A promise that resolves when the comment is added.
  */
-export async function addComment(commentData: DBComment): Promise<void> {
+export async function appendComment(commentData: DBComment): Promise<void> {
   try {
     const networkState = await NetInfo.fetch();
     if (networkState.isConnected && networkState.isInternetReachable) {
@@ -304,8 +304,8 @@ export async function updateLikesOf(challengeId: string, likes: string[]): Promi
  */
 export async function addFriend(userId: string, friendId: string): Promise<void> {
   try {
-    const user = await this.getUser(userId);
-    const friend = await this.getUser(friendId);
+    const user = await getUser(userId);
+    const friend = await getUser(friendId);
                                                                      
     user.userRequestedFriends = user.userRequestedFriends || [];
     friend.friendsRequestedUser = friend.friendsRequestedUser || [];
@@ -317,8 +317,8 @@ export async function addFriend(userId: string, friendId: string): Promise<void>
     user.userRequestedFriends?.push(friendId);
     friend.friendsRequestedUser?.push(userId);
                                                                      
-    await this.createUser(userId, user);
-    await this.createUser(friendId, friend);
+    await createUser(userId, user);
+    await createUser(friendId, friend);
   } catch (error) {
     console.error("Error adding friend: ", error);
     throw error;
@@ -333,8 +333,8 @@ export async function addFriend(userId: string, friendId: string): Promise<void>
  * */
 export async function acceptFriend(userId: string, friendId: string): Promise<void> {
   try {
-    const user = await this.getUser(userId);
-    const friend = await this.getUser(friendId);
+    const user = await getUser(userId);
+    const friend = await getUser(friendId);
                                                                          
     user.friends = user.friends || [];
     friend.friends = friend.friends || [];
@@ -353,8 +353,8 @@ export async function acceptFriend(userId: string, friendId: string): Promise<vo
       (id) => id !== userId,
     );
                                                                          
-    await this.createUser(userId, user);
-    await this.createUser(friendId, friend);
+    await createUser(userId, user);
+    await createUser(friendId, friend);
   } catch (error) {
     console.error("Error accepting friend: ", error);
   }
@@ -368,8 +368,8 @@ export async function acceptFriend(userId: string, friendId: string): Promise<vo
  * */
 export async function rejectFriend(userId: string, friendId: string): Promise<void> {
   try {
-    const user = await this.getUser(userId);
-    const friend = await this.getUser(friendId);
+    const user = await getUser(userId);
+    const friend = await getUser(friendId);
                                                                          
     user.userRequestedFriends = user.userRequestedFriends || [];
     friend.friendsRequestedUser = friend.friendsRequestedUser || [];
@@ -381,8 +381,8 @@ export async function rejectFriend(userId: string, friendId: string): Promise<vo
       (id) => id !== userId,
     );
                                                                          
-    await this.createUser(userId, user);
-    await this.createUser(friendId, friend);
+    await createUser(userId, user);
+    await createUser(friendId, friend);
   } catch (error) {
     console.error("Error rejecting friend: ", error);
     throw error;
@@ -397,8 +397,8 @@ export async function rejectFriend(userId: string, friendId: string): Promise<vo
  */
 export async function removeFriendRequest(userId: string, friendId: string): Promise<void> {
   try {
-    const user = await this.getUser(userId);
-    const friend = await this.getUser(friendId);
+    const user = await getUser(userId);
+    const friend = await getUser(friendId);
                                                                              
     user.friendsRequestedUser = user.friendsRequestedUser || [];
     friend.userRequestedFriends = friend.userRequestedFriends || [];
@@ -410,8 +410,8 @@ export async function removeFriendRequest(userId: string, friendId: string): Pro
       (id) => id !== userId,
     );
                                                                              
-    await this.createUser(userId, user);
-    await this.createUser(friendId, friend);
+    await createUser(userId, user);
+    await createUser(friendId, friend);
   } catch (error) {
     console.error("Error unadding friend: ", error);
     throw error;
