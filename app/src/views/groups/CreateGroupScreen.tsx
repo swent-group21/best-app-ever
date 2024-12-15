@@ -8,6 +8,7 @@ import { ThemedView } from "@/src/views/components/theme/themed_view";
 import CreateGroupViewModel from "@/src/viewmodels/groups/CreateGroupViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import Slider from "@react-native-community/slider";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -72,6 +73,11 @@ export default function CreateGroupScreen({
 
   return (
     <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
+      <TopBar
+        leftIcon="arrow-back"
+        leftAction={navigation.goBack}
+      />
+
       {/* Title */}
       <ThemedText
         style={styles.title}

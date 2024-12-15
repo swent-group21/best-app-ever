@@ -6,6 +6,9 @@ import ListOfFilteredGroups from "@/src/views/components/groups/list_of_filtered
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import { useJoinGroupViewModel } from "@/src/viewmodels/groups/JoinGroupViewModel";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 export default function JoinGroupScreen({
   user,
@@ -51,7 +54,7 @@ export default function JoinGroupScreen({
         <ThemedTextButton
             testID="create-group-button"
             style={styles.buttonCreateGroup}
-            onPress={navigation.navigate("CreateGroup")}
+            onPress={() => navigation.navigate("CreateGroup")}
             text="Create a new Group !"
             textStyle={{ fontWeight: "600" }}
             textColorType="textOverLight"
@@ -61,10 +64,10 @@ export default function JoinGroupScreen({
     // Group suggestions
     {
       id: "suggestions",
-      title: "Group Suggestions for you",
+      title: "Group suggestions for you",
       content: (
         <ListOfFilteredGroups
-          filteredUsers={suggestions}
+          filteredGroups={suggestions}
           searchText=""
           uid={uid}
           firestoreCtrl={firestoreCtrl}
@@ -83,7 +86,7 @@ export default function JoinGroupScreen({
       />
 
       {/* Search bar at first */}
-      <SearchBar onSearch={setSearchText} />
+      <SearchBar onSearch={setSearchText} element={"group"}  />
 
       <FlatList
         style={styles.container}
@@ -109,20 +112,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   sectionContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   sectionTitle: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
-    marginTop: 20,
+    marginTop: 25,
     marginLeft: 10,
-    marginBottom: 10,
-  },
-  noRequests: {
-    color: "#aaa",
-    textAlign: "center",
-    marginVertical: 20,
+    marginBottom: 30,
   },
   bigContainer: {
     height: "100%",
@@ -133,8 +131,8 @@ const styles = StyleSheet.create({
   buttonCreateGroup: {
     alignItems: "center",
     alignSelf: "center",
-    width: "80%",
+    width: width * 0.8,
     borderRadius: 15,
-    padding: 8,
+    padding: 10,
   },
 });

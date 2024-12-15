@@ -29,7 +29,7 @@ export default function ListOfFilteredGroups({
           data={filteredGroups}
           keyExtractor={(item) => item.uid || Math.random().toString()}
           renderItem={({ item }) => {
-            const isJoined = groupStatuses[item.uid].isJoined || false;
+            const isJoined = groupStatuses[item.uid]?.isJoined || false;
 
             return (
               <GroupListItem

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBUser, DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * View model for the Join Group screen.

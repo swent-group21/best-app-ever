@@ -1,8 +1,10 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import { Colors } from "@/constants/Colors";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 /**
  * Group list item component
@@ -27,10 +29,10 @@ export const GroupListItem = ({
       {/* Display the group as an icon with its name */}
       <ThemedView style={styles.groupIcon} testID={"group-icon"}>
         <ThemedTextButton
-          style={styles.avatar}
+          style={styles.icon}
           onPress={() => {}}
           text={name}
-          textStyle={styles.titleText}
+          textStyle={styles.titleIcon}
           textColorType="textOverLight"
           testID="group-pressable-button"
         ></ThemedTextButton>
@@ -38,19 +40,19 @@ export const GroupListItem = ({
 
       {/* Display the group's challenge */}
       <ThemedView style={styles.textContainer}>
-        <ThemedText style={styles.name}>{challengeTitle}</ThemedText>
+        <ThemedText style={styles.groupChallenge}>{challengeTitle}</ThemedText>
       </ThemedView>
 
       {/* Display the join button */}
       {isJoined ? (
-        <ThemedText style={styles.friendCheck}>✓</ThemedText>
+        <ThemedText style={styles.groupCheck}>✓</ThemedText>
       ) : (
         <TouchableOpacity
-          style={styles.addButton}
+          style={styles.joinButton}
           onPress={handleJoin}
           testID={`join-button-${name}`}
         >
-          <ThemedText style={styles.addButtonText}>{"JOIN"}</ThemedText>
+          <ThemedText style={styles.joinButtonText}>{"JOIN"}</ThemedText>
         </TouchableOpacity>
       )}
     </ThemedView>
@@ -58,74 +60,74 @@ export const GroupListItem = ({
 };
 
 const styles = StyleSheet.create({
-  addButton: {
+  
+  // Style for the group list item
+  listItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "#333",
+    backgroundColor: "#000",
+    height : 'auto',
+  },
+
+  // Style for the group icon and its name
+  icon: {
+    width: 80,
+    height: 60,
+    borderRadius: 25,
+    //backgroundColor: "#ccc",
+    marginRight: 2,
+  },
+  groupIcon: {
+    margin: 10,
+    alignItems: "flex-start",
+  },
+  titleIcon: {
+    flex: 1,
+    width: width * 0.8,
+    alignSelf: "center",
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontSize: 17,
+    fontWeight: "bold",
+  },
+
+
+  // Style for the group's challenge
+  textContainer: {
+    backgroundColor: "transparent",
+    width: width * 0.5,
+    paddingRight: 10,
+  },
+  groupChallenge: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    height: "auto",
+  },
+
+  // Style for the group check if already joined
+  groupCheck: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: "auto",
+  },
+
+  // Style for the join button
+  joinButton: {
     backgroundColor: "#333",
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 5,
     marginLeft: "auto",
   },
-  addButtonText: {
+  joinButtonText: {
     color: "#fff",
     fontSize: 14,
     fontWeight: "bold",
   },
-  friendCheck: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: "auto",
-  },
-  listItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#333",
-    backgroundColor: "#000",
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: "#ccc",
-    marginRight: 10,
-  },
-  avatarText: {
-    color: Colors.light.textPrimary,
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  defaultAvatar: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Colors.light.backgroundSecondary,
-  },
-  textContainer: {
-    backgroundColor: "transparent",
-  },
-  name: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
-  groupIcon: {
-    flex: 1,
-    justifyContent: "flex-start",
-    backgroundColor: Colors.dark.backgroundPrimary,
-    borderRadius: 20,
-    margin: 10,
-    alignItems: "center",
-  },
-
-  titleText: {
-    flex: 1,
-    width: "100%",
-    alignSelf: "center",
-    textAlign: "right",
-    textAlignVertical: "bottom",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
+ 
 });
