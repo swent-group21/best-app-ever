@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
-import { UserListItem } from "@/src/views/components/friends/user_list_items";
+import { GroupListItem } from "@/src/views/components/groups/group_list_items";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { useListOfFilteredGroupsViewModel } from "@/src/viewmodels/components/groups/ListOfFilteredGroupsViewModel";
 
@@ -30,17 +29,14 @@ export default function ListOfFilteredGroups({
           data={filteredGroups}
           keyExtractor={(item) => item.uid || Math.random().toString()}
           renderItem={({ item }) => {
-            const isJoined = groupStatuses[item.uid] || { isJoined: false};
+            const isJoined = groupStatuses[item.uid].isJoined || false;
 
             return (
-              <UserListItem
+              <GroupListItem
                 name={item.name}
-                key={item.uid}
-                avatar={item.image_id}
-                isFriend={isFriend}
-                isRequested={isRequested}
-                onAdd={() => handleAdd(item.uid)}
-                onCancelRequest={() => handleRemove(item.uid)}
+                challengeTitle={item.challengeTitle}
+                isJoined={isJoined}
+                handleJoin={() => handleJoin(item.gid)}
               />
             );
           }}
