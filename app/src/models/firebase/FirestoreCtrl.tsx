@@ -854,6 +854,29 @@ export default class FirestoreCtrl {
     }
   }
 
+
+   /**
+   * Retrieves all groups from Firestore.
+   * @returns A promise that resolves to an array of groups.
+   * */
+   async getAllGroups(): Promise<DBGroup[]> {
+    try {
+      const groupsRef = collection(firestore, "groups");
+      const querySnapshot = await getDocs(groupsRef);
+      const groups = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+        } as DBGroup;
+      });
+
+      return groups;
+    } catch (error) {
+      console.error("Error getting all groups: ", error);
+      throw error;
+    }
+  }
+
   /**
    * Get a group from firestore
    * @param gid The ID of the group to get.
@@ -1247,5 +1270,46 @@ export default class FirestoreCtrl {
     }
 
     return Array.from(friendSuggestions).slice(0, 10);
+  }
+
+
+
+/**
+   * Get groups suggestions for a user based on its friends.
+   * @param uid The UID of the user.
+   * @returns An array of groups suggestions.
+   */
+async getGroupSuggestions(uid: string): Promise<DBGroup[]> {
+    const allGroups = await this.getAllGroups();
+    const userFriends = await this.getFriends(uid);
+
+    const groupsSuggestions = new Set<DBGroup>();
+
+    // get groups of friends
+    for (const friend of userFriends) {
+      const groupsOfFriend = await this.getGroupsByUserId(friend.uid);
+      for (const gof of groupsOfFriend) {
+        // if the user is not already in the group and the group is not already suggested
+        if (!gof.members.includes(uid)) {
+          groupsSuggestions.add(gof);
+        }
+      }
+    }
+
+    // complete with random groups
+    const neededSuggestions = 10 - groupsSuggestions.size;
+    if (neededSuggestions > 0) {
+      const randomGroups = allGroups
+        .filter(
+          (group) =>
+            !group.members.includes(uid) &&
+            !Array.from(groupsSuggestions).some((g) => g.gid === group.gid),
+        )
+        .slice(0, neededSuggestions);
+
+      randomGroups.forEach((user) => groupsSuggestions.add(user));
+    }
+
+    return Array.from(groupsSuggestions).slice(0, 10);
   }
 }

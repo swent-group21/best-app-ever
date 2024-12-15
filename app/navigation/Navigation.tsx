@@ -17,9 +17,9 @@ import ProfileScreen from "@/src/views/home/profile_screen";
 import MapScreen from "@/src/views/map/map_screen";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import { NavigationContainer } from "@react-navigation/native";
-import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
-import GroupScreen from "@/src/views/group/GroupScreen";
-import JoinGroupScreen from "@/src/views/group/JoinGroupScreen";
+import CreateGroupScreen from "@/src/views/groups/CreateGroupScreen";
+import GroupScreen from "@/src/views/groups/GroupScreen";
+import JoinGroupScreen from "@/src/views/groups/JoinGroupScreen";
 
 const { Navigator, Screen, Group } =
   createNativeStackNavigator<RootStackParamList>();

@@ -1,6 +1,6 @@
 import React, { act } from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import GroupScreen from "@/src/views/group/GroupScreen";
+import GroupScreen from "@/src/views/groups/GroupScreen";
 import FirestoreCtrl, {
   DBChallenge,
   DBUser,

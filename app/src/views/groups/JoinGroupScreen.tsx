@@ -3,9 +3,9 @@ import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { SearchBar } from "@/src/views/components/friends/search_bar";
 import ListOfFilteredGroups from "@/src/views/components/groups/list_of_filtered_groups";
-import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
+import { useJoinGroupViewModel } from "@/src/viewmodels/groups/JoinGroupViewModel";
 
 export default function JoinGroupScreen({
   user,
@@ -21,12 +21,9 @@ export default function JoinGroupScreen({
   const {
     searchText,
     setSearchText,
-    friends,
-    requests,
-    filteredUsers = [],
+    filteredGroups = [],
     suggestions,
-    handleFriendPress,
-  } = useFriendsScreenViewModel(firestoreCtrl, uid);
+  } = useJoinGroupViewModel(firestoreCtrl, uid);
 
   // Sections configuration
   const sections = [
@@ -40,7 +37,7 @@ export default function JoinGroupScreen({
           searchText={searchText}
           uid={uid}
           firestoreCtrl={firestoreCtrl}
-          filteredUsers={filteredUsers}
+          filteredUsers={filteredGroups}
           navigation={navigation}
         />
       ),

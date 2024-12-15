@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
+import useGroupScreenViewModel from "@/src/viewmodels/groups/GroupScreenViewModel";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
