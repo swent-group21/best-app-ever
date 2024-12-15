@@ -41,18 +41,14 @@ describe("Camera Component UI Tests", () => {
   });
 
   it("renders the CameraView when isCameraEnabled is true", () => {
-    const { getByTestId } = render(
-      <Camera navigation={{}} route={{}} />,
-    );
+    const { getByTestId } = render(<Camera navigation={{}} route={{}} />);
 
     const cameraView = getByTestId("camera-view");
     expect(cameraView).toBeTruthy();
   });
 
   it("renders the flash button and toggles flash mode when pressed", () => {
-    const { getByTestId } = render(
-      <Camera navigation={{}} route={{}} />,
-    );
+    const { getByTestId } = render(<Camera navigation={{}} route={{}} />);
 
     const flashButton = getByTestId("Flash-Button");
     fireEvent.press(flashButton);
@@ -61,9 +57,7 @@ describe("Camera Component UI Tests", () => {
   });
 
   it("renders the capture button and triggers takePicture when pressed", () => {
-    const { getByTestId } = render(
-      <Camera navigation={{}} route={{}} />,
-    );
+    const { getByTestId } = render(<Camera navigation={{}} route={{}} />);
 
     const captureButton = getByTestId("Camera-Button");
     fireEvent.press(captureButton);
@@ -72,9 +66,7 @@ describe("Camera Component UI Tests", () => {
   });
 
   it("renders the toggle camera button and toggles camera facing when pressed", () => {
-    const { getByTestId } = render(
-      <Camera navigation={{}} route={{}} />,
-    );
+    const { getByTestId } = render(<Camera navigation={{}} route={{}} />);
 
     const toggleButton = getByTestId("Switch-Button");
     fireEvent.press(toggleButton);
@@ -101,9 +93,7 @@ describe("Camera Component UI Tests", () => {
       setIsCameraEnabled: jest.fn(),
     });
 
-    const { queryByTestId } = render(
-      <Camera navigation={{}} route={{}} />,
-    );
+    const { queryByTestId } = render(<Camera navigation={{}} route={{}} />);
 
     const cameraView = queryByTestId("camera-view");
     expect(cameraView).toBeNull();
@@ -128,9 +118,7 @@ describe("Camera Component UI Tests", () => {
       setIsCameraEnabled: jest.fn(),
     });
 
-    const { getByText } = render(
-      <Camera navigation={{}} route={{}} />,
-    );
+    const { getByText } = render(<Camera navigation={{}} route={{}} />);
 
     const permissionText = getByText(
       "We need your permission to show the camera",

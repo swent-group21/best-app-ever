@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { isFriend, isRequested } from "@/src/models/firebase/GetFirestoreCtrl";
-import { addFriend, removeFriendRequest } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  addFriend,
+  removeFriendRequest,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * List of filtered users ViewModel helps display the component

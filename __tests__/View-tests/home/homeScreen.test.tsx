@@ -32,11 +32,11 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     createdAt: new Date(),
   }),
   getCommentsOf: jest.fn().mockResolvedValue([]),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   updateLikesOf: jest.fn().mockResolvedValue({}),
-}))
+}));
 
 const mockUser = {
   uid: "user-1",
@@ -216,10 +216,7 @@ describe("HomeScreen UI Tests", () => {
     };
 
     const { getByTestId, queryAllByTestId } = render(
-      <HomeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-      />,
+      <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     const filterButton = getByTestId("friends-button");
@@ -319,10 +316,7 @@ describe("HomeScreen UI Tests", () => {
       });
 
     const { getByTestId, getByText } = render(
-      <HomeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-      />,
+      <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     // Désactiver le filtre "Filter by Friends" (par défaut)
@@ -362,10 +356,7 @@ describe("HomeScreen UI Tests", () => {
       });
 
     const { getByTestId } = render(
-      <HomeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-      />,
+      <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     const postImage = getByTestId("challenge-id-0");

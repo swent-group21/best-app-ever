@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-import {
-  DBUser,
-  DBComment,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBUser, DBComment } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { Colors } from "@/constants/Colors";
 import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 
@@ -14,11 +11,7 @@ const { width, height } = Dimensions.get("window");
  * @param comment : the comment object
  * @returns : a component for the comment
  */
-export function SingleComment({
-  comment,
-}: {
-  comment: Readonly<DBComment>;
-}) {
+export function SingleComment({ comment }: { comment: Readonly<DBComment> }) {
   const [user, setUser] = useState<DBUser | null>(null);
 
   // Fetch user data

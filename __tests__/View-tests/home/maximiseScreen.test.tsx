@@ -141,7 +141,6 @@ describe("MaximizeScreen UI Tests", () => {
   });
 
   it("handles adding a comment", async () => {
-
     const mockAppendComment = jest.fn();
     jest
       .spyOn(
@@ -157,7 +156,7 @@ describe("MaximizeScreen UI Tests", () => {
         postUser: mockUser,
         postDescription: "A test challenge",
         postImage: "https://example.com/test-image.jpg",
-        addComment: mockAppendComment
+        addComment: mockAppendComment,
       });
     const { getByTestId } = render(
       <MaximizeScreen

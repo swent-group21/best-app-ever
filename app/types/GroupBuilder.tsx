@@ -1,9 +1,9 @@
 import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
-import { addGroupToMemberGroups, newGroup } from "@/src/models/firebase/SetFirestoreCtrl";
 import {
-  DBGroup,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+  addGroupToMemberGroups,
+  newGroup,
+} from "@/src/models/firebase/SetFirestoreCtrl";
+import { DBGroup, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
 
 /**

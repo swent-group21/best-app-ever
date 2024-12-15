@@ -16,7 +16,10 @@ import {
   DBGroup,
   DBChallengeDescription,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { getChallengeDescription, getGroup } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  getChallengeDescription,
+  getGroup,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 import { uploadImage } from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
@@ -24,10 +27,7 @@ import { uploadImage } from "@/src/models/firebase/SetFirestoreCtrl";
  * @param navigation : navigation object
  * @returns : functions for the camera screen
  */
-export default function useCameraViewModel(
-  navigation: any,
-  route: any,
-) {
+export default function useCameraViewModel(navigation: any, route: any) {
   // Camera state
   const camera = useRef<CameraView>(null);
   const cameraPictureOptions: CameraPictureOptions = { base64: true };
@@ -112,8 +112,7 @@ export default function useCameraViewModel(
   useEffect(() => {
     async function fetchDescriptionTitle() {
       try {
-        const currentChallengeData =
-          await getChallengeDescription();
+        const currentChallengeData = await getChallengeDescription();
 
         setDescriptionTitle(currentChallengeData);
       } catch (error) {

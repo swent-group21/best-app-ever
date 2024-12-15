@@ -2,10 +2,7 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/group/GroupScreen";
 import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",
@@ -53,11 +50,11 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getUser: jest.fn(),
   getLikesOf: jest.fn().mockResolvedValue([]),
   getCommentsOf: jest.fn().mockResolvedValue([]),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   updatesLikesOf: jest.fn(),
-}))
+}));
 
 describe("Group Screen renders challenges", () => {
   beforeEach(() => {
@@ -70,11 +67,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the group screen", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("group-screen")).toBeTruthy();
@@ -83,11 +76,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the group name", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("topTitle-Test Name")).toBeTruthy();
@@ -96,11 +85,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the home button", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("home-button")).toBeTruthy();
@@ -109,11 +94,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the other groups icons", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("group-id-0")).toBeTruthy();
@@ -122,11 +103,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the create group button", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("create-group-button")).toBeTruthy();
@@ -135,11 +112,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the group challenge title", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("description-id")).toBeTruthy();
@@ -148,11 +121,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders all the challenges", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("challenge-id-0")).toBeTruthy();
@@ -177,11 +146,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders correct message when no challenge to display", () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     expect(getByTestId("no-challenge-id")).toBeTruthy();
   });

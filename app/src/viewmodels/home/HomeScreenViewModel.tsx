@@ -5,17 +5,18 @@ import {
   DBGroup,
   DBChallengeDescription,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { getChallengeDescription, getGroupsByUserId, getPostsByChallengeTitle } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  getChallengeDescription,
+  getGroupsByUserId,
+  getPostsByChallengeTitle,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * View model for the home screen.
  * @param user : the user object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
-export function useHomeScreenViewModel(
-  user: DBUser,
-  navigation: any,
-) {
+export function useHomeScreenViewModel(user: DBUser, navigation: any) {
   const userIsGuest = user.name === "Guest";
 
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
@@ -63,8 +64,8 @@ export function useHomeScreenViewModel(
     // Fetch challenges
     const fetchChallenges = async (challengeTitle: string) => {
       try {
-        await getPostsByChallengeTitle(challengeTitle)
-          .then((challenge: DBChallenge[]) => {
+        await getPostsByChallengeTitle(challengeTitle).then(
+          (challenge: DBChallenge[]) => {
             // Sort challenges by date
             const sortedChallenges = challenge.sort((a, b) =>
               a.date && b.date
@@ -72,7 +73,8 @@ export function useHomeScreenViewModel(
                 : 0,
             );
             setChallenges(sortedChallenges);
-          });
+          },
+        );
       } catch (error) {
         console.error("Error fetching challenges: ", error);
       }
@@ -89,17 +91,16 @@ export function useHomeScreenViewModel(
     if (user.uid) {
       const fetchGroups = async () => {
         try {
-          await getGroupsByUserId(user.uid)
-            .then((group: DBGroup[]) => {
-              // Sort challenges by date
-              const sortedGroups = group.sort((a, b) =>
-                a.updateDate && b.updateDate
-                  ? new Date(b.updateDate).getTime() -
-                    new Date(a.updateDate).getTime()
-                  : 0,
-              );
-              setGroups(sortedGroups);
-            });
+          await getGroupsByUserId(user.uid).then((group: DBGroup[]) => {
+            // Sort challenges by date
+            const sortedGroups = group.sort((a, b) =>
+              a.updateDate && b.updateDate
+                ? new Date(b.updateDate).getTime() -
+                  new Date(a.updateDate).getTime()
+                : 0,
+            );
+            setGroups(sortedGroups);
+          });
         } catch (error) {
           console.error("Error fetching groups: ", error);
         }
@@ -108,9 +109,7 @@ export function useHomeScreenViewModel(
     }
   }, [user.uid]);
 
-  useEffect(() => {
-
-  })
+  useEffect(() => {});
 
   // Filter challenges to only include those from friends
   const challengesFromFriends = challenges.filter((challenge) =>

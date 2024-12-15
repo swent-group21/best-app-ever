@@ -56,10 +56,7 @@ export default function FriendsScreen({
       title: "Requests",
       content:
         requests.length > 0 ? (
-          <RequestList
-            requests={requests}
-            uid={uid}
-          />
+          <RequestList requests={requests} uid={uid} />
         ) : (
           <ThemedText style={styles.noRequests}>
             No friends request for now

@@ -30,7 +30,7 @@ export default function GroupScreen({
     groupId,
     groupCenter,
     groupRadius,
-  } = useGroupScreenViewModel(user,  route);
+  } = useGroupScreenViewModel(user, route);
 
   return (
     <ThemedView style={styles.bigContainer} testID="group-screen">

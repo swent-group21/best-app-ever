@@ -3,11 +3,12 @@ import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
 } from "expo-location";
-import {
-  DBChallenge,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
-import { getChallengeDescription, getPostsByChallengeTitle } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  getChallengeDescription,
+  getPostsByChallengeTitle,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * Default location centered on the city of Nice, France.
@@ -78,8 +79,7 @@ export function useMapScreenViewModel(
     // Fetches the current challenge and its title.
     const fetchCurrentChallenge = async () => {
       try {
-        const currentChallengeData =
-          await getChallengeDescription();
+        const currentChallengeData = await getChallengeDescription();
         return currentChallengeData.title;
       } catch (error) {
         console.error("Error fetching current challenge: ", error);
@@ -89,8 +89,7 @@ export function useMapScreenViewModel(
     // Fetches challenges with valid locations from Firestore.
     const fetchChallenges = async (challengeTitle: string) => {
       try {
-        const challengesData =
-          await getPostsByChallengeTitle(challengeTitle);
+        const challengesData = await getPostsByChallengeTitle(challengeTitle);
         const filteredChallenges = challengesData.filter(
           (challenge) =>
             challenge.location !== undefined && challenge.location !== null,

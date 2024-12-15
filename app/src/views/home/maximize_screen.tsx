@@ -14,10 +14,7 @@ import { SingleComment } from "@/src/views/components/posts/comment";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
-import {
-  DBUser,
-  DBChallenge,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBUser, DBChallenge } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 

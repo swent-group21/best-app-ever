@@ -31,11 +31,11 @@ jest.mock("expo-camera", () => ({
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getGroup: jest.fn(),
   createChallenge: jest.fn(),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   uploadImage: jest.fn(async () => "mock-image-id"),
-}))
+}));
 
 // Mock `createChallenge`
 jest.mock("@/types/ChallengeBuilder", () => ({

@@ -1,34 +1,31 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
 import * as GetFirestoreCtrl from "@/src/models/firebase/GetFirestoreCtrl";
 import * as SetFirestoreCtrl from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
-      getUser: jest.fn().mockResolvedValue({
-        uid: "12345",
-        name: "Test User",
-        email: "test@example.com",
-      }),
-      getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
-      getCommentsOf: jest.fn().mockResolvedValue([
-        {
-          comment_text: "This is a test comment",
-          user_name: "Test User",
-          created_at: new Date(),
-          post_id: "1",
-        },
-      ]),
-}))
+  getUser: jest.fn().mockResolvedValue({
+    uid: "12345",
+    name: "Test User",
+    email: "test@example.com",
+  }),
+  getLikesOf: jest.fn().mockResolvedValue(["12345", "67890"]),
+  getCommentsOf: jest.fn().mockResolvedValue([
+    {
+      comment_text: "This is a test comment",
+      user_name: "Test User",
+      created_at: new Date(),
+      post_id: "1",
+    },
+  ]),
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
-    updateLikesOf: jest.fn(),
-    appendComment: jest.fn().mockResolvedValue(true),
-}))
+  updateLikesOf: jest.fn(),
+  appendComment: jest.fn().mockResolvedValue(true),
+}));
 
 // Mock user and challenge
 const mockUser: DBUser = {
@@ -58,11 +55,7 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should initialize correctly and fetch user, comments, and likes", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     await waitFor(() => {
@@ -94,11 +87,7 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should toggle like and update the like list", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     await waitFor(() => {
@@ -114,22 +103,16 @@ describe("useMaximizeScreenViewModel", () => {
 
     expect(result.current.isLiked).toBe(false);
     expect(result.current.likeList).toEqual(["67890"]);
-    expect(SetFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("1", [
-      "12345",
-    ]);
+    expect(SetFirestoreCtrl.updateLikesOf).toHaveBeenCalledWith("1", ["12345"]);
   });
 
   it("should add a comment and update the comment list", async () => {
-    jest.spyOn(SetFirestoreCtrl, "appendComment").mockImplementationOnce(
-      (): Promise<any> => Promise.resolve(undefined)
-    )
+    jest
+      .spyOn(SetFirestoreCtrl, "appendComment")
+      .mockImplementationOnce((): Promise<any> => Promise.resolve(undefined));
 
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     act(() => {
@@ -163,11 +146,7 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should handle navigation correctly with navigateGoBack", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     await waitFor(() => {
@@ -178,17 +157,12 @@ describe("useMaximizeScreenViewModel", () => {
   });
 
   it("should handle no comments gracefully", async () => {
-
-    jest.spyOn(GetFirestoreCtrl, "getCommentsOf").mockImplementationOnce(
-      (): Promise<any> => Promise.resolve([])
-    )
+    jest
+      .spyOn(GetFirestoreCtrl, "getCommentsOf")
+      .mockImplementationOnce((): Promise<any> => Promise.resolve([]));
 
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     await waitFor(() => {
@@ -197,16 +171,12 @@ describe("useMaximizeScreenViewModel", () => {
   });
 
   it("should handle no likes gracefully", async () => {
-    jest.spyOn(GetFirestoreCtrl, "getLikesOf").mockImplementationOnce(
-      (): Promise<any> => Promise.resolve([])
-    )
+    jest
+      .spyOn(GetFirestoreCtrl, "getLikesOf")
+      .mockImplementationOnce((): Promise<any> => Promise.resolve([]));
 
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     await waitFor(() => {
@@ -217,11 +187,7 @@ describe("useMaximizeScreenViewModel", () => {
 
   it("should update post details correctly", async () => {
     const { result } = renderHook(() =>
-      useMaximizeScreenViewModel(
-        mockUser,
-        mockChallenge,
-        mockNavigation,
-      ),
+      useMaximizeScreenViewModel(mockUser, mockChallenge, mockNavigation),
     );
 
     await waitFor(() => {

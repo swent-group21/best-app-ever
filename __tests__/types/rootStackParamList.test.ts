@@ -91,7 +91,9 @@ describe("RootStackParamList", () => {
     expect(mockRootStackParamList.Friends).toBeUndefined();
 
     expect(mockRootStackParamList).toHaveProperty("Maximize");
-    expect(mockRootStackParamList.Maximize).toEqual({ challenge: mockChallenge });
+    expect(mockRootStackParamList.Maximize).toEqual({
+      challenge: mockChallenge,
+    });
 
     expect(mockRootStackParamList).toHaveProperty("Profile");
     expect(mockRootStackParamList.Profile).toBeUndefined();
@@ -100,7 +102,9 @@ describe("RootStackParamList", () => {
     expect(mockRootStackParamList.MapScreen).toBeUndefined();
 
     expect(mockRootStackParamList).toHaveProperty("GroupScreen");
-    expect(mockRootStackParamList.GroupScreen).toEqual({ currentGroup: mockGroup });
+    expect(mockRootStackParamList.GroupScreen).toEqual({
+      currentGroup: mockGroup,
+    });
 
     expect(mockRootStackParamList).toHaveProperty("CreateGroup");
     expect(mockRootStackParamList.CreateGroup).toBeUndefined();

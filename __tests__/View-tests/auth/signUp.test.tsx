@@ -31,10 +31,7 @@ describe("SignUp Screen Tests", () => {
 
   it("renders all input fields and the Sign Up button", () => {
     const { getByTestId } = render(
-      <SignUp
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignUp navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     expect(getByTestId("sign-up-screen")).toBeTruthy();
@@ -54,10 +51,7 @@ describe("SignUp Screen Tests", () => {
     });
 
     const { getByTestId } = render(
-      <SignUp
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignUp navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     const nameInput = getByTestId("name-input");
@@ -74,10 +68,7 @@ describe("SignUp Screen Tests", () => {
     });
 
     const { getByTestId } = render(
-      <SignUp
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignUp navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     const signUpButton = getByTestId("sign-up-button");

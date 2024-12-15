@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  screen,
-} from "@testing-library/react-native";
+import { render, fireEvent, screen } from "@testing-library/react-native";
 import { Challenge } from "@/src/views/components/posts/challenge";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/components/posts/ChallengeViewModel", () => ({
@@ -31,13 +24,13 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
       created_at: new Date(),
     },
   ]),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
-  updateLikesOf: jest.fn().mockResolvedValue(
-    ["challenge123", ["12345", "67890", "user123"]]
-  )
-}))
+  updateLikesOf: jest
+    .fn()
+    .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
+}));
 
 const challengeDB: DBChallenge = {
   caption: "challengeName",

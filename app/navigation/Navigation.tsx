@@ -29,11 +29,7 @@ interface AppStackProps {
   setUser?: React.Dispatch<React.SetStateAction<DBUser | null>>;
 }
 
-export const Nav: React.FC<AppStackProps> = ({
-  isLoggedIn,
-  user,
-  setUser,
-}) => {
+export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, setUser }) => {
   return (
     <NavigationContainer>
       <Navigator
@@ -52,132 +48,67 @@ export const Nav: React.FC<AppStackProps> = ({
       >
         <Group>
           <Screen name="Welcome" options={{ title: "Login to Strive" }}>
-            {(props: any) => (
-              <WelcomeScreens
-                {...props}
-                setUser={setUser}
-              />
-            )}
+            {(props: any) => <WelcomeScreens {...props} setUser={setUser} />}
           </Screen>
 
           <Screen name="WelcomeFinal" options={{ title: "Final Screen" }}>
             {(props: any) => (
-              <WelcomeFinalScreen
-                {...props}
-                setUser={setUser}
-              />
+              <WelcomeFinalScreen {...props} setUser={setUser} />
             )}
           </Screen>
 
           <Screen name="SignUp">
-            {(props: any) => (
-              <SignUp
-                {...props}
-                setUser={setUser}
-              />
-            )}
+            {(props: any) => <SignUp {...props} setUser={setUser} />}
           </Screen>
 
           <Screen name="SignIn">
-            {(props: any) => (
-              <SignInScreen
-                {...props}
-                setUser={setUser}
-              />
-            )}
+            {(props: any) => <SignInScreen {...props} setUser={setUser} />}
           </Screen>
 
           <Screen name="ForgotPassword">
-            {(props: any) => (
-              <ForgotPasswordScreen 
-                {...props} 
-              />
-            )}
+            {(props: any) => <ForgotPasswordScreen {...props} />}
           </Screen>
 
           <Screen name="SetUser">
             {(props: any) => (
-              <SetUsername
-                {...props}
-                user={user}
-                setUser={setUser}
-              />
+              <SetUsername {...props} user={user} setUser={setUser} />
             )}
           </Screen>
         </Group>
 
         <Group>
           <Screen name="Home">
-            {(props: any) => (
-              <HomeScreen
-                {...props}
-                user={user}
-              />
-            )}
+            {(props: any) => <HomeScreen {...props} user={user} />}
           </Screen>
 
           <Screen name="Camera">
-            {(props: any) => (
-              <Camera 
-                {...props} 
-                user={user} 
-              />
-            )}
+            {(props: any) => <Camera {...props} user={user} />}
           </Screen>
 
           <Screen name="Maximize">
-            {(props: any) => (
-              <MaximizeScreen
-                {...props}
-                user={user}
-              />
-            )}
+            {(props: any) => <MaximizeScreen {...props} user={user} />}
           </Screen>
 
           <Screen name="Profile">
             {(props: any) => (
-              <ProfileScreen
-                {...props}
-                user={user}
-                setUser={setUser}
-              />
+              <ProfileScreen {...props} user={user} setUser={setUser} />
             )}
           </Screen>
 
           <Screen name="Friends">
-            {(props: any) => (
-              <FriendsScreen
-                {...props}
-                user={user}
-              />
-            )}
+            {(props: any) => <FriendsScreen {...props} user={user} />}
           </Screen>
 
           <Screen name="MapScreen">
-            {(props: any) => (
-              <MapScreen 
-                {...props} 
-                user={user} 
-              />
-            )}
+            {(props: any) => <MapScreen {...props} user={user} />}
           </Screen>
 
           <Screen name="GroupScreen">
-            {(props: any) => (
-              <GroupScreen
-                {...props}
-                user={user}
-              />
-            )}
+            {(props: any) => <GroupScreen {...props} user={user} />}
           </Screen>
 
           <Screen name="CreateGroup">
-            {(props: any) => (
-              <CreateGroupScreen
-                {...props}
-                user={user}
-              />
-            )}
+            {(props: any) => <CreateGroupScreen {...props} user={user} />}
           </Screen>
         </Group>
       </Navigator>

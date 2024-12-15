@@ -4,7 +4,11 @@ import {
   DBUser,
   DBComment,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { getCommentsOf, getLikesOf, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  getCommentsOf,
+  getLikesOf,
+  getUser,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 import { updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
@@ -50,9 +54,7 @@ export function useChallengeViewModel({
   useEffect(() => {
     const fetchLikes = async () => {
       try {
-        const fetchedLikes = await getLikesOf(
-          challengeDB.challenge_id ?? "",
-        );
+        const fetchedLikes = await getLikesOf(challengeDB.challenge_id ?? "");
         setIsLiked(fetchedLikes.includes(currentUser.uid));
         setLikes(fetchedLikes);
       } catch (error) {

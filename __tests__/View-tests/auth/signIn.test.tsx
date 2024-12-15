@@ -38,10 +38,7 @@ describe("SignInScreen Tests", () => {
     });
 
     const { getByTestId } = render(
-      <SignInScreen
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignInScreen navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     const emailInput = getByTestId("email-input");
@@ -67,10 +64,7 @@ describe("SignInScreen Tests", () => {
     });
 
     const { getByText } = render(
-      <SignInScreen
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignInScreen navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     // Vérifie la présence du message d'erreur
@@ -91,10 +85,7 @@ describe("SignInScreen Tests", () => {
     });
 
     const { getByTestId } = render(
-      <SignInScreen
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignInScreen navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     const signInButton = getByTestId("sign-in-button");
@@ -106,10 +97,7 @@ describe("SignInScreen Tests", () => {
 
   it("navigates to ForgotPassword when forgot password button is pressed", () => {
     const { getByText } = render(
-      <SignInScreen
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-      />,
+      <SignInScreen navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     const forgotPasswordButton = getByText("Forgot Password?");

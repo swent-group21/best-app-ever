@@ -93,7 +93,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     }
     return Promise.reject(new Error("User not found"));
   }),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   createUser: jest.fn((uid: string, user: DBUser) => {
@@ -102,7 +102,7 @@ jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
     }
     return Promise.reject(new Error("User not found"));
   }),
-}))
+}));
 
 describe("logInWithEmail", () => {
   // Mock navigation

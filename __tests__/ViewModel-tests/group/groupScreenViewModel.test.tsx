@@ -1,9 +1,11 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
 import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
-import { getAllPostsOfGroup, getGroupsByUserId } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  getAllPostsOfGroup,
+  getGroupsByUserId,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 import * as GetFirestoreCtrl from "@/src/models/firebase/GetFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
-
 
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getAllPostsOfGroup: jest.fn(),
@@ -13,7 +15,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
       { gid: "group-2", name: "Group 2", updateDate: new Date() },
     ]),
   ),
-}))
+}));
 
 jest.mock("firebase/firestore", () => {
   return {
@@ -49,13 +51,13 @@ describe("useGroupScreenViewModel", () => {
 
   it("should fetch group challenges and set state", async () => {
     const mockChallenges = [
-      { caption:"caption 1", uid:"1", challenge_description: "desc 1"},
-      { caption:"caption 2", uid:"2", challenge_description: "desc 2"},
+      { caption: "caption 1", uid: "1", challenge_description: "desc 1" },
+      { caption: "caption 2", uid: "2", challenge_description: "desc 2" },
     ];
 
-    jest.spyOn(GetFirestoreCtrl, "getAllPostsOfGroup").mockResolvedValue(
-      mockChallenges,
-    )
+    jest
+      .spyOn(GetFirestoreCtrl, "getAllPostsOfGroup")
+      .mockResolvedValue(mockChallenges);
 
     const { result } = renderHook(() =>
       useGroupScreenViewModel(mockUser, mockRoute),
@@ -66,21 +68,35 @@ describe("useGroupScreenViewModel", () => {
       expect(result.current.groupChallenges.length).toBeGreaterThan(0);
     });
 
-    expect(getAllPostsOfGroup).toHaveBeenCalledWith(
-      "test-group-id",
-    );
+    expect(getAllPostsOfGroup).toHaveBeenCalledWith("test-group-id");
     expect(result.current.groupChallenges).toEqual(mockChallenges);
   });
 
   it("should fetch groups and set state", async () => {
     const mockGroups = [
-      { gid: "group-1", name: "Group 1", challengeTitle: "Title 1", members: ["1", "2"], updateDate: new Date(), location: new GeoPoint(48.8566, 2.3522), radius: 100 },
-      { gid: "group-2", name: "Group 2", challengeTitle: "Title 2", members: ["1", "2"], updateDate: new Date(), location: new GeoPoint(48.8566, 2.3522), radius: 100 },
+      {
+        gid: "group-1",
+        name: "Group 1",
+        challengeTitle: "Title 1",
+        members: ["1", "2"],
+        updateDate: new Date(),
+        location: new GeoPoint(48.8566, 2.3522),
+        radius: 100,
+      },
+      {
+        gid: "group-2",
+        name: "Group 2",
+        challengeTitle: "Title 2",
+        members: ["1", "2"],
+        updateDate: new Date(),
+        location: new GeoPoint(48.8566, 2.3522),
+        radius: 100,
+      },
     ];
 
-    jest.spyOn(GetFirestoreCtrl, "getGroupsByUserId").mockResolvedValue(
-      mockGroups,
-    )
+    jest
+      .spyOn(GetFirestoreCtrl, "getGroupsByUserId")
+      .mockResolvedValue(mockGroups);
 
     const { result } = renderHook(() =>
       useGroupScreenViewModel(mockUser, mockRoute),
@@ -91,9 +107,7 @@ describe("useGroupScreenViewModel", () => {
       expect(result.current.otherGroups.length).toBeGreaterThan(0);
     });
 
-    expect(getGroupsByUserId).toHaveBeenCalledWith(
-      "test-user-id",
-    );
+    expect(getGroupsByUserId).toHaveBeenCalledWith("test-user-id");
     expect(result.current.otherGroups).toEqual(
       mockGroups.filter((group) => group.gid !== "test-group-id"),
     );
@@ -102,19 +116,15 @@ describe("useGroupScreenViewModel", () => {
   it("should handle errors when fetching group challenges", async () => {
     const errorMessage = "Error fetching challenges";
 
-    jest.spyOn(GetFirestoreCtrl, "getAllPostsOfGroup").mockRejectedValue(
-      new Error(errorMessage)
-    )
+    jest
+      .spyOn(GetFirestoreCtrl, "getAllPostsOfGroup")
+      .mockRejectedValue(new Error(errorMessage));
 
     jest.spyOn(console, "error").mockImplementation();
 
-    renderHook(() =>
-      useGroupScreenViewModel(mockUser, mockRoute),
-    );
+    renderHook(() => useGroupScreenViewModel(mockUser, mockRoute));
 
-    expect(getAllPostsOfGroup).toHaveBeenCalledWith(
-      "test-group-id",
-    );
+    expect(getAllPostsOfGroup).toHaveBeenCalledWith("test-group-id");
 
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith(
@@ -127,19 +137,15 @@ describe("useGroupScreenViewModel", () => {
   it("should handle errors when fetching groups", async () => {
     const errorMessage = "Error fetching groups";
 
-    jest.spyOn(GetFirestoreCtrl, "getGroupsByUserId").mockRejectedValue(
-      new Error(errorMessage)
-    );
+    jest
+      .spyOn(GetFirestoreCtrl, "getGroupsByUserId")
+      .mockRejectedValue(new Error(errorMessage));
 
     jest.spyOn(console, "error").mockImplementation();
 
-    renderHook(() =>
-      useGroupScreenViewModel(mockUser, mockRoute),
-    );
+    renderHook(() => useGroupScreenViewModel(mockUser, mockRoute));
 
-    expect(getGroupsByUserId).toHaveBeenCalledWith(
-      "test-user-id",
-    );
+    expect(getGroupsByUserId).toHaveBeenCalledWith("test-user-id");
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith(
         "Error fetching groups: ",
@@ -171,11 +177,11 @@ describe("useGroupScreenViewModel", () => {
 
     jest.spyOn(GetFirestoreCtrl, "getAllPostsOfGroup").mockImplementationOnce(
       (): Promise<any> =>
-      Promise.resolve([
-        { challenge_id: "1", challenge_name: "Challenge 1", date: mockDate1 },
-        { challenge_id: "2", challenge_name: "Challenge 2", date: mockDate2 },
-      ])
-    )
+        Promise.resolve([
+          { challenge_id: "1", challenge_name: "Challenge 1", date: mockDate1 },
+          { challenge_id: "2", challenge_name: "Challenge 2", date: mockDate2 },
+        ]),
+    );
 
     const { result } = renderHook(() =>
       useGroupScreenViewModel(mockUser, mockRoute),

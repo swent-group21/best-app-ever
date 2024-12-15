@@ -3,7 +3,6 @@ import * as GetFirestoreCtrl from "@/src/models/firebase/GetFirestoreCtrl";
 import * as SetFirestoreCtrl from "@/src/models/firebase/SetFirestoreCtrl";
 
 describe("createChallenge", () => {
-
   jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     getUser: jest.fn(() => {
       return Promise.resolve({
@@ -12,15 +11,14 @@ describe("createChallenge", () => {
         email: "test@example.com",
         createdAt: new Date(),
       });
-    })
-  }))
+    }),
+  }));
 
   jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
-    newChallenge: jest.fn()
-  }))
+    newChallenge: jest.fn(),
+  }));
 
   it("should create a challenge and call newChallenge with the correct data", async () => {
-
     // Mock location and challenge data
     const challengeData = {
       caption: "Test Challenge",
@@ -39,22 +37,22 @@ describe("createChallenge", () => {
 
     jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
       (): Promise<any> =>
-      Promise.resolve({
-        uid: "user123",
-        name: "Test User",
-        email: "test@example.com",
-        createdAt: new Date(),
-      })
-    )
+        Promise.resolve({
+          uid: "user123",
+          name: "Test User",
+          email: "test@example.com",
+          createdAt: new Date(),
+        }),
+    );
 
     jest.spyOn(SetFirestoreCtrl, "newChallenge").mockResolvedValue(undefined);
-
   });
 
   it("should log an error when Firestore operations fail", async () => {
-
     // Mock console.error
-    jest.spyOn(GetFirestoreCtrl, "getUser").mockRejectedValue(new Error("Error getting user"));
+    jest
+      .spyOn(GetFirestoreCtrl, "getUser")
+      .mockRejectedValue(new Error("Error getting user"));
 
     const null_location = null;
 

@@ -15,7 +15,7 @@ export function RequestList({
   readonly requests: any[];
   readonly uid: string;
 }) {
-  const { handleAccept, handleDecline } = useRequestListViewModel({uid});
+  const { handleAccept, handleDecline } = useRequestListViewModel({ uid });
 
   return (
     <FlatList

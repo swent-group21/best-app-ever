@@ -5,7 +5,10 @@ import {
   DBGroup,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
-import { getAllPostsOfGroup, getGroupsByUserId } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  getAllPostsOfGroup,
+  getGroupsByUserId,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * View model for the group screen.
@@ -35,16 +38,15 @@ export default function useGroupScreenViewModel(
     if (user.uid) {
       const fetchGroupChallenges = async () => {
         try {
-          await getAllPostsOfGroup(groupId)
-            .then((challenge: DBChallenge[]) => {
-              // Sort challenges by date
-              const sortedChallenges = challenge.sort((a, b) =>
-                a.date && b.date
-                  ? new Date(b.date).getTime() - new Date(a.date).getTime()
-                  : 0,
-              );
-              setGroupChallenges(sortedChallenges);
-            });
+          await getAllPostsOfGroup(groupId).then((challenge: DBChallenge[]) => {
+            // Sort challenges by date
+            const sortedChallenges = challenge.sort((a, b) =>
+              a.date && b.date
+                ? new Date(b.date).getTime() - new Date(a.date).getTime()
+                : 0,
+            );
+            setGroupChallenges(sortedChallenges);
+          });
         } catch (error) {
           console.error("Error fetching challenges: ", error);
         }

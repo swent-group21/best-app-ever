@@ -3,7 +3,10 @@ import { launchImageLibraryAsync } from "expo-image-picker";
 import { DBUser } from "../../models/firebase/TypeFirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 import { getProfilePicture } from "@/src/models/firebase/GetFirestoreCtrl";
-import { setName, setProfilePicture } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  setName,
+  setProfilePicture,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * ViewModel for the profile screen.

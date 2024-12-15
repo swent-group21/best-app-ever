@@ -11,12 +11,12 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   }),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   setName: jest.fn(),
   setProfilePicture: jest.fn(),
-}))
+}));
 
 // Mock ImagePicker
 jest.mock("expo-image-picker", () => ({
@@ -103,7 +103,6 @@ describe("SetUsernameViewModel", () => {
   });
 
   it("should call FirestoreCtrl methods and reset errorMessage on successful upload", async () => {
-    
     jest.spyOn(SetFirestoreCtrl, "setName").mockResolvedValue(null);
     jest.spyOn(SetFirestoreCtrl, "setProfilePicture").mockResolvedValue(null);
 
@@ -132,7 +131,9 @@ describe("SetUsernameViewModel", () => {
     // Mock console.error
     jest.spyOn(console, "error").mockImplementation(() => {});
 
-    jest.spyOn(SetFirestoreCtrl, "setName").mockRejectedValue(new Error("Error setting name"));
+    jest
+      .spyOn(SetFirestoreCtrl, "setName")
+      .mockRejectedValue(new Error("Error setting name"));
 
     const { result } = renderHook(() =>
       SetUsernameViewModel(mockUser, mockSetUser),

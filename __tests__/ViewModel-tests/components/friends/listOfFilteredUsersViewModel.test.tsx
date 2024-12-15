@@ -1,23 +1,22 @@
-import {
-  waitFor,
-  renderHook,
-  act,
-} from "@testing-library/react-native";
+import { waitFor, renderHook, act } from "@testing-library/react-native";
 import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { isFriend, isRequested } from "@/src/models/firebase/GetFirestoreCtrl";
-import { addFriend, removeFriendRequest } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  addFriend,
+  removeFriendRequest,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Mock FirestoreCtrl methods
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   isFriend: jest.fn((uid, friendId) => Promise.resolve(friendId === "1")), // John is a friend
   isRequested: jest.fn(() => Promise.resolve(false)),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   addFriend: jest.fn(() => Promise.resolve()),
   removeFriendRequest: jest.fn(() => Promise.resolve()),
-}))
+}));
 
 const mockFilteredUsers: DBUser[] = [
   {
@@ -38,7 +37,6 @@ const mockFilteredUsers: DBUser[] = [
 
 // Mock du ViewModel
 describe("ListOfFilteredUsers ViewModel", () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(console, "info").mockImplementation(() => {});
@@ -100,9 +98,6 @@ describe("ListOfFilteredUsers ViewModel", () => {
       await result.current.handleRemove("1");
     });
 
-    expect(removeFriendRequest).toHaveBeenCalledWith(
-      "user-uid",
-      "1",
-    );
+    expect(removeFriendRequest).toHaveBeenCalledWith("user-uid", "1");
   });
 });

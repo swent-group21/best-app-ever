@@ -41,27 +41,25 @@ export const logInWithEmail = async (
       // Checks that the user exists in auth
       if (response.user) {
         // Checks that the user's info exists in the database
-        const user = await getUser(response.user.uid)
-          .catch(() => {
-            // User might not exist in the database
-              createUser(response.user.uid, {
-                uid: response.user.uid || "",
-                name: response.user.displayName || "",
-                email: response.user.email || "",
-                createdAt: new Date(),
-                groups: [],
-              })
-              .then(() => {
-                alert("User did not exist. Please set up your profile.");
-                setUser({
-                  uid: response.user.uid || "",
-                  name: response.user.displayName || "",
-                  email: response.user.email || "",
-                  createdAt: new Date(),
-                });
-                navigation.navigate("SetUser");
-              });
+        const user = await getUser(response.user.uid).catch(() => {
+          // User might not exist in the database
+          createUser(response.user.uid, {
+            uid: response.user.uid || "",
+            name: response.user.displayName || "",
+            email: response.user.email || "",
+            createdAt: new Date(),
+            groups: [],
+          }).then(() => {
+            alert("User did not exist. Please set up your profile.");
+            setUser({
+              uid: response.user.uid || "",
+              name: response.user.displayName || "",
+              email: response.user.email || "",
+              createdAt: new Date(),
+            });
+            navigation.navigate("SetUser");
           });
+        });
         // User exists in both auth and database
         if (user) {
           setUser(user);
@@ -110,14 +108,14 @@ export const signUpWithEmail = async (
 
         // Creates user in firestore
         createUser(userCredential.user.uid, userData)
-        .then(() => {
-          setUser(userData);
-          navigation.navigate("SetUser");
-        })
-        .catch((error) => {
-          alert("Failed to create user: " + error);
-          console.error("Failed to create user: ", error);
-        });
+          .then(() => {
+            setUser(userData);
+            navigation.navigate("SetUser");
+          })
+          .catch((error) => {
+            alert("Failed to create user: " + error);
+            console.error("Failed to create user: ", error);
+          });
       })
       .catch((error) => {
         alert("Failed to create user: " + error);
@@ -147,15 +145,15 @@ export const signInAsGuest = async (
         createdAt: new Date(),
       };
       createUser(userCredential.user.uid, userData)
-      .then(() => {
-        setUser(userData);
-        navigation.navigate("Home");
-      })
-      .catch((error) => {
-        alert("Failed to create user: " + error);
+        .then(() => {
+          setUser(userData);
+          navigation.navigate("Home");
+        })
+        .catch((error) => {
+          alert("Failed to create user: " + error);
 
-        console.error("Failed to create user: ", error);
-      });
+          console.error("Failed to create user: ", error);
+        });
     })
     .catch((error) => {
       alert("Failed to sign in as guest: " + error);

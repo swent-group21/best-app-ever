@@ -8,10 +8,7 @@ import {
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedIconButton } from "@/src/views/components/theme/themed_icon_button";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
 
 const { width, height } = Dimensions.get("window");

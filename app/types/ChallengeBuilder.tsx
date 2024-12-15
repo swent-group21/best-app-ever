@@ -1,11 +1,11 @@
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "@/src/models/firebase/Firebase";
 import { LocationObject } from "expo-location";
 import { getImageUrl, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
-import { newChallenge, updateGroup } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  newChallenge,
+  updateGroup,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * Used to create a Challenge and store it in Firestore DB

@@ -10,7 +10,13 @@ import {
   where,
 } from "@/src/models/firebase/Firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { DBChallenge, DBChallengeDescription, DBComment, DBGroup, DBUser } from "./TypeFirestoreCtrl";
+import {
+  DBChallenge,
+  DBChallengeDescription,
+  DBComment,
+  DBGroup,
+  DBUser,
+} from "./TypeFirestoreCtrl";
 
 /**
  * Retrieves a user document from Firestore by UID.
@@ -45,7 +51,6 @@ export async function getUser(userId?: string): Promise<DBUser> {
   }
 }
 
-
 /**
  * Get the url of an image
  * @param id_picture The id of the image
@@ -56,7 +61,6 @@ export async function getImageUrl(id_picture: string): Promise<string> {
   const url = await getDownloadURL(storageRef);
   return url;
 }
-
 
 /**
  * Get the name of a user by their UID.
@@ -78,7 +82,9 @@ export async function getName(id: string): Promise<string | undefined> {
  * @param id The UID of the user.
  * @returns The ID of the image.
  */
-export async function getProfilePicture(id: string): Promise<string | undefined> {
+export async function getProfilePicture(
+  id: string,
+): Promise<string | undefined> {
   try {
     const user = await getUser(id);
     return user?.image_id;
@@ -110,17 +116,19 @@ export async function getChallenge(challengeId: string): Promise<DBChallenge> {
     throw error;
   }
 }
-                                                                       
+
 /**
  * Retrieves all challenges created by a specific user.
  * @param uid The UID of the user whose challenges are to be fetched.
  * @returns A promise that resolves to an array of challenges.
  */
-export async function getChallengesByUserId(uid: string): Promise<DBChallenge[]> {
+export async function getChallengesByUserId(
+  uid: string,
+): Promise<DBChallenge[]> {
   try {
     const challengesRef = collection(firestore, "challenges");
     const q = query(challengesRef, where("uid", "==", uid));
-                                                                       
+
     const querySnapshot = await getDocs(q);
     const challenges = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -137,7 +145,7 @@ export async function getChallengesByUserId(uid: string): Promise<DBChallenge[]>
     throw error;
   }
 }
-                                                                       
+
 /**
  * Retrieves the first k challenges from Firestore.
  * @param k The number of challenges to retrieve.
@@ -162,7 +170,7 @@ export async function getKChallenges(k: number): Promise<DBChallenge[]> {
     throw error;
   }
 }
-                                                                       
+
 /**
  * Retrieves all comments of a specific challenge.
  * @param challengeId The ID of the challenge to get comments for.
@@ -190,7 +198,7 @@ export async function getCommentsOf(challengeId: string): Promise<DBComment[]> {
     throw error;
   }
 }
-                                                                       
+
 /**
  * Retrieves all groups assigned to a specific user.
  * @param uid The UID of the user whose groups are to be fetched.
@@ -200,20 +208,20 @@ export async function getGroupsByUserId(uid: string): Promise<DBGroup[]> {
   try {
     const userRef = doc(firestore, "users", uid);
     const userDoc = await getDoc(userRef);
-                                                                       
+
     const userData = userDoc.data() as DBUser;
-                                                                       
+
     if (!userData.groups || userData.groups.length === 0) {
       return [];
     }
-                                                                       
+
     // Retrieve all groups using the group IDs
     const groupsRef = collection(firestore, "groups");
-                                                                       
+
     const q = query(groupsRef, where("name", "in", userData.groups));
-                                                                       
+
     const groupSnapshots = await getDocs(q);
-                                                                       
+
     // Map the results into an array of DBGroup
     const dbGroups: DBGroup[] = groupSnapshots.docs.map(
       (doc) =>
@@ -222,14 +230,14 @@ export async function getGroupsByUserId(uid: string): Promise<DBGroup[]> {
           ...doc.data(),
         }) as DBGroup,
     );
-                                                                       
+
     return dbGroups;
   } catch (error) {
     console.error("Error getting groups by user ID: ", error);
     throw error;
   }
 }
-                                                                       
+
 /**
  * Retrieves all members assigned to a specific group.
  * @param uid The UID of the group whose members are to be fetched.
@@ -239,19 +247,19 @@ export async function getUsersInGroup(gid: string): Promise<DBUser[]> {
   try {
     const groupRef = doc(firestore, "groups", gid);
     const groupDoc = await getDoc(groupRef);
-                                                                       
+
     const userData = groupDoc.data() as DBGroup;
-                                                                       
+
     if (!userData.members || userData.members.length === 0) {
       return [];
     }
-                                                                       
+
     // Retrieve all users using the user IDs
     const usersRef = collection(firestore, "users");
     const q = query(usersRef, where("uid", "in", userData.members));
-                                                                       
+
     const usersSnapshots = await getDocs(q);
-                                                                       
+
     // Map the results into an array of DBUser
     const dbUsers: DBUser[] = usersSnapshots.docs.map(
       (doc) =>
@@ -260,20 +268,22 @@ export async function getUsersInGroup(gid: string): Promise<DBUser[]> {
           ...doc.data(),
         }) as DBUser,
     );
-                                                                       
+
     return dbUsers;
   } catch (error) {
     console.error("Error getting groups by user ID: ", error);
     throw error;
   }
 }
-                                                                       
+
 /**
  * Retrieves all posts of a specific group.
  * @param groupId The ID of the group to get posts for.
  * @returns A promise that resolves to an array of posts.
  */
-export async function getAllPostsOfGroup(groupId: string): Promise<DBChallenge[]> {
+export async function getAllPostsOfGroup(
+  groupId: string,
+): Promise<DBChallenge[]> {
   try {
     const postsRef = collection(firestore, "challenges");
     const q = query(postsRef, where("group_id", "==", groupId));
@@ -369,7 +379,7 @@ export async function getAllUsers(): Promise<DBUser[]> {
         ...data,
       } as DBUser;
     });
-                                                          
+
     return users;
   } catch (error) {
     console.error("Error getting all users: ", error);
@@ -404,8 +414,7 @@ export async function getRequestedFriends(userId: string): Promise<DBUser[]> {
   try {
     const user = await getUser(userId);
     const friends = await Promise.all(
-      user.userRequestedFriends?.map(async (id) => await getUser(id)) ||
-        [],
+      user.userRequestedFriends?.map(async (id) => await getUser(id)) || [],
     );
     return friends;
   } catch (error) {
@@ -423,8 +432,7 @@ export async function getFriendRequests(userId: string): Promise<DBUser[]> {
   try {
     const user = await getUser(userId);
     const friends = await Promise.all(
-      user.friendsRequestedUser?.map(async (id) => await getUser(id)) ||
-        [],
+      user.friendsRequestedUser?.map(async (id) => await getUser(id)) || [],
     );
     return friends;
   } catch (error) {
@@ -448,7 +456,7 @@ export async function getPostsByChallengeTitle(
       postsRef,
       where("challenge_description", "==", challengeTitle),
     );
-                                                                      
+
     const querySnapshot = await getDocs(q);
     const posts = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -471,7 +479,10 @@ export async function getPostsByChallengeTitle(
  * @param friendId The UID of the friend to check.
  * @returns if the user is a friend of another user.
  */
-export async function isFriend(userId: string, friendId: string): Promise<boolean> {
+export async function isFriend(
+  userId: string,
+  friendId: string,
+): Promise<boolean> {
   try {
     const user = await getUser(userId);
     return user.friends?.includes(friendId);
@@ -486,7 +497,10 @@ export async function isFriend(userId: string, friendId: string): Promise<boolea
  * @param friendId The UID of the friend to check.
  * @returns if the user has requested to be friends with another user.
  */
-export async function isRequested(userId: string, friendId: string): Promise<boolean> {
+export async function isRequested(
+  userId: string,
+  friendId: string,
+): Promise<boolean> {
   try {
     const user = await getUser(userId);
     return user.userRequestedFriends?.includes(friendId);
@@ -504,9 +518,9 @@ export async function isRequested(userId: string, friendId: string): Promise<boo
 export async function getFriendSuggestions(uid: string): Promise<DBUser[]> {
   const allUsers = await getAllUsers();
   const userFriends = await getFriends(uid);
-                                                                            
+
   const friendSuggestions: DBUser[] = [];
-                                                                            
+
   // get friends of friends
   for (const friend of userFriends) {
     const friendsOfFriend = await getFriends(friend.uid);
@@ -516,7 +530,7 @@ export async function getFriendSuggestions(uid: string): Promise<DBUser[]> {
       }
     }
   }
-                                                                            
+
   // complete with random users
   const neededSuggestions = 10 - friendSuggestions.length;
   if (neededSuggestions > 0) {
@@ -529,9 +543,9 @@ export async function getFriendSuggestions(uid: string): Promise<DBUser[]> {
           !Array.from(friendSuggestions).some((f) => f.uid === user.uid),
       )
       .slice(0, neededSuggestions);
-                                                                            
+
     randomUsers.forEach((user) => friendSuggestions.push(user));
   }
-                                                                            
+
   return friendSuggestions.slice(0, 10);
 }

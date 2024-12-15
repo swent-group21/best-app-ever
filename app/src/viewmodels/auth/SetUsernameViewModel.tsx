@@ -1,7 +1,10 @@
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { setName, setProfilePicture } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  setName,
+  setProfilePicture,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * ViewModel for the SetUsername screen.

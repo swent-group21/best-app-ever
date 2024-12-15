@@ -13,28 +13,24 @@ import { setName } from "@/src/models/firebase/SetFirestoreCtrl";
 const Stack = createNativeStackNavigator();
 
 jest.mock("@/types/Auth", () => ({
-  logInWithEmail: jest.fn(
-    (email, password, navigation, setUser) => {
-      setUser({
-        uid: "123",
-        email: email,
-        name: "Test User",
-        createdAt: new Date(),
-      });
-      navigation.navigate("Home");
-    },
-  ),
-  signUpWithEmail: jest.fn(
-    (name, email, password, navigation, setUser) => {
-      setUser({
-        uid: "123",
-        email: email,
-        name: name,
-        createdAt: new Date(),
-      });
-      navigation.navigate("Home");
-    },
-  ),
+  logInWithEmail: jest.fn((email, password, navigation, setUser) => {
+    setUser({
+      uid: "123",
+      email: email,
+      name: "Test User",
+      createdAt: new Date(),
+    });
+    navigation.navigate("Home");
+  }),
+  signUpWithEmail: jest.fn((name, email, password, navigation, setUser) => {
+    setUser({
+      uid: "123",
+      email: email,
+      name: name,
+      createdAt: new Date(),
+    });
+    navigation.navigate("Home");
+  }),
   isValidEmail: jest.fn((email) => true),
 }));
 
@@ -52,7 +48,7 @@ jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
       name: name,
     });
   }),
-}))
+}));
 
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getProfilePicture: jest.fn((id) => {
@@ -71,7 +67,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getGroupsByUserId: jest.fn((id) => {
     return [];
   }),
-}))
+}));
 
 jest.mock("expo-image-picker", () => ({
   launchImageLibraryAsync: jest.fn(async () => ({
@@ -135,20 +131,10 @@ const SignInTest = ({ setUser }: { setUser: jest.Mock }) => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="SignIn">
-          {(props) => (
-            <SignInScreen
-              {...props}
-              setUser={setUser}
-            />
-          )}
+          {(props) => <SignInScreen {...props} setUser={setUser} />}
         </Stack.Screen>
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              user={mockUser}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockUser} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -165,20 +151,10 @@ const SignUpTest = ({ setUser }: { setUser: jest.Mock }) => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="SignUp">
-          {(props) => (
-            <SignUp
-              {...props}
-              setUser={setUser}
-            />
-          )}
+          {(props) => <SignUp {...props} setUser={setUser} />}
         </Stack.Screen>
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              user={mockUser}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockUser} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -204,12 +180,7 @@ const SetUsernameTest = ({ setUser }: { setUser: jest.Mock }) => {
           )}
         </Stack.Screen>
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              user={mockUserFull}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockUserFull} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -226,12 +197,7 @@ const HomeTest = ({ setUser }: { setUser: jest.Mock }) => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              user={mockUserConsistency}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockUserConsistency} />}
         </Stack.Screen>
         <Stack.Screen name="Profile">
           {(props) => (
@@ -338,11 +304,7 @@ describe("SetUsernameScreen Tests", () => {
 
     // Verify setName was called
     await waitFor(() => {
-      expect(setName).toHaveBeenCalledWith(
-        "123",
-        "TestUser2",
-        mockSetUserFull,
-      );
+      expect(setName).toHaveBeenCalledWith("123", "TestUser2", mockSetUserFull);
     });
 
     // Wait for the navigation to HomeScreen

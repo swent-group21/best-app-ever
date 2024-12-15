@@ -1,9 +1,10 @@
 import { waitFor, renderHook, act } from "@testing-library/react-native";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
-import { getUser, getLikesOf, getCommentsOf } from "@/src/models/firebase/GetFirestoreCtrl";
+  getUser,
+  getLikesOf,
+  getCommentsOf,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 import { updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
 import { useChallengeViewModel } from "@/src/viewmodels/components/posts/ChallengeViewModel";
 
@@ -23,13 +24,13 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
       created_at: new Date(),
     },
   ]),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
-  updateLikesOf: jest.fn().mockResolvedValue(
-    ["challenge123", ["12345", "67890", "user123"]]
-  )
-}))
+  updateLikesOf: jest
+    .fn()
+    .mockResolvedValue(["challenge123", ["12345", "67890", "user123"]]),
+}));
 
 const mockChallenge: DBChallenge = {
   caption: "challengeName",
@@ -76,9 +77,7 @@ describe("use Challenge ViewModel", () => {
 
     expect(getUser).toHaveBeenCalledWith("user123");
     expect(getLikesOf).toHaveBeenCalledWith("challenge123");
-    expect(getCommentsOf).toHaveBeenCalledWith(
-      "challenge123",
-    );
+    expect(getCommentsOf).toHaveBeenCalledWith("challenge123");
 
     expect(result.current.user).toEqual({
       uid: "user123",
@@ -134,9 +133,10 @@ describe("use Challenge ViewModel", () => {
       await result.current.handleDoubleTap(); // to call handleLikePress
     });
 
-    expect(updateLikesOf).toHaveBeenCalledWith(
-      "challenge123",
-      ["12345", "67890", "user123"],
-    );
+    expect(updateLikesOf).toHaveBeenCalledWith("challenge123", [
+      "12345",
+      "67890",
+      "user123",
+    ]);
   });
 });

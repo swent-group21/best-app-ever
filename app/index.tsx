@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Nav } from "@/navigation/Navigation";
 import { DBUser } from "./src/models/firebase/TypeFirestoreCtrl";
-import { backgroundTask, uploadTaskScheduled } from "./src/models/firebase/LocalStorageCtrl";
+import {
+  backgroundTask,
+  uploadTaskScheduled,
+} from "./src/models/firebase/LocalStorageCtrl";
 import { NavigationIndependentTree } from "@react-navigation/native";
 import "../gesture-handler";
 import { registerRootComponent } from "expo";
@@ -21,11 +24,7 @@ function App() {
 
   return (
     <NavigationIndependentTree>
-      <Nav
-        isLoggedIn={isLoggedIn}
-        user={user}
-        setUser={setUser}
-      />
+      <Nav isLoggedIn={isLoggedIn} user={user} setUser={setUser} />
     </NavigationIndependentTree>
   );
 }

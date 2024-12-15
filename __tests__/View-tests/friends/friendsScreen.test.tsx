@@ -21,13 +21,13 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getFriendRequests: jest.fn(),
   isFriend: jest.fn(),
   isRequested: jest.fn(),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   addFriend: jest.fn(),
   acceptFriend: jest.fn(),
   rejectFriend: jest.fn(),
-}))
+}));
 
 const mockFilteredUsers: DBUser[] = [
   {
@@ -65,11 +65,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(
-      <FriendsScreen
-        navigation={mockNavigation}
-      />,
-    );
+    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
 
     expect(getByText("Your friends")).toBeTruthy();
     expect(getByText("Requests")).toBeTruthy();
@@ -89,11 +85,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(
-      <FriendsScreen
-        navigation={mockNavigation}
-      />,
-    );
+    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
 
     expect(getByText("Your friends")).toBeTruthy();
     expect(getByText("Friend 1")).toBeTruthy();
@@ -112,11 +104,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(
-      <FriendsScreen
-        navigation={mockNavigation}
-      />,
-    );
+    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
 
     expect(getByText("Strive is better with friends")).toBeTruthy();
     expect(getByText("Your friends")).toBeTruthy();
@@ -151,11 +139,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(
-      <FriendsScreen
-        navigation={mockNavigation}
-      />,
-    );
+    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
 
     // Vérifie que les suggestions sont affichées
     expect(getByText("Suggestions for you")).toBeTruthy();
@@ -175,11 +159,7 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(
-      <FriendsScreen
-        navigation={mockNavigation}
-      />,
-    );
+    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
 
     expect(getByText("Suggestions for you")).toBeTruthy();
   });

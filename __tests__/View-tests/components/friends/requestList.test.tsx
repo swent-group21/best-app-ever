@@ -10,7 +10,7 @@ jest.mock("@/src/viewmodels/components/friends/RequestListViewModel", () => ({
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   acceptFriend: jest.fn(),
   rejectFriend: jest.fn(),
-}))
+}));
 
 describe("RequestList Component", () => {
   const mockUseRequestListViewModel =
@@ -29,10 +29,7 @@ describe("RequestList Component", () => {
     });
 
     const { getByTestId } = render(
-      <RequestList
-        requests={requests}
-        uid={uid}
-      />,
+      <RequestList requests={requests} uid={uid} />,
     );
 
     expect(getByTestId("friend-request-list")).toBeTruthy();
@@ -50,10 +47,7 @@ describe("RequestList Component", () => {
     });
 
     const { getByTestId } = render(
-      <RequestList
-        requests={requests}
-        uid={uid}
-      />,
+      <RequestList requests={requests} uid={uid} />,
     );
 
     const acceptButton = getByTestId("accept-button-0");

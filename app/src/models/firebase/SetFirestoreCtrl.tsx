@@ -13,7 +13,12 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 import NetInfo from "@react-native-community/netinfo";
 
 import { DBUser, DBChallenge, DBComment, DBGroup } from "./TypeFirestoreCtrl";
-import { storeChallengeLocally, storeCommentLocally, storeGroupLocally, storeImageLocally } from "@/src/models/firebase/LocalStorageCtrl";
+import {
+  storeChallengeLocally,
+  storeCommentLocally,
+  storeGroupLocally,
+  storeImageLocally,
+} from "@/src/models/firebase/LocalStorageCtrl";
 import { arrayUnion, updateDoc } from "firebase/firestore";
 import { getUser } from "./GetFirestoreCtrl";
 
@@ -25,7 +30,10 @@ export let uploadTaskScheduled = false;
  * @param userData The user data to store or update.
  * @returns A promise that resolves when the user is created or updated.
  */
-export async function createUser(userId: string, userData: DBUser): Promise<void> {
+export async function createUser(
+  userId: string,
+  userData: DBUser,
+): Promise<void> {
   try {
     userData.uid = userId;
     await setDoc(doc(firestore, "users", userId), userData);
@@ -39,7 +47,10 @@ export async function createUser(userId: string, userData: DBUser): Promise<void
  * @param imageUri The URI of the image to upload.
  * @returns The ID of the image.
  */
-export async function uploadImage(imageUri: string, id_picture?: string): Promise<string> {
+export async function uploadImage(
+  imageUri: string,
+  id_picture?: string,
+): Promise<string> {
   try {
     if (!imageUri) {
       throw new Error("No image URI provided.");
@@ -132,10 +143,7 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
   try {
     const networkState = await NetInfo.fetch();
     if (networkState.isConnected && networkState.isInternetReachable) {
-      console.log(
-        "Network State in newChallenge: ",
-        networkState.isConnected,
-      );
+      console.log("Network State in newChallenge: ", networkState.isConnected);
       if (challengeData.challenge_id) {
         const duplicate_query = query(
           collection(firestore, "challenges"),
@@ -157,7 +165,7 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
     try {
       console.log("Challenge stored locally:", challengeData);
       // Schedule background retry
-      await storeChallengeLocally(challengeData)
+      await storeChallengeLocally(challengeData);
       uploadTaskScheduled = true;
     } catch (storageError) {
       console.error("Error storing challenge locally:", storageError);
@@ -190,10 +198,10 @@ export async function newGroup(groupData: DBGroup): Promise<void> {
       console.log("Group successfully uploaded to Firestore:", docRef.id);
       return;
     }
-                                                                               
+
     try {
       // 2. Store group data locally for later upload
-      await storeGroupLocally(groupData)
+      await storeGroupLocally(groupData);
       console.log("Group stored locally:", groupData);
       // Schedule background retry if offline
       uploadTaskScheduled = true;
@@ -205,36 +213,42 @@ export async function newGroup(groupData: DBGroup): Promise<void> {
     throw error;
   }
 }
-                                                                               
+
 /**
  * Update a group in firestore with last post date
  * @param gid The ID of the group to update.
  * @param updateTime The time of the last post.
  * @returns A promise that resolves when the group is updated.
  */
-export async function updateGroup(gid: string, updateTime: Date): Promise<void> {
+export async function updateGroup(
+  gid: string,
+  updateTime: Date,
+): Promise<void> {
   try {
     const groupRef = doc(firestore, "groups", gid);
     const docSnap = await getDoc(groupRef);
     const groupData = docSnap.data() as DBGroup;
-                                                                               
+
     groupData.updateDate = updateTime;
     groupData.gid = gid;
-                                                                               
+
     await setDoc(doc(firestore, "groups", gid), groupData);
   } catch (error) {
     console.error("Error updating group: ", error);
     throw error;
   }
 }
-                                                                               
+
 /**
  * Update a group in firestore with last post date
  * @param gid The ID of the group to update.
  * @param updateTime The time of the last post.
  * @returns A promise that resolves when the group is updated.
  */
-export async function addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
+export async function addGroupToMemberGroups(
+  uid: string,
+  group_name: string,
+): Promise<void> {
   try {
     await updateDoc(doc(firestore, "users", uid), {
       groups: arrayUnion(group_name),
@@ -279,14 +293,16 @@ export async function appendComment(commentData: DBComment): Promise<void> {
   }
 }
 
-
 /**
  * Updates the likes of a challenge.
  * @param challengeId The ID of the challenge to update likes for.
  * @param likes The new list of likes to set.
  * @returns A promise that resolves when the likes are updated.
  */
-export async function updateLikesOf(challengeId: string, likes: string[]): Promise<void> {
+export async function updateLikesOf(
+  challengeId: string,
+  likes: string[],
+): Promise<void> {
   try {
     const challengeRef = doc(firestore, "challenges", challengeId);
     await setDoc(challengeRef, { likes }, { merge: true });
@@ -302,21 +318,24 @@ export async function updateLikesOf(challengeId: string, likes: string[]): Promi
  * @param friendId The UID of the friend to add.
  * @returns A promise that resolves when the friend is added.
  */
-export async function addFriend(userId: string, friendId: string): Promise<void> {
+export async function addFriend(
+  userId: string,
+  friendId: string,
+): Promise<void> {
   try {
     const user = await getUser(userId);
     const friend = await getUser(friendId);
-                                                                     
+
     user.userRequestedFriends = user.userRequestedFriends || [];
     friend.friendsRequestedUser = friend.friendsRequestedUser || [];
-                                                                     
+
     if (user.friends?.includes(friendId)) {
       return;
     }
-                                                                     
+
     user.userRequestedFriends?.push(friendId);
     friend.friendsRequestedUser?.push(userId);
-                                                                     
+
     await createUser(userId, user);
     await createUser(friendId, friend);
   } catch (error) {
@@ -331,28 +350,31 @@ export async function addFriend(userId: string, friendId: string): Promise<void>
  * @param friendId The UID of the friend to accept.
  * @returns A promise that resolves when the friend request is accepted.
  * */
-export async function acceptFriend(userId: string, friendId: string): Promise<void> {
+export async function acceptFriend(
+  userId: string,
+  friendId: string,
+): Promise<void> {
   try {
     const user = await getUser(userId);
     const friend = await getUser(friendId);
-                                                                         
+
     user.friends = user.friends || [];
     friend.friends = friend.friends || [];
-                                                                         
+
     if (user.friends?.includes(friendId)) {
       return;
     }
-                                                                         
+
     user.friends?.push(friendId);
     friend.friends?.push(userId);
-                                                                         
+
     user.friendsRequestedUser = user.friendsRequestedUser?.filter(
       (id) => id !== friendId,
     );
     friend.userRequestedFriends = friend.userRequestedFriends?.filter(
       (id) => id !== userId,
     );
-                                                                         
+
     await createUser(userId, user);
     await createUser(friendId, friend);
   } catch (error) {
@@ -366,21 +388,24 @@ export async function acceptFriend(userId: string, friendId: string): Promise<vo
  * @param friendId The UID of the user to reject.
  * @returns A promise that resolves when the friend request is rejected.
  * */
-export async function rejectFriend(userId: string, friendId: string): Promise<void> {
+export async function rejectFriend(
+  userId: string,
+  friendId: string,
+): Promise<void> {
   try {
     const user = await getUser(userId);
     const friend = await getUser(friendId);
-                                                                         
+
     user.userRequestedFriends = user.userRequestedFriends || [];
     friend.friendsRequestedUser = friend.friendsRequestedUser || [];
-                                                                         
+
     user.friendsRequestedUser = user.friendsRequestedUser?.filter(
       (id) => id !== friendId,
     );
     friend.userRequestedFriends = friend.userRequestedFriends?.filter(
       (id) => id !== userId,
     );
-                                                                         
+
     await createUser(userId, user);
     await createUser(friendId, friend);
   } catch (error) {
@@ -395,21 +420,24 @@ export async function rejectFriend(userId: string, friendId: string): Promise<vo
  * @param friendId The UID of the friend to remove.
  * @returns A promise that resolves when the friend is removed.
  */
-export async function removeFriendRequest(userId: string, friendId: string): Promise<void> {
+export async function removeFriendRequest(
+  userId: string,
+  friendId: string,
+): Promise<void> {
   try {
     const user = await getUser(userId);
     const friend = await getUser(friendId);
-                                                                             
+
     user.friendsRequestedUser = user.friendsRequestedUser || [];
     friend.userRequestedFriends = friend.userRequestedFriends || [];
-                                                                             
+
     user.userRequestedFriends = user.userRequestedFriends?.filter(
       (id) => id !== friendId,
     );
     friend.friendsRequestedUser = friend.friendsRequestedUser?.filter(
       (id) => id !== userId,
     );
-                                                                             
+
     await createUser(userId, user);
     await createUser(friendId, friend);
   } catch (error) {

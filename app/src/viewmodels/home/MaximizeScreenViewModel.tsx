@@ -5,8 +5,16 @@ import {
   DBUser,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
-import { getCommentsOf, getGroup, getLikesOf, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
-import { appendComment, updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  getCommentsOf,
+  getGroup,
+  getLikesOf,
+  getUser,
+} from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  appendComment,
+  updateLikesOf,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * View model for the maximize screen.
@@ -44,13 +52,12 @@ export function useMaximizeScreenViewModel(
     });
 
     // Fetch comments
-    getCommentsOf(challenge.challenge_id ?? "")
-      .then((comments) => {
-        const sortedComments = comments.sort(
-          (a, b) => a.created_at.getTime() - b.created_at.getTime(),
-        );
-        setCommentList(sortedComments);
-      });
+    getCommentsOf(challenge.challenge_id ?? "").then((comments) => {
+      const sortedComments = comments.sort(
+        (a, b) => a.created_at.getTime() - b.created_at.getTime(),
+      );
+      setCommentList(sortedComments);
+    });
 
     // Fetch likes
     getLikesOf(challenge.challenge_id ?? "").then((likes) => {

@@ -6,15 +6,17 @@ import {
   act,
 } from "@testing-library/react-native";
 import { useRequestListViewModel } from "@/src/viewmodels/components/friends/RequestListViewModel";
-import { acceptFriend, rejectFriend } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  acceptFriend,
+  rejectFriend,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   acceptFriend: jest.fn(),
   rejectFriend: jest.fn(),
-}))
+}));
 
 describe("RequestList ViewModel", () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(console, "info").mockImplementation(() => {});
@@ -24,7 +26,7 @@ describe("RequestList ViewModel", () => {
     // Render the hook with basics values
     const { result } = renderHook(() =>
       useRequestListViewModel({
-        uid: "user-uid"
+        uid: "user-uid",
       }),
     );
 
@@ -32,10 +34,7 @@ describe("RequestList ViewModel", () => {
       await result.current.handleAccept("user1");
     });
 
-    expect(acceptFriend).toHaveBeenCalledWith(
-      "user-uid",
-      "user1",
-    );
+    expect(acceptFriend).toHaveBeenCalledWith("user-uid", "user1");
   });
 
   it("handles accepting a friend", async () => {
@@ -50,9 +49,6 @@ describe("RequestList ViewModel", () => {
       await result.current.handleDecline("user2");
     });
 
-    expect(rejectFriend).toHaveBeenCalledWith(
-      "user-uid",
-      "user2",
-    );
+    expect(rejectFriend).toHaveBeenCalledWith("user-uid", "user2");
   });
 });

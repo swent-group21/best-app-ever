@@ -1,11 +1,14 @@
-
 import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 
-import { DBUser, DBGroup, DBComment, DBChallenge } from "@/src/models/firebase/TypeFirestoreCtrl";
+import {
+  DBUser,
+  DBGroup,
+  DBComment,
+  DBChallenge,
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import { uploadImage } from "./SetFirestoreCtrl";
-
 
 // Unique keys for AsyncStorage
 const CHALLENGE_STORAGE_KEY = "@challenges";
@@ -16,8 +19,8 @@ const COMMENT_STORAGE_KEY = "@comment";
 export let uploadTaskScheduled = false;
 
 /*
-* Background checker
-*/
+ * Background checker
+ */
 export async function backgroundTask() {
   while (true) {
     try {
@@ -40,7 +43,7 @@ export async function backgroundTask() {
       await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait even on error to avoid busy loop
     }
   }
-};
+}
 
 /*
  * Function to start the uploading task
@@ -55,7 +58,7 @@ export async function scheduleUploadTask() {
   } catch (error) {
     console.error("Error in background task:", error);
   }
-};
+}
 
 export async function getStoredImageUploads(): Promise<any[]> {
   const storedData = await AsyncStorage.getItem(IMAGE_STORAGE_KEY);
@@ -77,7 +80,6 @@ export async function getStoredComments(): Promise<DBComment[]> {
   return storedData ? JSON.parse(storedData) : [];
 }
 
-
 /**
  * Stores image upload data in AsyncStorage.
  * @param id_picture The id of the image to upload.
@@ -96,13 +98,14 @@ export async function storeImageLocally(id_picture: string): Promise<void> {
   }
 }
 
-
 /**
  *
  * Store Challenge into the local cache
  *
  */
-export async function storeChallengeLocally(challengeData: DBChallenge): Promise<void> {
+export async function storeChallengeLocally(
+  challengeData: DBChallenge,
+): Promise<void> {
   const storedChallenges = await this.getStoredChallenges();
   storedChallenges.forEach((sChallenge) => {
     if (sChallenge.challenge_id == challengeData.challenge_id) {
@@ -110,7 +113,7 @@ export async function storeChallengeLocally(challengeData: DBChallenge): Promise
       return;
     }
   });
-                                                                           
+
   storedChallenges.push(challengeData);
   await AsyncStorage.setItem(
     CHALLENGE_STORAGE_KEY,
@@ -131,12 +134,9 @@ export async function storeGroupLocally(groupData: DBGroup): Promise<void> {
       return;
     }
   });
-                                                                           
+
   storedGroups.push(groupData);
-  await AsyncStorage.setItem(
-    GROUP_STORAGE_KEY,
-    JSON.stringify(storedGroups),
-  );
+  await AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(storedGroups));
 }
 
 /**
@@ -144,7 +144,9 @@ export async function storeGroupLocally(groupData: DBGroup): Promise<void> {
  * Store Comment into the local cache
  *
  */
-export async function storeCommentLocally(commentData: DBComment): Promise<void> {
+export async function storeCommentLocally(
+  commentData: DBComment,
+): Promise<void> {
   const storedComments = await this.getStoredComments();
   storedComments.forEach((sComment) => {
     if (sComment.created_at == commentData.created_at) {
@@ -152,7 +154,7 @@ export async function storeCommentLocally(commentData: DBComment): Promise<void>
       return;
     }
   });
-                                                                      
+
   storedComments.push(commentData);
   await AsyncStorage.setItem(
     COMMENT_STORAGE_KEY,
@@ -177,10 +179,7 @@ export async function uploadStoredImages(): Promise<void> {
           (item) => item.id !== upload.id,
         );
 
-        AsyncStorage.setItem(
-          IMAGE_STORAGE_KEY,
-          JSON.stringify(updatedUploads),
-        );
+        AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(updatedUploads));
       } catch (error) {
         console.error("Error uploading stored image:", error, upload);
         //If fails to upload because of any reason stop the loop and wait for the next background trigger
@@ -239,10 +238,7 @@ export async function uploadStoredGroups(): Promise<void> {
         const updatedGroups = storedGroups.filter(
           (item) => item.gid !== group.gid,
         );
-        AsyncStorage.setItem(
-          GROUP_STORAGE_KEY,
-          JSON.stringify(updatedGroups),
-        );
+        AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(updatedGroups));
       } catch (error) {
         console.error("Error uploading stored group:", error, group);
         //If fails to upload because of any reason stop the loop and wait for the next background trigger
@@ -254,4 +250,3 @@ export async function uploadStoredGroups(): Promise<void> {
     console.log("No stored groups to upload.");
   }
 }
-

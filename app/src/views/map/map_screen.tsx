@@ -5,10 +5,7 @@ import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 /**
  * Screen for the map
@@ -35,11 +32,7 @@ export default function MapScreen({
     challengeArea,
     isMapReady,
     setIsMapReady,
-  } = useMapScreenViewModel(
-    navigation,
-    firstLocation,
-    geoRestriction,
-  );
+  } = useMapScreenViewModel(navigation, firstLocation, geoRestriction);
   console.info("--> AREA", challengeArea);
   console.info("--> CHALLENGES", challengesWithLocation);
 

@@ -8,10 +8,7 @@ describe("WelcomeScreens", () => {
   it("renders the initial screen correctly", () => {
     const { getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens
-          setUser={jest.fn()}
-          navigation={{}}
-        />
+        <WelcomeScreens setUser={jest.fn()} navigation={{}} />
       </NavigationContainer>,
     );
 
@@ -22,10 +19,7 @@ describe("WelcomeScreens", () => {
   it("allows swiping through screens", () => {
     const { getByTestId, getByText } = render(
       <NavigationContainer>
-        <WelcomeScreens
-          setUser={jest.fn()}
-          navigation={{}}
-        />
+        <WelcomeScreens setUser={jest.fn()} navigation={{}} />
       </NavigationContainer>,
     );
 

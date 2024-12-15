@@ -1,10 +1,7 @@
 import React, { act } from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/group/GroupScreen";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",
@@ -52,11 +49,11 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getUser: jest.fn(),
   getLikesOf: jest.fn().mockResolvedValue([]),
   getCommentsOf: jest.fn().mockResolvedValue([]),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   updatesLikesOf: jest.fn(),
-}))
+}));
 
 describe("Group Screen renders challenges", () => {
   const mockNavigation = { navigate: jest.fn() };
@@ -71,11 +68,7 @@ describe("Group Screen renders challenges", () => {
 
   it("navigates to home when clicking the home button", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={mockNavigation} route={{}} />,
     );
 
     await act(async () => {
@@ -88,11 +81,7 @@ describe("Group Screen renders challenges", () => {
 
   it("navigates to group when clicking to specific button", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={mockNavigation} route={{}} />,
     );
 
     await act(async () => {
@@ -106,11 +95,7 @@ describe("Group Screen renders challenges", () => {
 
   it("navigate to CreateGroup screen when button + clicked", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={mockNavigation} route={{}} />,
     );
 
     await act(async () => {
@@ -122,11 +107,7 @@ describe("Group Screen renders challenges", () => {
 
   it("navigates to Camera with group informations when clicked", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={{}}
-      />,
+      <GroupScreen user={mockUser} navigation={mockNavigation} route={{}} />,
     );
 
     await act(async () => {

@@ -9,7 +9,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     name: "Test User",
     createdAt: new Date(),
   }),
-}))
+}));
 
 describe("WelcomeFinalScreen UI Tests", () => {
   const mockNavigation = {
@@ -20,10 +20,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("renders the main container", () => {
     const { getByTestId } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const screen = getByTestId("welcome-final-screen");
@@ -32,10 +29,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("renders the background shapes", () => {
     const { getByTestId } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const shapeOne = getByTestId("background-image-1");
@@ -47,10 +41,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("renders the title 'Ready to Strive?'", () => {
     const { getByText } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const title = getByText("Ready to\nStrive?");
@@ -59,10 +50,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("renders the 'Sign In' button", () => {
     const { getByText } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const signInButton = getByText("Sign In");
@@ -71,10 +59,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("renders the 'Sign Up' button", () => {
     const { getByText } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const signUpButton = getByText("Sign Up");
@@ -83,10 +68,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("renders the 'Continue as guest' button", () => {
     const { getByText } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const guestButton = getByText("Continue as guest");
@@ -95,10 +77,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("triggers navigation when 'Sign In' button is pressed", () => {
     const { getByText } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const signInButton = getByText("Sign In");
@@ -109,10 +88,7 @@ describe("WelcomeFinalScreen UI Tests", () => {
 
   it("triggers navigation when 'Sign Up' button is pressed", () => {
     const { getByText } = render(
-      <WelcomeFinalScreen
-        setUser={mockSetUser}
-        navigation={mockNavigation}
-      />,
+      <WelcomeFinalScreen setUser={mockSetUser} navigation={mockNavigation} />,
     );
 
     const signUpButton = getByText("Sign Up");

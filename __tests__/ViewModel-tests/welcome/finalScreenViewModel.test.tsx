@@ -60,10 +60,7 @@ describe("WelcomeFinalViewModel", () => {
       await result.current.continueAsGuest();
     });
 
-    expect(signInAsGuest).toHaveBeenCalledWith(
-      mockNavigation,
-      mockSetUser,
-    );
+    expect(signInAsGuest).toHaveBeenCalledWith(mockNavigation, mockSetUser);
   });
 
   it("should handle errors in continueAsGuest gracefully", async () => {

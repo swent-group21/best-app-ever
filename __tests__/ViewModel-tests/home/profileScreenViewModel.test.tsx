@@ -4,17 +4,20 @@ import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 import { useProfileScreenViewModel } from "@/src/viewmodels/home/ProfileScreenViewModel";
 import { getProfilePicture } from "@/src/models/firebase/GetFirestoreCtrl";
-import { setName, setProfilePicture } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  setName,
+  setProfilePicture,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getProfilePicture: jest.fn(),
-}))
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   setName: jest.fn(),
   setProfilePicture: jest.fn(),
-}))
+}));
 
 // Mock `expo-image-picker`
 jest.mock("expo-image-picker", () => ({
@@ -53,16 +56,10 @@ describe("useProfileScreenViewModel", () => {
   });
 
   it("should initialize with user's name and image", async () => {
-    (getProfilePicture as jest.Mock).mockResolvedValueOnce(
-      "test-image-uri",
-    );
+    (getProfilePicture as jest.Mock).mockResolvedValueOnce("test-image-uri");
 
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     await waitFor(() => {
@@ -78,11 +75,7 @@ describe("useProfileScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     await act(async () => {
@@ -98,11 +91,7 @@ describe("useProfileScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     await act(async () => {
@@ -114,16 +103,10 @@ describe("useProfileScreenViewModel", () => {
 
   it("should upload the name and profile picture", async () => {
     (setName as jest.Mock).mockResolvedValueOnce(null);
-    (setProfilePicture as jest.Mock).mockResolvedValueOnce(
-      null,
-    );
+    (setProfilePicture as jest.Mock).mockResolvedValueOnce(null);
 
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     act(() => {
@@ -134,11 +117,7 @@ describe("useProfileScreenViewModel", () => {
       await result.current.upload();
     });
 
-    expect(setName).toHaveBeenCalledWith(
-      "12345",
-      "Updated Name",
-      mockSetUser,
-    );
+    expect(setName).toHaveBeenCalledWith("12345", "Updated Name", mockSetUser);
     expect(setProfilePicture).not.toHaveBeenCalled();
   });
 
@@ -146,11 +125,7 @@ describe("useProfileScreenViewModel", () => {
     const alertMock = jest.spyOn(global, "alert").mockImplementation(() => {});
 
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     act(() => {
@@ -167,11 +142,7 @@ describe("useProfileScreenViewModel", () => {
 
   it("should handle log out", () => {
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     act(() => {
@@ -183,11 +154,7 @@ describe("useProfileScreenViewModel", () => {
 
   it("should handle email reset", () => {
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     act(() => {
@@ -199,11 +166,7 @@ describe("useProfileScreenViewModel", () => {
 
   it("should handle password reset", () => {
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     act(() => {
@@ -215,11 +178,7 @@ describe("useProfileScreenViewModel", () => {
 
   it("should navigate back when navigateGoBack is called", () => {
     const { result } = renderHook(() =>
-      useProfileScreenViewModel(
-        mockUser,
-        mockSetUser,
-        mockNavigation,
-      ),
+      useProfileScreenViewModel(mockUser, mockSetUser, mockNavigation),
     );
 
     act(() => {

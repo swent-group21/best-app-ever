@@ -3,23 +3,22 @@ import * as SetFirestoreCtrl from "@/src/models/firebase/SetFirestoreCtrl";
 import { createGroup } from "@/types/GroupBuilder";
 
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
-  getUser : jest.fn().mockResolvedValue({
+  getUser: jest.fn().mockResolvedValue({
     uid: "user-123",
     name: "Test User",
-  })
-}))
+  }),
+}));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
-    newGroup : jest.fn().mockResolvedValue({ name: "Test Group" }),
-    addGroupToMemberGroups : jest.fn().mockResolvedValue({ name: "Test Group" })
-}))
+  newGroup: jest.fn().mockResolvedValue({ name: "Test Group" }),
+  addGroupToMemberGroups: jest.fn().mockResolvedValue({ name: "Test Group" }),
+}));
 
 describe("createGroup Function", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
     // Mock methods with appropriate return values
-
   });
 
   it("creates a group successfully and assigns it to the user", async () => {
@@ -55,7 +54,9 @@ describe("createGroup Function", () => {
   });
 
   it("handles errors when creating a group", async () => {
-    jest.spyOn(GetFirestoreCtrl, "getUser").mockRejectedValue(new Error("Error getting user"));
+    jest
+      .spyOn(GetFirestoreCtrl, "getUser")
+      .mockRejectedValue(new Error("Error getting user"));
 
     const groupName = "Test Group";
     const challengeTitle = "Test Challenge";
