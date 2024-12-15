@@ -2,8 +2,7 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { SearchBar } from "@/src/views/components/friends/search_bar";
-import ListOfFriends from "@/src/views/components/friends/list_of_friends";
-import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
+import ListOfFilteredGroups from "@/src/views/components/groups/list_of_filtered_groups";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
@@ -31,29 +30,23 @@ export default function JoinGroupScreen({
 
   // Sections configuration
   const sections = [
+
+    // Search results
     {
       id: "search-results",
       title: null,
       content: (
-        <ListOfFilteredUsers
+        <ListOfFilteredGroups
           searchText={searchText}
           uid={uid}
           firestoreCtrl={firestoreCtrl}
           filteredUsers={filteredUsers}
+          navigation={navigation}
         />
       ),
     },
 
-    {
-      id: "groups",
-      title: "Your groups",
-      content: (
-        <ListOfFriends
-          friends={friends}
-          handleFriendPress={handleFriendPress}
-        />
-      ),
-    },
+    // Create a new group button
     {
       id: "create-group",
       title: "Create a new group",
@@ -68,15 +61,17 @@ export default function JoinGroupScreen({
         />
     },
 
+    // Group suggestions
     {
       id: "suggestions",
       title: "Group Suggestions for you",
       content: (
-        <ListOfFilteredUsers
+        <ListOfFilteredGroups
           filteredUsers={suggestions}
           searchText=""
           uid={uid}
           firestoreCtrl={firestoreCtrl}
+          navigation={navigation}
         />
       ),
     },

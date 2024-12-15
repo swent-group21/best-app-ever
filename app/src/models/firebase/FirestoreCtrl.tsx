@@ -726,7 +726,7 @@ export default class FirestoreCtrl {
       if (networkState.isConnected && networkState.isInternetReachable) {
         const duplicate_query = query(
           collection(firestore, "groups"),
-          where("gid", "==", groupData.gid),
+          where("name", "==", groupData.name),
         );
         const docSnap = await getDocs(duplicate_query);
         if (!docSnap.empty) {
@@ -788,18 +788,36 @@ export default class FirestoreCtrl {
   }
 
   /**
-   * Update a group in firestore with last post date
-   * @param gid The ID of the group to update.
-   * @param updateTime The time of the last post.
-   * @returns A promise that resolves when the group is updated.
+   * Update a user in firestore with new group
+   * @param uid The ID of the user to update.
+   * @param group_name The group to add to user's data.
+   * @returns A promise that resolves when the group is added to user's info.
    */
-  async addGroupToMemberGroups(uid: string, group_name: string): Promise<void> {
+  async addGroupToUser(uid: string, group_name: string): Promise<void> {
     try {
       await updateDoc(doc(firestore, "users", uid), {
         groups: arrayUnion(group_name),
       });
     } catch (error) {
-      console.error("Error setting name: ", error);
+      console.error("Error adding group to user's groups: ", error);
+      throw error;
+    }
+  }
+
+
+  /**
+   * Update a group in firetore to add a new member
+   * @param gid The ID of the group to update.
+   * @param uid The ID of the user to add to the group.
+   * @returns A promise that resolves when the user is added to the group.
+   */
+  async addMemberToGroup(gid: string, uid: string): Promise<void> {
+    try {
+      await updateDoc(doc(firestore, "groups", gid), {
+        members: arrayUnion(uid),
+      });
+    } catch (error) {
+      console.error("Error adding member to group: ", error);
       throw error;
     }
   }
