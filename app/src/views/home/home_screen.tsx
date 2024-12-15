@@ -139,14 +139,14 @@ export default function HomeScreen({
           ))}
           <ThemedView
             style={styles.createGroupContainer}
-            testID="create-group-button"
+            testID="join-group-button"
           >
             <ThemedTextButton
               style={styles.createGroupButton}
               onPress={() =>
                 userIsGuest
-                  ? handleRestrictedAccess("CreateGroup")
-                  : navigation.navigate("CreateGroup")
+                  ? handleRestrictedAccess("JoinGroup")
+                  : navigation.navigate("JoinGroup")
               }
               text="+"
               textStyle={styles.createGroupText}
