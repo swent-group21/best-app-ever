@@ -66,7 +66,7 @@ export default function MaximizeScreen({
         toggleLike();
       }
     }
-    
+
     setLastTap(now);
   };
 
@@ -84,25 +84,25 @@ export default function MaximizeScreen({
     } else {
       toggleLike();
     }
-  }
+  };
 
   const handleMapPress = () => {
     if (user.name === "Guest") {
       setShowGuestPopup("map");
+    } else {
+      navigation.navigate("MapScreen", {
+        navigation: navigation,
+        user: user,
+        firestoreCtrl: firestoreCtrl,
+        location: challenge.location,
+        challengeArea: groupCenter &&
+          groupRadius && {
+            center: groupCenter,
+            radius: groupRadius,
+          },
+      });
     }
-    else {
-    navigation.navigate("MapScreen", {
-      navigation: navigation,
-      user: user,
-      firestoreCtrl: firestoreCtrl,
-      location: challenge.location,
-      challengeArea: groupCenter && groupRadius && {
-        center: groupCenter,
-        radius: groupRadius,
-      },
-    });
-  }
-  }
+  };
 
   console.log("Area: ", groupCenter, groupRadius);
 
@@ -241,10 +241,9 @@ export default function MaximizeScreen({
           <Text style={styles.popupText}>
             {showGuestPopup === "like"
               ? "Sign up to like this post!"
-              : (showGuestPopup === "map" ? "Sign up to view the map!" :
-              "Sign up to comment on this post!")
-            }
-              
+              : showGuestPopup === "map"
+                ? "Sign up to view the map!"
+                : "Sign up to comment on this post!"}
           </Text>
           <TouchableOpacity
             style={styles.popupButton}
