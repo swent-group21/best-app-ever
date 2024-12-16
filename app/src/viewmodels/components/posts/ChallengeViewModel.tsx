@@ -81,6 +81,9 @@ export function useChallengeViewModel({
 
   const handleLikePress = async () => {
     try {
+      if (currentUser.name == "Guest") 
+      {return }
+
       const newIsLiked = !isLiked;
       setIsLiked(newIsLiked);
 
@@ -97,6 +100,8 @@ export function useChallengeViewModel({
   };
 
   const handleDoubleTap = () => {
+    if (currentUser.name == "Guest")
+    {return }
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
       // Double tap detected
