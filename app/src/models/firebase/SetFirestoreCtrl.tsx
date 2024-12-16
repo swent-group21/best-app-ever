@@ -8,10 +8,13 @@ import {
   query,
   where,
   getDoc,
+  arrayUnion,
+  updateDoc 
 } from "@/src/models/firebase/Firebase";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import NetInfo from "@react-native-community/netinfo";
 
+import { setUploadTaskScheduled, getUploadTaskScheduled } from "@/src/models/firebase/LocalStorageCtrl";
 import { DBUser, DBChallenge, DBComment, DBGroup } from "./TypeFirestoreCtrl";
 import {
   storeChallengeLocally,
@@ -19,10 +22,7 @@ import {
   storeGroupLocally,
   storeImageLocally,
 } from "@/src/models/firebase/LocalStorageCtrl";
-import { arrayUnion, updateDoc } from "firebase/firestore";
 import { getUser } from "./GetFirestoreCtrl";
-
-export let uploadTaskScheduled = false;
 
 /**
  * Creates or updates a user document in Firestore.
@@ -58,29 +58,23 @@ export async function uploadImage(
     let img_id: string = id_picture;
     if (id_picture === undefined) {
       img_id = (Math.random() + 1).toString(36).substring(2);
-      console.log("New id_picture: ", img_id);
     }
 
     const networkState = await NetInfo.fetch();
-    console.log(
-      "Network State Image: ",
-      networkState.isConnected,
-      networkState.isInternetReachable,
-    );
+
     if (networkState.isConnected && networkState.isInternetReachable) {
       const response = await fetch(imageUri);
       const blob = await response.blob();
 
       const storageRef = ref(getStorage(), "images/" + img_id);
       await uploadBytes(storageRef, blob);
-      console.log("uploaded");
       return img_id;
     }
 
     console.warn("No internet connection. Skipping image upload.");
     //Store the image locally for background upload
     await storeImageLocally(img_id);
-    uploadTaskScheduled = true;
+    setUploadTaskScheduled(true);
     return img_id;
   } catch (error) {
     console.error("Error uploading image: ", error);
@@ -104,10 +98,9 @@ export async function setName(
     const user = await getUser(id);
     user.name = name;
     await createUser(id, user);
-    console.log("User: ", user);
     setUser(user);
   } catch (error) {
-    throw new Error("Error setting name");
+    console.error("Error setting name: ", error);
   }
 }
 
@@ -130,7 +123,6 @@ export async function setProfilePicture(
     setUser(user);
   } catch (error) {
     console.error("Error setting profile picture: ", error);
-    throw error;
   }
 }
 
@@ -143,7 +135,6 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
   try {
     const networkState = await NetInfo.fetch();
     if (networkState.isConnected && networkState.isInternetReachable) {
-      console.log("Network State in newChallenge: ", networkState.isConnected);
       if (challengeData.challenge_id) {
         const duplicate_query = query(
           collection(firestore, "challenges"),
@@ -155,24 +146,21 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
           return;
         }
       }
-      const docRef = await addDoc(
+      await addDoc(
         collection(firestore, "challenges"),
         challengeData,
       );
-      console.log("Challenge successfully uploaded to Firestore:", docRef.id);
       return;
     }
     try {
-      console.log("Challenge stored locally:", challengeData);
       // Schedule background retry
       await storeChallengeLocally(challengeData);
-      uploadTaskScheduled = true;
+      setUploadTaskScheduled(true);
     } catch (storageError) {
-      console.error("Error storing challenge locally:", storageError);
+      console.error("Error storing challenge locally: ", storageError);
     }
   } catch (error) {
-    console.error("Error writing challenge document to Firestore:", error);
-    throw error;
+    console.error("Error writing challenge document to Firestore: ", error);
   }
 }
 
@@ -194,23 +182,20 @@ export async function newGroup(groupData: DBGroup): Promise<void> {
         console.log("Group already exists");
         return;
       }
-      const docRef = await addDoc(collection(firestore, "groups"), groupData);
-      console.log("Group successfully uploaded to Firestore:", docRef.id);
+      await addDoc(collection(firestore, "groups"), groupData);
       return;
     }
 
     try {
       // 2. Store group data locally for later upload
       await storeGroupLocally(groupData);
-      console.log("Group stored locally:", groupData);
       // Schedule background retry if offline
-      uploadTaskScheduled = true;
+      setUploadTaskScheduled(true);
     } catch (storageError) {
-      console.error("Error storing group locally:", storageError);
+      console.error("Error storing group locally: ", storageError);
     }
   } catch (error) {
-    console.error("Error writing group document to Firestore:", error);
-    throw error;
+    console.error("Error writing group document to Firestore: ", error);
   }
 }
 
@@ -235,7 +220,6 @@ export async function updateGroup(
     await setDoc(doc(firestore, "groups", gid), groupData);
   } catch (error) {
     console.error("Error updating group: ", error);
-    throw error;
   }
 }
 
@@ -255,7 +239,6 @@ export async function addGroupToMemberGroups(
     });
   } catch (error) {
     console.error("Error setting name: ", error);
-    throw error;
   }
 }
 
@@ -283,13 +266,12 @@ export async function appendComment(commentData: DBComment): Promise<void> {
     try {
       storeCommentLocally(commentData);
       // Schedule background retry
-      uploadTaskScheduled = true;
-    } catch (storageError) {
-      console.error("Error storing comment locally:", storageError);
+      setUploadTaskScheduled(true);
+    } catch (error) {
+      console.error("Error storing comment locally:", error);
     }
   } catch (error) {
     console.error("Error writing comment document to Firestore:", error);
-    throw error;
   }
 }
 
@@ -308,7 +290,6 @@ export async function updateLikesOf(
     await setDoc(challengeRef, { likes }, { merge: true });
   } catch (error) {
     console.error("Error updating likes: ", error);
-    throw error;
   }
 }
 

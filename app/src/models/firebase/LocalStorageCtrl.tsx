@@ -16,7 +16,21 @@ const GROUP_STORAGE_KEY = "@groups";
 const IMAGE_STORAGE_KEY = "@images";
 const COMMENT_STORAGE_KEY = "@comment";
 
-export let uploadTaskScheduled = false;
+let uploadTaskScheduled: boolean = false;
+
+/**
+ * Getter for the uploadTaskScheduled
+ */
+export async function setUploadTaskScheduled(setTo: boolean){
+  uploadTaskScheduled = setTo
+}
+
+/**
+ * Setter for the uploadTaskScheduler
+ */
+export async function getUploadTaskScheduled(): Promise<boolean>{
+  return uploadTaskScheduled;
+}
 
 /*
  * Background checker
@@ -28,11 +42,11 @@ export async function backgroundTask() {
       if (
         networkState.isConnected &&
         networkState.isInternetReachable &&
-        uploadTaskScheduled
+        getUploadTaskScheduled()
       ) {
         console.log("Starting scheduled upload task...");
         await this.scheduleUploadTask();
-        uploadTaskScheduled = false; // Reset the flag after task completion
+        setUploadTaskScheduled(false) // Reset the flag after task completion
         console.log(
           "Scheduled upload task completed. uploadTaskScheduled set to false.",
         );
