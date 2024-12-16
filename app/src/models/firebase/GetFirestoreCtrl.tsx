@@ -1,4 +1,3 @@
-import { limit } from "firebase/firestore";
 import {
   firestore,
   doc,
@@ -8,6 +7,7 @@ import {
   collection,
   query,
   where,
+  limit,
 } from "@/src/models/firebase/Firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {
@@ -44,7 +44,7 @@ export async function getUser(userId?: string): Promise<DBUser> {
     if (docSnap.exists()) {
       return docSnap.data() as DBUser;
     } else {
-      throw new Error("User not found.");
+      console.error("User not found.");
     }
   } catch (error) {
     throw new Error("Error getting user");
@@ -73,7 +73,6 @@ export async function getName(id: string): Promise<string | undefined> {
     return user?.name;
   } catch (error) {
     console.error("Error getting name: ", error);
-    throw error;
   }
 }
 
@@ -90,7 +89,6 @@ export async function getProfilePicture(
     return user?.image_id;
   } catch (error) {
     console.error("Error getting profile picture: ", error);
-    throw error;
   }
 }
 
@@ -132,7 +130,6 @@ export async function getChallengesByUserId(
     const querySnapshot = await getDocs(q);
     const challenges = querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      console.log("Challenge data retrieved:", data);
       return {
         ...data,
         challenge_id: doc.id,
@@ -353,8 +350,8 @@ export async function getChallengeDescription(): Promise<DBChallengeDescription>
     const challengeDescription = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
-        title: data.Title,
-        description: data.Description,
+        title: data.title,
+        description: data.description,
         endDate: data.Date.toDate(),
       } as DBChallengeDescription;
     });

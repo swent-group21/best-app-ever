@@ -31,7 +31,8 @@ import {
   onSnapshot,
   GeoPoint,
   arrayUnion,
-  updateDoc 
+  updateDoc,
+  limit
 } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -88,5 +89,6 @@ export {
   signOut,
   GeoPoint,
   arrayUnion,
-  updateDoc 
+  updateDoc ,
+  limit
 };

@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 
 import {
-  DBUser,
   DBGroup,
   DBComment,
   DBChallenge,
@@ -21,14 +20,16 @@ let uploadTaskScheduled: boolean = false;
 /**
  * Getter for the uploadTaskScheduled
  */
-export async function setUploadTaskScheduled(setTo: boolean){
+export function setUploadTaskScheduled(setTo: boolean){
+  console.log("Before: ", uploadTaskScheduled)
   uploadTaskScheduled = setTo
+  console.log("After: ", uploadTaskScheduled)
 }
 
 /**
  * Setter for the uploadTaskScheduler
  */
-export async function getUploadTaskScheduled(): Promise<boolean>{
+export function getUploadTaskScheduled(): boolean{
   return uploadTaskScheduled;
 }
 

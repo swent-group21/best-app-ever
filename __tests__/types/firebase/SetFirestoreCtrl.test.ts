@@ -54,18 +54,6 @@ jest.mock('firebase/storage', () => ({
   uploadBytes: jest.fn(() => Promise.resolve()),
 }));
 
-// Mock GeoPoint
-//jest.mock("firebase/firestore", () => {
-//  return {
-//    GeoPoint: jest.fn().mockImplementation((lat, lng) => ({
-//      latitude: lat,
-//      longitude: lng,
-//      isEqual: (other) => lat === other.latitude && lng === other.longitude,
-//      toJSON: () => ({ latitude: lat, longitude: lng }),
-//    })),
-//  };
-//});
-
 jest.mock('@react-native-community/netinfo', () => ({
   fetch: jest.fn(() => Promise.resolve({ isConnected: true, isInternetReachable: true })),
 }));
