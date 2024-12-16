@@ -14,6 +14,7 @@ import { SingleComment } from "@/src/views/components/posts/comment";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
+import { TouchableOpacity } from "react-native";
 import FirestoreCtrl, {
   DBUser,
   DBChallenge,
@@ -53,15 +54,38 @@ export default function MaximizeScreen({
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
+  const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
   const handleDoubleTap = () => {
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
       // Double-tap detected
-      toggleLike();
+      if (user.name === "Guest") {
+        setShowGuestPopup("like");
+      } else {
+        toggleLike();
+      }
     }
+    
     setLastTap(now);
   };
+
+  const handleComment = () => {
+    if (user.name === "Guest") {
+      setShowGuestPopup("comment");
+    } else {
+      addComment();
+    }
+  };
+
+  const handleLikePress = () => {
+    if (user.name === "Guest") {
+      setShowGuestPopup("like");
+    } else {
+      toggleLike();
+    }
+  }
+
 
   console.log("Area: ", groupCenter, groupRadius);
 
@@ -163,7 +187,7 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
             testID="like-button"
-            onPress={toggleLike}
+            onPress={handleLikePress}
             size={30}
             color={isLiked ? "red" : "white"}
           />
@@ -184,7 +208,7 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name="send"
             size={25}
-            onPress={addComment}
+            onPress={handleComment}
             colorType="white"
             testID="send-comment-button"
           />
@@ -205,6 +229,29 @@ export default function MaximizeScreen({
           )}
         </ThemedView>
       </ThemedScrollView>
+
+      {/* Guest Pop-Up */}
+      {showGuestPopup && (
+        <ThemedView style={styles.guestPopup}>
+          <Text style={styles.popupText}>
+            {showGuestPopup === "like"
+              ? "Sign up to like this post!"
+              : "Sign up to comment on this post!"}
+          </Text>
+          <TouchableOpacity
+            style={styles.popupButton}
+            onPress={() => navigation.navigate("SignUp")}
+          >
+            <Text style={styles.popupButtonText}>Sign Up</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.popupCloseButton}
+            onPress={() => setShowGuestPopup(null)}
+          >
+            <Text style={styles.popupCloseText}>Close</Text>
+          </TouchableOpacity>
+        </ThemedView>
+      )}
     </ThemedView>
   );
 }
@@ -321,5 +368,40 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+
+  guestPopup: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#00000077",
+    padding: 20,
+    alignItems: "center",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  popupText: {
+    color: "#fff",
+    fontSize: 16,
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
+  popupButton: {
+    backgroundColor: "#444",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  popupButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  popupCloseButton: {
+    padding: 5,
+  },
+  popupCloseText: {
+    color: "#aaa",
+    textDecorationLine: "underline",
   },
 });
