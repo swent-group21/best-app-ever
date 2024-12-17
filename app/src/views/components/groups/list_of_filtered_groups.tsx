@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet } from "react-native";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
-import { GroupListItem } from "@/src/views/components/groups/group_list_items";
+import { GroupListItem } from "@/src/views/components/groups/group_list_item";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { useListOfFilteredGroupsViewModel } from "@/src/viewmodels/components/groups/ListOfFilteredGroupsViewModel";
 

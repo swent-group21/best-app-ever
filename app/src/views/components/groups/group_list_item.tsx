@@ -24,7 +24,7 @@ export const GroupListItem = ({
 }) => {
 
   return (
-    <ThemedView style={styles.listItem}>
+    <ThemedView style={styles.listItem} testID="group-list-item">
 
       {/* Display the group as an icon with its name */}
       <ThemedView style={styles.groupIcon} testID={"group-icon"}>
@@ -45,7 +45,7 @@ export const GroupListItem = ({
 
       {/* Display the join button */}
       {isJoined ? (
-        <ThemedText style={styles.groupCheck}>✓</ThemedText>
+        <ThemedText style={styles.groupCheck}>Joined ✓</ThemedText>
       ) : (
         <TouchableOpacity
           style={styles.joinButton}
