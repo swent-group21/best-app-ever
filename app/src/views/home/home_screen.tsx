@@ -134,7 +134,7 @@ export default function HomeScreen({
               navigation={navigation}
               firestoreCtrl={firestoreCtrl}
               key={index}
-              testID={`group-id-${index}`}
+              testID={`group-id-${group.name}`}
             />
           ))}
           <ThemedView

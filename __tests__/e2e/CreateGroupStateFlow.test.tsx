@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser, DBChallenge, DBChallengeDescription } from "@/src/models/firebase/FirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
 import GroupScreen from "@/src/views/group/GroupScreen";
@@ -14,42 +14,31 @@ const Stack = createNativeStackNavigator();
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
-      setProfilePicture: jest.fn((id, image_uri, setUser) => {
-        setUser({
-          ...mockTester,
-          image_id: image_uri,
-        });
-      }),
-      setName: jest.fn((id, name, setUser) => {
-        setUser({
-          ...mockTester,
-          name: name,
-        });
-      }),
-      getProfilePicture: jest.fn((id) => {
-        return "uri";
-      }),
-      getChallengeDescription: jest.fn((id) => {
-        return {
-          title: "Challenge Title",
-          description: "Challenge Description",
-          endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
-        };
-      }),
-      getKChallenges: jest.fn((id) => {
-        return [];
-      }),
-      getGroupsByUserId: jest.fn((id) => {
-        return [];
-      }),
+
       getUser: jest.fn(() => {
         return mockTester;
       }),
+
+      // Mock functions used in group creation
       newGroup: jest.fn((group) => {
         mockFetchedGroups.push(group);
       }),
       addGroupToMemberGroups: jest.fn((id, group_name) => {
         mockTester.groups.push(group_name);
+      }),
+
+      // Mock functions used in home and group screens
+      getGroupsByUserId: jest.fn((id) => {
+        return mockFetchedGroups;
+      }),
+      getAllPostsOfGroup: jest.fn((id) => {
+        return mockGroupPosts;
+      }),
+      getChallengeDescription: jest.fn((id) => {
+        return mockCurrentChallenge;
+      }),
+      getPostsByChallengeTitle: jest.fn((title) => {
+        return mockHomePosts;
       }),
     };
   });
@@ -69,11 +58,32 @@ let mockTester: DBUser = {
   createdAt: new Date(),
   groups: [],
 };
-
-// Mock setUser consistency
 const mockSetTester = jest.fn((user) => {
   mockTester = user;
 });
+
+
+const mockHomePosts: DBChallenge[] = [
+    {
+        caption: "Home Challenge Test Caption",
+        uid: "123",
+        challenge_description: "Current Test Challenge Title",
+    },
+];
+const mockGroupPosts: DBChallenge[] = [
+    {
+        caption: "Group Challenge Test Caption",
+        uid: "123456",
+        challenge_description: "",
+    },
+];
+
+const mockCurrentChallenge: DBChallengeDescription = {
+    title: "Current Test Challenge Title",
+    description: "test Challenge Description",
+    endDate: new Date(2099, 1, 1, 0, 0, 0, 0),
+}
+
 
 
 // Create a test component to wrap HomeScreen with navigation
@@ -162,15 +172,22 @@ describe("Create a group and navigate to it", () => {
     // Wait for the navigation to HomeScreen
     await waitFor(() => {
         expect(getByTestId("home-screen")).toBeTruthy();
-      });
-
-    // Verify the user was passed to ProfileScreen
-    expect(mockUserConsistency).toEqual({
-      uid: "123",
-      email: "test@example.com",
-      name: "TestUser",
-      image_id: "uri",
-      createdAt: expect.any(Date),
     });
+
+    // Wait for the new group to be displayed
+    await waitFor(() => {
+        expect(getByTestId("group-id-TestGroup")).toBeTruthy();
+    });
+
+    // Simulate user pressing the new group button
+    fireEvent.press(getByTestId("group-pressable-button-TestGroup"));
+
+    // Wait for the navigation to GroupScreen
+    await waitFor(() => {
+        expect(getByTestId("group-screen")).toBeTruthy();
+    });
+
+    // Verify it is the right group
+    expect(getByTestId("description-id-TestGroup")).toBeTruthy();
   });
 });
