@@ -2,19 +2,22 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl, { DBUser, DBChallenge, DBChallengeDescription } from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, {
+  DBUser,
+  DBChallenge,
+  DBChallengeDescription,
+  DBGroup,
+} from "@/src/models/firebase/FirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
 import GroupScreen from "@/src/views/group/GroupScreen";
 
 const Stack = createNativeStackNavigator();
 
-
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
-
       getUser: jest.fn(() => {
         return mockTester;
       }),
@@ -29,8 +32,11 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 
       // Mock functions used in home and group screens
       getGroupsByUserId: jest.fn((id) => {
-        return mockFetchedGroups;
+        return new Promise<DBGroup[]>((resolve) => {
+          resolve(mockFetchedGroups);
+        });
       }),
+
       getAllPostsOfGroup: jest.fn((id) => {
         return mockGroupPosts;
       }),
@@ -44,7 +50,6 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   });
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
-
 
 // Mock groups fetched in HomeScreen
 let mockFetchedGroups = [];
@@ -62,32 +67,51 @@ const mockSetTester = jest.fn((user) => {
   mockTester = user;
 });
 
-
+// Mock posts for HomeScreen and GroupScreen
 const mockHomePosts: DBChallenge[] = [
-    {
-        caption: "Home Challenge Test Caption",
-        uid: "123",
-        challenge_description: "Current Test Challenge Title",
-    },
+  {
+    caption: "Home Challenge Test Caption",
+    uid: "123",
+    challenge_description: "Current Test Challenge Title",
+  },
 ];
 const mockGroupPosts: DBChallenge[] = [
-    {
-        caption: "Group Challenge Test Caption",
-        uid: "123456",
-        challenge_description: "",
-    },
+  {
+    caption: "Group Challenge Test Caption",
+    uid: "123456",
+    challenge_description: "",
+  },
 ];
 
 const mockCurrentChallenge: DBChallengeDescription = {
-    title: "Current Test Challenge Title",
-    description: "test Challenge Description",
-    endDate: new Date(2099, 1, 1, 0, 0, 0, 0),
-}
+  title: "Current Test Challenge Title",
+  description: "test Challenge Description",
+  endDate: new Date(2099, 1, 1, 0, 0, 0, 0),
+};
 
+// Mock location permissions and current position
+jest.mock("expo-location", () => ({
+  requestForegroundPermissionsAsync: jest.fn(() =>
+    Promise.resolve({ status: "granted" }),
+  ),
+  getCurrentPositionAsync: jest.fn(() =>
+    Promise.resolve({
+      coords: {
+        latitude: 0,
+        longitude: 0,
+      },
+    }),
+  ),
+}));
 
+jest.mock("firebase/firestore", () => ({
+  GeoPoint: jest.fn((latitude, longitude) => {
+    return { latitude, longitude };
+  }),
+}));
 
 // Create a test component to wrap HomeScreen with navigation
-const HomeTest = ({ setUser }: { setUser: jest.Mock }) => {
+const HomeTest = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -114,28 +138,26 @@ const HomeTest = ({ setUser }: { setUser: jest.Mock }) => {
           )}
         </Stack.Screen>
         <Stack.Screen name="GroupScreen">
-            {(props) => (
-                <GroupScreen
-                {...props}
-                firestoreCtrl={mockFirestoreCtrl}
-                user={mockTester}
-                />
-            )}
+          {(props) => (
+            <GroupScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockTester}
+            />
+          )}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-
 /**
  * Test the flow of creating a group and navigating to it
  */
 describe("Create a group and navigate to it", () => {
-
   it("Creates a group and navigates to it", async () => {
     // Render the test app
-    const { getByTestId } = render(<HomeTest setUser={mockSetTester} />);
+    const { getByTestId } = render(<HomeTest />);
 
     // Verify the user was passed to HomeScreen by the navigation stack
     expect(mockTester).toEqual({
@@ -157,13 +179,19 @@ describe("Create a group and navigate to it", () => {
     await waitFor(() => {
       expect(getByTestId("create-group-screen")).toBeTruthy();
     });
+
     // Make sure the location is authorized and the screen is ready to create a group
-    expect(getByTestId("Create-Challenge-Text")).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId("Create-Challenge-Text")).toBeTruthy();
+    });
 
     // Simulate user entering a group name
-    fireEvent.changeText(getByTestId("group-name-input"), "TestGroup");
+    fireEvent.changeText(getByTestId("Group-Name-Input"), "TestGroup");
     // Simulate user entering a challenge title
-    fireEvent.changeText(getByTestId("Description-Input"), "Challenge Description of Test Group");
+    fireEvent.changeText(
+      getByTestId("Description-Input"),
+      "Challenge Description of Test Group",
+    );
 
     // Simulate user pressing the create group button
     const createPostButton = getByTestId("bottom-right-icon-arrow-forward");
@@ -171,12 +199,12 @@ describe("Create a group and navigate to it", () => {
 
     // Wait for the navigation to HomeScreen
     await waitFor(() => {
-        expect(getByTestId("home-screen")).toBeTruthy();
+      expect(getByTestId("home-screen")).toBeTruthy();
     });
 
     // Wait for the new group to be displayed
     await waitFor(() => {
-        expect(getByTestId("group-id-TestGroup")).toBeTruthy();
+      expect(getByTestId("group-id-TestGroup")).toBeTruthy();
     });
 
     // Simulate user pressing the new group button
@@ -184,7 +212,7 @@ describe("Create a group and navigate to it", () => {
 
     // Wait for the navigation to GroupScreen
     await waitFor(() => {
-        expect(getByTestId("group-screen")).toBeTruthy();
+      expect(getByTestId("group-screen")).toBeTruthy();
     });
 
     // Verify it is the right group
