@@ -1,6 +1,6 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-import CreateGroupScreen from "@/src/views/groups/CreateGroupScreen";
+import CreateGroupScreen from "@/src/views/groups/create_group_screen";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock de useGroupScreenViewModel

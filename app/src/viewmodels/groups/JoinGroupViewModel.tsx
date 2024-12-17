@@ -56,7 +56,7 @@ export function useJoinGroupViewModel(
     ? allGroups.filter(
         (group) =>
           group.gid &&
-          !group.members.includes(uid) &&
+          //!group.members.includes(uid) &&
           group.name?.toLowerCase().includes(searchText.toLowerCase()),
       )
     : [];

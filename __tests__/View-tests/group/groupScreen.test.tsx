@@ -1,6 +1,6 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
-import GroupScreen from "@/src/views/groups/GroupScreen";
+import GroupScreen from "@/src/views/groups/group_screen";
 import useGroupScreenViewModel from "@/src/viewmodels/groups/GroupScreenViewModel";
 import FirestoreCtrl, {
   DBChallenge,

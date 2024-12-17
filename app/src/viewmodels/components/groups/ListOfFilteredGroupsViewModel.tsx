@@ -29,7 +29,7 @@ export function useListOfFilteredGroupsViewModel({
       [key: string]: { isJoined: boolean };
     } = {};
     for (const group of filteredGroups) {
-      const isJoined = await firestoreCtrl.isFriend(uid, group.gid);
+      const isJoined = group.members.includes(uid);
       statuses[group.gid] = { isJoined };
     }
     setGroupStatuses(statuses);

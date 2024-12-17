@@ -94,7 +94,7 @@ export default function FriendsScreen({
         leftIcon="arrow-back"
         leftAction={navigation.goBack}
       />
-      <SearchBar onSearch={setSearchText} />
+      <SearchBar onSearch={setSearchText} element={"user"}/>
 
       <FlatList
         style={styles.container}

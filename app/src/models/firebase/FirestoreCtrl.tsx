@@ -866,6 +866,7 @@ export default class FirestoreCtrl {
       const groups = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
+          gid: doc.id,
           ...data,
         } as DBGroup;
       });
