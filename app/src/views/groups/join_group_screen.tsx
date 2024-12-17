@@ -13,7 +13,7 @@ const { width } = Dimensions.get("window");
 export default function JoinGroupScreen({
   user,
   navigation,
-  firestoreCtrl
+  firestoreCtrl,
 }: {
   readonly user: DBUser;
   readonly navigation: any;
@@ -30,7 +30,6 @@ export default function JoinGroupScreen({
 
   // Sections configuration
   const sections = [
-
     // Search results
     {
       id: "search-results",
@@ -42,6 +41,7 @@ export default function JoinGroupScreen({
           firestoreCtrl={firestoreCtrl}
           filteredGroups={filteredGroups}
           navigation={navigation}
+          testID="search-results"
         />
       ),
     },
@@ -50,15 +50,16 @@ export default function JoinGroupScreen({
     {
       id: "create-group",
       title: "Create a new group",
-      content:
+      content: (
         <ThemedTextButton
-            testID="create-group-button"
-            style={styles.buttonCreateGroup}
-            onPress={() => navigation.navigate("CreateGroup")}
-            text="Create a new Group !"
-            textStyle={{ fontWeight: "600" }}
-            textColorType="textOverLight"
+          testID="create-group-button"
+          style={styles.buttonCreateGroup}
+          onPress={() => navigation.navigate("CreateGroup")}
+          text="Create a new Group !"
+          textStyle={{ fontWeight: "600" }}
+          textColorType="textOverLight"
         />
+      ),
     },
 
     // Group suggestions
@@ -72,6 +73,7 @@ export default function JoinGroupScreen({
           uid={uid}
           firestoreCtrl={firestoreCtrl}
           navigation={navigation}
+          testID="group-suggestions"
         />
       ),
     },
@@ -86,7 +88,7 @@ export default function JoinGroupScreen({
       />
 
       {/* Search bar at first */}
-      <SearchBar onSearch={setSearchText} element={"group"}  />
+      <SearchBar onSearch={setSearchText} element={"group"} />
 
       <FlatList
         style={styles.container}

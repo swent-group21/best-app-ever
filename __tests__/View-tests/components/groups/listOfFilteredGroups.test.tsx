@@ -28,7 +28,6 @@ describe("ListOfFilteredGroups Component", () => {
     jest.spyOn(console, "info").mockImplementation(() => {});
   });
 
-
   it("renders filtered groups with correct names", async () => {
     mockUseListOfFilteredGroupsViewModel.mockReturnValue({
       groupStatuses: {
@@ -52,81 +51,72 @@ describe("ListOfFilteredGroups Component", () => {
     expect(getByText("Team2")).toBeTruthy();
   });
 
-
-
   it("handles joining a group", async () => {
     mockUseListOfFilteredGroupsViewModel.mockReturnValue({
-        groupStatuses: {
-          "1": { isJoined: true },
-          "2": { isJoined: false },
-        },
-        handleJoin: mockHandleJoin,
-      });
+      groupStatuses: {
+        "1": { isJoined: true },
+        "2": { isJoined: false },
+      },
+      handleJoin: mockHandleJoin,
+    });
 
-      const { getByTestId } = render(
-        <ListOfFilteredGroups
-          filteredGroups={mockFilteredGroups}
-          searchText="Group"
-          firestoreCtrl={mockFirestoreCtrl}
-          uid="tester-uid"
-        />,
-      );
-
-      // Press the button "JOIN" for the second 
-      // and not already joined group
-    const joinButton = getByTestId("join-button-Team2");
-    await waitFor(() => 
-        fireEvent.press(joinButton)
+    const { getByTestId } = render(
+      <ListOfFilteredGroups
+        filteredGroups={mockFilteredGroups}
+        searchText="Group"
+        firestoreCtrl={mockFirestoreCtrl}
+        uid="tester-uid"
+      />,
     );
 
-    expect(mockHandleJoin).toHaveBeenCalledTimes(1)
+    // Press the button "JOIN" for the second
+    // and not already joined group
+    const joinButton = getByTestId("join-button-Team2");
+    await waitFor(() => fireEvent.press(joinButton));
 
+    expect(mockHandleJoin).toHaveBeenCalledTimes(1);
   });
-
 
   it("displays right message when no group to display", async () => {
     mockUseListOfFilteredGroupsViewModel.mockReturnValue({
-        groupStatuses: {},
-        handleJoin: mockHandleJoin,
-      });
+      groupStatuses: {},
+      handleJoin: mockHandleJoin,
+    });
 
-      const { getByText } = render(
-        <ListOfFilteredGroups
-          filteredGroups={[]}
-          searchText="Group"
-          firestoreCtrl={mockFirestoreCtrl}
-          uid="tester-uid"
-        />,
-      );
+    const { getByText } = render(
+      <ListOfFilteredGroups
+        filteredGroups={[]}
+        searchText="Group"
+        firestoreCtrl={mockFirestoreCtrl}
+        uid="tester-uid"
+      />,
+    );
 
-      // Get the no-group message
+    // Get the no-group message
     expect(getByText("No group found")).toBeTruthy();
-    
   });
 
   it("does not display anything when no text and no group passed", async () => {
     mockUseListOfFilteredGroupsViewModel.mockReturnValue({
-        groupStatuses: {},
-        handleJoin: mockHandleJoin,
-      });
+      groupStatuses: {},
+      handleJoin: mockHandleJoin,
+    });
 
-      const { getByText } = render(
-        <ListOfFilteredGroups
-          filteredGroups={[]}
-          searchText=""
-          firestoreCtrl={mockFirestoreCtrl}
-          uid="tester-uid"
-        />,
-      );
+    const { getByText } = render(
+      <ListOfFilteredGroups
+        filteredGroups={[]}
+        searchText=""
+        firestoreCtrl={mockFirestoreCtrl}
+        uid="tester-uid"
+      />,
+    );
 
-      try {
-        // Make sure the no-group message is not displayed
-        expect(getByText("No group found")).toThrow();
+    try {
+      // Make sure the no-group message is not displayed
+      expect(getByText("No group found")).toThrow();
 
-        // Make sure the groups are not displayed
-        expect(getByText("Group1")).toThrow();
-      } catch (error) {}
-    
+      // Make sure the groups are not displayed
+      expect(getByText("Group1")).toThrow();
+    } catch (error) {}
   });
 });
-

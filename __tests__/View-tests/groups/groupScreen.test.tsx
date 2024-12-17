@@ -40,7 +40,6 @@ jest.mock("@/src/viewmodels/groups/GroupScreenViewModel", () => ({
   useGroupScreenViewModel: jest.fn(),
 }));
 
-
 jest.mock("expo-font", () => ({
   useFonts: jest.fn(() => [true]),
   isLoaded: jest.fn(() => true),

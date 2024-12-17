@@ -73,10 +73,7 @@ export default function CreateGroupScreen({
 
   return (
     <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
-      <TopBar
-        leftIcon="arrow-back"
-        leftAction={navigation.goBack}
-      />
+      <TopBar leftIcon="arrow-back" leftAction={navigation.goBack} />
 
       {/* Title */}
       <ThemedText

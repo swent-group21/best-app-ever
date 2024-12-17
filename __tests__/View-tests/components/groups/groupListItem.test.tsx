@@ -7,11 +7,9 @@ import { GroupListItem } from "@/src/views/components/groups/group_list_item";
  * UI-part of the GroupListItem component is tested
  */
 describe("GroupListItem Component", () => {
-  
   const mockHandleJoin = jest.fn();
 
   it("renders the component at first", () => {
-    
     const { getByTestId } = render(
       <GroupListItem
         name="TestGroup"
@@ -22,11 +20,10 @@ describe("GroupListItem Component", () => {
     );
 
     // Check if the component is rendered
-    expect(getByTestId("group-list-item")).toBeTruthy();
+    expect(getByTestId("list-item-TestGroup")).toBeTruthy();
   });
 
   it("renders with the icon and its name", () => {
-
     const { getByTestId, getByText } = render(
       <GroupListItem
         name="TestGroup"
@@ -50,7 +47,7 @@ describe("GroupListItem Component", () => {
         handleJoin={mockHandleJoin}
       />,
     );
-    
+
     expect(getByText("TestChallenge")).toBeTruthy();
   });
 

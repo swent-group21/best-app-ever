@@ -22,10 +22,8 @@ export const GroupListItem = ({
   readonly isJoined: boolean;
   readonly handleJoin: () => void;
 }) => {
-
   return (
-    <ThemedView style={styles.listItem} testID="group-list-item">
-
+    <ThemedView style={styles.listItem} testID={`list-item-${name}`}>
       {/* Display the group as an icon with its name */}
       <ThemedView style={styles.groupIcon} testID={"group-icon"}>
         <ThemedTextButton
@@ -60,7 +58,6 @@ export const GroupListItem = ({
 };
 
 const styles = StyleSheet.create({
-  
   // Style for the group list item
   listItem: {
     flexDirection: "row",
@@ -69,7 +66,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#333",
     backgroundColor: "#000",
-    height : 'auto',
+    height: "auto",
   },
 
   // Style for the group icon and its name
@@ -93,7 +90,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
   },
-
 
   // Style for the group's challenge
   textContainer: {
@@ -129,5 +125,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
- 
 });

@@ -48,7 +48,11 @@ describe("useGroupScreenViewModel", () => {
     );
 
     const { result } = renderHook(() =>
-      useGroupScreenViewModel({user:mockUser, firestoreCtrl:mockFirestoreCtrl, route:mockRoute}),
+      useGroupScreenViewModel({
+        user: mockUser,
+        firestoreCtrl: mockFirestoreCtrl,
+        route: mockRoute,
+      }),
     );
 
     // Wait for the state to update after the first useEffect runs
@@ -72,7 +76,11 @@ describe("useGroupScreenViewModel", () => {
     );
 
     const { result } = renderHook(() =>
-      useGroupScreenViewModel({user:mockUser, firestoreCtrl:mockFirestoreCtrl, route:mockRoute}),
+      useGroupScreenViewModel({
+        user: mockUser,
+        firestoreCtrl: mockFirestoreCtrl,
+        route: mockRoute,
+      }),
     );
 
     // Wait for the state to update after the second useEffect runs
@@ -97,7 +105,11 @@ describe("useGroupScreenViewModel", () => {
     jest.spyOn(console, "error").mockImplementation();
 
     renderHook(() =>
-      useGroupScreenViewModel({user:mockUser, firestoreCtrl:mockFirestoreCtrl, route:mockRoute}),
+      useGroupScreenViewModel({
+        user: mockUser,
+        firestoreCtrl: mockFirestoreCtrl,
+        route: mockRoute,
+      }),
     );
 
     expect(mockFirestoreCtrl.getAllPostsOfGroup).toHaveBeenCalledWith(
@@ -121,7 +133,11 @@ describe("useGroupScreenViewModel", () => {
     jest.spyOn(console, "error").mockImplementation();
 
     renderHook(() =>
-      useGroupScreenViewModel({user:mockUser, firestoreCtrl:mockFirestoreCtrl, route:mockRoute}),
+      useGroupScreenViewModel({
+        user: mockUser,
+        firestoreCtrl: mockFirestoreCtrl,
+        route: mockRoute,
+      }),
     );
 
     expect(mockFirestoreCtrl.getGroupsByUserId).toHaveBeenCalledWith(
@@ -137,7 +153,11 @@ describe("useGroupScreenViewModel", () => {
 
   it("return correct group details", async () => {
     const { result } = renderHook(() =>
-      useGroupScreenViewModel({user:mockUser, firestoreCtrl:mockFirestoreCtrl, route:mockRoute}),
+      useGroupScreenViewModel({
+        user: mockUser,
+        firestoreCtrl: mockFirestoreCtrl,
+        route: mockRoute,
+      }),
     );
 
     await waitFor(() => {
@@ -159,7 +179,11 @@ describe("useGroupScreenViewModel", () => {
       mockChallenges,
     );
     const { result } = renderHook(() =>
-      useGroupScreenViewModel({user:mockUser, firestoreCtrl:mockFirestoreCtrl, route:mockRoute}),
+      useGroupScreenViewModel({
+        user: mockUser,
+        firestoreCtrl: mockFirestoreCtrl,
+        route: mockRoute,
+      }),
     );
 
     await waitFor(() => {

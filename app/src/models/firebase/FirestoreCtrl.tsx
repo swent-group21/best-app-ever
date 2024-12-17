@@ -804,7 +804,6 @@ export default class FirestoreCtrl {
     }
   }
 
-
   /**
    * Update a group in firetore to add a new member
    * @param gid The ID of the group to update.
@@ -854,12 +853,11 @@ export default class FirestoreCtrl {
     }
   }
 
-
-   /**
+  /**
    * Retrieves all groups from Firestore.
    * @returns A promise that resolves to an array of groups.
    * */
-   async getAllGroups(): Promise<DBGroup[]> {
+  async getAllGroups(): Promise<DBGroup[]> {
     try {
       const groupsRef = collection(firestore, "groups");
       const querySnapshot = await getDocs(groupsRef);
@@ -891,7 +889,7 @@ export default class FirestoreCtrl {
         const data = docSnap.data();
         return {
           gid: docSnap.id,
-          ... data,
+          ...data,
         } as DBGroup;
       } else {
         throw new Error("Group not found.");
@@ -1277,14 +1275,12 @@ export default class FirestoreCtrl {
     return Array.from(friendSuggestions).slice(0, 10);
   }
 
-
-
-/**
+  /**
    * Get groups suggestions for a user based on its friends.
    * @param uid The UID of the user.
    * @returns An array of groups suggestions.
    */
-async getGroupSuggestions(uid: string): Promise<DBGroup[]> {
+  async getGroupSuggestions(uid: string): Promise<DBGroup[]> {
     const allGroups = await this.getAllGroups();
     const userFriends = await this.getFriends(uid);
 

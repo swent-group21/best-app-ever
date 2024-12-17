@@ -17,12 +17,11 @@ export function useGroupScreenViewModel({
   user,
   firestoreCtrl,
   route,
-}:{
+}: {
   user: DBUser;
   firestoreCtrl: FirestoreCtrl;
   route: any;
-}
-): {
+}): {
   groupChallenges: DBChallenge[];
   otherGroups: DBGroup[];
   groupName: string;

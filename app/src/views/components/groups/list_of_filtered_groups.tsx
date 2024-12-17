@@ -19,8 +19,12 @@ export default function ListOfFilteredGroups({
   uid,
   navigation,
 }: any) {
-  const { groupStatuses, handleJoin } =
-    useListOfFilteredGroupsViewModel({ filteredGroups, firestoreCtrl, uid, navigation });
+  const { groupStatuses, handleJoin } = useListOfFilteredGroupsViewModel({
+    filteredGroups,
+    firestoreCtrl,
+    uid,
+    navigation,
+  });
 
   return (
     <ThemedView style={{ padding: 10, backgroundColor: "transparent" }}>

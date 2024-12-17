@@ -33,7 +33,7 @@ const mockUser: DBUser = {
 
 describe("Create Group Screen renders", () => {
   const mockFirestoreCtrl = new FirestoreCtrl();
-  const mockCreateGroupViewModel = 
+  const mockCreateGroupViewModel =
     require("@/src/viewmodels/groups/CreateGroupViewModel").CreateGroupViewModel;
 
   beforeEach(() => {
@@ -109,7 +109,6 @@ describe("Create Group Screen renders", () => {
     expect(mockMakeGroup).toHaveBeenCalled();
   });
 
-
   it("renders the radius input and the slider", () => {
     const { getByTestId } = render(
       <CreateGroupScreen
@@ -121,7 +120,6 @@ describe("Create Group Screen renders", () => {
     expect(getByTestId("Radius-Input")).toBeTruthy();
     expect(getByTestId("Radius-Slider")).toBeTruthy();
   });
-
 
   it("displays correct message when waiting for authorization", () => {
     mockCreateGroupViewModel.mockReturnValue({

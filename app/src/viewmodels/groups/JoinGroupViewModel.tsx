@@ -20,7 +20,6 @@ export function useJoinGroupViewModel(
   const [allGroups, setAllGroups] = useState<DBGroup[]>([]);
   const [suggestions, setSuggestions] = useState<DBGroup[]>([]);
 
-
   // Fetch groups suggestions based on the user's friends
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -33,8 +32,6 @@ export function useJoinGroupViewModel(
     };
     fetchSuggestions();
   }, [firestoreCtrl, uid]);
-
-
 
   // Fetch all existing groups to filter the search in them
   useEffect(() => {
@@ -49,20 +46,17 @@ export function useJoinGroupViewModel(
     fetchAllGroups();
   }, [firestoreCtrl]);
 
-
-
   // Filter groups based on search text updated by the user
   const filteredGroups = searchText
     ? allGroups.filter(
         (group) =>
           group.gid &&
-          //!group.members.includes(uid) &&
-          (group.name?.toLowerCase().includes(searchText.toLowerCase()) 
-        || group.challengeTitle?.toLowerCase().includes(searchText.toLowerCase())),
+          (group.name?.toLowerCase().includes(searchText.toLowerCase()) ||
+            group.challengeTitle
+              ?.toLowerCase()
+              .includes(searchText.toLowerCase())),
       )
     : [];
-
-
 
   return {
     searchText,
