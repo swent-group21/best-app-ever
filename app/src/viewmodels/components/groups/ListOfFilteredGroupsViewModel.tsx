@@ -53,9 +53,8 @@ export function useListOfFilteredGroupsViewModel({
       const updateDate = new Date();
 
       await firestoreCtrl.updateGroup(gid, updateDate);
-      console.info("Friend request sent");
       
-      navigation.navigate("GroupScreen", { group: group });
+      navigation.navigate("GroupScreen", { currentGroup: group });
     } catch (error) {
       console.error("Error adding friend:", error);
     }

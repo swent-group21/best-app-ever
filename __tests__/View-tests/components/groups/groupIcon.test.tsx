@@ -3,7 +3,7 @@ import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
 import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
 import { color } from "react-native-elements/dist/helpers";
-import GroupIcon from "@/src/views/components/navigation/group_icon";
+import GroupIcon from "@/src/views/components/groups/group_icon";
 import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 import { GeoPoint } from "firebase/firestore";
 

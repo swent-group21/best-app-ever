@@ -888,7 +888,11 @@ export default class FirestoreCtrl {
       const groupRef = doc(firestore, "groups", gid);
       const docSnap = await getDoc(groupRef);
       if (docSnap.exists()) {
-        return docSnap.data() as DBGroup;
+        const data = docSnap.data();
+        return {
+          gid: docSnap.id,
+          ... data,
+        } as DBGroup;
       } else {
         throw new Error("Group not found.");
       }

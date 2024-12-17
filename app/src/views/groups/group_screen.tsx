@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions, StyleSheet, ViewStyle } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { Challenge } from "@/src/views/components/posts/challenge";
-import GroupIcon from "@/src/views/components/navigation/group_icon";
+import GroupIcon from "@/src/views/components/groups/group_icon";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { BottomBar } from "@/src/views/components/navigation/bottom_bar";

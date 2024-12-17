@@ -41,7 +41,6 @@ export function useJoinGroupViewModel(
     const fetchAllGroups = async () => {
       try {
         const allGroups = await firestoreCtrl.getAllGroups();
-        console.log("All groups: ", allGroups);
         setAllGroups(allGroups);
       } catch (error) {
         console.error("Error fetching groups: ", error);

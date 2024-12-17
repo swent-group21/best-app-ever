@@ -82,7 +82,6 @@ export function useHomeScreenViewModel(
     };
 
     fetchCurrentChallenge().then((challengeTitle) => {
-      console.log("Current challenge fetched : ", challengeTitle);
       if (user.uid) fetchChallenges(challengeTitle);
     });
   }, [user.uid, firestoreCtrl]);
