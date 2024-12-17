@@ -29,14 +29,14 @@ export default function ListOfFilteredGroups({
           data={filteredGroups}
           keyExtractor={(item) => item.uid || Math.random().toString()}
           renderItem={({ item }) => {
-            const isJoined = groupStatuses[item.uid]?.isJoined || false;
+            const isJoined = groupStatuses[item?.gid]?.isJoined || false;
 
             return (
               <GroupListItem
                 name={item.name}
                 challengeTitle={item.challengeTitle}
                 isJoined={isJoined}
-                handleJoin={() => handleJoin(item.gid)}
+                handleJoin={() => handleJoin(item?.gid)}
               />
             );
           }}

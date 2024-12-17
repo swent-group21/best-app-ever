@@ -40,7 +40,7 @@ export default function JoinGroupScreen({
           searchText={searchText}
           uid={uid}
           firestoreCtrl={firestoreCtrl}
-          filteredUsers={filteredGroups}
+          filteredGroups={filteredGroups}
           navigation={navigation}
         />
       ),

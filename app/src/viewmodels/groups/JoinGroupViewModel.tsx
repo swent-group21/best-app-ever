@@ -41,6 +41,7 @@ export function useJoinGroupViewModel(
     const fetchAllGroups = async () => {
       try {
         const allGroups = await firestoreCtrl.getAllGroups();
+        console.log("All groups: ", allGroups);
         setAllGroups(allGroups);
       } catch (error) {
         console.error("Error fetching groups: ", error);
@@ -57,7 +58,8 @@ export function useJoinGroupViewModel(
         (group) =>
           group.gid &&
           //!group.members.includes(uid) &&
-          group.name?.toLowerCase().includes(searchText.toLowerCase()),
+          (group.name?.toLowerCase().includes(searchText.toLowerCase()) 
+        || group.challengeTitle?.toLowerCase().includes(searchText.toLowerCase())),
       )
     : [];
 
