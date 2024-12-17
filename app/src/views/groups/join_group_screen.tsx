@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import { SearchBar } from "@/src/views/components/friends/search_bar";
+import { SearchBar } from "@/src/views/components/navigation/search_bar";
 import ListOfFilteredGroups from "@/src/views/components/groups/list_of_filtered_groups";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";

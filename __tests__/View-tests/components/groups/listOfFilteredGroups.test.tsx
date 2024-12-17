@@ -72,8 +72,9 @@ describe("ListOfFilteredGroups Component", () => {
         />,
       );
 
-      // Press the button "JOIN" for the first group
-    const joinButton = getByTestId("join-button-Group1");
+      // Press the button "JOIN" for the second 
+      // and not already joined group
+    const joinButton = getByTestId("join-button-Team2");
     await waitFor(() => 
         fireEvent.press(joinButton)
     );

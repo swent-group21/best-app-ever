@@ -8,7 +8,7 @@ import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
-import useGroupScreenViewModel from "@/src/viewmodels/groups/GroupScreenViewModel";
+import { useGroupScreenViewModel } from "@/src/viewmodels/groups/GroupScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
@@ -32,7 +32,7 @@ export default function GroupScreen({
     groupId,
     groupCenter,
     groupRadius,
-  } = useGroupScreenViewModel(user, firestoreCtrl, route);
+  } = useGroupScreenViewModel({ user, firestoreCtrl, route });
 
   return (
     <ThemedView style={styles.bigContainer} testID="group-screen">
