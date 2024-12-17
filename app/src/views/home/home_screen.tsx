@@ -152,6 +152,7 @@ export default function HomeScreen({
               textStyle={styles.createGroupText}
               textColorType="textOverLight"
               colorType="backgroundSecondary"
+              testID="create-group-pressable-button"
             />
           </ThemedView>
         </ThemedScrollView>
