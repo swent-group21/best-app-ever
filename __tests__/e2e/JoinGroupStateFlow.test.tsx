@@ -11,6 +11,7 @@ import FirestoreCtrl, {
 import HomeScreen from "@/src/views/home/home_screen";
 import JoinGroupScreen from "@/src/views/groups/join_group_screen";
 import GroupScreen from "@/src/views/groups/group_screen";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,31 +26,63 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 
       // Mock functions used in home screen
       getGroupsByUserId: jest.fn((id) => {
-        return new Promise<DBGroup[]>((resolve) => {
-          resolve(mockFetchedGroups);
-        });
+        if (id === "123") {
+            return new Promise<DBGroup[]>((resolve) => {
+              resolve(mockFetchedGroups);
+            });
+          } else if (id === "456") {
+            return new Promise<DBGroup[]>((resolve) => {
+              resolve([mockGroup1, mockGroup2]);
+            });
+          }
       }),
       getChallengeDescription: jest.fn((id) => {
         return mockCurrentChallenge;
       }),
       getPostsByChallengeTitle: jest.fn((title) => {
-        return mockHomePosts;
+        return new Promise<DBChallenge[]>((resolve) => {
+            resolve(mockHomePosts);
+        });
       }),
 
+
+      // Mock functions used in join group screen
+      getGroupSuggestions: jest.fn((uid) => {
+        return [mockGroup2];
+      }),
+      getAllGroups: jest.fn(() => {
+        return [mockGroup1, mockGroup2];
+      }),
+
+
+      // Mock functions used in list of filtered groups
+      getGroup: jest.fn((gid) => {
+        if (gid === "test-group-1-id") return mockGroup1;
+        else if (gid === "test-group-2-id") return mockGroup2;
+      }),
+      addGroupToUser: jest.fn((uid, groupName) => {
+        mockTester.groups.push(groupName);
+      }),
+      addMemberToGroup: jest.fn((gid, uid) => {
+        mockGroup1.members.push(uid);
+      }),
+      updateGroup: jest.fn((gid, date) => {
+        mockGroup1.updateDate = date;
+      }),
 
       // Mock functions used in group screen
       getAllPostsOfGroup: jest.fn((id) => {
-        return mockGroupPosts;
+        return new Promise<DBChallenge[]>((resolve) => {
+            resolve(mockGroupPosts);
+        });
       }),
-      
       
     };
   });
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
 
-// Mock groups fetched in HomeScreen
-let mockFetchedGroups = [];
+
 
 
 // Mock user testing
@@ -59,7 +92,7 @@ let mockTester: DBUser = {
   name: "TestUser",
   image_id: "uri",
   createdAt: new Date(),
-  groups: [],
+  groups: ["Group Test 2"],
 };
 const mockTesterFriend: DBUser = {
     uid: "456",
@@ -67,7 +100,7 @@ const mockTesterFriend: DBUser = {
     name: "TesterFriend",
     image_id: "uri",
     createdAt: new Date(),
-    groups: [],
+    groups: ["Group Test 1", "Group Test 2"],
 };
 
 
@@ -91,6 +124,7 @@ const mockGroupPosts: DBChallenge[] = [
 ];
 
 
+// Mock groups used for the test
 const mockGroup1: DBGroup = {
     gid: "test-group-1-id",
     name: "Group Test 1",
@@ -103,12 +137,14 @@ const mockGroup1: DBGroup = {
 const mockGroup2: DBGroup = {
     gid: "test-group-2-id",
     name: "Group Test 2",
-    members: ["123", "789"],
+    members: ["123", "456"],
     challengeTitle: "Current Group 2 Test Challenge",
     updateDate: new Date(),
     location: null,
     radius: 500,
 };
+// Mock groups fetched in HomeScreen
+let mockFetchedGroups: DBGroup[] = [mockGroup2];
 
 
 
