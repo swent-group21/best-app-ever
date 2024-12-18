@@ -40,7 +40,7 @@ export const UserListItem = ({
   const { firstLetter } = useFriendIconViewModel({ name });
 
   return (
-    <ThemedView style={styles.listItem}>
+    <ThemedView style={styles.listItem} testID={`user-list-item-${name}`}>
       {avatar ? (
         <Image source={{ uri: avatar }} style={styles.avatar} />
       ) : (
