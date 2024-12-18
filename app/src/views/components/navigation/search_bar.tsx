@@ -7,22 +7,24 @@ import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input"
  * @param onSearch : function to call when the user types in the search bar
  * @returns SearchBar Component
  */
-export const SearchBar = ({
+export function SearchBar ({
   onSearch,
   element,
 }: {
   readonly onSearch: (text: string) => void;
   readonly element: string;
-}) => (
-  <ThemedView style={styles.searchContainer} testID="search-bar">
-    <ThemedTextInput
-      style={styles.searchInput}
-      placeholder={`Search for a ${element}...`}
-      placeholderTextColor="#aaa"
-      onChangeText={onSearch}
-    />
-  </ThemedView>
-);
+}) {
+  return (
+    <ThemedView style={styles.searchContainer} testID="search-bar">
+      <ThemedTextInput
+        style={styles.searchInput}
+        placeholder={`Search for a ${element}...`}
+        placeholderTextColor="#aaa"
+        onChangeText={onSearch}
+      />
+    </ThemedView>
+  );
+};
 
 const styles = StyleSheet.create({
   searchContainer: {

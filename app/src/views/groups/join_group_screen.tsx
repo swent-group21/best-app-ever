@@ -80,7 +80,7 @@ export default function JoinGroupScreen({
   ];
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="join-group-screen">
       <TopBar
         title="Join your friends in a group !"
         leftIcon="arrow-back"

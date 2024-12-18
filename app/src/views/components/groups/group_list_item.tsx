@@ -23,7 +23,7 @@ export const GroupListItem = ({
   readonly handleJoin: () => void;
 }) => {
   return (
-    <ThemedView style={styles.listItem} testID={`list-item-${name}`}>
+    <ThemedView style={styles.listItem} testID={`group-list-item-${name}`}>
       {/* Display the group as an icon with its name */}
       <ThemedView style={styles.groupIcon} testID={"group-icon"}>
         <ThemedTextButton
