@@ -7,7 +7,7 @@ import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input"
  * @param onSearch : function to call when the user types in the search bar
  * @returns SearchBar Component
  */
-export function SearchBar ({
+export function SearchBar({
   onSearch,
 }: {
   readonly onSearch: (text: string) => void;
@@ -23,7 +23,7 @@ export function SearchBar ({
       />
     </ThemedView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   searchContainer: {

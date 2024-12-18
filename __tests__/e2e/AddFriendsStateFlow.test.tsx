@@ -1,5 +1,11 @@
 import React from "react";
-import { render, fireEvent, waitFor, cleanup, act } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  cleanup,
+  act,
+} from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FirestoreCtrl, {
@@ -19,8 +25,6 @@ const Stack = createNativeStackNavigator();
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
-      
-
       // Mock functions used in home screen
       getGroupsByUserId: jest.fn((id) => {
         if (id === "123") {
@@ -32,7 +36,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
             resolve([mockTesterFriendGroup]);
           });
         }
-        }),
+      }),
       getChallengeDescription: jest.fn((id) => {
         return mockCurrentChallenge;
       }),
@@ -42,58 +46,55 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         });
       }),
 
-
       // Mock functions used in friends screen
       getAllUsers: jest.fn(() => {
         return [mockTester, mockTesterFriend];
       }),
       addFriend: jest.fn((uid, friendUid) => {
         if (uid === "123" && friendUid === "456") {
-            mockTester.friends.push(friendUid);
+          mockTester.friends.push(friendUid);
         } else if (uid === "456" && friendUid === "123") {
-            mockTesterFriend.friends.push(friendUid);
+          mockTesterFriend.friends.push(friendUid);
         }
       }),
       acceptFriend: jest.fn((uid, friendUid) => {
         if (uid === "456" && friendUid === "123") {
-            mockTesterFriend.friends.push(friendUid);
+          mockTesterFriend.friends.push(friendUid);
         } else if (uid === "123" && friendUid === "456") {
-            mockTester.friends.push(friendUid);
+          mockTester.friends.push(friendUid);
         }
       }),
       getFriendSuggestions: jest.fn((uid) => {
         if (uid === "123") {
           return [];
         } else if (uid === "456") {
-            return [mockTester];
+          return [mockTester];
         }
       }),
       getFriends: jest.fn((uid) => {}),
       getFriendRequests: jest.fn((uid) => {
         if (uid === "456") {
-            return [mockTester];
+          return [mockTester];
         } else return [];
       }),
       isFriend: jest.fn((uid, friendUid) => {
         if (!isRequestSent) {
-            return false;
+          return false;
         } else {
-            if (mockTester.friends.includes(friendUid)) {
-                return true;
-            }
+          if (mockTester.friends.includes(friendUid)) {
+            return true;
+          }
         }
       }),
       isRequested: jest.fn((uid, friendUid) => {
         if (!isRequestSent) {
-            return false;
+          return false;
         } else {
-            if (uid === "456") {
-                return true;
-            }
+          if (uid === "456") {
+            return true;
+          }
         }
       }),
-      
-
 
       // Mock functions used in maximize screen
       getCommentsOf: jest.fn((challenge_id) => {
@@ -113,16 +114,15 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 
       getUser: jest.fn((uid) => {
         if (uid === "123") {
-            return new Promise<DBUser[]>((resolve) => {
-              resolve([mockTester]);
-            });
+          return new Promise<DBUser[]>((resolve) => {
+            resolve([mockTester]);
+          });
         } else if (uid === "456") {
           return new Promise<DBUser[]>((resolve) => {
             resolve([mockTesterFriend]);
-          });;
+          });
         }
       }),
-
     };
   });
 });
@@ -141,38 +141,38 @@ let mockTester: DBUser = {
   friends: [],
 };
 let mockTesterFriend: DBUser = {
-    uid: "456",
-    email: "friend@example.com",
-    name: "TesterFriend",
-    image_id: "uri",
-    createdAt: new Date(),
-    friends: [],
+  uid: "456",
+  email: "friend@example.com",
+  name: "TesterFriend",
+  image_id: "uri",
+  createdAt: new Date(),
+  friends: [],
 };
 let isRequestSent = false;
 
 // Mock posts for HomeScreen for users
 let mockTesterGroup: DBGroup = {
-    name: "TesterGroup",
-    challengeTitle: "TesterGroupChallenge",
-    members: ["123"],
-    updateDate: new Date(),
-    location: null,
-    radius: 0,
+  name: "TesterGroup",
+  challengeTitle: "TesterGroupChallenge",
+  members: ["123"],
+  updateDate: new Date(),
+  location: null,
+  radius: 0,
 };
 let mockTesterFriendGroup: DBGroup = {
-    name: "FriendGroup",
-    challengeTitle: "TesterFriendGroupChallenge",
-    members: ["456"],
-    updateDate: new Date(),
-    location: null,
-    radius: 0,
+  name: "FriendGroup",
+  challengeTitle: "TesterFriendGroupChallenge",
+  members: ["456"],
+  updateDate: new Date(),
+  location: null,
+  radius: 0,
 };
 
-// Mock post for HomeScreen 
+// Mock post for HomeScreen
 const mockPostTesterFriend: DBChallenge = {
-    caption: "Home Challenge Test Caption",
-    uid: "456",
-    challenge_description: "Current Test Challenge Title",
+  caption: "Home Challenge Test Caption",
+  uid: "456",
+  challenge_description: "Current Test Challenge Title",
 };
 const mockPostComments: DBComment[] = [];
 let mockPostLikes: string[] = [];
@@ -183,9 +183,6 @@ const mockCurrentChallenge: DBChallengeDescription = {
   description: "test Challenge Description",
   endDate: new Date(2099, 1, 1, 0, 0, 0, 0),
 };
-
-
-
 
 // Create a test component to wrap HomeScreen with navigation
 // to simulate the navigation of the TesterUser
@@ -223,38 +220,37 @@ const TesterNavigation = () => {
 // Create a test component to wrap HomeScreen with navigation
 // to simulate the navigation of the Friend
 const FriendNavigation = () => {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator
-          id={undefined}
-          initialRouteName="Home"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Home">
-            {(props) => (
-              <HomeScreen
-                {...props}
-                firestoreCtrl={mockFirestoreCtrl}
-                user={mockTesterFriend}
-              />
-            )}
-          </Stack.Screen>
-          <Stack.Screen name="Friends">
-            {(props) => (
-              <FriendsScreen
-                {...props}
-                firestoreCtrl={mockFirestoreCtrl}
-                user={mockTesterFriend}
-              />
-            )}
-          </Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        id={undefined}
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Home">
+          {(props) => (
+            <HomeScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockTesterFriend}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Friends">
+          {(props) => (
+            <FriendsScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockTesterFriend}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
-
-  // Create a test component to wrap HomeScreen with navigation
+// Create a test component to wrap HomeScreen with navigation
 // to simulate the navigation of the TesterUser
 const TesterNavigation2 = () => {
   return (
@@ -287,25 +283,22 @@ const TesterNavigation2 = () => {
   );
 };
 
-
-
 /**
  * Test the flow of sending a friend request and commenting a friend's post
  */
 describe("Send a friend request that is accepted and comment a friend's post", () => {
-
   it("Sends a friend request that is accepted and comments a friend's post", async () => {
     // Render the test app for the tester user
     const testerNavigation = render(<TesterNavigation />);
 
     // Verify the user was passed to HomeScreen by the navigation stack
     expect(mockTester).toEqual({
-        uid: "123",
-        email: "tester@example.com",
-        name: "TesterUser",
-        image_id: "uri",
-        createdAt: expect.any(Date),
-        friends: [],
+      uid: "123",
+      email: "tester@example.com",
+      name: "TesterUser",
+      image_id: "uri",
+      createdAt: expect.any(Date),
+      friends: [],
     });
 
     // Verify the HomeScreen is diplayed
@@ -320,33 +313,34 @@ describe("Send a friend request that is accepted and comment a friend's post", (
     });
 
     // Simulate user searching for a friend in the search bar
-    fireEvent.changeText(testerNavigation.getByTestId("search-bar-input"), "TesterFriend");
+    fireEvent.changeText(
+      testerNavigation.getByTestId("search-bar-input"),
+      "TesterFriend",
+    );
 
     // Wait for the right search results to display
     // (make sure the searched user is not suggested to not create testId conflicts)
     await waitFor(() => {
-      expect(testerNavigation.getByTestId("user-list-item-TesterFriend")).toBeTruthy();
+      expect(
+        testerNavigation.getByTestId("user-list-item-TesterFriend"),
+      ).toBeTruthy();
     });
 
     // Simulate user adding the friend
     fireEvent.press(testerNavigation.getByTestId("handle-button-TesterFriend"));
     isRequestSent = true;
 
-
-
-
-
     // Render the test app for the friend user
     const friendNavigation = render(<FriendNavigation />);
 
     // Verify the user was passed to HomeScreen by the navigation stack
     expect(mockTesterFriend).toEqual({
-        uid: "456",
-        email: "friend@example.com",
-        name: "TesterFriend",
-        image_id: "uri",
-        createdAt: expect.any(Date),
-        friends: [],
+      uid: "456",
+      email: "friend@example.com",
+      name: "TesterFriend",
+      image_id: "uri",
+      createdAt: expect.any(Date),
+      friends: [],
     });
 
     // Verify the HomeScreen is diplayed
@@ -363,13 +357,9 @@ describe("Send a friend request that is accepted and comment a friend's post", (
     // Simulate friend user accepting the request from tester user
     fireEvent.press(friendNavigation.getByTestId("accept-button-TesterUser"));
 
-
-
-
-
     // Render again the test app for the tester user
     const testerNavigation2 = render(<TesterNavigation2 />);
-  
+
     // Wait for the useEffects to run
     await act(async () => {
       await Promise.resolve();
@@ -377,12 +367,12 @@ describe("Send a friend request that is accepted and comment a friend's post", (
 
     // Verify the user was passed to HomeScreen by the navigation stack
     expect(mockTester).toEqual({
-        uid: "123",
-        email: "tester@example.com",
-        name: "TesterUser",
-        image_id: "uri",
-        createdAt: expect.any(Date),
-        friends: ["456"],
+      uid: "123",
+      email: "tester@example.com",
+      name: "TesterUser",
+      image_id: "uri",
+      createdAt: expect.any(Date),
+      friends: ["456"],
     });
 
     // Verify the HomeScreen is diplayed
@@ -399,14 +389,17 @@ describe("Send a friend request that is accepted and comment a friend's post", (
 
     // Wait for the navigation to MaximizeScreen
     await waitFor(() => {
-        expect(testerNavigation2.getByTestId("maximize-screen")).toBeTruthy();
+      expect(testerNavigation2.getByTestId("maximize-screen")).toBeTruthy();
     });
 
     // Simulate user liking the post
     fireEvent.press(testerNavigation2.getByTestId("like-button"));
 
     // Simulate user commenting the post
-    fireEvent.changeText(testerNavigation2.getByTestId("comment-input"), "Test Comment");
+    fireEvent.changeText(
+      testerNavigation2.getByTestId("comment-input"),
+      "Test Comment",
+    );
     // Wait for comment Text to be modified
     await act(async () => {
       await Promise.resolve();
@@ -417,7 +410,9 @@ describe("Send a friend request that is accepted and comment a friend's post", (
 
     // Wait for the comment to display
     await waitFor(() => {
-      expect(testerNavigation2.getByTestId("comment-container-Test Comment")).toBeTruthy();
+      expect(
+        testerNavigation2.getByTestId("comment-container-Test Comment"),
+      ).toBeTruthy();
     });
   });
 });
