@@ -10,6 +10,7 @@ import FirestoreCtrl, {
 } from "@/src/models/firebase/FirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import FriendsScreen from "@/src/views/friends/friends_screen";
+import MaximizeScreen from "@/src/views/home/maximize_screen";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,16 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         } else if (uid === "456" && friendUid === "123") {
             mockTesterFriend.friends.push(friendUid);
         }
+      }),
+      acceptFriend: jest.fn((uid, friendUid) => {
+        if (uid === "456" && friendUid === "123") {
+            mockTesterFriend.friends.push(friendUid);
+        } else if (uid === "123" && friendUid === "456") {
+            mockTester.friends.push(friendUid);
+        }
+      }),
+      updateLikesOf: jest.fn((challenge_id, likes) => {
+        mockPostTesterFriend.likes = likes;
       }),
     };
   });
@@ -107,6 +118,7 @@ const mockPostTesterFriend: DBChallenge = {
     caption: "Home Challenge Test Caption",
     uid: "456",
     challenge_description: "Current Test Challenge Title",
+    likes: [],
 };
 
 // Mock current challenge for HomeScreen
@@ -141,6 +153,15 @@ const HomeTester = () => {
         <Stack.Screen name="Friends">
           {(props) => (
             <FriendsScreen
+              {...props}
+              firestoreCtrl={mockFirestoreCtrl}
+              user={mockTester}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Maximize">
+          {(props) => (
+            <MaximizeScreen
               {...props}
               firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
@@ -209,6 +230,9 @@ describe("Send a friend request that is accepted and comment a friend's post", (
     // Verify the HomeScreen is diplayed
     expect(testerNavigation.getByTestId("home-screen")).toBeTruthy();
 
+    // Verify the Tester group is displayed, the right user navigates
+    expect(testerNavigation.getByTestId("group-pressable-button-TesterGroup")).toBeTruthy();
+
     // Simulate user pressing the friends button
     fireEvent.press(testerNavigation.getByTestId("topLeftIcon-people-outline"));
 
@@ -227,7 +251,7 @@ describe("Send a friend request that is accepted and comment a friend's post", (
     });
 
     // Simulate user adding the friend
-    fireEvent.press(testerNavigation.getByTestId("add-button-TesterFriend"));
+    fireEvent.press(testerNavigation.getByTestId("handle-button-TesterFriend"));
 
 
 
@@ -250,6 +274,9 @@ describe("Send a friend request that is accepted and comment a friend's post", (
     // Verify the HomeScreen is diplayed
     expect(friendNavigation.getByTestId("home-screen")).toBeTruthy();
 
+    // Verify the Tester group is displayed, the right user navigates
+    expect(testerNavigation.getByTestId("group-pressable-button-FriendGroup")).toBeTruthy();
+
     // Simulate friend user pressing the friends button
     fireEvent.press(friendNavigation.getByTestId("topLeftIcon-people-outline"));
 
@@ -258,43 +285,53 @@ describe("Send a friend request that is accepted and comment a friend's post", (
       expect(friendNavigation.getByTestId("friendsScreen")).toBeTruthy();
     });
 
-    // Simulate user searching for a friend in the search bar
-    fireEvent.changeText(friendNavigation.getByTestId("search-bar-input"), "TesterUser");
+    // Simulate friend user accepting the request from tester user
+    fireEvent.press(friendNavigation.getByTestId("accept-button-TesterUser"));
 
-    // Wait for the search results to display
-    await waitFor(() => {
-      expect(friendNavigation.getByTestId("search-results")).toBeTruthy();
+
+
+    // Render again the test app for the tester user
+    const testerNavigation2 = render(<HomeTester />);
+
+    // Verify the user was passed to HomeScreen by the navigation stack
+    expect(mockTester).toEqual({
+        uid: "123",
+        email: "tester@example.com",
+        name: "TesterUser",
+        image_id: "uri",
+        createdAt: new Date(),
+        friends: ["456"],
     });
 
-    // Simulate user adding the friend
-    fireEvent.press(friendNavigation.getByTestId("handle-button-TesterUser"));
+    // Verify the HomeScreen is diplayed
+    expect(testerNavigation.getByTestId("home-screen")).toBeTruthy();
 
+    // Verify the Tester group is displayed, the right user navigates
+    expect(testerNavigation.getByTestId("group-pressable-button-TesterGroup")).toBeTruthy();
 
+    // Simulate user displaying only its friends' posts
+    fireEvent.press(testerNavigation.getByTestId("friends-button"));
 
+    // Verify the Friend's post is displayed
+    expect(testerNavigation.getByTestId("challenge-id-0")).toBeTruthy();
 
-    // Simulate user pressing the create group button
-    const createPostButton = getByTestId("bottom-right-icon-arrow-forward");
-    fireEvent.press(createPostButton);
+    // Simulate user wanting to comment the friend's post
+    fireEvent.press(testerNavigation.getByTestId("add-a-comment"));
 
-    // Wait for the navigation to HomeScreen
+    // Wait for the navigation to MaximizeScreen
     await waitFor(() => {
-      expect(getByTestId("home-screen")).toBeTruthy();
+        expect(friendNavigation.getByTestId("maximize-screen")).toBeTruthy();
     });
 
-    // Wait for the new group to be displayed
+    // Simulate user liking the post
+    fireEvent.press(testerNavigation.getByTestId("like-button"));
+
+    // Simulate user commenting the post
+    fireEvent.changeText(testerNavigation.getByTestId("comment-input"), "Test Comment");
+
+    // Wait for the comment to display
     await waitFor(() => {
-      expect(getByTestId("group-id-TestGroup")).toBeTruthy();
+      expect(testerNavigation.getByTestId("comment-container-Test Comment")).toBeTruthy();
     });
-
-    // Simulate user pressing the new group button
-    fireEvent.press(getByTestId("group-pressable-button-TestGroup"));
-
-    // Wait for the navigation to GroupScreen
-    await waitFor(() => {
-      expect(getByTestId("group-screen")).toBeTruthy();
-    });
-
-    // Verify it is the right group
-    expect(getByTestId("description-id-TestGroup")).toBeTruthy();
   });
 });
