@@ -21,6 +21,7 @@ export function SearchBar ({
         placeholder={`Search for a ${element}...`}
         placeholderTextColor="#aaa"
         onChangeText={onSearch}
+        testID="search-bar-input"
       />
     </ThemedView>
   );

@@ -62,6 +62,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       }),
       addGroupToUser: jest.fn((uid, groupName) => {
         mockTester.groups.push(groupName);
+        mockFetchedGroups.push(mockGroup1);
       }),
       addMemberToGroup: jest.fn((gid, uid) => {
         mockGroup1.members.push(uid);
@@ -213,7 +214,7 @@ describe("Create a group and navigate to it", () => {
       name: "TestUser",
       image_id: "uri",
       createdAt: expect.any(Date),
-      groups: [],
+      groups: ["Group Test 2"],
     });
 
     // Verify the HomeScreen is diplayed
@@ -262,6 +263,16 @@ describe("Create a group and navigate to it", () => {
     await waitFor(() => {
         expect(getByTestId("home-screen")).toBeTruthy();
     });
+
+    // Verify the user was passed to HomeScreen by the navigation stack
+    expect(mockTester).toEqual({
+        uid: "123",
+        email: "test@example.com",
+        name: "TestUser",
+        image_id: "uri",
+        createdAt: expect.any(Date),
+        groups: ["Group Test 2", "Group Test 1"],
+      });
 
     // Wait for the new group to be displayed
     await waitFor(() => {
