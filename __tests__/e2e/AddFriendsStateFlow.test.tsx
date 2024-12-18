@@ -7,6 +7,7 @@ import FirestoreCtrl, {
   DBChallenge,
   DBChallengeDescription,
   DBGroup,
+  DBComment,
 } from "@/src/models/firebase/FirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import FriendsScreen from "@/src/views/friends/friends_screen";
@@ -18,17 +19,7 @@ const Stack = createNativeStackNavigator();
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => {
     return {
-      getUser: jest.fn(() => {
-        return mockTester;
-      }),
-
-      // Mock functions used in group creation
-      newGroup: jest.fn((group) => {
-        mockFetchedGroups.push(group);
-      }),
-      addGroupToMemberGroups: jest.fn((id, group_name) => {
-        mockTester.groups.push(group_name);
-      }),
+      
 
       // Mock functions used in home screen
       getGroupsByUserId: jest.fn((id) => {
@@ -49,6 +40,8 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
         return [mockPostTesterFriend];
       }),
 
+
+      // Mock functions used in friends screen
       getAllUsers: jest.fn(() => {
         return [mockTester, mockTesterFriend];
       }),
@@ -66,9 +59,44 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
             mockTester.friends.push(friendUid);
         }
       }),
+      getFriendSuggestions: jest.fn((uid) => {
+        if (uid === "123") {
+          return [mockTesterFriend];
+        } else if (uid === "456") {
+            return [mockTester];
+        }
+      }),
+      getFriends: jest.fn((uid) => {}),
+      getFriendRequests: jest.fn((uid) => {
+        if (uid === "456") {
+            return [mockTester];
+        }
+      }),
+      
+
+
+      // Mock functions used in maximize screen
+      getCommentsOf: jest.fn((challenge_id) => {
+        return mockPostComments;
+      }),
+      addComment: jest.fn((comment) => {
+        mockPostComments.push(comment);
+      }),
       updateLikesOf: jest.fn((challenge_id, likes) => {
         mockPostTesterFriend.likes = likes;
       }),
+      getLikesOf: jest.fn((challenge_id) => {
+        return mockPostTesterFriend.likes;
+      }),
+
+      getUser: jest.fn((uid) => {
+        if (uid === "123") {
+            return mockTester;
+        } else if (uid === "456") {
+            return mockTesterFriend;
+        }
+      }),
+
     };
   });
 });
@@ -120,6 +148,7 @@ const mockPostTesterFriend: DBChallenge = {
     challenge_description: "Current Test Challenge Title",
     likes: [],
 };
+const mockPostComments: DBComment[] = [];
 
 // Mock current challenge for HomeScreen
 const mockCurrentChallenge: DBChallengeDescription = {
