@@ -27,24 +27,23 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       // Mock functions used in home screen
       getGroupsByUserId: jest.fn((id) => {
         if (id === "123") {
-            return new Promise<DBGroup[]>((resolve) => {
-              resolve(mockFetchedGroups);
-            });
-          } else if (id === "456") {
-            return new Promise<DBGroup[]>((resolve) => {
-              resolve([mockGroup1, mockGroup2]);
-            });
-          }
+          return new Promise<DBGroup[]>((resolve) => {
+            resolve(mockFetchedGroups);
+          });
+        } else if (id === "456") {
+          return new Promise<DBGroup[]>((resolve) => {
+            resolve([mockGroup1, mockGroup2]);
+          });
+        }
       }),
       getChallengeDescription: jest.fn((id) => {
         return mockCurrentChallenge;
       }),
       getPostsByChallengeTitle: jest.fn((title) => {
         return new Promise<DBChallenge[]>((resolve) => {
-            resolve(mockHomePosts);
+          resolve(mockHomePosts);
         });
       }),
-
 
       // Mock functions used in join group screen
       getGroupSuggestions: jest.fn((uid) => {
@@ -53,7 +52,6 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       getAllGroups: jest.fn(() => {
         return [mockGroup1, mockGroup2];
       }),
-
 
       // Mock functions used in list of filtered groups
       getGroup: jest.fn((gid) => {
@@ -74,17 +72,13 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       // Mock functions used in group screen
       getAllPostsOfGroup: jest.fn((id) => {
         return new Promise<DBChallenge[]>((resolve) => {
-            resolve(mockGroupPosts);
+          resolve(mockGroupPosts);
         });
       }),
-      
     };
   });
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
-
-
-
 
 // Mock user testing
 let mockTester: DBUser = {
@@ -96,15 +90,13 @@ let mockTester: DBUser = {
   groups: ["Group Test 2"],
 };
 const mockTesterFriend: DBUser = {
-    uid: "456",
-    email: "tester2@example.com",
-    name: "TesterFriend",
-    image_id: "uri",
-    createdAt: new Date(),
-    groups: ["Group Test 1", "Group Test 2"],
+  uid: "456",
+  email: "tester2@example.com",
+  name: "TesterFriend",
+  image_id: "uri",
+  createdAt: new Date(),
+  groups: ["Group Test 1", "Group Test 2"],
 };
-
-
 
 // Mock posts for HomeScreen and GroupScreen
 const mockHomePosts: DBChallenge[] = [
@@ -124,38 +116,33 @@ const mockGroupPosts: DBChallenge[] = [
   },
 ];
 
-
 // Mock groups used for the test
 const mockGroup1: DBGroup = {
-    gid: "test-group-1-id",
-    name: "Group Test 1",
-    members: ["456"],
-    challengeTitle: "Current Group 1 Test Challenge",
-    updateDate: new Date(),
-    location: null,
-    radius: 500,
+  gid: "test-group-1-id",
+  name: "Group Test 1",
+  members: ["456"],
+  challengeTitle: "Current Group 1 Test Challenge",
+  updateDate: new Date(),
+  location: null,
+  radius: 500,
 };
 const mockGroup2: DBGroup = {
-    gid: "test-group-2-id",
-    name: "Group Test 2",
-    members: ["123", "456"],
-    challengeTitle: "Current Group 2 Test Challenge",
-    updateDate: new Date(),
-    location: null,
-    radius: 500,
+  gid: "test-group-2-id",
+  name: "Group Test 2",
+  members: ["123", "456"],
+  challengeTitle: "Current Group 2 Test Challenge",
+  updateDate: new Date(),
+  location: null,
+  radius: 500,
 };
 // Mock groups fetched in HomeScreen
 let mockFetchedGroups: DBGroup[] = [mockGroup2];
-
-
 
 const mockCurrentChallenge: DBChallengeDescription = {
   title: "Current Test Challenge Title",
   description: "test Challenge Description",
   endDate: new Date(2099, 1, 1, 0, 0, 0, 0),
 };
-
-
 
 // Create a test component to wrap HomeScreen with navigation
 const Navigation = () => {
@@ -203,7 +190,6 @@ const Navigation = () => {
  */
 describe("Create a group and navigate to it", () => {
   it("Creates a group and navigates to it", async () => {
-
     // Render the test app
     const { getByTestId } = render(<Navigation />);
 
@@ -227,23 +213,18 @@ describe("Create a group and navigate to it", () => {
     await waitFor(() => {
       expect(getByTestId("join-group-screen")).toBeTruthy();
     });
-    
+
     // Simulate user searching for a group in the search bar
     fireEvent.changeText(getByTestId("search-bar-input"), "Group Test 1");
 
     // Wait for the right search results to display
     // (make sure the searched group is not suggested to not create testId conflicts)
     await waitFor(() => {
-        expect(getByTestId("group-list-item-Group Test 1")).toBeTruthy();
+      expect(getByTestId("group-list-item-Group Test 1")).toBeTruthy();
     });
-  
+
     // Simulate user joining the group
     fireEvent.press(getByTestId("join-button-Group Test 1"));
-
-
-
-
-
 
     // Wait for the navigation to GroupScreen
     await waitFor(() => {
@@ -253,26 +234,23 @@ describe("Create a group and navigate to it", () => {
     // Verify it is the right group by checking the title
     expect(getByTestId("topTitle-Group Test 1")).toBeTruthy();
 
-
-
-
     // Simulate user pressing the home button
     fireEvent.press(getByTestId("home-pressable-button"));
 
     // Wait for the navigation to HomeScreen
     await waitFor(() => {
-        expect(getByTestId("home-screen")).toBeTruthy();
+      expect(getByTestId("home-screen")).toBeTruthy();
     });
 
     // Verify the user was passed to HomeScreen by the navigation stack
     expect(mockTester).toEqual({
-        uid: "123",
-        email: "test@example.com",
-        name: "TestUser",
-        image_id: "uri",
-        createdAt: expect.any(Date),
-        groups: ["Group Test 2", "Group Test 1"],
-      });
+      uid: "123",
+      email: "test@example.com",
+      name: "TestUser",
+      image_id: "uri",
+      createdAt: expect.any(Date),
+      groups: ["Group Test 2", "Group Test 1"],
+    });
 
     // Wait for the new group to be displayed
     await waitFor(() => {

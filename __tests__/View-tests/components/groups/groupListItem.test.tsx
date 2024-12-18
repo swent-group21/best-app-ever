@@ -20,7 +20,7 @@ describe("GroupListItem Component", () => {
     );
 
     // Check if the component is rendered
-    expect(getByTestId("list-item-TestGroup")).toBeTruthy();
+    expect(getByTestId("group-list-item-TestGroup")).toBeTruthy();
   });
 
   it("renders with the icon and its name", () => {

@@ -99,8 +99,8 @@ describe("JoinGroupScreen Tests", () => {
       />,
     );
 
-    expect(getByTestId("list-item-Group1")).toBeTruthy();
-    expect(getByTestId("list-item-Team2")).toBeTruthy();
+    expect(getByTestId("group-list-item-Group1")).toBeTruthy();
+    expect(getByTestId("group-list-item-Team2")).toBeTruthy();
   });
 
   it("calls the right navigation values", async () => {
