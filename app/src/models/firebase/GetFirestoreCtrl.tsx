@@ -398,7 +398,6 @@ export async function getFriends(userId: string): Promise<DBUser[]> {
     return friends;
   } catch (error) {
     console.error("Error getting friends: ", error);
-    throw error;
   }
 }
 

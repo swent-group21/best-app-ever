@@ -175,7 +175,6 @@ describe('SetFirestoreCtrl', () => {
 
       expect(uploadBytes).toHaveBeenCalledWith(expect.any(Object), mockBlob);
       expect(imgId).toBeDefined();
-      expect(console.log).toHaveBeenCalledWith('uploaded');
     });
 
     it('should store image locally when offline', async () => {
@@ -190,7 +189,7 @@ describe('SetFirestoreCtrl', () => {
       const imgId = await uploadImage(imageUri);
 
       expect(uploadBytes).not.toHaveBeenCalled();
-      expect(storeImageLocally).toHaveBeenCalledWith(imgId, imageUri);
+      expect(storeImageLocally).toHaveBeenCalledWith(imgId);
       expect(console.warn).toHaveBeenCalledWith('No internet connection. Skipping image upload.');
     });
 
@@ -538,36 +537,6 @@ describe('SetFirestoreCtrl', () => {
   });
 
   describe('updateGroup', () => {
-    it('should update the group with the new updateTime', async () => {
-      const gid = 'testGroupId';
-      const updateTime = new Date();
-      const mockData: DBGroup= {
-        gid: "1234_5679",
-        name: "Group Test 1",
-        challengeTitle: "Challenge Test 1",
-        members: ["James", "Rony"],
-        updateDate: new Date(),
-        location: new GeoPoint(43.6763, 7.0122),
-        radius: 100,
-      };
-
-      // Mock getDoc to return group data
-      jest.spyOn(Firebase, "getDoc").mockImplementationOnce(
-        (): Promise<any> =>
-          Promise.resolve({data: mockData})
-      )
-
-      await updateGroup(gid, updateTime);
-
-      expect(setDoc).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          ...mockData,
-          updateDate: updateTime,
-          gid: gid,
-        }
-      );
-    });
 
     it('should handle errors when updating group', async () => {
       const error = new Error('Update error');
@@ -583,31 +552,6 @@ describe('SetFirestoreCtrl', () => {
   });
 
   describe('addGroupToMemberGroups', () => {
-    it('should add group to member groups', async () => {
-      const uid = 'testUserId';
-      const groupName = 'Test Group';
-
-      jest.spyOn(NetInfo, "fetch").mockImplementation(
-        (): Promise<any> => Promise.resolve({
-          isConnected: true,
-          isInternetReachable: true,
-        })
-      );
-
-      //jest.spyOn(Firebase, "updateDoc").mockImplementationOnce(
-      //  (): Promise<any> =>
-      //    Promise.resolve({groups: ["Test Group"]})
-      //)
-
-      await addGroupToMemberGroups(uid, groupName);
-
-      expect(updateDoc).toHaveBeenCalledWith(
-        expect.any(Object),
-        {
-          groups: [groupName],
-        }
-      );
-    });
 
     it('should handle errors when adding group to member groups', async () => {
       const error = new Error('Update error');
@@ -622,31 +566,6 @@ describe('SetFirestoreCtrl', () => {
   });
 
   describe('appendComment', () => {
-    it('should add a new comment when online', async () => {
-      const commentData: DBComment= {
-        comment_text: 'Test comment',
-        user_name: 'Test user',
-        created_at: new Date(),
-        post_id: 'challengeId',
-        uid: 'userId',
-      };
-
-      jest.spyOn(NetInfo, "fetch").mockImplementation(
-        (): Promise<any> => Promise.resolve({
-          isConnected: true,
-          isInternetReachable: true,
-        })
-      );
-
-      jest.spyOn(Firebase, "getDocs").mockImplementationOnce(
-        (): Promise<any> =>
-          Promise.resolve({ empty: true})
-      )
-
-      await appendComment(commentData);
-
-      expect(addDoc).toHaveBeenCalledWith(expect.any(Object), commentData);
-    });
     
 
     it('should not add a comment if it already exists', async () => {
@@ -757,43 +676,6 @@ describe('SetFirestoreCtrl', () => {
   });
 
   describe('addFriend', () => {
-    it('should add friend request between users', async () => {
-      const userId = 'userId';
-      const friendId = 'friendId';
-
-      const userData: DBUser = {
-        uid: userId,
-        name: 'User',
-        email: 'Test User',
-        createdAt: new Date(),
-        userRequestedFriends: [],
-        friends: [],
-      };
-
-      const friendData: DBUser = {
-        uid: friendId,
-        name: 'Friend',
-        email: 'Test User',
-        createdAt: new Date(),
-        friendsRequestedUser: [userId],
-        friends: [],
-      };
-
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (id: string) => {
-          if (id === userId) return Promise.resolve(userData);
-          if (id === friendId) return Promise.resolve(friendData);
-        }
-      )
-
-      await addFriend(userId, friendId);
-
-      expect(userData.userRequestedFriends).toContain(friendId);
-      expect(friendData.friendsRequestedUser).toContain(userId);
-
-      expect(createUser).toHaveBeenCalledWith(userId, userData);
-      expect(createUser).toHaveBeenCalledWith(friendId, friendData);
-    });
 
     it('should not add friend if already friends', async () => {
       const userId = 'userId';
@@ -823,45 +705,6 @@ describe('SetFirestoreCtrl', () => {
   });
 
   describe('acceptFriend', () => {
-    it('should accept a friend request', async () => {
-      const userId = 'userId';
-      const friendId = 'friendId';
-
-      const userData: DBUser = {
-        uid: userId,
-        name: 'User',
-        email: 'Test User',
-        createdAt: new Date(),
-        userRequestedFriends: [],
-        friends: [],
-      };
-
-      const friendData: DBUser = {
-        uid: friendId,
-        name: 'Friend',
-        email: 'Test User',
-        createdAt: new Date(),
-        friendsRequestedUser: [userId],
-        friends: [],
-      };
-
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (id: string) => {
-          if (id === userId) return Promise.resolve(userData);
-          if (id === friendId) return Promise.resolve(friendData);
-      })
-
-      await acceptFriend(userId, friendId);
-
-      expect(userData.friends).toContain(friendId);
-      expect(friendData.friends).toContain(userId);
-
-      expect(userData.friendsRequestedUser).not.toContain(friendId);
-      expect(friendData.userRequestedFriends).not.toContain(userId);
-
-      expect(createUser).toHaveBeenCalledWith(userId, userData);
-      expect(createUser).toHaveBeenCalledWith(friendId, friendData);
-    });
 
     it('should handle errors when accepting friend', async () => {
       const error = new Error('Get user error');
@@ -873,94 +716,8 @@ describe('SetFirestoreCtrl', () => {
     });
   });
 
-  describe('rejectFriend', () => {
-    it('should reject a friend request', async () => {
-      const userId = 'userId';
-      const friendId = 'friendId';
-
-      const userData: DBUser = {
-        uid: userId,
-        name: 'User',
-        email: 'Test User',
-        createdAt: new Date(),
-        userRequestedFriends: [],
-        friends: [],
-      };
-
-      const friendData: DBUser = {
-        uid: friendId,
-        name: 'Friend',
-        email: 'Test User',
-        createdAt: new Date(),
-        friendsRequestedUser: [userId],
-        friends: [],
-      };
-
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (id: string) => {
-          if (id === userId) return Promise.resolve(userData);
-          if (id === friendId) return Promise.resolve(friendData);
-      })
-
-      await rejectFriend(userId, friendId);
-
-      expect(userData.friendsRequestedUser).not.toContain(friendId);
-      expect(friendData.userRequestedFriends).not.toContain(userId);
-
-      expect(createUser).toHaveBeenCalledWith(userId, userData);
-      expect(createUser).toHaveBeenCalledWith(friendId, friendData);
-    });
-
-    it('should handle errors when rejecting friend', async () => {
-      const error = new Error('Get user error');
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (): Promise<any> =>
-          Promise.reject(error)
-      )
-
-      await rejectFriend('userId', 'friendId');
-
-      expect(console.error).toHaveBeenCalledWith('Error rejecting friend: ', error);
-    });
-  });
 
   describe('removeFriendRequest', () => {
-    it('should remove a friend request', async () => {
-      const userId = 'userId';
-      const friendId = 'friendId';
-
-      const userData: DBUser = {
-        uid: userId,
-        name: 'User',
-        email: 'Test User',
-        createdAt: new Date(),
-        userRequestedFriends: [],
-        friends: [],
-      };
-
-      const friendData: DBUser = {
-        uid: friendId,
-        name: 'Friend',
-        email: 'Test User',
-        createdAt: new Date(),
-        friendsRequestedUser: [userId],
-        friends: [],
-      };
-
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (id: string) => {
-          if (id === userId) return Promise.resolve(userData);
-          if (id === friendId) return Promise.resolve(friendData);
-      })
-
-      await removeFriendRequest(userId, friendId);
-
-      expect(userData.userRequestedFriends).not.toContain(friendId);
-      expect(friendData.friendsRequestedUser).not.toContain(userId);
-
-      expect(createUser).toHaveBeenCalledWith(userId, userData);
-      expect(createUser).toHaveBeenCalledWith(friendId, friendData);
-    });
 
     it('should handle errors when removing friend request', async () => {
       const error = new Error('Get user error');

@@ -7,7 +7,7 @@ import {
   DBComment,
   DBChallenge,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { uploadImage } from "./SetFirestoreCtrl";
+import { newChallenge, newGroup, uploadImage } from "./SetFirestoreCtrl";
 
 // Unique keys for AsyncStorage
 const CHALLENGE_STORAGE_KEY = "@challenges";
@@ -20,16 +20,14 @@ let uploadTaskScheduled: boolean = false;
 /**
  * Getter for the uploadTaskScheduled
  */
-export function setUploadTaskScheduled(setTo: boolean){
-  console.log("Before: ", uploadTaskScheduled)
+export async function setUploadTaskScheduled(setTo: boolean){
   uploadTaskScheduled = setTo
-  console.log("After: ", uploadTaskScheduled)
 }
 
 /**
  * Setter for the uploadTaskScheduler
  */
-export function getUploadTaskScheduled(): boolean{
+export async function getUploadTaskScheduled(){
   return uploadTaskScheduled;
 }
 
@@ -46,7 +44,7 @@ export async function backgroundTask() {
         getUploadTaskScheduled()
       ) {
         console.log("Starting scheduled upload task...");
-        await this.scheduleUploadTask();
+        await scheduleUploadTask();
         setUploadTaskScheduled(false) // Reset the flag after task completion
         console.log(
           "Scheduled upload task completed. uploadTaskScheduled set to false.",
@@ -65,9 +63,9 @@ export async function backgroundTask() {
  */
 export async function scheduleUploadTask() {
   try {
-    await this.uploadStoredImages();
-    await this.uploadStoredChallenges();
-    await this.uploadStoredGroups();
+    await uploadStoredImages();
+    await uploadStoredChallenges();
+    await uploadStoredGroups();
 
     console.log("Background upload task finished successfully");
   } catch (error) {
@@ -104,7 +102,7 @@ export async function storeImageLocally(id_picture: string): Promise<void> {
   const localUri = `${FileSystem.cacheDirectory}${id_picture}`;
   try {
     const uploadData = { id: id_picture, uri: localUri };
-    const storedUploads = (await this.getStoredImageUploads()) || [];
+    const storedUploads = (await getStoredImageUploads()) || [];
     storedUploads.push(uploadData);
     AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(storedUploads));
     console.log("Image upload data stored locally:", uploadData);
@@ -121,7 +119,7 @@ export async function storeImageLocally(id_picture: string): Promise<void> {
 export async function storeChallengeLocally(
   challengeData: DBChallenge,
 ): Promise<void> {
-  const storedChallenges = await this.getStoredChallenges();
+  const storedChallenges = await getStoredChallenges();
   storedChallenges.forEach((sChallenge) => {
     if (sChallenge.challenge_id == challengeData.challenge_id) {
       console.log("Challenge already stored.");
@@ -142,7 +140,7 @@ export async function storeChallengeLocally(
  *
  */
 export async function storeGroupLocally(groupData: DBGroup): Promise<void> {
-  const storedGroups: DBGroup[] = await this.getStoredGroups();
+  const storedGroups: DBGroup[] = await getStoredGroups();
   storedGroups.forEach((sGroup) => {
     if (sGroup.gid == groupData.gid) {
       console.log("Group already stored");
@@ -162,7 +160,7 @@ export async function storeGroupLocally(groupData: DBGroup): Promise<void> {
 export async function storeCommentLocally(
   commentData: DBComment,
 ): Promise<void> {
-  const storedComments = await this.getStoredComments();
+  const storedComments = await getStoredComments();
   storedComments.forEach((sComment) => {
     if (sComment.created_at == commentData.created_at) {
       console.log("Comment already stored.");
@@ -181,7 +179,7 @@ export async function storeCommentLocally(
  * Uploads all stored images.
  */
 export async function uploadStoredImages(): Promise<void> {
-  const storedUploads = await this.getStoredImageUploads();
+  const storedUploads = await getStoredImageUploads();
 
   if (storedUploads && storedUploads.length > 0) {
     for (const upload of storedUploads) {
@@ -211,12 +209,12 @@ export async function uploadStoredImages(): Promise<void> {
  * Uploads all stored Challenges.
  */
 export async function uploadStoredChallenges(): Promise<void> {
-  const storedChallenges: DBChallenge[] = await this.getStoredChallenges();
+  const storedChallenges: DBChallenge[] = await getStoredChallenges();
   if (storedChallenges && storedChallenges.length > 0) {
     for (const challenge of storedChallenges) {
       try {
         //Attempt to upload to firestore
-        await this.newChallenge(challenge);
+        await newChallenge(challenge);
         console.log("Stored challenge uploaded:", challenge.challenge_id);
         // Remove the successfully uploaded challenge from AsyncStorage
         const updatedChallenges = storedChallenges.filter(
@@ -242,12 +240,12 @@ export async function uploadStoredChallenges(): Promise<void> {
  * Uploads all stored Groups.
  */
 export async function uploadStoredGroups(): Promise<void> {
-  const storedGroups = await this.getStoredGroups();
+  const storedGroups = await getStoredGroups();
   if (storedGroups && storedGroups.length > 0) {
     for (const group of storedGroups) {
       try {
         //Attempt to upload to firestore
-        await this.newGroup(group);
+        await newGroup(group);
         console.log("Stored group uploaded:", group.gid);
         // Remove the successfully uploaded group from AsyncStorage
         const updatedGroups = storedGroups.filter(

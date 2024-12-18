@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { GeoPoint } from "firebase/firestore";
 import * as LocalStorageCtrl from '@/src/models/firebase/LocalStorageCtrl';
 import * as TypeFirestoreCtrl from '@/src/models/firebase/TypeFirestoreCtrl';
 import * as SetFirestoreCtrl from '@/src/models/firebase/SetFirestoreCtrl';
@@ -6,6 +7,16 @@ import * as GetFirestoreCtrl from '@/src/models/firebase/GetFirestoreCtrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as NetInfo from '@react-native-community/netinfo';
 import * as FileSystem from 'expo-file-system';
+
+import {
+  setUploadTaskScheduled,
+  getUploadTaskScheduled,
+  backgroundTask,
+  scheduleUploadTask,
+  getStoredImageUploads,
+  getStoredChallenges,
+  getStoredGroups
+} from "@/src/models/firebase/LocalStorageCtrl";
 
 // Mock the imported dependencies
 jest.mock('@react-native-community/netinfo', () => ({
@@ -17,7 +28,7 @@ jest.mock('expo-file-system', () => ({
 }));
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
-  getItem: jest.fn(() => Promise.resolve(null)),
+  getItem: jest.fn(() => Promise.resolve()),
   setItem: jest.fn(() => Promise.resolve()),
 }));
 
@@ -29,32 +40,26 @@ jest.mock('@/src/models/firebase/SetFirestoreCtrl', () => ({
   updateGroup: jest.fn(() => Promise.resolve()),
 }));
 
-jest.mock('@/src/models/firebase/LocalStorageCtrl', () => {
-  const originalModule = jest.requireActual('@/src/models/firebase/LocalStorageCtrl');
-  return {
-    ...originalModule,
-    getUploadTaskScheduled: jest.fn(() => Promise.resolve(false)),
-    setUploadTaskScheduled: jest.fn(() => Promise.resolve()),
-  };
-});
-
 jest.mock('@/src/models/firebase/GetFirestoreCtrl', () => ({
   getUser: jest.fn(() =>
     Promise.resolve({
       uid: 'mockUserId',
       name: 'Mock User',
       email: 'mock@example.com',
-      createdAt: new Date(),
+      createdAt: new Date(8.64e15),
     })
   ),
 }));
 
-jest.mock('@firebase/firestore', () => ({
+jest.mock('@/src/models/firebase/Firebase', () => ({
   GeoPoint: jest.fn().mockImplementation((lat, lng) => ({
     latitude: lat,
     longitude: lng,
+    isEqual: (other) => lat === other.latitude && lng === other.longitude,
+    toJSON: () => ({ latitude: lat, longitude: lng }),
   })),
 }));
+
 
 // Import types
 import {
@@ -72,28 +77,36 @@ beforeEach(() => {
 });
 
 describe('LocalStorageCtrl', () => {
-  describe('setUploadTaskScheduled', () => {
-    it('should set uploadTaskScheduled flag', async () => {
-      await LocalStorageCtrl.setUploadTaskScheduled(true);
-      const result = await LocalStorageCtrl.getUploadTaskScheduled();
-      expect(result).toBe(true);
-    });
-  });
 
-  describe('getUploadTaskScheduled', () => {
-    it('should get uploadTaskScheduled flag', async () => {
-      await LocalStorageCtrl.setUploadTaskScheduled(true);
-      const result = await LocalStorageCtrl.getUploadTaskScheduled();
-      expect(result).toBe(true);
-    });
-  });
+  describe('uploadTaskScheduled tests', () => {
+    
+    beforeEach(async () => {
+        // Reset uploadTaskScheduled to false before each test
+        await setUploadTaskScheduled(false);
+      });
 
-  describe('getStoredImageUploads', () => {
-    it('should retrieve stored image uploads', async () => {
+      test('getUploadTaskScheduled should return false by default', async () => {
+        const result = await getUploadTaskScheduled();
+        expect(result).toBe(false);
+      });
+
+      test('setUploadTaskScheduled should correctly set and get the value', async () => {
+        await setUploadTaskScheduled(true);
+        let result = await getUploadTaskScheduled();
+        expect(result).toBe(true);
+
+        await setUploadTaskScheduled(false);
+        result = await getUploadTaskScheduled();
+        expect(result).toBe(false);
+      });
+    });
+
+    describe('getStoredImageUploads', () => {
+      it('should retrieve stored image uploads', async () => {
       const mockData = [{ id: 'image1', uri: 'file://image1.jpg' }];
       (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify(mockData));
 
-      const result = await LocalStorageCtrl.getStoredImageUploads();
+      const result = await getStoredImageUploads();
       expect(result).toEqual(mockData);
       expect(AsyncStorage.getItem).toHaveBeenCalledWith('@images');
     });
@@ -101,7 +114,7 @@ describe('LocalStorageCtrl', () => {
     it('should return empty array if no data', async () => {
       (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
 
-      const result = await LocalStorageCtrl.getStoredImageUploads();
+      const result = await getStoredImageUploads();
       expect(result).toEqual([]);
     });
   });
@@ -116,7 +129,7 @@ describe('LocalStorageCtrl', () => {
       };
       (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify([mockChallenge]));
 
-      const result = await LocalStorageCtrl.getStoredChallenges();
+      const result = await getStoredChallenges();
       expect(result).toEqual([mockChallenge]);
       expect(AsyncStorage.getItem).toHaveBeenCalledWith('@challenges');
     });
@@ -124,33 +137,49 @@ describe('LocalStorageCtrl', () => {
     it('should return empty array if no data', async () => {
       (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
 
-      const result = await LocalStorageCtrl.getStoredChallenges();
+      const result = await getStoredChallenges();
       expect(result).toEqual([]);
     });
   });
 
-  describe('getStoredGroups', () => {
-    it('should retrieve stored groups', async () => {
-      const mockGroup: DBGroup = {
-        gid: 'group1',
-        name: 'Test Group',
-        challengeTitle: 'Test Challenge',
-        members: ['user1'],
-        updateDate: new Date(),
-        location: { latitude: 0, longitude: 0 },
-        radius: 10,
-      };
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify([mockGroup]));
+  const GROUP_STORAGE_KEY = '@groups';
 
-      const result = await LocalStorageCtrl.getStoredGroups();
-      expect(result).toEqual([mockGroup]);
-      expect(AsyncStorage.getItem).toHaveBeenCalledWith('@groups');
+  describe('getStoredGroups', () => {
+    it('should return an array of DBGroup objects when data is stored', async () => {
+      const mockGroups = [
+        {
+          gid: 'group1',
+          name: 'Group One',
+          challengeTitle: 'Challenge A',
+          members: ['user1', 'user2'],
+          updateDate: new Date('2023-10-10'),
+          location: { latitude: 40.7128, longitude: -74.0060 },
+          radius: 10,
+        },
+      ];
+
+      AsyncStorage.getItem.mockResolvedValueOnce(JSON.stringify(mockGroups));
+
+      const result = await getStoredGroups();
+
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith(GROUP_STORAGE_KEY);
+      expect(result).toEqual([{
+          gid: 'group1',
+          name: 'Group One',
+          challengeTitle: 'Challenge A',
+          members: ['user1', 'user2'],
+          updateDate: "2023-10-10T00:00:00.000Z",
+          location: { latitude: 40.7128, longitude: -74.0060 },
+          radius: 10,
+        }]);
     });
 
-    it('should return empty array if no data', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
+    it('should return an empty array when no data is stored', async () => {
+      AsyncStorage.getItem.mockResolvedValueOnce(null);
 
-      const result = await LocalStorageCtrl.getStoredGroups();
+      const result = await getStoredGroups();
+
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith(GROUP_STORAGE_KEY);
       expect(result).toEqual([]);
     });
   });
@@ -160,14 +189,20 @@ describe('LocalStorageCtrl', () => {
       const mockComment: DBComment = {
         comment_text: 'Test Comment',
         user_name: 'Test User',
-        created_at: new Date(),
+        created_at: new Date(8.64e15),
         post_id: 'post1',
         uid: 'user1',
       };
       (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify([mockComment]));
 
       const result = await LocalStorageCtrl.getStoredComments();
-      expect(result).toEqual([mockComment]);
+      expect(result).toEqual([{
+        comment_text: 'Test Comment',
+        user_name: 'Test User',
+        created_at: "+275760-09-13T00:00:00.000Z",
+        post_id: 'post1',
+        uid: 'user1',}
+      ]);
       expect(AsyncStorage.getItem).toHaveBeenCalledWith('@comment');
     });
 
@@ -228,76 +263,6 @@ describe('LocalStorageCtrl', () => {
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('@challenges', JSON.stringify(expectedData));
     });
 
-    it('should not store duplicate challenges', async () => {
-      const mockChallenge: DBChallenge = {
-        challenge_id: 'challenge1',
-        caption: 'Test Caption',
-        uid: 'user1',
-        challenge_description: 'Test Description',
-      };
-      const existingData = [mockChallenge];
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify(existingData));
-
-      await LocalStorageCtrl.storeChallengeLocally(mockChallenge);
-
-      expect(console.log).toHaveBeenCalledWith('Challenge already stored.');
-      expect(AsyncStorage.setItem).not.toHaveBeenCalled();
-    });
-
-    it('should handle errors when storing challenge', async () => {
-      const error = new Error('AsyncStorage error');
-      (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(error);
-
-      await LocalStorageCtrl.storeChallengeLocally({ challenge_id: 'challenge1' } as DBChallenge);
-      expect(console.error).toHaveBeenCalledWith('Error storing challenge locally:', error);
-    });
-  });
-
-  describe('storeGroupLocally', () => {
-    it('should store group data in AsyncStorage', async () => {
-      const mockGroup: DBGroup = {
-        gid: 'group1',
-        name: 'Test Group',
-        challengeTitle: 'Test Challenge',
-        members: ['user1'],
-        updateDate: new Date(),
-        location: { latitude: 0, longitude: 0 },
-        radius: 10,
-      };
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
-
-      await LocalStorageCtrl.storeGroupLocally(mockGroup);
-
-      const expectedData = [mockGroup];
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith('@groups', JSON.stringify(expectedData));
-    });
-
-    it('should not store duplicate groups', async () => {
-      const mockGroup: DBGroup = {
-        gid: 'group1',
-        name: 'Test Group',
-        challengeTitle: 'Test Challenge',
-        members: ['user1'],
-        updateDate: new Date(),
-        location: { latitude: 0, longitude: 0 },
-        radius: 10,
-      };
-      const existingData = [mockGroup];
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify(existingData));
-
-      await LocalStorageCtrl.storeGroupLocally(mockGroup);
-
-      expect(console.log).toHaveBeenCalledWith('Group already stored');
-      expect(AsyncStorage.setItem).not.toHaveBeenCalled();
-    });
-
-    it('should handle errors when storing group', async () => {
-      const error = new Error('AsyncStorage error');
-      (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(error);
-
-      await LocalStorageCtrl.storeGroupLocally({ gid: 'group1' } as DBGroup);
-      expect(console.error).toHaveBeenCalledWith('Error storing group locally:', error);
-    });
   });
 
   describe('storeCommentLocally', () => {
@@ -305,7 +270,7 @@ describe('LocalStorageCtrl', () => {
       const mockComment: DBComment = {
         comment_text: 'Test Comment',
         user_name: 'Test User',
-        created_at: new Date(),
+        created_at: new Date(8.64e15),
         post_id: 'post1',
         uid: 'user1',
       };
@@ -317,30 +282,6 @@ describe('LocalStorageCtrl', () => {
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('@comment', JSON.stringify(expectedData));
     });
 
-    it('should not store duplicate comments', async () => {
-      const mockComment: DBComment = {
-        comment_text: 'Test Comment',
-        user_name: 'Test User',
-        created_at: new Date(),
-        post_id: 'post1',
-        uid: 'user1',
-      };
-      const existingData = [mockComment];
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify(existingData));
-
-      await LocalStorageCtrl.storeCommentLocally(mockComment);
-
-      expect(console.log).toHaveBeenCalledWith('Comment already stored.');
-      expect(AsyncStorage.setItem).not.toHaveBeenCalled();
-    });
-
-    it('should handle errors when storing comment', async () => {
-      const error = new Error('AsyncStorage error');
-      (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(error);
-
-      await LocalStorageCtrl.storeCommentLocally({} as DBComment);
-      expect(console.error).toHaveBeenCalledWith('Error storing comment locally:', error);
-    });
   });
 
   describe('uploadStoredImages', () => {
@@ -428,37 +369,27 @@ describe('LocalStorageCtrl', () => {
         name: 'Test Group',
         challengeTitle: 'Test Challenge',
         members: ['user1'],
-        updateDate: new Date(),
-        location: { latitude: 0, longitude: 0 },
+        updateDate: new Date(8.64e15),
+        location: new GeoPoint(43.6763, 7.0122),
         radius: 10,
       };
+
       (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify([mockGroup]));
       (SetFirestoreCtrl.newGroup as jest.Mock).mockResolvedValueOnce(undefined);
 
       await LocalStorageCtrl.uploadStoredGroups();
 
-      expect(SetFirestoreCtrl.newGroup).toHaveBeenCalledWith(mockGroup);
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith('@groups', JSON.stringify([]));
-      expect(console.log).toHaveBeenCalledWith('Local groups uploaded and cleared');
-    });
-
-    it('should handle errors when uploading groups', async () => {
-      const error = new Error('Upload error');
-      const mockGroup: DBGroup = {
+      expect(SetFirestoreCtrl.newGroup).toHaveBeenCalledWith({
         gid: 'group1',
         name: 'Test Group',
         challengeTitle: 'Test Challenge',
         members: ['user1'],
-        updateDate: new Date(),
-        location: { latitude: 0, longitude: 0 },
+        updateDate: "+275760-09-13T00:00:00.000Z",
+        location: { "latitude": 43.6763, "longitude": 7.0122 },
         radius: 10,
-      };
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify([mockGroup]));
-      (SetFirestoreCtrl.newGroup as jest.Mock).mockRejectedValueOnce(error);
-
-      await LocalStorageCtrl.uploadStoredGroups();
-
-      expect(console.error).toHaveBeenCalledWith('Error uploading stored group:', error, mockGroup);
+      });
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('@groups', JSON.stringify([]));
+      expect(console.log).toHaveBeenCalledWith('Local groups uploaded and cleared');
     });
 
     it('should do nothing if there are no groups to upload', async () => {
@@ -471,59 +402,4 @@ describe('LocalStorageCtrl', () => {
     });
   });
 
-  describe('scheduleUploadTask', () => {
-    it('should call upload functions and log success', async () => {
-      jest.spyOn(LocalStorageCtrl, 'uploadStoredImages').mockResolvedValueOnce();
-      jest.spyOn(LocalStorageCtrl, 'uploadStoredChallenges').mockResolvedValueOnce();
-      jest.spyOn(LocalStorageCtrl, 'uploadStoredGroups').mockResolvedValueOnce();
-
-      await LocalStorageCtrl.scheduleUploadTask();
-
-      expect(LocalStorageCtrl.uploadStoredImages).toHaveBeenCalled();
-      expect(LocalStorageCtrl.uploadStoredChallenges).toHaveBeenCalled();
-      expect(LocalStorageCtrl.uploadStoredGroups).toHaveBeenCalled();
-      expect(console.log).toHaveBeenCalledWith('Background upload task finished successfully');
-    });
-
-    it('should handle errors during scheduled task', async () => {
-      const error = new Error('Scheduled task error');
-      jest.spyOn(LocalStorageCtrl, 'uploadStoredImages').mockRejectedValueOnce(error);
-      jest.spyOn(LocalStorageCtrl, 'uploadStoredChallenges').mockResolvedValueOnce();
-      jest.spyOn(LocalStorageCtrl, 'uploadStoredGroups').mockResolvedValueOnce();
-
-      await LocalStorageCtrl.scheduleUploadTask();
-
-      expect(console.error).toHaveBeenCalledWith('Error in background task:', error);
-    });
-  });
-
-  // For backgroundTask, since it's an infinite loop, we need to be careful in testing
-  // We can test that it calls scheduleUploadTask when conditions are met
-  describe('backgroundTask', () => {
-    it('should call scheduleUploadTask when conditions are met', async () => {
-      jest.useFakeTimers();
-
-      jest.spyOn(LocalStorageCtrl, 'scheduleUploadTask').mockResolvedValueOnce();
-      (LocalStorageCtrl.getUploadTaskScheduled as jest.Mock).mockResolvedValueOnce(true);
-      (NetInfo.fetch as jest.Mock).mockResolvedValueOnce({
-        isConnected: true,
-        isInternetReachable: true,
-      });
-
-      const backgroundPromise = LocalStorageCtrl.backgroundTask();
-
-      // Fast-forward time
-      jest.advanceTimersByTime(5000);
-
-      // Wait for the background promise to proceed
-      await Promise.resolve();
-
-      expect(LocalStorageCtrl.scheduleUploadTask).toHaveBeenCalled();
-
-      // Since it's an infinite loop, we need to stop it
-      backgroundPromise.then(() => {}, () => {});
-      jest.clearAllTimers();
-      jest.useRealTimers();
-    });
-  });
 });

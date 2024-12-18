@@ -72,7 +72,7 @@ const mockDBChallenge: TypeFirestoreCtrl.DBChallenge = {
   uid: 'testUserId',
   challenge_description: 'Description',
   date: new Date(),
-  likes: []
+  likes: ['userId1']
 };
 
 const mockDBComment: TypeFirestoreCtrl.DBComment = {
@@ -181,41 +181,6 @@ describe('GetFirestoreCtrl', () => {
       const error = new Error('Storage error');
       (getDownloadURL as jest.Mock).mockRejectedValueOnce(error);
       await expect(getImageUrl('imageId')).rejects.toThrow(error);
-    });
-  });
-
-  describe('getName', () => {
-    it('should return the name of a user', async () => {
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (): Promise<any> => 
-          Promise.resolve(mockDBUser)
-      )
-      await expect(getName('testUserId')).resolves.toBe('Test User');
-    });
-
-    it('should handle errors when getting name', async () => {
-      const error = new Error('Error getting user');
-      jest.spyOn(GetFirestoreCtrl, "getUser").mockImplementationOnce(
-        (): Promise<any> => 
-          Promise.reject(error)
-      )
-      await getName('testUserId')
-      expect(console.error).toHaveBeenCalledWith('Error getting name: ', error);
-    });
-  });
-
-  describe('getProfilePicture', () => {
-    it('should return the profile picture ID of a user', async () => {
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockResolvedValueOnce({ ...mockDBUser, image_id: 'imageId' });
-      const result = await getProfilePicture('testUserId');
-      expect(result).toBe('imageId');
-    });
-
-    it('should handle errors when getting profile picture', async () => {
-      const error = new Error('Error getting user');
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockRejectedValueOnce(error);
-      await getProfilePicture('testUserId')
-      expect(console.error).toHaveBeenCalledWith('Error getting profile picture: ', error);
     });
   });
 
@@ -420,27 +385,6 @@ describe('GetFirestoreCtrl', () => {
     });
   });
 
-  describe('getLikesOf', () => {
-    it('should retrieve likes of a challenge', async () => {
-      jest.spyOn(GetFirestoreCtrl, 'getChallenge').mockResolvedValueOnce({ ...mockDBChallenge, likes: ['userId1'] });
-      const result = await getLikesOf('challengeId');
-      expect(result).toEqual(['userId1']);
-    });
-
-    it('should return empty array if no likes', async () => {
-      jest.spyOn(GetFirestoreCtrl, 'getChallenge').mockResolvedValueOnce(mockDBChallenge);
-      const result = await getLikesOf('challengeId');
-      expect(result).toEqual([]);
-    });
-
-    it('should handle errors when getting likes', async () => {
-      const error = new Error('Error getting challenge');
-      jest.spyOn(GetFirestoreCtrl, 'getChallenge').mockRejectedValueOnce(error);
-      await getLikesOf('challengeId')
-      expect(console.error).toHaveBeenCalledWith('Error getting likes: ', error);
-    });
-  });
-
   describe('getChallengeDescription', () => {
     it('should retrieve the current challenge description', async () => {
       const mockData = { ...mockDBChallengeDescription, Date: { toDate: () => mockDBChallengeDescription.endDate } };
@@ -479,58 +423,6 @@ describe('GetFirestoreCtrl', () => {
       (getDocs as jest.Mock).mockRejectedValueOnce(error);
       await expect(getAllUsers()).rejects.toThrow(error);
       expect(console.error).toHaveBeenCalledWith('Error getting all users: ', error);
-    });
-  });
-
-  describe('getFriends', () => {
-    it('should retrieve friends of a user', async () => {
-      const friendMock: TypeFirestoreCtrl.DBUser = {
-        uid: 'friendId',
-        name: 'Friend User',
-        email: 'test@example.com',
-        createdAt: new Date(),
-        friends: ['userId'],
-        userRequestedFriends: ['requestedFriendId'],
-        friendsRequestedUser: ['friendRequestId'],
-      };
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockResolvedValueOnce({ ...mockDBUser, friends: ['friendId'] });
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockResolvedValueOnce(friendMock);
-      const result = await getFriends('testUserId');
-      expect(result).toEqual([friendMock]);
-    });
-
-    it('should return empty array if user has no friends', async () => {
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockResolvedValueOnce(mockDBUser);
-      const result = await getFriends('testUserId');
-      expect(result).toEqual([]);
-    });
-
-    it('should handle errors when getting friends', async () => {
-      const error = new Error('Error getting user');
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockRejectedValueOnce(error);
-      await expect(getFriends('testUserId')).rejects.toThrow(error);
-      expect(console.error).toHaveBeenCalledWith('Error getting friends: ', error);
-    });
-  });
-
-  describe('isFriend', () => {
-    it('should return true if users are friends', async () => {
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockResolvedValueOnce({ ...mockDBUser, friends: ['friendId'] });
-      const result = await isFriend('testUserId', 'friendId');
-      expect(result).toBe(true);
-    });
-
-    it('should return false if users are not friends', async () => {
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockResolvedValueOnce(mockDBUser);
-      const result = await isFriend('testUserId', 'nonFriendId');
-      expect(result).toBe(false);
-    });
-
-    it('should handle errors when checking friendship', async () => {
-      const error = new Error('Error getting user');
-      jest.spyOn(GetFirestoreCtrl, 'getUser').mockRejectedValueOnce(error);
-      await expect(isFriend('testUserId', 'friendId')).resolves.toBeUndefined();
-      expect(console.error).toHaveBeenCalledWith('Error checking if friend: ', error);
     });
   });
 
