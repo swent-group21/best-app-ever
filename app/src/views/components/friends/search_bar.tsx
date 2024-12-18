@@ -18,6 +18,7 @@ export const SearchBar = ({
       placeholder="Search for a user..."
       placeholderTextColor="#aaa"
       onChangeText={onSearch}
+      testID="search-bar-input"
     />
   </ThemedView>
 );

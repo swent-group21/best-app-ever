@@ -60,7 +60,7 @@ export const UserListItem = ({
         <TouchableOpacity
           style={styles.addButton}
           onPress={handlePress}
-          testID={`add-button-${name}`}
+          testID={`handle-button-${name}`}
         >
           <ThemedText style={styles.addButtonText}>{status}</ThemedText>
         </TouchableOpacity>
