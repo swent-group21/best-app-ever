@@ -28,12 +28,11 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 
       // Mock functions used in group creation
       newGroup: jest.fn((group) => {
-        mockNewGroup = 
-          {
-            gid: "new-group-id",
-            ...group,
-          } as DBGroup,
-        mockFetchedGroups.push(mockNewGroup);
+        (mockNewGroup = {
+          gid: "new-group-id",
+          ...group,
+        } as DBGroup),
+          mockFetchedGroups.push(mockNewGroup);
       }),
       addGroupToMemberGroups: jest.fn((id, group_name) => {
         mockTester.groups.push(group_name);
@@ -69,9 +68,7 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       newChallenge: jest.fn((challenge) => {
         if (challenge.group_id === "new-group-id") {
           mockGroupPosts.push(challenge);
-        } else
-          mockHomePosts.push(challenge);
-      
+        } else mockHomePosts.push(challenge);
       }),
     };
   });
@@ -132,8 +129,6 @@ jest.mock("expo-location", () => ({
   ),
 }));
 
-
-
 // Mock user testing
 let mockTester: DBUser = {
   uid: "123",
@@ -143,7 +138,6 @@ let mockTester: DBUser = {
   createdAt: new Date(),
   groups: ["Group Test 1"],
 };
-
 
 // Mock posts for HomeScreen and GroupScreen
 const mockHomePosts: DBChallenge[] = [
@@ -168,7 +162,6 @@ const mockCurrentChallenge: DBChallengeDescription = {
   endDate: new Date(2099, 1, 1, 0, 0, 0, 0),
 };
 
-
 // Mock groups used for the test
 const mockGroup1: DBGroup = {
   gid: "test-group-1-id",
@@ -182,7 +175,6 @@ const mockGroup1: DBGroup = {
 // Mock groups fetched in HomeScreen
 let mockFetchedGroups = [mockGroup1];
 let mockNewGroup: DBGroup = undefined;
-
 
 // Create a test component to wrap HomeScreen with navigation
 const HomeTest = () => {
@@ -301,9 +293,6 @@ describe("Create a group and navigate to it", () => {
     // Verify it is the right group
     expect(getByTestId("description-id-New Group")).toBeTruthy();
 
-
-
-
     // Simulate user pressing the camera button
     fireEvent.press(getByTestId("bottom-center-icon-camera-outline"));
 
@@ -334,7 +323,6 @@ describe("Create a group and navigate to it", () => {
 
     // Simulate user pressing the submit button
     fireEvent.press(getByTestId("Submit-Button"));
-
 
     // Wait for the navigation to HomeScreen
     await waitFor(() => {
