@@ -20,7 +20,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
       post_id: "1",
     },
   ]),
-  getImageUrl: jest.fn()
+  getImageUrl: jest.fn(),
 }));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({

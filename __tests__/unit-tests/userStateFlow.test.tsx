@@ -67,7 +67,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getGroupsByUserId: jest.fn((id) => {
     return [];
   }),
-  getImageUrl: jest.fn()
+  getImageUrl: jest.fn(),
 }));
 
 jest.mock("expo-image-picker", () => ({

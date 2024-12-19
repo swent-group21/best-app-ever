@@ -13,8 +13,8 @@ function App() {
 
   (async () => {
     try {
-      if (isLoggedIn == "Home"){
-        console.log("Home: for backgroundTask")
+      if (isLoggedIn == "Home") {
+        console.log("Home: for backgroundTask");
         await backgroundTask();
       }
     } catch (error) {

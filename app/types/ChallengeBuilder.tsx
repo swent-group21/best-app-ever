@@ -60,7 +60,6 @@ export const createChallenge = async (
       const updateTime = new Date();
       await updateGroup(group_id, updateTime);
     }
-
   } catch (error) {
     console.error("Error creating challenge: ", error);
   }

@@ -24,7 +24,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
       created_at: new Date(),
     },
   ]),
-  getImageUrl: jest.fn()
+  getImageUrl: jest.fn(),
 }));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
@@ -110,9 +110,7 @@ describe("use Challenge ViewModel", () => {
       expect(result.current.image).toBeDefined();
     });
 
-    expect(result.current.image).toEqual(
-      undefined,
-    );
+    expect(result.current.image).toEqual(undefined);
   });
 
   it("handles like actions", async () => {

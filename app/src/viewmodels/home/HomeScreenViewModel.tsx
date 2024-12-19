@@ -113,13 +113,12 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
 
   useEffect(() => {
     const fetchImgUrl = async (img) => {
-      return getImageUrl(img)
-
-    }
+      return getImageUrl(img);
+    };
     if (user.image_id) {
       fetchImgUrl(user.image_id).then(setIcon);
-    } 
-  }, [user.image_id])
+    }
+  }, [user.image_id]);
 
   // Filter challenges to only include those from friends
   const challengesFromFriends = challenges.filter((challenge) =>
@@ -137,6 +136,6 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     navigateToFriends,
     navigateToCreateGroups,
     challengesFromFriends,
-    icon
+    icon,
   };
 }

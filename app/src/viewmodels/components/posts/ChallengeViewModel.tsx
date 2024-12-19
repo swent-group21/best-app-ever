@@ -42,7 +42,9 @@ export function useChallengeViewModel({
       try {
         const userData = await getUser(challengeDB.uid);
         setUser(userData || null);
-        userData.image_id ? await getImageUrl(userData.image_id).then(setIcon) : ""
+        userData.image_id
+          ? await getImageUrl(userData.image_id).then(setIcon)
+          : "";
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -102,16 +104,15 @@ export function useChallengeViewModel({
 
   useEffect(() => {
     const fetchImgUrl = async (img: string) => {
-      console.log("Using fetch")
-      setImage(await getImageUrl(img))
-    }
-    
-    console.log("challengeDB", challengeDB)
+      console.log("Using fetch");
+      setImage(await getImageUrl(img));
+    };
+
+    console.log("challengeDB", challengeDB);
     if (challengeDB.image_id) {
       fetchImgUrl(challengeDB.image_id);
-    } 
-  }, [challengeDB])
-  
+    }
+  }, [challengeDB]);
 
   const handleDoubleTap = () => {
     const now = Date.now();

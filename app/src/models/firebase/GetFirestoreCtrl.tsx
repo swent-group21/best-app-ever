@@ -59,20 +59,19 @@ export async function getUser(userId?: string): Promise<DBUser> {
  * @returns The download URL of the image.
  */
 export async function getImageUrl(id_picture: string): Promise<string> {
-  console.log("Inside URL:", id_picture)
+  console.log("Inside URL:", id_picture);
   const networkState = await NetInfo.fetch();
   if (networkState.isConnected) {
-    console.log("Getting Firestore Image: ")
+    console.log("Getting Firestore Image: ");
     const storageRef = ref(getStorage(), "images/" + id_picture);
     const url = await getDownloadURL(storageRef);
-    console.log("Getting Firestore Image: ", url )
-    return url
-  }
-  else {
-    console.log("Getting Stored Image: ")
-    const url = await getStoredImageById(id_picture)
-    console.log("Getting Stored Image: ", url )
-    return url
+    console.log("Getting Firestore Image: ", url);
+    return url;
+  } else {
+    console.log("Getting Stored Image: ");
+    const url = await getStoredImageById(id_picture);
+    console.log("Getting Stored Image: ", url);
+    return url;
   }
 }
 
@@ -361,14 +360,15 @@ export async function getChallengeDescription(): Promise<DBChallengeDescription>
     );
     const q = query(challengeDescrpitionRef);
     const querySnapshot = await getDocs(q);
-    const challengeDescription: DBChallengeDescription[] = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        title: data.Title,
-        description: data.Description,
-        endDate: data.Date.toDate(),
-      } as DBChallengeDescription;
-    });
+    const challengeDescription: DBChallengeDescription[] =
+      querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          title: data.Title,
+          description: data.Description,
+          endDate: data.Date.toDate(),
+        } as DBChallengeDescription;
+      });
     return challengeDescription[0];
   } catch (error) {
     console.error("Error getting challenge description: ", error);

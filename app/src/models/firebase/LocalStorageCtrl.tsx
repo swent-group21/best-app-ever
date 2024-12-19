@@ -38,7 +38,11 @@ export async function backgroundTask() {
   while (true) {
     try {
       const networkState = await NetInfo.fetch();
-      console.log("NetworkStart: ", networkState.isConnected, networkState.isInternetReachable)
+      console.log(
+        "NetworkStart: ",
+        networkState.isConnected,
+        networkState.isInternetReachable,
+      );
       if (
         networkState.isConnected &&
         networkState.isInternetReachable &&
@@ -95,16 +99,16 @@ export async function getStoredComments(): Promise<DBComment[]> {
 }
 
 export async function getStoredImageById(img_id): Promise<any> {
-  const storedImages = await getStoredImageUploads() 
-  console.log("Searching locally for: ", img_id)
-  console.log("Stored Images: ", storedImages)
-  let img_uri = ""
+  const storedImages = await getStoredImageUploads();
+  console.log("Searching locally for: ", img_id);
+  console.log("Stored Images: ", storedImages);
+  let img_uri = "";
   storedImages.forEach((img) => {
-    if (img.id == img_id) { 
-      img_uri = img_id
+    if (img.id == img_id) {
+      img_uri = img_id;
     }
-  })
-  return img_uri
+  });
+  return img_uri;
 }
 
 /**

@@ -45,7 +45,7 @@ export default function MaximizeScreen({
     groupCenter,
     groupRadius,
     icon,
-    image
+    image,
   } = useMaximizeScreenViewModel(user, challenge, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
@@ -82,10 +82,7 @@ export default function MaximizeScreen({
           {/* User Info */}
           <ThemedView style={styles.userInfo}>
             {postUser?.image_id ? (
-              <Image
-                source={{ uri: icon }}
-                style={styles.userAvatar}
-              />
+              <Image source={{ uri: icon }} style={styles.userAvatar} />
             ) : (
               <ThemedView style={styles.defaultAvatar}>
                 <Text style={styles.avatarText}>

@@ -42,7 +42,7 @@ export function useProfileScreenViewModel(
   useEffect(() => {
     const fetchProfilePicture = async () => {
       const profilePicture = await getProfilePicture(user.uid);
-      console.log("Profile picture: ", profilePicture)
+      console.log("Profile picture: ", profilePicture);
       setImage(profilePicture || null);
     };
     fetchProfilePicture();
@@ -76,7 +76,7 @@ export function useProfileScreenViewModel(
       await setName(user.uid, name, setUser);
       if (image) {
         await setProfilePicture(user.uid, image, setUser);
-        console.log("Image after setProfilePicture: ", image)
+        console.log("Image after setProfilePicture: ", image);
       }
     } catch (error) {
       console.error("Error changing profile: ", error);

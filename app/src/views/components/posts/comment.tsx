@@ -21,8 +21,8 @@ export function SingleComment({ comment }: { comment: Readonly<DBComment> }) {
       try {
         const userData = await getUser(comment.uid); // Assuming `post_id` links to the user
         setUser(userData);
-        if (userData.image_id != null){
-          setIcon(await getImageUrl(userData.image_id))
+        if (userData.image_id != null) {
+          setIcon(await getImageUrl(userData.image_id));
         }
       } catch (error) {
         console.error("Error fetching user data for comment:", error);

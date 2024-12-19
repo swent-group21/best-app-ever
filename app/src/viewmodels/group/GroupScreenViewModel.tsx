@@ -77,12 +77,12 @@ export default function useGroupScreenViewModel(
 
   useEffect(() => {
     const fetchImgUrl = async (img) => {
-      return getImageUrl(img)
-    }
+      return getImageUrl(img);
+    };
     if (user.image_id) {
       fetchImgUrl(user.image_id).then(setIcon);
-    } 
-  }, [user])
+    }
+  }, [user]);
 
   const groupName = group.name ?? "";
   const groupChallengeTitle = group.challengeTitle ?? "";

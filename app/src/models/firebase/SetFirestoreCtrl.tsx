@@ -56,7 +56,7 @@ export async function uploadImage(
 ): Promise<string> {
   try {
     if (imageUri === undefined) {
-      let imageUri = getImageUrl(id_picture)
+      let imageUri = getImageUrl(id_picture);
     }
     let img_id: string = id_picture;
     if (id_picture === undefined) {
@@ -71,7 +71,7 @@ export async function uploadImage(
 
       const storageRef = ref(getStorage(), "images/" + img_id);
       await uploadBytes(storageRef, blob);
-      console.log("Uploaded to Firestore")
+      console.log("Uploaded to Firestore");
       return img_id;
     }
 
@@ -79,9 +79,8 @@ export async function uploadImage(
     //Store the image locally for background upload
     await storeImageLocally(img_id);
     setUploadTaskScheduled(true);
-    console.log("Uploaded to local storage")
+    console.log("Uploaded to local storage");
     return img_id;
-
   } catch (error) {
     console.error("Error uploading image: ", error);
     throw error;
@@ -125,7 +124,7 @@ export async function setProfilePicture(
   try {
     const user = await getUser(id);
     user.image_id = await uploadImage(imageUri);
-    console.log("User image: ", user.image_id)
+    console.log("User image: ", user.image_id);
     await createUser(id, user);
     setUser(user);
   } catch (error) {
@@ -160,7 +159,7 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
       // Schedule background retry
       await storeChallengeLocally(challengeData);
       setUploadTaskScheduled(true);
-      console.log("getUploadTaskScheduled: ", await getUploadTaskScheduled())
+      console.log("getUploadTaskScheduled: ", await getUploadTaskScheduled());
     } catch (storageError) {
       console.error("Error storing challenge locally: ", storageError);
     }

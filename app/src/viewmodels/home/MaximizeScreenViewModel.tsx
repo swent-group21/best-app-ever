@@ -79,22 +79,21 @@ export function useMaximizeScreenViewModel(
     }
   }, [groupId]);
 
-
   const fetchImgUrl = async (img) => {
-    return getImageUrl(img)
-  }
+    return getImageUrl(img);
+  };
 
   useEffect(() => {
     if (user.image_id !== undefined || user.image_id == null) {
       fetchImgUrl(user.image_id).then(setIcon);
-    } 
-  }, [user])
+    }
+  }, [user]);
 
   useEffect(() => {
     if (challenge.image_id) {
       fetchImgUrl(challenge.image_id).then(setImage);
-    } 
-  }, [challenge.image_id])
+    }
+  }, [challenge.image_id]);
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
@@ -140,6 +139,6 @@ export function useMaximizeScreenViewModel(
     groupCenter,
     groupRadius,
     icon,
-    image
+    image,
   };
 }

@@ -39,7 +39,7 @@ export default function HomeScreen({
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
-    icon
+    icon,
   } = useHomeScreenViewModel(user, navigation);
 
   const [filterByFriends, setFilterByFriends] = useState(false);
@@ -107,9 +107,7 @@ export default function HomeScreen({
         leftIcon="people-outline"
         leftAction={() => handleRestrictedAccess("Friends")}
         rightIcon={
-          userIsGuest || !user.image_id
-            ? "person-circle-outline"
-            : icon
+          userIsGuest || !user.image_id ? "person-circle-outline" : icon
         }
         rightAction={() => handleRestrictedAccess("Profile")}
         testID="top-bar"
