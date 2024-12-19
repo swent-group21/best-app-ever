@@ -72,7 +72,7 @@ export function Challenge({
 
         {/* Challenge Description */}
         {Boolean(challengeDB.caption) && (
-          <ThemedText style={styles.challengeDescription}>
+          <ThemedText style={styles.challengeDescription} testID={`caption-id-${challengeDB.caption}`}>
             {challengeDB.caption}
           </ThemedText>
         )}

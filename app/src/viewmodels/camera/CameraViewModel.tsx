@@ -79,7 +79,6 @@ export default function useCameraViewModel(
 
   // Take a picture with the camera
   const takePicture = async () => {
-    if (camera.current) {
       try {
         const capturedPicture =
           await camera.current?.takePictureAsync(cameraPictureOptions);
@@ -88,7 +87,6 @@ export default function useCameraViewModel(
       } catch (error) {
         console.log(error);
       }
-    }
   };
 
   // Toggle location switch
