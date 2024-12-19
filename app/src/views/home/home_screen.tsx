@@ -242,7 +242,7 @@ export default function HomeScreen({
 
       {/* Guest User Pop-Up */}
       {showGuestPopup && (
-        <Animated.View style={styles.guestPopup}>
+        <Animated.View style={styles.guestPopup} testID="guest-pop-up-id">
           <ThemedText style={styles.popupText}>
             {showGuestPopup === "Profile"
               ? "Sign up to create your profile!"
@@ -253,6 +253,7 @@ export default function HomeScreen({
           <TouchableOpacity
             onPress={() => navigation.navigate("WelcomeFinal")}
             style={styles.popupButton}
+            testID="guest-sign-up-id"
           >
             <ThemedText style={styles.popupButtonText}>Sign Up</ThemedText>
           </TouchableOpacity>

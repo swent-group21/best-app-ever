@@ -72,6 +72,7 @@ export default function WelcomeFinalScreen({
           text="Continue as guest"
           colorType="transparent"
           textColorType="textPrimary"
+          testID="continue-as-guest-button"
         />
       </ThemedView>
     </ThemedView>
