@@ -31,8 +31,8 @@ export default function SignInViewModel(
   const handlePasswordChange = (text: string) => setPassword(text);
 
   const handleSignIn = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       if (!email || !password) {
         setIsLoading(false);
         setErrorMessage("Email and Password are required.");
@@ -40,12 +40,11 @@ export default function SignInViewModel(
       }
 
       await logInWithEmail(email, password, firestoreCtrl, navigation, setUser);
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       console.error("Error during sign-in:", error);
       setErrorMessage("Failed to sign in. Please try again.");
     }
+    setIsLoading(false);
   };
 
   return {
