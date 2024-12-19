@@ -1,7 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import MaximizeScreen from "@/src/views/home/maximize_screen";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 jest.mock("@/src/viewmodels/home/MaximizeScreenViewModel", () => ({
   useMaximizeScreenViewModel: jest.fn(),
@@ -9,7 +8,6 @@ jest.mock("@/src/viewmodels/home/MaximizeScreenViewModel", () => ({
 
 describe("MaximizeScreen - Guest User Restrictions", () => {
   const mockNavigation = { goBack: jest.fn(), navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockChallenge = {
     challenge_id: "challenge123",
     uid: "user456",
@@ -78,7 +76,6 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -93,7 +90,6 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -108,7 +104,6 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -124,7 +119,6 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -163,7 +157,6 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

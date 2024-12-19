@@ -1,13 +1,18 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { Challenge } from "@/src/views/components/posts/challenge";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import { updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
 
-jest.mock("@/src/models/firebase/FirestoreCtrl");
+jest.mock("@/src/models/firebase/SetFirestoreCtrl");
+
+jest.mock("@react-native-community/netinfo", () => ({
+  fetch: jest.fn(() =>
+    Promise.resolve({ isConnected: true, isInternetReachable: true }),
+  ),
+}));
 
 describe("Challenge Component - Guest User Restrictions", () => {
   const mockNavigation = { navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
   const mockChallengeDB = {
     challenge_id: "challenge-1",
@@ -32,7 +37,6 @@ describe("Challenge Component - Guest User Restrictions", () => {
       <Challenge
         challengeDB={mockChallengeDB}
         index={0}
-        firestoreCtrl={mockFirestoreCtrl}
         navigation={mockNavigation}
         testID="challenge-test"
         currentUser={mockCurrentUserGuest}
@@ -43,7 +47,7 @@ describe("Challenge Component - Guest User Restrictions", () => {
     fireEvent.press(likeButton);
 
     // Guest user cannot like, so `updateLikesOf` should not be called
-    expect(mockFirestoreCtrl.updateLikesOf).not.toHaveBeenCalled();
+    expect(updateLikesOf).not.toHaveBeenCalled();
 
     // Verify no UI changes related to likes
     expect(queryByText("1 Like")).toBeNull();
@@ -54,7 +58,6 @@ describe("Challenge Component - Guest User Restrictions", () => {
       <Challenge
         challengeDB={mockChallengeDB}
         index={0}
-        firestoreCtrl={mockFirestoreCtrl}
         navigation={mockNavigation}
         testID="challenge-test"
         currentUser={mockCurrentUserGuest}
@@ -66,6 +69,6 @@ describe("Challenge Component - Guest User Restrictions", () => {
     fireEvent.press(challengeContainer); // Simulate double-tap
 
     // Guest user cannot double-tap like, so `updateLikesOf` should not be called
-    expect(mockFirestoreCtrl.updateLikesOf).not.toHaveBeenCalled();
+    expect(updateLikesOf).not.toHaveBeenCalled();
   });
 });

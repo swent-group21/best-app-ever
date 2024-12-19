@@ -1,14 +1,13 @@
 import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
   useHomeScreenViewModel: jest.fn(),
 }));
 
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => {
   return jest.fn().mockImplementation(() => ({
     getChallengeDescription: jest.fn().mockResolvedValue({
       Title: "Mock Challenge",
@@ -32,12 +31,16 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
     getGroupsByUserId: jest
       .fn()
       .mockResolvedValue([{ id: "1", name: "Group 1" }]),
+  }));
+});
+
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => {
+  return jest.fn().mockImplementation(() => ({
     updateLikesOf: jest.fn(),
   }));
 });
 
 const mockNavigation = { navigate: jest.fn() };
-const mockFirestoreCtrl = new FirestoreCtrl();
 const mockUseHomeScreenViewModel =
   require("@/src/viewmodels/home/HomeScreenViewModel").useHomeScreenViewModel;
 
@@ -68,7 +71,6 @@ describe("HomeScreen - Guest User", () => {
       <HomeScreen
         user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
