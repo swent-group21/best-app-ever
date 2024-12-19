@@ -74,7 +74,7 @@ export default function GroupScreen({
         >
           <ThemedTextButton
             style={styles.createGroupButton}
-            onPress={() => navigation.navigate("CreateGroup")}
+            onPress={() => navigation.navigate("JoinGroup")}
             text="+"
             textStyle={styles.createGroupText}
             textColorType="textOverLight"

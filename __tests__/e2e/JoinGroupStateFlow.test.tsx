@@ -11,7 +11,6 @@ import FirestoreCtrl, {
 import HomeScreen from "@/src/views/home/home_screen";
 import JoinGroupScreen from "@/src/views/groups/join_group_screen";
 import GroupScreen from "@/src/views/groups/group_screen";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Stack = createNativeStackNavigator();
 
