@@ -26,13 +26,15 @@ export default function MapScreen({
   readonly firestoreCtrl: FirestoreCtrl;
   readonly route: any;
 }) {
-  const firstLocation = route.params?.location;
-  const geoRestriction = route.params?.challengeArea;
+  // Gets the first location and the challenge area from the route parameters, if they exist
+  const { location: firstLocation, challengeArea: geoRestriction } =
+    route.params || {};
   const {
     userLocation,
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
+    isLoading,
   } = useMapScreenViewModel(
     firestoreCtrl,
     navigation,
@@ -40,7 +42,7 @@ export default function MapScreen({
     geoRestriction,
   );
 
-  if (userLocation === undefined || challengesWithLocation.length === 0) {
+  if (isLoading) {
     return <LoadingSplash loading_text="Loading, this may take some time..." />;
   } else {
     return (

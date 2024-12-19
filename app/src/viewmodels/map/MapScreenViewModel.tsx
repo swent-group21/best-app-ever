@@ -32,6 +32,7 @@ export function useMapScreenViewModel(
   challengesWithLocation: DBChallenge[];
   navigateGoBack: () => void;
   challengeArea: { center: GeoPoint; radius: number } | undefined;
+  isLoading: boolean;
 } {
   const [permission, setPermission] = useState<boolean>(false);
   const [userLocation, setUserLocation] = useState<GeoPoint | undefined>(
@@ -111,5 +112,7 @@ export function useMapScreenViewModel(
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
+    isLoading:
+      userLocation === undefined || challengesWithLocation.length === 0,
   };
 }
