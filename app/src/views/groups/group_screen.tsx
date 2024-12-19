@@ -124,6 +124,7 @@ export default function GroupScreen({
           navigation.navigate("MapScreen", {
             location: groupCenter,
             challengeArea: { center: groupCenter, radius: groupRadius },
+            group_id: groupId,
           })
         }
         centerAction={() =>

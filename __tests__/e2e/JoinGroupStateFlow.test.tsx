@@ -11,6 +11,7 @@ import FirestoreCtrl, {
 import HomeScreen from "@/src/views/home/home_screen";
 import JoinGroupScreen from "@/src/views/groups/join_group_screen";
 import GroupScreen from "@/src/views/groups/group_screen";
+import { GeoPoint } from "firebase/firestore";
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +80,14 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 });
 const mockFirestoreCtrl = new FirestoreCtrl();
 
+// Mock GeoPoint constructor
+jest.mock("firebase/firestore", () => ({
+  GeoPoint: jest.fn((latitude, longitude) => {
+    return { latitude, longitude };
+  }),
+}));
+
+
 // Mock user testing
 let mockTester: DBUser = {
   uid: "123",
@@ -122,8 +131,8 @@ const mockGroup1: DBGroup = {
   members: ["456"],
   challengeTitle: "Current Group 1 Test Challenge",
   updateDate: new Date(),
-  location: null,
-  radius: 500,
+  location: new GeoPoint(46.5186495, 10.5687462),
+  radius: 32000,
 };
 const mockGroup2: DBGroup = {
   gid: "test-group-2-id",
