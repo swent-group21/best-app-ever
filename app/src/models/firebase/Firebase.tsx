@@ -32,7 +32,7 @@ import {
   GeoPoint,
   arrayUnion,
   updateDoc,
-  limit
+  limit,
 } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -89,6 +89,6 @@ export {
   signOut,
   GeoPoint,
   arrayUnion,
-  updateDoc ,
-  limit
+  updateDoc,
+  limit,
 };

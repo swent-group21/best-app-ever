@@ -67,6 +67,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getGroupsByUserId: jest.fn((id) => {
     return [];
   }),
+  getImageUrl: jest.fn()
 }));
 
 jest.mock("expo-image-picker", () => ({
@@ -338,7 +339,7 @@ describe("Consistency between screens", () => {
     });
 
     // Simulate user interactions
-    fireEvent.press(getByTestId("topRightIcon-uri"));
+    fireEvent.press(getByTestId("topRightIcon-person-circle-outline"));
 
     // Wait for the navigation to ProfileScreen
     await waitFor(() => {

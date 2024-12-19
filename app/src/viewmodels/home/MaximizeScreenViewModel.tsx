@@ -8,6 +8,7 @@ import { GeoPoint } from "firebase/firestore";
 import {
   getCommentsOf,
   getGroup,
+  getImageUrl,
   getLikesOf,
   getUser,
 } from "@/src/models/firebase/GetFirestoreCtrl";
@@ -35,6 +36,8 @@ export function useMaximizeScreenViewModel(
   const [isLiked, setIsLiked] = useState(false);
   const [groupCenter, setGroupCenter] = useState<GeoPoint | undefined>();
   const [groupRadius, setGroupRadius] = useState<number | undefined>();
+  const [icon, setIcon] = useState<string>("person-circle-outline");
+  const [image, setImage] = useState<string>("https://via.placeholder.com/300");
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
@@ -76,6 +79,23 @@ export function useMaximizeScreenViewModel(
     }
   }, [groupId]);
 
+
+  const fetchImgUrl = async (img) => {
+    return getImageUrl(img)
+  }
+
+  useEffect(() => {
+    if (user.image_id !== undefined || user.image_id == null) {
+      fetchImgUrl(user.image_id).then(setIcon);
+    } 
+  }, [user])
+
+  useEffect(() => {
+    if (challenge.image_id) {
+      fetchImgUrl(challenge.image_id).then(setImage);
+    } 
+  }, [challenge.image_id])
+
   const toggleLike = () => {
     setIsLiked(!isLiked);
     const updatedLikeList = isLiked
@@ -102,7 +122,6 @@ export function useMaximizeScreenViewModel(
   };
 
   const postDate: any = challenge.date ? challenge.date : new Date();
-  const postImage = challenge.image_id ?? "";
   const postCaption =
     challenge.caption == "" ? "Secret Challenge" : challenge.caption;
 
@@ -116,10 +135,11 @@ export function useMaximizeScreenViewModel(
     toggleLike,
     addComment,
     postDate,
-    postImage,
     postCaption,
     navigateGoBack,
     groupCenter,
     groupRadius,
+    icon,
+    image
   };
 }

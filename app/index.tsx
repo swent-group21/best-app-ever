@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Nav } from "@/navigation/Navigation";
 import { DBUser } from "./src/models/firebase/TypeFirestoreCtrl";
-import {
-  backgroundTask,
-} from "./src/models/firebase/LocalStorageCtrl";
+import { backgroundTask } from "./src/models/firebase/LocalStorageCtrl";
 import { NavigationIndependentTree } from "@react-navigation/native";
 import "../gesture-handler";
 import { registerRootComponent } from "expo";
@@ -15,7 +13,10 @@ function App() {
 
   (async () => {
     try {
-      await backgroundTask();
+      if (isLoggedIn == "Home"){
+        console.log("Home: for backgroundTask")
+        await backgroundTask();
+      }
     } catch (error) {
       console.log("Error in background task:", error);
     }

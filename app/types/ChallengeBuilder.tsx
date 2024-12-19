@@ -47,11 +47,11 @@ export const createChallenge = async (
       date: date,
     };
 
-    if (image_id) {
-      const image_url = await getImageUrl(image_id);
-      console.log("createChallenge image_url: ", image_url);
-      challengeData.image_id = image_url;
-    }
+    //if (image_id) {
+    //  const image_url = await getImageUrl(image_id);
+    //  console.log("createChallenge image_url: ", image_url);
+    //  challengeData.image_id = image_url;
+    //}
 
     // Save the challenge to Firestore
     await newChallenge(challengeData);
@@ -60,6 +60,7 @@ export const createChallenge = async (
       const updateTime = new Date();
       await updateGroup(group_id, updateTime);
     }
+
   } catch (error) {
     console.error("Error creating challenge: ", error);
   }

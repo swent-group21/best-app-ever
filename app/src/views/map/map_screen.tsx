@@ -33,8 +33,6 @@ export default function MapScreen({
     isMapReady,
     setIsMapReady,
   } = useMapScreenViewModel(navigation, firstLocation, geoRestriction);
-  console.info("--> AREA", challengeArea);
-  console.info("--> CHALLENGES", challengesWithLocation);
 
   if (userLocation === undefined || challengesWithLocation.length === 0) {
     return (

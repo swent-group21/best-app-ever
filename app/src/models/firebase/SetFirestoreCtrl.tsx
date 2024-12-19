@@ -9,12 +9,15 @@ import {
   where,
   getDoc,
   arrayUnion,
-  updateDoc 
+  updateDoc,
 } from "@/src/models/firebase/Firebase";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import NetInfo from "@react-native-community/netinfo";
 
-import { setUploadTaskScheduled, getUploadTaskScheduled } from "@/src/models/firebase/LocalStorageCtrl";
+import {
+  setUploadTaskScheduled,
+  getUploadTaskScheduled,
+} from "@/src/models/firebase/LocalStorageCtrl";
 import { DBUser, DBChallenge, DBComment, DBGroup } from "./TypeFirestoreCtrl";
 import {
   storeChallengeLocally,
@@ -22,7 +25,7 @@ import {
   storeGroupLocally,
   storeImageLocally,
 } from "@/src/models/firebase/LocalStorageCtrl";
-import { getUser } from "./GetFirestoreCtrl";
+import { getImageUrl, getUser } from "./GetFirestoreCtrl";
 
 /**
  * Creates or updates a user document in Firestore.
@@ -48,12 +51,12 @@ export async function createUser(
  * @returns The ID of the image.
  */
 export async function uploadImage(
-  imageUri: string,
+  imageUri?: string,
   id_picture?: string,
 ): Promise<string> {
   try {
-    if (!imageUri) {
-      throw new Error("No image URI provided.");
+    if (imageUri === undefined) {
+      let imageUri = getImageUrl(id_picture)
     }
     let img_id: string = id_picture;
     if (id_picture === undefined) {
@@ -62,12 +65,13 @@ export async function uploadImage(
 
     const networkState = await NetInfo.fetch();
 
-    if (networkState.isConnected && networkState.isInternetReachable) {
+    if (networkState.isConnected) {
       const response = await fetch(imageUri);
       const blob = await response.blob();
 
       const storageRef = ref(getStorage(), "images/" + img_id);
       await uploadBytes(storageRef, blob);
+      console.log("Uploaded to Firestore")
       return img_id;
     }
 
@@ -75,7 +79,9 @@ export async function uploadImage(
     //Store the image locally for background upload
     await storeImageLocally(img_id);
     setUploadTaskScheduled(true);
+    console.log("Uploaded to local storage")
     return img_id;
+
   } catch (error) {
     console.error("Error uploading image: ", error);
     throw error;
@@ -119,6 +125,7 @@ export async function setProfilePicture(
   try {
     const user = await getUser(id);
     user.image_id = await uploadImage(imageUri);
+    console.log("User image: ", user.image_id)
     await createUser(id, user);
     setUser(user);
   } catch (error) {
@@ -146,16 +153,14 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
           return;
         }
       }
-      await addDoc(
-        collection(firestore, "challenges"),
-        challengeData,
-      );
+      await addDoc(collection(firestore, "challenges"), challengeData);
       return;
     }
     try {
       // Schedule background retry
       await storeChallengeLocally(challengeData);
       setUploadTaskScheduled(true);
+      console.log("getUploadTaskScheduled: ", await getUploadTaskScheduled())
     } catch (storageError) {
       console.error("Error storing challenge locally: ", storageError);
     }

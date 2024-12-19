@@ -6,6 +6,7 @@ import {
 } from "@/src/models/firebase/TypeFirestoreCtrl";
 import {
   getCommentsOf,
+  getImageUrl,
   getLikesOf,
   getUser,
 } from "@/src/models/firebase/GetFirestoreCtrl";
@@ -32,7 +33,8 @@ export function useChallengeViewModel({
   // Double-tap logic
   const [lastTap, setLastTap] = useState<number | null>(null);
 
-  const placeholderImage = "https://via.placeholder.com/300";
+  const [icon, setIcon] = useState<string>("person-circle-outline");
+  const [image, setImage] = useState<string>("https://via.placeholder.com/300");
 
   // Fetch user data
   useEffect(() => {
@@ -40,6 +42,7 @@ export function useChallengeViewModel({
       try {
         const userData = await getUser(challengeDB.uid);
         setUser(userData || null);
+        userData.image_id ? await getImageUrl(userData.image_id).then(setIcon) : ""
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -97,6 +100,19 @@ export function useChallengeViewModel({
     }
   };
 
+  useEffect(() => {
+    const fetchImgUrl = async (img: string) => {
+      console.log("Using fetch")
+      setImage(await getImageUrl(img))
+    }
+    
+    console.log("challengeDB", challengeDB)
+    if (challengeDB.image_id) {
+      fetchImgUrl(challengeDB.image_id);
+    } 
+  }, [challengeDB])
+  
+
   const handleDoubleTap = () => {
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
@@ -112,6 +128,7 @@ export function useChallengeViewModel({
     comments,
     handleDoubleTap,
     handleLikePress,
-    placeholderImage,
+    icon,
+    image,
   };
 }

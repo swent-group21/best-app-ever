@@ -252,4 +252,3 @@ describe("MaximizeScreen UI Tests", () => {
     expect(getByText("This is a comment")).toBeTruthy();
   });
 });
-

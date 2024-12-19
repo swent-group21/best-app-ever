@@ -10,6 +10,7 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getImageUrl } from "@/src/models/firebase/GetFirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,6 +31,7 @@ export default function GroupScreen({
     groupId,
     groupCenter,
     groupRadius,
+    icon,
   } = useGroupScreenViewModel(user, route);
 
   return (
@@ -38,7 +40,7 @@ export default function GroupScreen({
         title={groupName}
         leftIcon="people-outline"
         leftAction={() => navigation.navigate("Friends")}
-        rightIcon={!user.image_id ? "person-circle-outline" : user.image_id}
+        rightIcon={icon}
         rightAction={() => navigation.navigate("Profile")}
       />
 

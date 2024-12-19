@@ -32,6 +32,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     createdAt: new Date(),
   }),
   getCommentsOf: jest.fn().mockResolvedValue([]),
+  getImageUrl: jest.fn()
 }));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({

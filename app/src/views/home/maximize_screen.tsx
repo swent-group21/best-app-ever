@@ -40,11 +40,12 @@ export default function MaximizeScreen({
     toggleLike,
     addComment,
     postDate,
-    postImage,
     postCaption,
     navigateGoBack,
     groupCenter,
     groupRadius,
+    icon,
+    image
   } = useMaximizeScreenViewModel(user, challenge, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
@@ -82,7 +83,7 @@ export default function MaximizeScreen({
           <ThemedView style={styles.userInfo}>
             {postUser?.image_id ? (
               <Image
-                source={{ uri: postUser.image_id }}
+                source={{ uri: icon }}
                 style={styles.userAvatar}
               />
             ) : (
@@ -139,7 +140,7 @@ export default function MaximizeScreen({
           <ThemedView style={styles.imageContainer}>
             <Image
               testID="post-image"
-              source={postImage ? { uri: postImage } : require(noImage)}
+              source={challenge.image_id ? { uri: image } : require(noImage)}
               style={styles.postImage}
             />
           </ThemedView>

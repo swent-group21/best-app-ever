@@ -20,14 +20,14 @@ let uploadTaskScheduled: boolean = false;
 /**
  * Getter for the uploadTaskScheduled
  */
-export async function setUploadTaskScheduled(setTo: boolean){
-  uploadTaskScheduled = setTo
+export async function setUploadTaskScheduled(setTo: boolean) {
+  uploadTaskScheduled = setTo;
 }
 
 /**
  * Setter for the uploadTaskScheduler
  */
-export async function getUploadTaskScheduled(){
+export async function getUploadTaskScheduled() {
   return uploadTaskScheduled;
 }
 
@@ -38,6 +38,7 @@ export async function backgroundTask() {
   while (true) {
     try {
       const networkState = await NetInfo.fetch();
+      console.log("NetworkStart: ", networkState.isConnected, networkState.isInternetReachable)
       if (
         networkState.isConnected &&
         networkState.isInternetReachable &&
@@ -45,7 +46,7 @@ export async function backgroundTask() {
       ) {
         console.log("Starting scheduled upload task...");
         await scheduleUploadTask();
-        setUploadTaskScheduled(false) // Reset the flag after task completion
+        setUploadTaskScheduled(false); // Reset the flag after task completion
         console.log(
           "Scheduled upload task completed. uploadTaskScheduled set to false.",
         );
@@ -93,6 +94,19 @@ export async function getStoredComments(): Promise<DBComment[]> {
   return storedData ? JSON.parse(storedData) : [];
 }
 
+export async function getStoredImageById(img_id): Promise<any> {
+  const storedImages = await getStoredImageUploads() 
+  console.log("Searching locally for: ", img_id)
+  console.log("Stored Images: ", storedImages)
+  let img_uri = ""
+  storedImages.forEach((img) => {
+    if (img.id == img_id) { 
+      img_uri = img_id
+    }
+  })
+  return img_uri
+}
+
 /**
  * Stores image upload data in AsyncStorage.
  * @param id_picture The id of the image to upload.
@@ -126,7 +140,6 @@ export async function storeChallengeLocally(
       return;
     }
   });
-
   storedChallenges.push(challengeData);
   await AsyncStorage.setItem(
     CHALLENGE_STORAGE_KEY,
@@ -185,7 +198,7 @@ export async function uploadStoredImages(): Promise<void> {
     for (const upload of storedUploads) {
       try {
         //Attempt to upload to firestore
-        await uploadImage(upload.uri, upload.id);
+        await uploadImage(undefined, upload.id);
 
         // Remove the successfully uploaded image from AsyncStorage
         const updatedUploads = storedUploads.filter(

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { DBUser, DBComment } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { Colors } from "@/constants/Colors";
-import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
+import { getImageUrl, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -13,6 +13,7 @@ const { width, height } = Dimensions.get("window");
  */
 export function SingleComment({ comment }: { comment: Readonly<DBComment> }) {
   const [user, setUser] = useState<DBUser | null>(null);
+  const [icon, setIcon] = useState<string>("person-circle-outline");
 
   // Fetch user data
   useEffect(() => {
@@ -20,6 +21,9 @@ export function SingleComment({ comment }: { comment: Readonly<DBComment> }) {
       try {
         const userData = await getUser(comment.uid); // Assuming `post_id` links to the user
         setUser(userData);
+        if (userData.image_id != null){
+          setIcon(await getImageUrl(userData.image_id))
+        }
       } catch (error) {
         console.error("Error fetching user data for comment:", error);
       }
@@ -33,7 +37,7 @@ export function SingleComment({ comment }: { comment: Readonly<DBComment> }) {
       {/* User Avatar */}
       {user?.image_id ? (
         <Image
-          source={{ uri: user.image_id }}
+          source={{ uri: icon }}
           style={styles.userAvatar}
           testID="comment-user-avatar"
         />

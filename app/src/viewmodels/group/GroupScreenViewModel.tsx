@@ -8,6 +8,7 @@ import { GeoPoint } from "firebase/firestore";
 import {
   getAllPostsOfGroup,
   getGroupsByUserId,
+  getImageUrl,
 } from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
@@ -27,11 +28,12 @@ export default function useGroupScreenViewModel(
   groupId: string;
   groupCenter: GeoPoint;
   groupRadius: number;
+  icon: string;
 } {
   const [groupChallenges, setGroupChallenges] = useState<DBChallenge[]>([]);
   const [otherGroups, setOtherGroups] = useState<DBGroup[]>([]);
   const group: DBGroup = route.params?.currentGroup;
-
+  const [icon, setIcon] = useState<string>("person-circle-outline");
   const groupId = group.gid ?? "";
 
   useEffect(() => {
@@ -73,6 +75,15 @@ export default function useGroupScreenViewModel(
     }
   }, [user.uid, group]);
 
+  useEffect(() => {
+    const fetchImgUrl = async (img) => {
+      return getImageUrl(img)
+    }
+    if (user.image_id) {
+      fetchImgUrl(user.image_id).then(setIcon);
+    } 
+  }, [user])
+
   const groupName = group.name ?? "";
   const groupChallengeTitle = group.challengeTitle ?? "";
   const groupCenter = group.location;
@@ -86,5 +97,6 @@ export default function useGroupScreenViewModel(
     groupId,
     groupCenter,
     groupRadius,
+    icon,
   };
 }

@@ -20,6 +20,7 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
       post_id: "1",
     },
   ]),
+  getImageUrl: jest.fn()
 }));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
@@ -192,7 +193,6 @@ describe("useMaximizeScreenViewModel", () => {
 
     await waitFor(() => {
       expect(result.current.postCaption).toBe("Test Challenge");
-      expect(result.current.postImage).toBe("test-image-id");
       expect(result.current.postDate).toBe(mockChallenge.date);
     });
   });

@@ -55,7 +55,6 @@ export default function useCameraViewModel(navigation: any, route: any) {
 
   let group_id = "home";
   let isInHome = true;
-  console.log("group_id: ", group_id);
 
   // Go back to the previous screen
   const goBack = () => {
@@ -144,7 +143,9 @@ export default function useCameraViewModel(navigation: any, route: any) {
         }
       }
 
+      console.log("Picture URI: ", picture?.uri)
       const imageId = await uploadImage(picture?.uri);
+      console.log("image id making challenge: ", imageId)
       await createChallenge(
         caption,
         isLocationEnabled ? location : null,

@@ -8,6 +8,7 @@ import {
 import {
   getChallengeDescription,
   getGroupsByUserId,
+  getImageUrl,
   getPostsByChallengeTitle,
 } from "@/src/models/firebase/GetFirestoreCtrl";
 
@@ -26,6 +27,7 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     description: "Challenge Description",
     endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
   });
+  const [icon, setIcon] = useState<string>("person-circle-outline");
   const navigateToProfile = () => {
     if (!userIsGuest) {
       navigation.navigate("Profile");
@@ -109,7 +111,15 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     }
   }, [user.uid]);
 
-  useEffect(() => {});
+  useEffect(() => {
+    const fetchImgUrl = async (img) => {
+      return getImageUrl(img)
+
+    }
+    if (user.image_id) {
+      fetchImgUrl(user.image_id).then(setIcon);
+    } 
+  }, [user.image_id])
 
   // Filter challenges to only include those from friends
   const challengesFromFriends = challenges.filter((challenge) =>
@@ -127,5 +137,6 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     navigateToFriends,
     navigateToCreateGroups,
     challengesFromFriends,
+    icon
   };
 }

@@ -32,7 +32,8 @@ export function Challenge({
     comments,
     handleDoubleTap,
     handleLikePress,
-    placeholderImage,
+    icon,
+    image
   } = useChallengeViewModel({ challengeDB, currentUser });
 
   return (
@@ -44,7 +45,7 @@ export function Challenge({
         {/* User Info */}
         <ThemedView style={styles.userInfo}>
           {user?.image_id ? (
-            <Image source={{ uri: user.image_id }} style={styles.userAvatar} />
+            <Image source={{ uri: icon }} style={styles.userAvatar} />
           ) : (
             <ThemedView style={styles.defaultAvatar}>
               <ThemedText style={styles.avatarText}>
@@ -59,9 +60,7 @@ export function Challenge({
 
         {/* Challenge Image */}
         <Image
-          source={{
-            uri: challengeDB.image_id || placeholderImage,
-          }}
+          source={{ uri: image }}
           style={styles.challengeImage}
         />
 
