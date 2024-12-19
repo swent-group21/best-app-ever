@@ -33,6 +33,7 @@ export default function CreateGroupViewModel({
   MIN_RADIUS: number;
   MAX_RADIUS: number;
   permission: string;
+  isLoading: boolean;
 } {
   type PermissionStatus = "REFUSED" | "AUTHORIZED" | "WAITING";
   const MIN_RADIUS = 2000;
@@ -42,6 +43,7 @@ export default function CreateGroupViewModel({
   const [radius, setRadius] = useState(MIN_RADIUS);
   const [location, setLocation] = useState<GeoPoint | null>(null);
   const [permission, setPermission] = useState<PermissionStatus>("WAITING");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetch the user's location
   useEffect(() => {
@@ -69,6 +71,7 @@ export default function CreateGroupViewModel({
 
   // Create the challenge
   const makeGroup = async () => {
+    setIsLoading(true);
     try {
       const creationDate = new Date();
       const members = [user.uid];
@@ -86,8 +89,10 @@ export default function CreateGroupViewModel({
       navigation.navigate("Home");
     } catch (error) {
       console.error("Unable to create challenge", error);
+      setIsLoading(false);
       return error;
     }
+    setIsLoading(false);
   };
 
   return {
@@ -101,5 +106,6 @@ export default function CreateGroupViewModel({
     MIN_RADIUS,
     MAX_RADIUS,
     permission,
+    isLoading,
   };
 }
