@@ -61,6 +61,7 @@ describe("useJoinGroupViewModel", () => {
       useJoinGroupViewModel(mockFirestoreCtrl, uid),
     );
 
+    // base case with empty searchText
     await waitFor(() => {
       expect(result.current.filteredGroups).toEqual([]);
     });
@@ -88,6 +89,7 @@ describe("useJoinGroupViewModel", () => {
     });
 
     expect(result.current.suggestions).toEqual([mockGroup2]);
+    expect(result.current.searchText).toEqual("");
   });
 
   it("gets all the groups and filter them by challenge with the searchText", async () => {
@@ -105,5 +107,41 @@ describe("useJoinGroupViewModel", () => {
 
     // Check if the filteredGroups have been filtered from allGroups
     expect(result.current.filteredGroups).toEqual([mockGroup2]);
+  });
+
+  it("does not display any group if getAllGroups returns an empty array", async () => {
+    jest.spyOn(mockFirestoreCtrl, "getAllGroups").mockReturnValue(
+      new Promise<DBGroup[]>((resolve) => {
+        [];
+      }),
+    );
+
+    const { result } = renderHook(() =>
+      useJoinGroupViewModel(mockFirestoreCtrl, uid),
+    );
+
+    await act(() => {
+      result.current.setSearchText("Challenge T");
+    });
+
+    // Check if the filteredGroups are still empty
+    await waitFor(() => {
+      expect(result.current.filteredGroups).toEqual([]);
+    });
+  });
+
+  it("does not display any group if searchText does not match any group", async () => {
+    const { result } = renderHook(() =>
+      useJoinGroupViewModel(mockFirestoreCtrl, uid),
+    );
+
+    await act(() => {
+      result.current.setSearchText("I want to search for this group");
+    });
+
+    // Check if the filteredGroups are still empty
+    await waitFor(() => {
+      expect(result.current.filteredGroups).toEqual([]);
+    });
   });
 });

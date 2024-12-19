@@ -9,6 +9,10 @@ import { GroupListItem } from "@/src/views/components/groups/group_list_item";
 describe("GroupListItem Component", () => {
   const mockHandleJoin = jest.fn();
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders the component at first", () => {
     const { getByTestId } = render(
       <GroupListItem
@@ -52,7 +56,7 @@ describe("GroupListItem Component", () => {
   });
 
   it("displays the check if group is joined", () => {
-    const { getByText } = render(
+    const { queryByText } = render(
       <GroupListItem
         name="TestGroup"
         challengeTitle="TestChallenge"
@@ -61,7 +65,9 @@ describe("GroupListItem Component", () => {
       />,
     );
 
-    expect(getByText("Joined ✓")).toBeTruthy();
+    // Check if the JOIN button is not rendered and the joined check is rendered
+    expect(queryByText("JOIN")).toBeNull();
+    expect(queryByText("Joined ✓")).toBeTruthy();
   });
 
   it("displays and uses the join button if group is not joined", async () => {
@@ -77,9 +83,7 @@ describe("GroupListItem Component", () => {
     expect(getByText("JOIN")).toBeTruthy();
     const joinButton = getByTestId("join-button-TestGroup");
 
-    await waitFor(() => {
-      fireEvent.press(joinButton);
-    });
+    fireEvent.press(joinButton);
 
     expect(mockHandleJoin).toHaveBeenCalledTimes(1);
   });

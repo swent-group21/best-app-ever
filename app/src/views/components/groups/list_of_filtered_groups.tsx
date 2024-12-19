@@ -3,6 +3,7 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { GroupListItem } from "@/src/views/components/groups/group_list_item";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { useListOfFilteredGroupsViewModel } from "@/src/viewmodels/components/groups/ListOfFilteredGroupsViewModel";
+import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
 /**
  * List of filtered groups component
@@ -18,7 +19,15 @@ export default function ListOfFilteredGroups({
   firestoreCtrl,
   uid,
   navigation,
-}: any) {
+  testID,
+}: {
+  readonly filteredGroups: DBGroup[];
+  readonly searchText: string;
+  readonly firestoreCtrl: FirestoreCtrl;
+  readonly uid: string;
+  readonly navigation: any;
+  readonly testID?: string;
+}) {
   const { groupStatuses, handleJoin } = useListOfFilteredGroupsViewModel({
     filteredGroups,
     firestoreCtrl,
@@ -31,7 +40,9 @@ export default function ListOfFilteredGroups({
       {filteredGroups.length > 0 ? (
         <FlatList
           data={filteredGroups}
-          keyExtractor={(item) => item.uid || Math.random().toString()}
+          keyExtractor={(item) =>
+            item.gid || (Math.random() + 1).toString(36).substring(7)
+          }
           renderItem={({ item }) => {
             const isJoined = groupStatuses[item?.gid]?.isJoined || false;
 

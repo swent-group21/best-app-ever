@@ -38,7 +38,9 @@ export const GroupListItem = ({
 
       {/* Display the group's challenge */}
       <ThemedView style={styles.textContainer}>
-        <ThemedText style={styles.groupChallenge}>{challengeTitle}</ThemedText>
+        <ThemedText style={styles.groupChallenge}>
+          {challengeTitle ?? ""}
+        </ThemedText>
       </ThemedView>
 
       {/* Display the join button */}

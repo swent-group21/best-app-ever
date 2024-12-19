@@ -57,7 +57,8 @@ export function useListOfFilteredGroupsViewModel({
       // Navigate to the group screen
       navigation.navigate("GroupScreen", { currentGroup: group });
     } catch (error) {
-      console.error("Error adding friend:", error);
+      alert("It seems you cannot join this group for now, try again later...");
+      console.error("Error joining group:", error);
     }
   };
 

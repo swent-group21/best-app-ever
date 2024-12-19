@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import ListOfFilteredGroups from "@/src/views/components/groups/list_of_filtered_groups";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock(
@@ -15,13 +15,30 @@ describe("ListOfFilteredGroups Component", () => {
   const mockUseListOfFilteredGroupsViewModel =
     require("@/src/viewmodels/components/groups/ListOfFilteredGroupsViewModel").useListOfFilteredGroupsViewModel;
 
-  const mockFilteredGroups = [
-    { gid: "1", name: "Group1", challengeTitle: "Challenge Group1" },
-    { gid: "2", name: "Team2", challengeTitle: "Challenge Team2" },
+  const mockFilteredGroups: DBGroup[] = [
+    {
+      gid: "1",
+      name: "Group1",
+      challengeTitle: "Challenge Group1",
+      members: [],
+      updateDate: new Date(),
+      location: null,
+      radius: 0,
+    },
+    {
+      gid: "2",
+      name: "Team2",
+      challengeTitle: "Challenge Team2",
+      members: [],
+      updateDate: new Date(),
+      location: null,
+      radius: 0,
+    },
   ];
 
   const mockFirestoreCtrl = new FirestoreCtrl();
   const mockHandleJoin = jest.fn();
+  const mockNavigation = { navigate: jest.fn() };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -43,6 +60,7 @@ describe("ListOfFilteredGroups Component", () => {
         searchText="Group"
         firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
+        navigation={mockNavigation}
       />,
     );
 
@@ -66,6 +84,7 @@ describe("ListOfFilteredGroups Component", () => {
         searchText="Group"
         firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
+        navigation={mockNavigation}
       />,
     );
 
@@ -89,6 +108,7 @@ describe("ListOfFilteredGroups Component", () => {
         searchText="Group"
         firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
+        navigation={mockNavigation}
       />,
     );
 
@@ -102,21 +122,20 @@ describe("ListOfFilteredGroups Component", () => {
       handleJoin: mockHandleJoin,
     });
 
-    const { getByText } = render(
+    const { queryByText } = render(
       <ListOfFilteredGroups
         filteredGroups={[]}
         searchText=""
         firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
+        navigation={mockNavigation}
       />,
     );
 
-    try {
-      // Make sure the no-group message is not displayed
-      expect(getByText("No group found")).toThrow();
+    // Make sure the no-group message is not displayed
+    expect(queryByText("No group found")).toBeNull();
 
-      // Make sure the groups are not displayed
-      expect(getByText("Group1")).toThrow();
-    } catch (error) {}
+    // Make sure the groups are not displayed
+    expect(queryByText("Group1")).toBeNull();
   });
 });
