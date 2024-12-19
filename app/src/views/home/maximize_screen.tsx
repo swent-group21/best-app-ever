@@ -184,7 +184,11 @@ export default function MaximizeScreen({
             testID="comment-input"
           />
           {isLoading ? (
-            <ActivityIndicator size="small" color="#fff" />
+            <ActivityIndicator
+              size="small"
+              color="#fff"
+              testID="loading-indicator"
+            />
           ) : (
             <ThemedIconButton
               name="send"
