@@ -277,7 +277,10 @@ export default function HomeScreen({
           if (userIsGuest) {
             setShowGuestPopup("Camera")
           } else {
-            navigateToMemories(); 
+            navigation.navigate("Memories", {
+              navigation,
+              user: user,
+            })
           }
         }}
       />

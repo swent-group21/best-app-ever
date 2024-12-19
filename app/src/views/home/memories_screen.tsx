@@ -19,19 +19,20 @@ import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 const { width, height } = Dimensions.get("window");
 
 export default function MemoriesScreen({
-  user,
   navigation,
+  route
 }: {
-  readonly user: DBUser;
   readonly navigation: any;
+  readonly route: any;
 }) {
+  const user = route.params?.user;
+  console.log("User in MemoriesScreen: ", user)
   const {
     userIsGuest,
     challenges,
     icon,
   } = useMemoriesViewModel(user, navigation);
 
-  const [filterByFriends, setFilterByFriends] = useState(false);
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
   // Animation for hiding groups
@@ -39,17 +40,6 @@ export default function MemoriesScreen({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleThreshold = 100; // Distance to toggle the groups visibility
-
-  const underlineAnim = useRef(new Animated.Value(0)).current;
-
-  const handleFilterChange = (isFriends: boolean) => {
-    Animated.timing(underlineAnim, {
-      toValue: isFriends ? width * 0.5 : 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-    setFilterByFriends(isFriends);
-  };
 
   const handleScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = e.nativeEvent.contentOffset.y;

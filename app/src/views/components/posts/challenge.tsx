@@ -1,9 +1,11 @@
 import React from "react";
 import {
+  View,
   StyleSheet,
   Dimensions,
   Image,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
@@ -37,13 +39,19 @@ export function Challenge({
   } = useChallengeViewModel({ challengeDB, currentUser });
 
   return (
-    <TouchableWithoutFeedback
-      onPress={handleDoubleTap}
-      testID={`challenge-id-${index}`}
-    >
-      <ThemedView style={styles.challengeContainer} testID={testID}>
-        {/* User Info */}
-        <ThemedView style={styles.userInfo}>
+    <ThemedView style={styles.challengeContainer} testID={testID}>
+      {/* User Info */}
+      <TouchableOpacity 
+        onPress={() =>
+          navigation.navigate("Memories", {
+            navigation,
+            user: user,
+          }
+        )}
+      >
+        <ThemedView 
+          style={styles.userInfo}
+        >
           {user?.image_id ? (
             <Image source={{ uri: icon }} style={styles.userAvatar} />
           ) : (
@@ -57,52 +65,56 @@ export function Challenge({
             {user?.name || "Anonymous"}
           </ThemedText>
         </ThemedView>
+      </TouchableOpacity>
 
-        {/* Challenge Image */}
+      {/* Challenge Image */}
+      <TouchableWithoutFeedback
+        onPress={handleDoubleTap} testID={`challenge-id-${index}`}
+      >
         <Image source={{ uri: image }} style={styles.challengeImage} />
+      </TouchableWithoutFeedback>
 
-        {/* Challenge Description */}
-        {Boolean(challengeDB.caption) && (
-          <ThemedText style={styles.challengeDescription}>
-            {challengeDB.caption}
+      {/* Challenge Description */}
+      {Boolean(challengeDB.caption) && (
+        <ThemedText style={styles.challengeDescription}>
+          {challengeDB.caption}
+        </ThemedText>
+      )}
+
+      {/* First Comment */}
+      {comments.length > 0 && (
+        <ThemedText style={styles.comment} testID="firstComment">
+          {comments[0].user_name}: {comments[0].comment_text}
+        </ThemedText>
+      )}
+
+      {/* Bottom Bar */}
+      <ThemedView style={styles.bottomBar}>
+        {/* Like Button */}
+        <ThemedIconButton
+          name={isLiked ? "heart" : "heart-outline"}
+          onPress={handleLikePress}
+          size={30}
+          testID="like-button"
+          color={isLiked ? "red" : "white"}
+        />
+
+        {/* Comment Button */}
+        <TouchableWithoutFeedback
+          onPress={() =>
+            navigation.navigate("Maximize", {
+              navigation,
+              challenge: challengeDB,
+              user: currentUser,
+            })
+          }
+        >
+          <ThemedText style={styles.commentText} testID="add-a-comment">
+            Add a comment...
           </ThemedText>
-        )}
-
-        {/* First Comment */}
-        {comments.length > 0 && (
-          <ThemedText style={styles.comment} testID="firstComment">
-            {comments[0].user_name}: {comments[0].comment_text}
-          </ThemedText>
-        )}
-
-        {/* Bottom Bar */}
-        <ThemedView style={styles.bottomBar}>
-          {/* Like Button */}
-          <ThemedIconButton
-            name={isLiked ? "heart" : "heart-outline"}
-            onPress={handleLikePress}
-            size={30}
-            testID="like-button"
-            color={isLiked ? "red" : "white"}
-          />
-
-          {/* Comment Button */}
-          <TouchableWithoutFeedback
-            onPress={() =>
-              navigation.navigate("Maximize", {
-                navigation,
-                challenge: challengeDB,
-                user: currentUser,
-              })
-            }
-          >
-            <ThemedText style={styles.commentText} testID="add-a-comment">
-              Add a comment...
-            </ThemedText>
-          </TouchableWithoutFeedback>
-        </ThemedView>
+        </TouchableWithoutFeedback>
       </ThemedView>
-    </TouchableWithoutFeedback>
+    </ThemedView>
   );
 }
 

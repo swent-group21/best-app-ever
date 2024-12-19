@@ -113,7 +113,7 @@ export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, setUser }) => {
           </Screen>
 
           <Screen name="Memories">
-            {(props: any) => <MemoriesScreen {...props} user={user} />}
+            {(props: any) => <MemoriesScreen {...props} />}
           </Screen>
         </Group>
       </Navigator>
