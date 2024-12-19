@@ -40,7 +40,7 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
   } = useCameraViewModel(firestoreCtrl, navigation, route);
 
   if (isLoading) {
-    return <LoadingSplash loading_text="Posting..." />;
+    return <LoadingSplash loading_text="Posting..." testID="loading-splash" />;
   }
 
   if (!permission) {
