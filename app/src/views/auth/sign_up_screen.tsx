@@ -7,8 +7,11 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import useSignUpViewModel from "@/src/viewmodels/auth/SignUpViewModel";
+<<<<<<< HEAD
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 import { LoadingSplash } from "../components/loading/loading_splash";
+=======
+>>>>>>> master
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,11 +25,9 @@ const { width, height } = Dimensions.get("window");
 export default function SignUp({
   navigation,
   setUser,
-  firestoreCtrl,
 }: {
   readonly navigation: any;
   readonly setUser: any;
-  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     setName,
@@ -39,7 +40,7 @@ export default function SignUp({
     isPasswordValid,
     isConfirmPasswordValid,
     isLoading,
-  } = useSignUpViewModel(navigation, setUser, firestoreCtrl);
+  } = useSignUpViewModel(navigation, setUser);
 
   if (isLoading) {
     return (

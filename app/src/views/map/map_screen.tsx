@@ -4,26 +4,23 @@ import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import { LoadingSplash } from "../components/loading/loading_splash";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 /**
  * Screen for the map
  * @param user : user object
  * @param navigation : navigation object
- * @param firestoreCtrl : FirestoreCtrl object
  * @param route : route object
  * @returns : a screen for the map
  */
 export default function MapScreen({
   user,
   navigation,
-  firestoreCtrl,
   route,
 }: {
   readonly user: DBUser;
   readonly navigation: any;
-  readonly firestoreCtrl: FirestoreCtrl;
   readonly route: any;
 }) {
   // Gets the first location and the challenge area from the route parameters, if they exist
@@ -35,12 +32,7 @@ export default function MapScreen({
     navigateGoBack,
     challengeArea,
     isLoading,
-  } = useMapScreenViewModel(
-    firestoreCtrl,
-    navigation,
-    firstLocation,
-    geoRestriction,
-  );
+  } = useMapScreenViewModel(navigation, firstLocation, geoRestriction);
 
   if (isLoading) {
     return <LoadingSplash loading_text="Loading, this may take some time..." />;
@@ -87,7 +79,6 @@ export default function MapScreen({
                 navigation.navigate("Maximize", {
                   challenge,
                   user,
-                  firestoreCtrl,
                 });
               }}
             />
