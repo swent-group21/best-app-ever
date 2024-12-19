@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import {
   Animated,
+  ViewStyle,
   Dimensions,
   StyleSheet,
   NativeScrollEvent,
@@ -103,9 +104,14 @@ export default function MemoriesScreen({
           />
         )}
         ListHeaderComponent={
-          <ThemedText style={styles.filterText}>
-            User NAME and info
-          </ThemedText>
+          <ThemedView style={styles.userHeader}>
+            <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
+              {user.name}
+            </ThemedText>
+            <ThemedText style={{ fontSize: 15, fontWeight: "bold" }}>
+              {user.email}
+            </ThemedText>
+          </ThemedView>
         }
         ListFooterComponent={
           userIsGuest && (
@@ -278,5 +284,13 @@ const styles = StyleSheet.create({
     height: 2,
     width: 0.2 * width,
     backgroundColor: "#fff",
+  },
+  userHeader: {
+    width: width - 20,
+    height: 0.2 * height,
+    borderRadius: 15,
+    backgroundColor: "transparent",
+    justifyContent: "center" as ViewStyle["justifyContent"],
+    alignItems: "center" as ViewStyle["alignItems"],
   },
 });

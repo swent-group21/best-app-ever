@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import {
   DBChallenge,
   DBUser,
-  DBGroup,
-  DBChallengeDescription,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
 import {
-  getChallengeDescription,
   getChallengesByUserId,
-  getGroupsByUserId,
   getImageUrl,
 } from "@/src/models/firebase/GetFirestoreCtrl";
 
@@ -25,18 +21,6 @@ export function useMemoriesViewModel(
   const userIsGuest = user.name === "Guest";
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [icon, setIcon] = useState<string>("person-circle-outline");
-
-  const navigateToFriends = () => {
-    if (!userIsGuest) {
-      navigation.navigate("Friends");
-    }
-  };
-
-  const navigateToProfile = () => {
-    if (!userIsGuest) {
-      navigation.navigate("Profile");
-    }
-  };
 
   // Fetch the current challenge and the challenges
   useEffect(() => {
@@ -71,17 +55,9 @@ export function useMemoriesViewModel(
     }
   }, [user]);
 
-  // Filter challenges to only include those from friends
-  const challengesFromFriends = challenges.filter((challenge) =>
-    user.friends?.includes(challenge.uid),
-  );
-
   return {
     userIsGuest,
     challenges,
-    navigateToFriends,
-    navigateToProfile,
-    challengesFromFriends,
     icon,
   };
 }
