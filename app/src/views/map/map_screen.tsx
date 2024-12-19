@@ -1,14 +1,11 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
-import FirestoreCtrl, {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/FirestoreCtrl";
+import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { LoadingSplash } from "../components/loading/loading_splash";
 
 /**
  * Screen for the map
@@ -36,26 +33,15 @@ export default function MapScreen({
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
-    isMapReady,
-    setIsMapReady,
   } = useMapScreenViewModel(
     firestoreCtrl,
     navigation,
     firstLocation,
     geoRestriction,
   );
-  console.info("--> AREA", challengeArea);
-  console.info("--> CHALLENGES", challengesWithLocation);
 
   if (userLocation === undefined || challengesWithLocation.length === 0) {
-    return (
-      <ThemedView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#fff" />
-        <ThemedText style={styles.loadingText}>
-          Loading, this may take some time...
-        </ThemedText>
-      </ThemedView>
-    );
+    return <LoadingSplash loading_text="Loading, this may take some time..." />;
   } else {
     return (
       <ThemedView style={styles.container}>
@@ -77,7 +63,6 @@ export default function MapScreen({
           showsUserLocation={true}
           showsCompass={true}
           loadingEnabled={true}
-          onMapReady={() => setIsMapReady(true)}
           testID="map"
         >
           {/* Draw the challenges on the map */}
