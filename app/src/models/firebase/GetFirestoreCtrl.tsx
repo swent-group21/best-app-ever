@@ -17,8 +17,8 @@ import {
   DBComment,
   DBGroup,
   DBUser,
-} from "./TypeFirestoreCtrl";
-import { getStoredImageById } from "./LocalStorageCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getStoredImageById } from "@/src/models/firebase/LocalStorageCtrl";
 
 /**
  * Retrieves a user document from Firestore by UID.

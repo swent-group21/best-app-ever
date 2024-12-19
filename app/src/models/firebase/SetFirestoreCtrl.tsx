@@ -17,15 +17,13 @@ import NetInfo from "@react-native-community/netinfo";
 import {
   setUploadTaskScheduled,
   getUploadTaskScheduled,
-} from "@/src/models/firebase/LocalStorageCtrl";
-import { DBUser, DBChallenge, DBComment, DBGroup } from "./TypeFirestoreCtrl";
-import {
   storeChallengeLocally,
   storeCommentLocally,
   storeGroupLocally,
   storeImageLocally,
 } from "@/src/models/firebase/LocalStorageCtrl";
-import { getImageUrl, getUser } from "./GetFirestoreCtrl";
+import { DBUser, DBChallenge, DBComment, DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getImageUrl, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * Creates or updates a user document in Firestore.
@@ -60,6 +58,7 @@ export async function uploadImage(
     }
     let img_id: string = id_picture;
     if (id_picture === undefined) {
+      // Creation of image id
       img_id = (Math.random() + 1).toString(36).substring(2);
     }
 
@@ -228,10 +227,10 @@ export async function updateGroup(
 }
 
 /**
- * Update a group in firestore with last post date
- * @param gid The ID of the group to update.
- * @param updateTime The time of the last post.
- * @returns A promise that resolves when the group is updated.
+ * Adding a group to member of a group
+ * @param uid The ID of the user to update.
+ * @param group_name Name of group user will join
+ * @returns A promise that resolves when the user joins group
  */
 export async function addGroupToMemberGroups(
   uid: string,

@@ -3,8 +3,6 @@ import { fireEvent, render } from "@testing-library/react-native";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
-// Mock de useGroupScreenViewModel
-
 const mockSetGroupName = jest.fn();
 const mockSetChallengeTitle = jest.fn();
 const mockMakeGroup = jest.fn();

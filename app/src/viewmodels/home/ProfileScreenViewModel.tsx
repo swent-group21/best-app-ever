@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { launchImageLibraryAsync } from "expo-image-picker";
-import { DBUser } from "../../models/firebase/TypeFirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import { logOut, resetEmail, resetPassword } from "@/types/Auth";
 import { getProfilePicture } from "@/src/models/firebase/GetFirestoreCtrl";
 import {

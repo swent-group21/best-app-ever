@@ -7,7 +7,7 @@ import {
   DBComment,
   DBChallenge,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { newChallenge, newGroup, uploadImage } from "./SetFirestoreCtrl";
+import { newChallenge, newGroup, uploadImage } from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Unique keys for AsyncStorage
 const CHALLENGE_STORAGE_KEY = "@challenges";
@@ -15,6 +15,7 @@ const GROUP_STORAGE_KEY = "@groups";
 const IMAGE_STORAGE_KEY = "@images";
 const COMMENT_STORAGE_KEY = "@comment";
 
+// Default: no need to upload anything
 let uploadTaskScheduled: boolean = false;
 
 /**

@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { RequestList } from "@/src/views/components/friends/request_list";
 
-// Mock du ViewModel
 jest.mock("@/src/viewmodels/components/friends/RequestListViewModel", () => ({
   useRequestListViewModel: jest.fn(),
 }));

@@ -3,7 +3,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import SignInScreen from "@/src/views/auth/sign_in_screen";
 import SignInViewModel from "@/src/viewmodels/auth/SignInViewModel";
 
-// Mock du ViewModel
 jest.mock("@/src/viewmodels/auth/SignInViewModel", () => jest.fn());
 
 describe("SignInScreen Tests", () => {

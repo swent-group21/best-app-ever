@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react-native";
 import SetUsernameScreen from "@/src/views/auth/set_up_screen";
 
-// Mock de SetUsernameViewModel
 jest.mock("@/src/viewmodels/auth/SetUsernameViewModel", () => jest.fn());
 
 import SetUsernameViewModel from "@/src/viewmodels/auth/SetUsernameViewModel";

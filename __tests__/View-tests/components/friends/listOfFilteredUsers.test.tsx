@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 
-// Mock du ViewModel
 jest.mock(
   "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel",
   () => ({
