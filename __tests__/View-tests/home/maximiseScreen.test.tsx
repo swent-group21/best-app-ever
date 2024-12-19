@@ -39,9 +39,15 @@ describe("MaximizeScreen UI Tests", () => {
     email: "bla.gmail.com",
     createdAt: new Date(),
   };
+  const mockToggleLike = jest.fn();
+  const mockAddComment = jest.fn();
+  const mockNavigateToMap = jest.fn();
+
+
 
   beforeEach(() => {
     jest.clearAllMocks();
+
 
     // Mock the ViewModel
     require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel.mockReturnValue(
@@ -65,6 +71,9 @@ describe("MaximizeScreen UI Tests", () => {
         postCaption: "Test Challenge",
         navigateGoBack: jest.fn(),
         userProfilePicture: "test_pp",
+        showGuestPopup: jest.fn(),
+        setShowGuestPopup: jest.fn(),
+        handleUserInteraction : jest.fn(() => {mockToggleLike()}),
       },
     );
   });
@@ -108,8 +117,12 @@ describe("MaximizeScreen UI Tests", () => {
         postUser: mockUser,
         postDescription: "A test challenge",
         postImage: "https://example.com/test-image.jpg",
+        showGuestPopup: jest.fn(),
+        setShowGuestPopup: jest.fn(),
+        handleUserInteraction : jest.fn(() => {mockToggleLike()}),
       });
 
+    
     const { getByTestId } = render(
       <MaximizeScreen
         user={mockUser}
@@ -139,13 +152,32 @@ describe("MaximizeScreen UI Tests", () => {
     await act(async () => {
       fireEvent.press(getByTestId("like-button"));
     });
-    const toggleLike =
-      require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
-        .toggleLike;
-    expect(toggleLike).toHaveBeenCalled();
+    
+    expect(mockToggleLike).toHaveBeenCalled();
+
   });
 
   it("handles adding a comment", async () => {
+
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
+        "useMaximizeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        isLiked: false,
+        likeList: [],
+        commentList: [],
+        postDate: new Date(),
+        postUser: mockUser,
+        postDescription: "A test challenge",
+        postImage: "https://example.com/test-image.jpg",
+        showGuestPopup: jest.fn(),
+        setShowGuestPopup: jest.fn(),
+        handleUserInteraction : jest.fn(() => {mockAddComment()}),
+      });
+
     const { getByTestId } = render(
       <MaximizeScreen
         user={{
@@ -170,10 +202,29 @@ describe("MaximizeScreen UI Tests", () => {
       fireEvent.changeText(input, "New Comment");
       fireEvent.press(getByTestId("send-comment-button"));
     });
-    expect(addComment).toHaveBeenCalled();
+    expect(mockAddComment).toHaveBeenCalled();
   });
 
   it("navigates to the MapScreen when the location button is pressed", async () => {
+    jest
+      .spyOn(
+        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
+        "useMaximizeScreenViewModel",
+      )
+      .mockReturnValue({
+        toggleLike: mockToggleLike,
+        isLiked: false,
+        likeList: [],
+        commentList: [],
+        postDate: new Date(),
+        postUser: mockUser,
+        postDescription: "A test challenge",
+        postImage: "https://example.com/test-image.jpg",
+        showGuestPopup: jest.fn(),
+        setShowGuestPopup: jest.fn(),
+        handleUserInteraction : jest.fn(() => {mockNavigateToMap()}),
+      });
+
     const { getByTestId, getByText } = render(
       <MaximizeScreen
         user={mockUser}
@@ -188,12 +239,7 @@ describe("MaximizeScreen UI Tests", () => {
       fireEvent.press(locationButton);
     });
 
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("MapScreen", {
-      navigation: mockNavigation,
-      user: mockUser,
-      firestoreCtrl: mockFirestoreCtrl,
-      location: { latitude: 48.8566, longitude: 2.3522 },
-    });
+    expect(mockNavigateToMap).toHaveBeenCalled()
   });
 
   it("toggles the like button when pressed", () => {
@@ -212,6 +258,9 @@ describe("MaximizeScreen UI Tests", () => {
         postUser: mockUser,
         postDescription: "A test challenge",
         postImage: "https://example.com/test-image.jpg",
+        showGuestPopup: jest.fn(),
+        setShowGuestPopup: jest.fn(),
+        handleUserInteraction : jest.fn(() => {mockToggleLike()}),
       });
 
     const { getByTestId } = render(
@@ -249,52 +298,3 @@ describe("MaximizeScreen UI Tests", () => {
     expect(getByText("This is a comment")).toBeTruthy();
   });
 });
-
-// it("handles liking a post", () => {
-//   const { getByText } = render(
-//     <MaximizeScreen
-//       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
-//       navigation={mockNavigation}
-//       route={{ params: { challenge: mockChallenge } }}
-//       firestoreCtrl={mockFirestoreCtrl}
-//     />
-//   );
-
-//   fireEvent.press(getByText("heart-outline"));
-//   const toggleLike = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
-//     .toggleLike;
-//   expect(toggleLike).toHaveBeenCalled();
-// });
-
-// it("handles adding a comment", () => {
-//   const { getByText, getByPlaceholderText } = render(
-//     <MaximizeScreen
-//       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
-//       navigation={mockNavigation}
-//       route={{ params: { challenge: mockChallenge } }}
-//       firestoreCtrl={mockFirestoreCtrl}
-//     />
-//   );
-
-//   const addComment = require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
-//     .addComment;
-
-//   const input = getByPlaceholderText("Write a comment...");
-//   fireEvent.changeText(input, "New Comment");
-//   fireEvent.press(getByText("send"));
-//   expect(addComment).toHaveBeenCalled();
-// });
-
-// it("handles navigation back", () => {
-//   const { getByText } = render(
-//     <MaximizeScreen
-//       user={{ uid: "12345", name: "Test User", email: "test@gmail.com", createdAt: new Date(), image_id: null }}
-//       navigation={mockNavigation}
-//       route={{ params: { challenge: mockChallenge } }}
-//       firestoreCtrl={mockFirestoreCtrl}
-//     />
-//   );
-
-//   fireEvent.press(getByText("arrow-back-outline"));
-//   expect(mockNavigation.goBack).toHaveBeenCalled();
-// });

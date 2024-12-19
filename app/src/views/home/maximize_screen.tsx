@@ -52,18 +52,12 @@ export default function MaximizeScreen({
     navigateGoBack,
     groupCenter,
     groupRadius,
+    showGuestPopup,
+    setShowGuestPopup,
+    handleUserInteraction,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
-  const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
-
-  // Centralized interaction handler
-  const handleUserInteraction = (guestPopUpMsg: string, interaction: () => void) => {
-    if (user.name === "Guest") {
-      setShowGuestPopup(guestPopUpMsg);
-    } else {
-      interaction();
-    }
-  };
+  
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -122,6 +116,7 @@ export default function MaximizeScreen({
                 onPress={() =>
                   handleUserInteraction("map", () =>
                     navigation.navigate("MapScreen", {
+
                       location: challenge.location,
                       challengeArea:
                         groupCenter && groupRadius
