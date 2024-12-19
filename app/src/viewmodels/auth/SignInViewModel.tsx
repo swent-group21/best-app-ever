@@ -20,24 +20,29 @@ export default function SignInViewModel(
   handleEmailChange: (text: string) => void;
   handlePasswordChange: (text: string) => void;
   handleSignIn: () => Promise<void>;
+  isLoading: boolean;
 } {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleEmailChange = (text: string) => setEmail(text);
-
   const handlePasswordChange = (text: string) => setPassword(text);
 
   const handleSignIn = async () => {
     try {
+      setIsLoading(true);
       if (!email || !password) {
+        setIsLoading(false);
         setErrorMessage("Email and Password are required.");
         return;
       }
 
       await logInWithEmail(email, password, firestoreCtrl, navigation, setUser);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error during sign-in:", error);
       setErrorMessage("Failed to sign in. Please try again.");
     }
@@ -50,5 +55,6 @@ export default function SignInViewModel(
     handleEmailChange,
     handlePasswordChange,
     handleSignIn,
+    isLoading,
   };
 }
