@@ -5,6 +5,8 @@ import {
   Image,
   Text,
   TouchableWithoutFeedback,
+  View,
+  TouchableOpacity,
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
@@ -14,7 +16,6 @@ import { SingleComment } from "@/src/views/components/posts/comment";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
 import { useMaximizeScreenViewModel } from "@/src/viewmodels/home/MaximizeScreenViewModel";
-import { TouchableOpacity } from "react-native";
 import FirestoreCtrl, {
   DBUser,
   DBChallenge,
@@ -53,58 +54,16 @@ export default function MaximizeScreen({
     groupRadius,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
-  const [lastTap, setLastTap] = useState<number | null>(null);
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
-  const handleDoubleTap = () => {
-    const now = Date.now();
-    if (lastTap && now - lastTap < 300) {
-      // Double-tap detected
-      if (user.name === "Guest") {
-        setShowGuestPopup("like");
-      } else {
-        toggleLike();
-      }
-    }
-
-    setLastTap(now);
-  };
-
-  const handleComment = () => {
+  // Centralized interaction handler
+  const handleUserInteraction = (guestPopUpMsg: string, interaction: () => void) => {
     if (user.name === "Guest") {
-      setShowGuestPopup("comment");
+      setShowGuestPopup(guestPopUpMsg);
     } else {
-      addComment();
+      interaction();
     }
   };
-
-  const handleLikePress = () => {
-    if (user.name === "Guest") {
-      setShowGuestPopup("like");
-    } else {
-      toggleLike();
-    }
-  };
-
-  const handleMapPress = () => {
-    if (user.name === "Guest") {
-      setShowGuestPopup("map");
-    } else {
-      navigation.navigate("MapScreen", {
-        navigation: navigation,
-        user: user,
-        firestoreCtrl: firestoreCtrl,
-        location: challenge.location,
-        challengeArea: groupCenter &&
-          groupRadius && {
-            center: groupCenter,
-            radius: groupRadius,
-          },
-      });
-    }
-  };
-
-  console.log("Area: ", groupCenter, groupRadius);
 
   return (
     <ThemedView style={styles.bigContainer}>
@@ -160,7 +119,17 @@ export default function MaximizeScreen({
               <ThemedIconButton
                 name="location-outline"
                 testID="location-button"
-                onPress={handleMapPress}
+                onPress={() =>
+                  handleUserInteraction("map", () =>
+                    navigation.navigate("MapScreen", {
+                      location: challenge.location,
+                      challengeArea:
+                        groupCenter && groupRadius
+                          ? { center: groupCenter, radius: groupRadius }
+                          : undefined,
+                    })
+                  )
+                }
                 size={30}
                 style={styles.locationButton}
                 colorType="white"
@@ -170,7 +139,11 @@ export default function MaximizeScreen({
         </ThemedView>
 
         {/* Post Image with Double Tap */}
-        <TouchableWithoutFeedback onPress={handleDoubleTap}>
+        <TouchableWithoutFeedback
+          onPress={() =>
+            handleUserInteraction("like", toggleLike)
+          }
+        >
           <ThemedView style={styles.imageContainer}>
             <Image
               testID="post-image"
@@ -192,7 +165,9 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
             testID="like-button"
-            onPress={handleLikePress}
+            onPress={() =>
+              handleUserInteraction("like", toggleLike)
+            }
             size={30}
             color={isLiked ? "red" : "white"}
           />
@@ -213,7 +188,9 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name="send"
             size={25}
-            onPress={handleComment}
+            onPress={() =>
+              handleUserInteraction("comment", addComment)
+            }
             colorType="white"
             testID="send-comment-button"
           />
@@ -227,8 +204,8 @@ export default function MaximizeScreen({
             commentList.map((comment, index) => (
               <SingleComment
                 key={comment.created_at.getTime().toPrecision(21)}
-                comment={comment} // Add the 'comment' property
-                firestoreCtrl={firestoreCtrl} // Add the 'firestoreCtrl' property
+                comment={comment}
+                firestoreCtrl={firestoreCtrl}
               />
             ))
           )}
@@ -242,8 +219,8 @@ export default function MaximizeScreen({
             {showGuestPopup === "like"
               ? "Sign up to like this post!"
               : showGuestPopup === "map"
-                ? "Sign up to view the map!"
-                : "Sign up to comment on this post!"}
+              ? "Sign up to view the map!"
+              : "Sign up to comment on this post!"}
           </Text>
           <TouchableOpacity
             style={styles.popupButton}

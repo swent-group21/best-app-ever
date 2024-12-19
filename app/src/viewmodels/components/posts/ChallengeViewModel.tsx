@@ -101,9 +101,6 @@ export function useChallengeViewModel({
   };
 
   const handleDoubleTap = () => {
-    if (currentUser.name == "Guest") {
-      return;
-    }
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
       // Double tap detected
