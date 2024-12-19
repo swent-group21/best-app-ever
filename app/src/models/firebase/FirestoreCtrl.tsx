@@ -723,23 +723,15 @@ export default class FirestoreCtrl {
   async newGroup(groupData: DBGroup): Promise<void> {
     try {
       const networkState = await NetInfo.fetch();
+      // If there is internet connectivity, upload the group to Firestore
       if (networkState.isConnected && networkState.isInternetReachable) {
-        const duplicate_query = query(
-          collection(firestore, "groups"),
-          where("gid", "==", groupData.gid),
-        );
-        const docSnap = await getDocs(duplicate_query);
-        if (!docSnap.empty) {
-          console.log("Group already exists");
-          return;
-        }
         const docRef = await addDoc(collection(firestore, "groups"), groupData);
         console.log("Group successfully uploaded to Firestore:", docRef.id);
         return;
       }
 
+      // If there is no internet connectivity, store the group locally
       try {
-        // 2. Store group data locally for later upload
         const storedGroups: DBGroup[] = await this.getStoredGroups();
         storedGroups.forEach((sGroup) => {
           if (sGroup.gid == groupData.gid) {
