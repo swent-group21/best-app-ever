@@ -52,6 +52,7 @@ export default function useCameraViewModel(
       description: "Challenge Description",
       endDate: new Date(2024, 1, 1, 0, 0, 0, 0),
     });
+  const [isLoading, setIsLoading] = useState(false);
 
   let group_id = "home";
   let isInHome = true;
@@ -137,7 +138,9 @@ export default function useCameraViewModel(
         }
 
         // Check if the location is within the group's area
+        setIsLoading(true);
         const group: DBGroup = await firestoreCtrl.getGroup(group_id);
+        setIsLoading(false);
         if (!isInGroupArea(location, group)) {
           alert("You need to be in the group's area to create a challenge");
           navigation.navigate("GroupScreen", { currentGroup: group });
@@ -145,6 +148,7 @@ export default function useCameraViewModel(
         }
       }
 
+      setIsLoading(true);
       const imageId = await firestoreCtrl.uploadImage(picture?.uri);
       await createChallenge(
         firestoreCtrl,
@@ -161,7 +165,9 @@ export default function useCameraViewModel(
         const group: DBGroup = await firestoreCtrl.getGroup(group_id);
         navigation.navigate("GroupScreen", { currentGroup: group });
       }
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Unable to create challenge", error);
       return error;
     }
@@ -187,6 +193,7 @@ export default function useCameraViewModel(
     makeChallenge,
     goBack,
     isInHome,
+    isLoading,
   };
 }
 

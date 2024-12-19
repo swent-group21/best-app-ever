@@ -6,6 +6,7 @@ import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input";
+import { LoadingSplash } from "../components/loading/loading_splash";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,7 +36,12 @@ export default function Camera({ navigation, firestoreCtrl, route }: any) {
     makeChallenge,
     goBack,
     isInHome,
+    isLoading,
   } = useCameraViewModel(firestoreCtrl, navigation, route);
+
+  if (isLoading) {
+    return <LoadingSplash loading_text="Posting..." />;
+  }
 
   if (!permission) {
     return (
