@@ -115,7 +115,7 @@ describe("MaximizeScreen - Guest User Restrictions", () => {
     fireEvent.press(getByTestId("like-button"));
     fireEvent.press(getByText("Sign Up"));
 
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("SignUp");
+    expect(mockNavigation.navigate).toHaveBeenCalledWith("WelcomeFinal");
   });
 
   it("closes the popup when clicking 'Close' button", () => {

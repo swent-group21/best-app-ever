@@ -210,7 +210,7 @@ export default function MaximizeScreen({
           </Text>
           <TouchableOpacity
             style={styles.popupButton}
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={() => navigation.navigate("WelcomeFinal")}
           >
             <Text style={styles.popupButtonText}>Sign Up</Text>
           </TouchableOpacity>

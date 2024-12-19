@@ -251,7 +251,7 @@ export default function HomeScreen({
                 : "Access exclusive features with an account!"}
           </ThemedText>
           <TouchableOpacity
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={() => navigation.navigate("WelcomeFinal")}
             style={styles.popupButton}
           >
             <ThemedText style={styles.popupButtonText}>Sign Up</ThemedText>
