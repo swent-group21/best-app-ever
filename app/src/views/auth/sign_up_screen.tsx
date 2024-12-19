@@ -42,7 +42,12 @@ export default function SignUp({
   } = useSignUpViewModel(navigation, setUser, firestoreCtrl);
 
   if (isLoading) {
-    return <LoadingSplash loading_text="Creating your account..." />;
+    return (
+      <LoadingSplash
+        loading_text="Creating your account..."
+        testID="loading-splash"
+      />
+    );
   }
   return (
     <ThemedView style={styles.signUpScreen} testID="sign-up-screen">
