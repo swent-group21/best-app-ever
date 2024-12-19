@@ -7,7 +7,11 @@ import {
   DBComment,
   DBChallenge,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { newChallenge, newGroup, uploadImage } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  newChallenge,
+  newGroup,
+  uploadImage,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Unique keys for AsyncStorage
 const CHALLENGE_STORAGE_KEY = "@challenges";

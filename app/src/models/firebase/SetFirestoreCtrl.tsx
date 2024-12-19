@@ -22,7 +22,12 @@ import {
   storeGroupLocally,
   storeImageLocally,
 } from "@/src/models/firebase/LocalStorageCtrl";
-import { DBUser, DBChallenge, DBComment, DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
+import {
+  DBUser,
+  DBChallenge,
+  DBComment,
+  DBGroup,
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import { getImageUrl, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
