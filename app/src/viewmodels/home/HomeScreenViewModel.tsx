@@ -39,16 +39,28 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
       navigation.navigate("Camera", { group_id: "home" });
     }
   };
+
   const navigateToFriends = () => {
     if (!userIsGuest) {
       navigation.navigate("Friends");
     }
   };
+
   const navigateToCreateGroups = () => {
     if (!userIsGuest) {
       navigation.navigate("CreateGroup");
     }
   };
+
+  const navigateToMemories = () => {
+    if (!userIsGuest) {
+      console.log("User isn't Guest, user is: ", user)
+      navigation.navigate("Memories", {
+        navigation,
+        user: user
+      })
+    }
+  }
 
   // Fetch the current challenge and the challenges
   useEffect(() => {
@@ -135,6 +147,7 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     navigateToCamera,
     navigateToFriends,
     navigateToCreateGroups,
+    navigateToMemories,
     challengesFromFriends,
     icon,
   };

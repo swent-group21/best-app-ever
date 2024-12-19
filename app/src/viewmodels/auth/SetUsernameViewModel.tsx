@@ -9,7 +9,6 @@ import {
 /**
  * ViewModel for the SetUsername screen.
  * @param user : user object
- * @param firestoreCtrl : FirestoreCtrl object
  * @param setUser : set user object
  * @returns : functions for the SetUsername screen
  */
