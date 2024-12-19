@@ -19,6 +19,8 @@ export function useHomeScreenViewModel(
 ) {
   const userIsGuest = user.name === "Guest";
 
+
+  const [refreshing, setRefreshing] = useState(false);
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [groups, setGroups] = useState<DBGroup[]>([]);
   const [titleChallenge, setTitleChallenge] = useState<DBChallengeDescription>({
@@ -47,72 +49,70 @@ export function useHomeScreenViewModel(
       navigation.navigate("CreateGroup");
     }
   };
+  
 
-  // Fetch the current challenge and the challenges
-  useEffect(() => {
-    // Fetch the current challenge
-    const fetchCurrentChallenge = async () => {
-      try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
-        setTitleChallenge(currentChallengeData);
-        return currentChallengeData.title;
-      } catch (error) {
-        console.error("Error fetching current challenge: ", error);
-      }
-    };
-
-    // Fetch challenges
-    const fetchChallenges = async (challengeTitle: string) => {
-      try {
-        await firestoreCtrl
-          .getPostsByChallengeTitle(challengeTitle)
-          .then((challenge: DBChallenge[]) => {
-            // Sort challenges by date
-            const sortedChallenges = challenge.sort((a, b) =>
-              a.date && b.date
-                ? new Date(b.date).getTime() - new Date(a.date).getTime()
-                : 0,
-            );
-            setChallenges(sortedChallenges);
-          });
-      } catch (error) {
-        console.error("Error fetching challenges: ", error);
-      }
-    };
-
-    fetchCurrentChallenge().then((challengeTitle) => {
-      console.log("Current challenge fetched : ", challengeTitle);
-      if (user.uid) fetchChallenges(challengeTitle);
-    });
-  }, [user.uid, firestoreCtrl]);
-
-  // Fetch the groups
-  useEffect(() => {
-    if (user.uid) {
-      const fetchGroups = async () => {
-        try {
-          await firestoreCtrl
-            .getGroupsByUserId(user.uid)
-            .then((group: DBGroup[]) => {
-              // Sort challenges by date
-              const sortedGroups = group.sort((a, b) =>
-                a.updateDate && b.updateDate
-                  ? new Date(b.updateDate).getTime() -
-                    new Date(a.updateDate).getTime()
-                  : 0,
-              );
-              setGroups(sortedGroups);
-            });
-        } catch (error) {
-          console.error("Error fetching groups: ", error);
-        }
-      };
-      fetchGroups();
+  // Fetch challenges
+  const fetchChallenges = async (challengeTitle: string) => {
+    try {
+      const fetchedChallenges = await firestoreCtrl.getPostsByChallengeTitle(
+        challengeTitle,
+      );
+      const sortedChallenges = fetchedChallenges.sort((a, b) =>
+        a.date && b.date
+          ? new Date(b.date).getTime() - new Date(a.date).getTime()
+          : 0,
+      );
+      setChallenges(sortedChallenges);
+    } catch (error) {
+      console.error("Error fetching challenges: ", error);
     }
-  }, [user.uid, firestoreCtrl]);
+  };
 
-  // Filter challenges to only include those from friends
+  // Fetch groups
+  const fetchGroups = async () => {
+    if (user.uid) {
+      try {
+        const fetchedGroups = await firestoreCtrl.getGroupsByUserId(user.uid);
+        const sortedGroups = fetchedGroups.sort((a, b) =>
+          a.updateDate && b.updateDate
+            ? new Date(b.updateDate).getTime() -
+              new Date(a.updateDate).getTime()
+            : 0,
+        );
+        setGroups(sortedGroups);
+      } catch (error) {
+        console.error("Error fetching groups: ", error);
+      }
+    }
+  };
+
+  // Refresh function
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const currentChallengeData =
+        await firestoreCtrl.getChallengeDescription();
+      setTitleChallenge(currentChallengeData);
+      await fetchChallenges(currentChallengeData.title);
+      await fetchGroups();
+    } catch (error) {
+      console.error("Error during refresh: ", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Initialize data
+  useEffect(() => {
+    const initialize = async () => {
+      const currentChallengeData = await firestoreCtrl.getChallengeDescription();
+      setTitleChallenge(currentChallengeData);
+      await fetchChallenges(currentChallengeData.title);
+      await fetchGroups();
+    };
+    initialize();
+  });
+
   const challengesFromFriends = challenges.filter((challenge) =>
     user.friends?.includes(challenge.uid),
   );
@@ -128,5 +128,7 @@ export function useHomeScreenViewModel(
     navigateToFriends,
     navigateToCreateGroups,
     challengesFromFriends,
+    refreshing, 
+    onRefresh
   };
 }

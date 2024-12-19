@@ -19,12 +19,14 @@ export function useFriendsScreenViewModel(
   filteredUsers: DBUser[];
   suggestions: DBUser[];
   handleFriendPress: (friendId: DBUser) => void;
+  refreshing: boolean;
+  onRefresh: () => void;
 } {
   const [searchText, setSearchText] = useState("");
   const [users, setUsers] = useState<DBUser[]>([]);
   const [friends, setFriends] = useState<DBUser[]>([]);
   const [requests, setRequests] = useState<DBUser[]>([]);
-
+  const [refreshing, setRefreshing] = useState(false);
   const [suggestions, setSuggestions] = useState<DBUser[]>([]);
 
   // Fetch friend suggestions
@@ -53,7 +55,7 @@ export function useFriendsScreenViewModel(
     fetchUsers();
   }, [firestoreCtrl]);
 
-  // Fetch friends
+  // Fetch friends - this is in case you accept someone, you need to see it right away 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
@@ -66,18 +68,23 @@ export function useFriendsScreenViewModel(
     fetchFriends();
   }, [firestoreCtrl, uid]);
 
-  // Fetch requests
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const requests = await firestoreCtrl.getFriendRequests(uid);
-        setRequests(requests);
-      } catch (error) {
-        console.error("Error fetching requests: ", error);
-      }
-    };
-    fetchRequests();
-  }, [firestoreCtrl, uid]);
+  // Refresh function 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+
+      const friends = await firestoreCtrl.getFriends(uid);
+      setFriends(friends);
+
+      const requests = await firestoreCtrl.getFriendRequests(uid);
+      setRequests(requests);
+
+    } catch (error) {
+      console.error("Error during refresh: ", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const filteredUsers = searchText
     ? users.filter(
@@ -88,7 +95,14 @@ export function useFriendsScreenViewModel(
       )
     : [];
 
-  const handleFriendPress = (friend: DBUser) => {
+  const handleFriendPress = (friend: DBUser) => async () => {
+    try {
+      const friends = await firestoreCtrl.getFriends(uid);
+      setFriends(friends);
+    }
+    catch (error) {
+      console.error("Error fetching friends: ", error);
+    }
     console.log("Friend pressed: ", friend);
   };
 
@@ -101,5 +115,7 @@ export function useFriendsScreenViewModel(
     filteredUsers,
     suggestions,
     handleFriendPress,
+    refreshing,
+    onRefresh,
   };
 }

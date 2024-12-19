@@ -23,7 +23,7 @@ export default function ListOfFilteredUsers({
     useListOfFilteredUsersViewModel({ filteredUsers, firestoreCtrl, uid });
 
   return (
-    <ThemedView style={{ padding: 10, backgroundColor: "transparent" }}>
+    <ThemedView style={{ padding: 10, backgroundColor: "transparent"}}>
       {filteredUsers.length > 0 ? (
         <FlatList
           data={filteredUsers}

@@ -9,6 +9,10 @@ import { RequestList } from "@/src/views/components/friends/request_list";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
 import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import { RefreshControl } from "react-native";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 export default function FriendsScreen({
   navigation,
@@ -28,6 +32,8 @@ export default function FriendsScreen({
     filteredUsers = [],
     suggestions,
     handleFriendPress,
+    refreshing, 
+    onRefresh,
   } = useFriendsScreenViewModel(firestoreCtrl, uid);
 
   // Sections configuration
@@ -100,6 +106,12 @@ export default function FriendsScreen({
         style={styles.container}
         data={sections}
         keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
         renderItem={({ item }) => (
           <ThemedView style={styles.sectionContainer}>
             {item.title && (
@@ -116,8 +128,8 @@ export default function FriendsScreen({
 // Styles
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#000",
+    width: width,
   },
   sectionContainer: {
     marginBottom: 20,
@@ -139,5 +151,6 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    width: width,
   },
 });

@@ -27,6 +27,7 @@ export function useMaximizeScreenViewModel(
   const [isLiked, setIsLiked] = useState(false);
   const [groupCenter, setGroupCenter] = useState<GeoPoint | undefined>();
   const [groupRadius, setGroupRadius] = useState<number | undefined>();
+  const [refreshing, setRefreshing] = useState(false);
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
@@ -48,6 +49,49 @@ export function useMaximizeScreenViewModel(
       interaction();
     }
   };
+
+
+
+  // Fetch post data
+  const fetchPostData = async () => {
+    try {
+      // Fetch post user data
+      const postUid = challenge.uid;
+      const userData = await firestoreCtrl.getUser(postUid);
+      setPostUser(userData);
+
+      // Fetch comments
+      const comments = await firestoreCtrl.getCommentsOf(
+        challenge.challenge_id ?? "",
+      );
+      const sortedComments = comments.sort(
+        (a, b) => a.created_at.getTime() - b.created_at.getTime(),
+      );
+      setCommentList(sortedComments);
+
+      // Fetch likes
+      const likes = await firestoreCtrl.getLikesOf(
+        challenge.challenge_id ?? "",
+      );
+      setLikeList(likes);
+      setIsLiked(likes.includes(currentUserId));
+    } catch (error) {
+      console.error("Error fetching post data: ", error);
+    }
+  };
+
+  // Refresh post data
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await fetchPostData();
+    } catch (error) {
+      console.error("Error during refresh: ", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
 
   useEffect(() => {
     // Fetch post user data
@@ -131,5 +175,7 @@ export function useMaximizeScreenViewModel(
     showGuestPopup,
     setShowGuestPopup,
     handleUserInteraction,
+    refreshing,
+    onRefresh,
   };
 }

@@ -19,6 +19,7 @@ import { ThemedTextButton } from "@/src/views/components/theme/themed_text_butto
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
 import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
 import GroupIcon from "@/src/views/components/navigation/group_icon";
+import { RefreshControl } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,6 +42,8 @@ export default function HomeScreen({
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
+    refreshing,
+    onRefresh,
   } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
 
   const [filterByFriends, setFilterByFriends] = useState(false);
@@ -53,6 +56,7 @@ export default function HomeScreen({
   const toggleThreshold = 100; // Distance to toggle the groups visibility
 
   const underlineAnim = useRef(new Animated.Value(0)).current;
+
 
   const handleFilterChange = (isFriends: boolean) => {
     Animated.timing(underlineAnim, {
@@ -217,6 +221,11 @@ export default function HomeScreen({
             testID={`description-id`}
           />
         }
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        } // Pull-to-refresh control
+        contentContainerStyle={styles.contentContainer}
+     
         ListFooterComponent={
           userIsGuest && (
             <View style={styles.guestFooter}>
@@ -237,7 +246,6 @@ export default function HomeScreen({
             No challenges to display
           </ThemedText>
         }
-        contentContainerStyle={styles.contentContainer}
       />
 
       {/* Guest User Pop-Up */}

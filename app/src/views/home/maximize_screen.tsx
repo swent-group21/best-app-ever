@@ -20,6 +20,8 @@ import FirestoreCtrl, {
   DBUser,
   DBChallenge,
 } from "@/src/models/firebase/FirestoreCtrl";
+import { RefreshControl } from "react-native";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -55,6 +57,8 @@ export default function MaximizeScreen({
     showGuestPopup,
     setShowGuestPopup,
     handleUserInteraction,
+    refreshing, 
+    onRefresh
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   return (
@@ -70,6 +74,9 @@ export default function MaximizeScreen({
         contentContainerStyle={styles.contentContainer}
         automaticallyAdjustKeyboardInsets={true}
         colorType="transparent"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        } 
       >
         <ThemedView
           style={{ width: width, flexDirection: "row", height: height * 0.1 }}
