@@ -96,8 +96,9 @@ export function useMapScreenViewModel(
           await firestoreCtrl.getPostsByChallengeTitle(challengeTitle);
         const filteredChallenges = challengesData.filter(
           (challenge) =>
-            challenge.location !== undefined && challenge.location !== null
-            && challenge.group_id == group_id,
+            challenge.location !== undefined &&
+            challenge.location !== null &&
+            challenge.group_id == group_id,
         );
         setChallengesWithLocation(filteredChallenges);
       } catch (error) {
