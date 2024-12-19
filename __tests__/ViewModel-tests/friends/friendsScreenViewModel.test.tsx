@@ -8,9 +8,12 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
       getAllUsers: jest.fn(),
       getFriends: jest.fn(),
       getFriendRequests: jest.fn(),
+      getFriendSuggestions: jest.fn(),
     };
   });
 });
+
+
 
 describe("useFriendsScreenViewModel", () => {
   const mockFirestoreCtrl = new FirestoreCtrl();
@@ -102,19 +105,62 @@ describe("useFriendsScreenViewModel", () => {
     expect(result.current.friends).toEqual(mockFriends);
   });
 
-  it("fetches and sets friend requests correctly", async () => {
-    const mockRequests = [{ uid: "request1", name: "Bob" }];
-    (mockFirestoreCtrl.getFriendRequests as jest.Mock).mockResolvedValueOnce(
-      mockRequests,
-    );
-
+  it("should set refreshing state correctly during onRefresh", async () => {
+    const mockUid = "12345";
     const { result } = renderHook(() =>
-      useFriendsScreenViewModel(mockFirestoreCtrl, uid),
+      useFriendsScreenViewModel(mockFirestoreCtrl, mockUid),
+    );
+  
+    act(() => {
+      result.current.onRefresh();
+    });
+  
+    expect(result.current.refreshing).toBe(true);
+  
+    await waitFor(() => {
+      expect(result.current.refreshing).toBe(false);
+    });
+  });
+  
+
+  it("fetches and sets friend requests correctly", async () => {
+
+    (mockFirestoreCtrl.getFriendRequests as jest.Mock).mockResolvedValueOnce([
+      { uid: "request1", name: "Alice" },
+      { uid: "request2", name: "Bob" },
+    ]);
+    (mockFirestoreCtrl.getFriends as jest.Mock).mockResolvedValueOnce([
+      { uid: "friend1", name: "Charlie" },
+      { uid: "friend2", name: "Dana" },
+    ]);
+    (mockFirestoreCtrl.getAllUsers as jest.Mock).mockResolvedValueOnce([
+      { uid: "user1", name: "Eve" },
+      { uid: "user2", name: "Frank" },
+    ]);
+    (mockFirestoreCtrl.getFriendSuggestions as jest.Mock).mockResolvedValueOnce([
+      { uid: "suggestion1", name: "Grace" },
+    ]);
+
+    const mockUid = "12345"; 
+    const { result } = renderHook(() =>
+      useFriendsScreenViewModel(mockFirestoreCtrl, mockUid),
     );
 
-    await waitFor(() => result.current.requests.length > 0);
+    await act(async () => {
+      await result.current.onRefresh();
+    });
 
-    expect(mockFirestoreCtrl.getFriendRequests).toHaveBeenCalledWith(uid);
-    expect(result.current.requests).toEqual(mockRequests);
+    await act(() => {
+      Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(result.current.requests).toHaveLength(2);
+      expect(result.current.users).toHaveLength(2);
+    });
+
+
+    expect(mockFirestoreCtrl.getFriendRequests).toHaveBeenCalledWith(mockUid);
+    expect(mockFirestoreCtrl.getAllUsers).toHaveBeenCalled();
   });
 });
