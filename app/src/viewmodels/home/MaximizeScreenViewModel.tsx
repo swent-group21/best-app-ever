@@ -27,6 +27,7 @@ export function useMaximizeScreenViewModel(
   const [isLiked, setIsLiked] = useState(false);
   const [groupCenter, setGroupCenter] = useState<GeoPoint | undefined>();
   const [groupRadius, setGroupRadius] = useState<number | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
@@ -89,13 +90,15 @@ export function useMaximizeScreenViewModel(
         post_id: challenge.challenge_id ?? "",
         uid: currentUserId,
       };
+      setIsLoading(true);
       await firestoreCtrl.addComment(newComment);
       setCommentList([...commentList, newComment]);
       setCommentText("");
+      setIsLoading(false);
     }
   };
 
-  const postDate: any = challenge.date ? challenge.date : new Date();
+  const postDate: Date = challenge.date ? challenge.date : new Date();
   const postImage = challenge.image_id ?? "";
   const postCaption =
     challenge.caption == "" ? "Secret Challenge" : challenge.caption;
@@ -115,5 +118,6 @@ export function useMaximizeScreenViewModel(
     navigateGoBack,
     groupCenter,
     groupRadius,
+    isLoading,
   };
 }

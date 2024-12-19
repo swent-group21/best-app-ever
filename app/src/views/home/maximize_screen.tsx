@@ -5,6 +5,7 @@ import {
   Image,
   Text,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
@@ -50,6 +51,7 @@ export default function MaximizeScreen({
     navigateGoBack,
     groupCenter,
     groupRadius,
+    isLoading,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
   const [lastTap, setLastTap] = useState<number | null>(null);
@@ -181,13 +183,17 @@ export default function MaximizeScreen({
             placeholder="Add a comment..."
             testID="comment-input"
           />
-          <ThemedIconButton
-            name="send"
-            size={25}
-            onPress={addComment}
-            colorType="white"
-            testID="send-comment-button"
-          />
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <ThemedIconButton
+              name="send"
+              size={25}
+              onPress={addComment}
+              colorType="white"
+              testID="send-comment-button"
+            />
+          )}
         </ThemedView>
 
         {/* Comment List */}
