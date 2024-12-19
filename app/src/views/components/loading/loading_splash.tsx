@@ -3,9 +3,15 @@ import { ActivityIndicator, StyleSheet } from "react-native";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 
-export function LoadingSplash({ loading_text }: { loading_text: string }) {
+export function LoadingSplash({
+  loading_text,
+  testID,
+}: {
+  loading_text: string;
+  testID?: string;
+}) {
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} testID={testID}>
       <ActivityIndicator size="large" style={styles.indicator} />
       <ThemedText>{loading_text}</ThemedText>
     </ThemedView>
