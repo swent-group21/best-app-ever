@@ -44,7 +44,9 @@ export default function SignInScreen({
   } = SignInViewModel(firestoreCtrl, navigation, setUser);
 
   if (isLoading) {
-    return <LoadingSplash loading_text="Signing you in..." />;
+    return (
+      <LoadingSplash loading_text="Signing you in..." testID="loading-splash" />
+    );
   }
   return (
     <KeyboardAvoidingView
