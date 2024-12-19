@@ -57,8 +57,6 @@ export default function MaximizeScreen({
     handleUserInteraction,
   } = useMaximizeScreenViewModel(user, challenge, firestoreCtrl, navigation);
 
-  
-
   return (
     <ThemedView style={styles.bigContainer}>
       <TopBar
@@ -116,13 +114,12 @@ export default function MaximizeScreen({
                 onPress={() =>
                   handleUserInteraction("map", () =>
                     navigation.navigate("MapScreen", {
-
                       location: challenge.location,
                       challengeArea:
                         groupCenter && groupRadius
                           ? { center: groupCenter, radius: groupRadius }
                           : undefined,
-                    })
+                    }),
                   )
                 }
                 size={30}
@@ -135,9 +132,7 @@ export default function MaximizeScreen({
 
         {/* Post Image with Double Tap */}
         <TouchableWithoutFeedback
-          onPress={() =>
-            handleUserInteraction("like", toggleLike)
-          }
+          onPress={() => handleUserInteraction("like", toggleLike)}
         >
           <ThemedView style={styles.imageContainer}>
             <Image
@@ -160,9 +155,7 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name={isLiked ? "heart" : "heart-outline"}
             testID="like-button"
-            onPress={() =>
-              handleUserInteraction("like", toggleLike)
-            }
+            onPress={() => handleUserInteraction("like", toggleLike)}
             size={30}
             color={isLiked ? "red" : "white"}
           />
@@ -183,9 +176,7 @@ export default function MaximizeScreen({
           <ThemedIconButton
             name="send"
             size={25}
-            onPress={() =>
-              handleUserInteraction("comment", addComment)
-            }
+            onPress={() => handleUserInteraction("comment", addComment)}
             colorType="white"
             testID="send-comment-button"
           />
@@ -214,8 +205,8 @@ export default function MaximizeScreen({
             {showGuestPopup === "like"
               ? "Sign up to like this post!"
               : showGuestPopup === "map"
-              ? "Sign up to view the map!"
-              : "Sign up to comment on this post!"}
+                ? "Sign up to view the map!"
+                : "Sign up to comment on this post!"}
           </Text>
           <TouchableOpacity
             style={styles.popupButton}

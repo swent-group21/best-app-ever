@@ -38,7 +38,10 @@ export function useMaximizeScreenViewModel(
 
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
-  const handleUserInteraction = (guestPopUpMsg: string, interaction: () => void) => {
+  const handleUserInteraction = (
+    guestPopUpMsg: string,
+    interaction: () => void,
+  ) => {
     if (user.name === "Guest") {
       setShowGuestPopup(guestPopUpMsg);
     } else {

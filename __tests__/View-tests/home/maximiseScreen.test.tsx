@@ -43,11 +43,8 @@ describe("MaximizeScreen UI Tests", () => {
   const mockAddComment = jest.fn();
   const mockNavigateToMap = jest.fn();
 
-
-
   beforeEach(() => {
     jest.clearAllMocks();
-
 
     // Mock the ViewModel
     require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel.mockReturnValue(
@@ -73,7 +70,9 @@ describe("MaximizeScreen UI Tests", () => {
         userProfilePicture: "test_pp",
         showGuestPopup: jest.fn(),
         setShowGuestPopup: jest.fn(),
-        handleUserInteraction : jest.fn(() => {mockToggleLike()}),
+        handleUserInteraction: jest.fn(() => {
+          mockToggleLike();
+        }),
       },
     );
   });
@@ -119,10 +118,11 @@ describe("MaximizeScreen UI Tests", () => {
         postImage: "https://example.com/test-image.jpg",
         showGuestPopup: jest.fn(),
         setShowGuestPopup: jest.fn(),
-        handleUserInteraction : jest.fn(() => {mockToggleLike()}),
+        handleUserInteraction: jest.fn(() => {
+          mockToggleLike();
+        }),
       });
 
-    
     const { getByTestId } = render(
       <MaximizeScreen
         user={mockUser}
@@ -152,13 +152,11 @@ describe("MaximizeScreen UI Tests", () => {
     await act(async () => {
       fireEvent.press(getByTestId("like-button"));
     });
-    
-    expect(mockToggleLike).toHaveBeenCalled();
 
+    expect(mockToggleLike).toHaveBeenCalled();
   });
 
   it("handles adding a comment", async () => {
-
     jest
       .spyOn(
         require("@/src/viewmodels/home/MaximizeScreenViewModel"),
@@ -175,7 +173,9 @@ describe("MaximizeScreen UI Tests", () => {
         postImage: "https://example.com/test-image.jpg",
         showGuestPopup: jest.fn(),
         setShowGuestPopup: jest.fn(),
-        handleUserInteraction : jest.fn(() => {mockAddComment()}),
+        handleUserInteraction: jest.fn(() => {
+          mockAddComment();
+        }),
       });
 
     const { getByTestId } = render(
@@ -222,7 +222,9 @@ describe("MaximizeScreen UI Tests", () => {
         postImage: "https://example.com/test-image.jpg",
         showGuestPopup: jest.fn(),
         setShowGuestPopup: jest.fn(),
-        handleUserInteraction : jest.fn(() => {mockNavigateToMap()}),
+        handleUserInteraction: jest.fn(() => {
+          mockNavigateToMap();
+        }),
       });
 
     const { getByTestId, getByText } = render(
@@ -239,7 +241,7 @@ describe("MaximizeScreen UI Tests", () => {
       fireEvent.press(locationButton);
     });
 
-    expect(mockNavigateToMap).toHaveBeenCalled()
+    expect(mockNavigateToMap).toHaveBeenCalled();
   });
 
   it("toggles the like button when pressed", () => {
@@ -260,7 +262,9 @@ describe("MaximizeScreen UI Tests", () => {
         postImage: "https://example.com/test-image.jpg",
         showGuestPopup: jest.fn(),
         setShowGuestPopup: jest.fn(),
-        handleUserInteraction : jest.fn(() => {mockToggleLike()}),
+        handleUserInteraction: jest.fn(() => {
+          mockToggleLike();
+        }),
       });
 
     const { getByTestId } = render(
