@@ -12,8 +12,12 @@ export function LoadingSplash({
 }) {
   return (
     <ThemedView style={styles.container} testID={testID}>
-      <ActivityIndicator size="large" style={styles.indicator} />
-      <ThemedText>{loading_text}</ThemedText>
+      <ActivityIndicator
+        testID="loading-indicator"
+        size="large"
+        style={styles.indicator}
+      />
+      <ThemedText testID="loading-text">{loading_text}</ThemedText>
     </ThemedView>
   );
 }
