@@ -97,11 +97,7 @@ describe("SignUp Screen Tests", () => {
     });
 
     const { getByTestId } = render(
-      <SignUp
-        navigation={mockNavigation}
-        setUser={mockSetUser}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <SignUp navigation={mockNavigation} setUser={mockSetUser} />,
     );
 
     expect(getByTestId("loading-splash")).toBeTruthy();

@@ -316,7 +316,6 @@ describe("MaximizeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

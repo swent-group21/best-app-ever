@@ -58,9 +58,7 @@ describe("Camera Component UI Tests", () => {
       isLoading: true,
     });
 
-    const { getByTestId } = render(
-      <Camera navigation={{}} firestoreCtrl={mockFirestoreCtrl} route={{}} />,
-    );
+    const { getByTestId } = render(<Camera navigation={{}} route={{}} />);
 
     const loadingSplash = getByTestId("loading-splash");
     expect(loadingSplash).toBeTruthy();
