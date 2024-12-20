@@ -10,14 +10,14 @@ import {
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { Challenge } from "@/src/views/components/posts/challenge";
-import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
+import { ChallengeDescription } from "@/src/views/components/challenge/challenge_description";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
 import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import GroupIcon from "@/src/views/components/groups/group_icon";
 
 const { width, height } = Dimensions.get("window");
@@ -25,11 +25,9 @@ const { width, height } = Dimensions.get("window");
 export default function HomeScreen({
   user,
   navigation,
-  firestoreCtrl,
 }: {
   readonly user: DBUser;
   readonly navigation: any;
-  readonly firestoreCtrl: FirestoreCtrl;
 }) {
   const {
     userIsGuest,
@@ -41,7 +39,8 @@ export default function HomeScreen({
     navigateToMap,
     navigateToCamera,
     navigateToFriends,
-  } = useHomeScreenViewModel(user, firestoreCtrl, navigation);
+    icon,
+  } = useHomeScreenViewModel(user, navigation);
 
   const [filterByFriends, setFilterByFriends] = useState(false);
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
@@ -108,9 +107,7 @@ export default function HomeScreen({
         leftIcon="people-outline"
         leftAction={() => handleRestrictedAccess("Friends")}
         rightIcon={
-          userIsGuest || !user.image_id
-            ? "person-circle-outline"
-            : user.image_id
+          userIsGuest || !user.image_id ? "person-circle-outline" : icon
         }
         rightAction={() => handleRestrictedAccess("Profile")}
         testID="top-bar"
@@ -132,7 +129,6 @@ export default function HomeScreen({
               groupDB={group}
               index={index}
               navigation={navigation}
-              firestoreCtrl={firestoreCtrl}
               key={index}
               testID={`group-id-${group.name}`}
             />
@@ -203,7 +199,6 @@ export default function HomeScreen({
         renderItem={({ item, index }) => (
           <Challenge
             navigation={navigation}
-            firestoreCtrl={firestoreCtrl}
             challengeDB={item}
             key={index}
             testID={`challenge-id-${index}`}

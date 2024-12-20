@@ -2,86 +2,87 @@ import React from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl, {
+import {
   DBUser,
   DBChallenge,
   DBChallengeDescription,
   DBGroup,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import JoinGroupScreen from "@/src/views/groups/join_group_screen";
 import GroupScreen from "@/src/views/groups/group_screen";
 import { GeoPoint } from "firebase/firestore";
 import { PermissionResponse } from "expo-modules-core";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import Camera from "@/src/views/camera/CameraContainer";
+import Camera from "@/src/views/camera/camera_container";
+import { getImageUrl } from "@/src/models/firebase/GetFirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
 // Mock FirestoreCtrl
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getUser: jest.fn((uid) => {
-        if (uid === "123") return mockTester;
-        else if (uid === "456") return mockTesterFriend;
-      }),
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn((uid) => {
+    if (uid === "123") return mockTester;
+    else if (uid === "456") return mockTesterFriend;
+  }),
 
-      // Mock functions used in home screen
-      getGroupsByUserId: jest.fn((id) => {
-        if (id === "123") {
-          return new Promise<DBGroup[]>((resolve) => {
-            resolve(mockFetchedGroups);
-          });
-        } else if (id === "456") {
-          return new Promise<DBGroup[]>((resolve) => {
-            resolve([mockGroup1, mockGroup2]);
-          });
-        }
-      }),
-      getChallengeDescription: jest.fn((id) => {
-        return mockCurrentChallenge;
-      }),
-      getPostsByChallengeTitle: jest.fn((title) => {
-        return new Promise<DBChallenge[]>((resolve) => {
-          resolve(mockHomePosts);
-        });
-      }),
+  // Mock functions used in home screen
+  getGroupsByUserId: jest.fn((id) => {
+    if (id === "123") {
+      return new Promise<DBGroup[]>((resolve) => {
+        resolve(mockFetchedGroups);
+      });
+    } else if (id === "456") {
+      return new Promise<DBGroup[]>((resolve) => {
+        resolve([mockGroup1, mockGroup2]);
+      });
+    }
+  }),
+  getChallengeDescription: jest.fn((id) => {
+    return mockCurrentChallenge;
+  }),
+  getPostsByChallengeTitle: jest.fn((title) => {
+    return new Promise<DBChallenge[]>((resolve) => {
+      resolve(mockHomePosts);
+    });
+  }),
+  getImageUrl: jest.fn((image_id) => {}),
 
-      // Mock functions used in join group screen
-      getGroupSuggestions: jest.fn((uid) => {
-        return [mockGroup2];
-      }),
-      getAllGroups: jest.fn(() => {
-        return [mockGroup1, mockGroup2];
-      }),
+  // Mock functions used in join group screen
+  getGroupSuggestions: jest.fn((uid) => {
+    return [mockGroup2];
+  }),
+  getAllGroups: jest.fn(() => {
+    return [mockGroup1, mockGroup2];
+  }),
 
-      // Mock functions used in list of filtered groups
-      getGroup: jest.fn((gid) => {
-        if (gid === "test-group-1-id") return mockGroup1;
-        else if (gid === "test-group-2-id") return mockGroup2;
-      }),
-      addGroupToUser: jest.fn((uid, groupName) => {
-        mockTester.groups.push(groupName);
-        mockFetchedGroups.push(mockGroup1);
-      }),
-      addMemberToGroup: jest.fn((gid, uid) => {
-        mockGroup1.members.push(uid);
-      }),
-      updateGroup: jest.fn((gid, date) => {
-        mockGroup1.updateDate = date;
-      }),
+  // Mock functions used in filtered screen
+  getGroup: jest.fn((gid) => {
+    if (gid === "test-group-1-id") return mockGroup1;
+    else if (gid === "test-group-2-id") return mockGroup2;
+  }),
 
-      // Mock functions used in group screen
-      getAllPostsOfGroup: jest.fn((id) => {
-        return new Promise<DBChallenge[]>((resolve) => {
-          resolve(mockGroupPosts);
-        });
-      }),
-    };
-  });
-});
-const mockFirestoreCtrl = new FirestoreCtrl();
+  // Mock functions used in group screen
+  getAllPostsOfGroup: jest.fn((id) => {
+    return new Promise<DBChallenge[]>((resolve) => {
+      resolve(mockGroupPosts);
+    });
+  }),
+}));
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  // Mock functions used in filtered screen
+  addGroupToUser: jest.fn((uid, groupName) => {
+    mockTester.groups.push(groupName);
+    mockFetchedGroups.push(mockGroup1);
+  }),
+  addMemberToGroup: jest.fn((gid, uid) => {
+    mockGroup1.members.push(uid);
+  }),
+  updateGroup: jest.fn((gid, date) => {
+    mockGroup1.updateDate = date;
+  }),
+}));
 
 // Mock GeoPoint constructor
 jest.mock("firebase/firestore", () => ({
@@ -213,40 +214,16 @@ const Navigation = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockTester} />}
         </Stack.Screen>
         <Stack.Screen name="JoinGroup">
-          {(props) => (
-            <JoinGroupScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <JoinGroupScreen {...props} user={mockTester} />}
         </Stack.Screen>
         <Stack.Screen name="GroupScreen">
-          {(props) => (
-            <GroupScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <GroupScreen {...props} user={mockTester} />}
         </Stack.Screen>
         <Stack.Screen name="Camera">
-          {(props: any) => (
-            <Camera
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props: any) => <Camera {...props} user={mockTester} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

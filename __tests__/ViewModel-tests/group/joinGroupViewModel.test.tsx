@@ -1,6 +1,7 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
 import { useJoinGroupViewModel } from "@/src/viewmodels/groups/JoinGroupViewModel";
-import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getAllGroups } from "@/src/models/firebase/GetFirestoreCtrl";
 
 // Mock groups
 const mockGroup1: DBGroup = {
@@ -23,17 +24,12 @@ const mockGroup2: DBGroup = {
 };
 
 // Mock FirestoreCtrl and its methods
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getAllGroups: jest.fn(() => [mockGroup1, mockGroup2]),
-      getGroupSuggestions: jest.fn(() => [mockGroup2]),
-    };
-  });
-});
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getAllGroups: jest.fn(() => [mockGroup1, mockGroup2]),
+  getGroupSuggestions: jest.fn(() => [mockGroup2]),
+}));
 
 describe("useJoinGroupViewModel", () => {
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const uid = "tester-uid";
 
   // Before each test, mock the console info and clear all mocks
@@ -43,9 +39,7 @@ describe("useJoinGroupViewModel", () => {
   });
 
   it("modifies the searchText according to searched value", async () => {
-    const { result } = renderHook(() =>
-      useJoinGroupViewModel(mockFirestoreCtrl, uid),
-    );
+    const { result } = renderHook(() => useJoinGroupViewModel(uid));
 
     await act(() => {
       result.current.setSearchText("Team");
@@ -57,9 +51,7 @@ describe("useJoinGroupViewModel", () => {
   });
 
   it("gets all the groups and filter them by name with the searchText", async () => {
-    const { result } = renderHook(() =>
-      useJoinGroupViewModel(mockFirestoreCtrl, uid),
-    );
+    const { result } = renderHook(() => useJoinGroupViewModel(uid));
 
     // base case with empty searchText
     await waitFor(() => {
@@ -75,9 +67,7 @@ describe("useJoinGroupViewModel", () => {
   });
 
   it("gets the right suggestions", async () => {
-    const { result } = renderHook(() =>
-      useJoinGroupViewModel(mockFirestoreCtrl, uid),
-    );
+    const { result } = renderHook(() => useJoinGroupViewModel(uid));
 
     await waitFor(() => {
       expect(result.current.suggestions).toBeDefined();
@@ -93,9 +83,7 @@ describe("useJoinGroupViewModel", () => {
   });
 
   it("gets all the groups and filter them by challenge with the searchText", async () => {
-    const { result } = renderHook(() =>
-      useJoinGroupViewModel(mockFirestoreCtrl, uid),
-    );
+    const { result } = renderHook(() => useJoinGroupViewModel(uid));
 
     await waitFor(() => {
       expect(result.current.filteredGroups).toEqual([]);
@@ -110,15 +98,9 @@ describe("useJoinGroupViewModel", () => {
   });
 
   it("does not display any group if getAllGroups returns an empty array", async () => {
-    jest.spyOn(mockFirestoreCtrl, "getAllGroups").mockReturnValue(
-      new Promise<DBGroup[]>((resolve) => {
-        [];
-      }),
-    );
+    (getAllGroups as jest.Mock).mockResolvedValueOnce([]);
 
-    const { result } = renderHook(() =>
-      useJoinGroupViewModel(mockFirestoreCtrl, uid),
-    );
+    const { result } = renderHook(() => useJoinGroupViewModel(uid));
 
     await act(() => {
       result.current.setSearchText("Challenge T");
@@ -131,9 +113,7 @@ describe("useJoinGroupViewModel", () => {
   });
 
   it("does not display any group if searchText does not match any group", async () => {
-    const { result } = renderHook(() =>
-      useJoinGroupViewModel(mockFirestoreCtrl, uid),
-    );
+    const { result } = renderHook(() => useJoinGroupViewModel(uid));
 
     await act(() => {
       result.current.setSearchText("I want to search for this group");

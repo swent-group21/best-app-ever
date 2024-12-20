@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
+import {
+  getGroupSuggestions,
+  getAllGroups,
+} from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * View model for the Join Group screen.
@@ -7,10 +11,7 @@ import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
  * @param uid : the user's ID
  * @returns : searchText, setSearchText, users, friends, requests, filteredUsers, handleFriendPress
  */
-export function useJoinGroupViewModel(
-  firestoreCtrl: FirestoreCtrl,
-  uid: string,
-): {
+export function useJoinGroupViewModel(uid: string): {
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
   filteredGroups: DBGroup[];
@@ -24,27 +25,27 @@ export function useJoinGroupViewModel(
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
-        const suggestions = await firestoreCtrl.getGroupSuggestions(uid);
+        const suggestions = await getGroupSuggestions(uid);
         setSuggestions(suggestions);
       } catch (error) {
         console.error("Error fetching groups suggestions: ", error);
       }
     };
     fetchSuggestions();
-  }, [firestoreCtrl, uid]);
+  }, [uid]);
 
   // Fetch all existing groups to filter the search in them
   useEffect(() => {
     const fetchAllGroups = async () => {
       try {
-        const allGroups = await firestoreCtrl.getAllGroups();
+        const allGroups = await getAllGroups();
         setAllGroups(allGroups);
       } catch (error) {
         console.error("Error fetching groups: ", error);
       }
     };
     fetchAllGroups();
-  }, [firestoreCtrl]);
+  }, []);
 
   // Filter groups based on search text updated by the user
   const filteredGroups = searchText

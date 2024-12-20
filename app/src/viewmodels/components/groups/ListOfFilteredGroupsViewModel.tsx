@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
-import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
-
+import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getGroup } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  addGroupToUser,
+  addMemberToGroup,
+  updateGroup,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 /**
  * List of filtered groups ViewModel helps display the component
  * @param filteredGroups : list of groups to display
@@ -10,12 +15,10 @@ import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
  */
 export function useListOfFilteredGroupsViewModel({
   filteredGroups = [],
-  firestoreCtrl,
   uid,
   navigation,
 }: {
   readonly filteredGroups: DBGroup[];
-  readonly firestoreCtrl: FirestoreCtrl;
   readonly uid: string;
   readonly navigation: any;
 }) {
@@ -46,13 +49,13 @@ export function useListOfFilteredGroupsViewModel({
   // Handle joining a group request
   const handleJoin = async (gid: string) => {
     try {
-      const group: DBGroup = await firestoreCtrl.getGroup(gid);
-      await firestoreCtrl.addGroupToUser(uid, group.name);
-      await firestoreCtrl.addMemberToGroup(gid, uid);
+      const group: DBGroup = await getGroup(gid);
+      await addGroupToUser(uid, group.name);
+      await addMemberToGroup(gid, uid);
 
       const updateDate = new Date();
 
-      await firestoreCtrl.updateGroup(gid, updateDate);
+      await updateGroup(gid, updateDate);
 
       // Navigate to the group screen
       navigation.navigate("GroupScreen", { currentGroup: group });

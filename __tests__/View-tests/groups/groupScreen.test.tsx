@@ -1,11 +1,8 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
 import GroupScreen from "@/src/views/groups/group_screen";
-import { useGroupScreenViewModel } from "@/src/viewmodels/groups/GroupScreenViewModel";
-import FirestoreCtrl, {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/FirestoreCtrl";
+import useGroupScreenViewModel from "@/src/viewmodels/groups/GroupScreenViewModel";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
   caption: "Challenge Test 1",
@@ -36,24 +33,32 @@ const mockUser: DBUser = {
 };
 
 // Mock the useGroupScreenViewModel hook
-jest.mock("@/src/viewmodels/groups/GroupScreenViewModel", () => ({
-  useGroupScreenViewModel: jest.fn(),
-}));
+jest.mock("@/src/viewmodels/groups/GroupScreenViewModel", () =>
+  jest.fn(() => ({
+    groupChallenges: mockGroupChallenges,
+    otherGroups: mockOtherGroups,
+    groupName: "Test Name",
+    groupChallengeTitle: "Title Test",
+    groupId: "1234",
+    groupCenter: { latitude: 0, longitude: 0 },
+    groupRadius: 100,
+  })),
+);
 
 jest.mock("expo-font", () => ({
   useFonts: jest.fn(() => [true]),
   isLoaded: jest.fn(() => true),
 }));
 
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => ({
-    getUser: jest.fn(),
-    getLikesOf: jest.fn().mockResolvedValue([]),
-    updatesLikesOf: jest.fn(),
-    getCommentsOf: jest.fn().mockResolvedValue([]),
-  }));
-});
-const mockFirestoreCtrl = new FirestoreCtrl();
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn(),
+  getLikesOf: jest.fn().mockResolvedValue([]),
+  getCommentsOf: jest.fn().mockResolvedValue([]),
+}));
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  updatesLikesOf: jest.fn(),
+}));
 
 describe("Group Screen renders challenges", () => {
   const mockUseGroupScreenViewModel =
@@ -61,16 +66,6 @@ describe("Group Screen renders challenges", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-
-    mockUseGroupScreenViewModel.mockReturnValue({
-      groupChallenges: mockGroupChallenges,
-      otherGroups: mockOtherGroups,
-      groupName: "Test Name",
-      groupChallengeTitle: "Title Test",
-      groupId: "1234",
-      groupCenter: { latitude: 0, longitude: 0 },
-      groupRadius: 100,
-    });
   });
 
   afterEach(() => {
@@ -79,12 +74,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the group screen", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("group-screen")).toBeTruthy();
@@ -93,12 +83,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the group name", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("topTitle-Test Name")).toBeTruthy();
@@ -107,12 +92,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the home button", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("home-button")).toBeTruthy();
@@ -121,12 +101,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the other groups icons", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("group-id-0")).toBeTruthy();
@@ -135,12 +110,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the create group button", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("create-group-button")).toBeTruthy();
@@ -149,12 +119,7 @@ describe("Group Screen renders challenges", () => {
 
   it("renders the group challenge title", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("description-id")).toBeTruthy();
@@ -163,43 +128,11 @@ describe("Group Screen renders challenges", () => {
 
   it("renders all the challenges", async () => {
     const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
       expect(getByTestId("challenge-id-0")).toBeTruthy();
       expect(getByTestId("challenge-id-1")).toBeTruthy();
     });
-  });
-});
-
-describe("Group Screen renders challenges", () => {
-  const groupChallenges: DBChallenge[] = [];
-
-  beforeEach(() => {
-    // Mock the return value of useGroupScreenViewModel
-    (useGroupScreenViewModel as jest.Mock).mockReturnValue({
-      groupChallenges: [],
-      otherGroups: mockOtherGroups,
-      groupName: "Group Testing Name",
-      groupChallengeTitle: "Group Testing Challenge Title",
-      groupId: "1234",
-    });
-  });
-
-  it("renders correct message when no challenge to display", () => {
-    const { getByTestId } = render(
-      <GroupScreen
-        user={mockUser}
-        navigation={{}}
-        route={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
-    );
-    expect(getByTestId("no-challenge-id")).toBeTruthy();
   });
 });

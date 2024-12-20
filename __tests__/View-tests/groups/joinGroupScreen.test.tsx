@@ -1,9 +1,6 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import FirestoreCtrl, {
-  DBUser,
-  DBGroup,
-} from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser, DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
 import JoinGroupScreen from "@/src/views/groups/join_group_screen";
 
 // Mock ViewModel
@@ -43,7 +40,6 @@ describe("JoinGroupScreen Tests", () => {
     navigate: jest.fn(),
     goBack: jest.fn(),
   };
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockSetSearchText = jest.fn();
 
   const mockUseJoinGroupViewModel =
@@ -70,11 +66,7 @@ describe("JoinGroupScreen Tests", () => {
     });
 
     const { getByTestId, getByText } = render(
-      <JoinGroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <JoinGroupScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     // Title of the screen
@@ -92,11 +84,7 @@ describe("JoinGroupScreen Tests", () => {
 
   it("renders the right groups in search results and suggestions", () => {
     const { getByTestId } = render(
-      <JoinGroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <JoinGroupScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     expect(getByTestId("group-list-item-Group1")).toBeTruthy();
@@ -105,11 +93,7 @@ describe("JoinGroupScreen Tests", () => {
 
   it("calls the right navigation values", async () => {
     const { getByTestId } = render(
-      <JoinGroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <JoinGroupScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     // Press the button "Create a new group"
@@ -121,11 +105,7 @@ describe("JoinGroupScreen Tests", () => {
 
   it("modifies the searchText when writing in search bar", async () => {
     const { getByPlaceholderText } = render(
-      <JoinGroupScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <JoinGroupScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     // Write in the search bar

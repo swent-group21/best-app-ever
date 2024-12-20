@@ -1,11 +1,10 @@
 import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import GroupIcon from "@/src/views/components/groups/group_icon";
-import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 describe("GroupIcon Component", () => {
   const mockNavigation = { navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockDate = new Date();
   const mockLoc = undefined;
 
@@ -24,7 +23,6 @@ describe("GroupIcon Component", () => {
       <GroupIcon
         groupDB={mockGroup}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         index={0}
         testID="group-icon-test"
       />,
@@ -38,7 +36,6 @@ describe("GroupIcon Component", () => {
       <GroupIcon
         groupDB={undefined}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         index={0}
         testID="group-icon-test"
       />,
@@ -53,7 +50,6 @@ describe("GroupIcon Component", () => {
       <GroupIcon
         groupDB={mockGroup}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
         index={0}
         testID="group-icon-test"
       />,

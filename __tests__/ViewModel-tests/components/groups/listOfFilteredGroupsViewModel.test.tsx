@@ -7,10 +7,12 @@ import {
   act,
 } from "@testing-library/react-native";
 import { useListOfFilteredGroupsViewModel } from "@/src/viewmodels/components/groups/ListOfFilteredGroupsViewModel";
-import FirestoreCtrl, {
-  DBUser,
-  DBGroup,
-} from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser, DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
+import { getGroup } from "@/src/models/firebase/GetFirestoreCtrl";
+import {
+  addGroupToUser,
+  addMemberToGroup,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Mocked data
 const mockUser: DBUser = {
@@ -43,28 +45,27 @@ const mockFilteredGroups: DBGroup[] = [
 ];
 
 // Mock FirestoreCtrl methods
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getGroup: jest.fn(() => Promise.resolve(mockFilteredGroups[0])),
-      addGroupToUser: jest.fn(() => {
-        mockUser.groups = ["Group Test 1"];
-        Promise.resolve();
-      }),
-      addMemberToGroup: jest.fn(() => {
-        mockFilteredGroups[0].members.push("tester-uid");
-        Promise.resolve();
-      }),
-      updateGroup: jest.fn(() => Promise.resolve()),
-    };
-  });
-});
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getGroup: jest.fn(() => Promise.resolve(mockFilteredGroups[0])),
+}));
+
+// Mock FirestoreCtrl methods
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  addGroupToUser: jest.fn(() => {
+    mockUser.groups = ["Group Test 1"];
+    Promise.resolve();
+  }),
+  addMemberToGroup: jest.fn(() => {
+    mockFilteredGroups[0].members.push("tester-uid");
+    Promise.resolve();
+  }),
+  updateGroup: jest.fn(() => Promise.resolve()),
+}));
 
 /**
  * Test Suite for ListOfFilteredGroups ViewModel
  */
 describe("ListOfFilteredGroups ViewModel", () => {
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockNavigation = { navigate: jest.fn() };
 
   beforeEach(() => {
@@ -77,7 +78,6 @@ describe("ListOfFilteredGroups ViewModel", () => {
     const { result } = renderHook(() =>
       useListOfFilteredGroupsViewModel({
         filteredGroups: mockFilteredGroups,
-        firestoreCtrl: mockFirestoreCtrl,
         uid: "tester-uid",
         navigation: mockNavigation,
       }),
@@ -104,7 +104,6 @@ describe("ListOfFilteredGroups ViewModel", () => {
     const { result } = renderHook(() =>
       useListOfFilteredGroupsViewModel({
         filteredGroups: mockFilteredGroups,
-        firestoreCtrl: mockFirestoreCtrl,
         uid: "tester-uid",
         navigation: mockNavigation,
       }),
@@ -114,15 +113,9 @@ describe("ListOfFilteredGroups ViewModel", () => {
       await result.current.handleJoin("1");
     });
 
-    expect(mockFirestoreCtrl.getGroup).toHaveBeenCalledWith("1");
-    expect(mockFirestoreCtrl.addGroupToUser).toHaveBeenCalledWith(
-      "tester-uid",
-      "Group Test 1",
-    );
-    expect(mockFirestoreCtrl.addMemberToGroup).toHaveBeenCalledWith(
-      "1",
-      "tester-uid",
-    );
+    expect(getGroup).toHaveBeenCalledWith("1");
+    expect(addGroupToUser).toHaveBeenCalledWith("tester-uid", "Group Test 1");
+    expect(addMemberToGroup).toHaveBeenCalledWith("1", "tester-uid");
 
     expect(mockFilteredGroups[0].members).toContain("tester-uid");
     expect(mockUser.groups).toContain("Group Test 1");

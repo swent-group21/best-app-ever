@@ -3,7 +3,7 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { GroupListItem } from "@/src/views/components/groups/group_list_item";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { useListOfFilteredGroupsViewModel } from "@/src/viewmodels/components/groups/ListOfFilteredGroupsViewModel";
-import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 /**
  * List of filtered groups component
@@ -16,21 +16,18 @@ import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
 export default function ListOfFilteredGroups({
   filteredGroups = [],
   searchText,
-  firestoreCtrl,
   uid,
   navigation,
   testID,
 }: {
   readonly filteredGroups: DBGroup[];
   readonly searchText: string;
-  readonly firestoreCtrl: FirestoreCtrl;
   readonly uid: string;
   readonly navigation: any;
   readonly testID?: string;
 }) {
   const { groupStatuses, handleJoin } = useListOfFilteredGroupsViewModel({
     filteredGroups,
-    firestoreCtrl,
     uid,
     navigation,
   });

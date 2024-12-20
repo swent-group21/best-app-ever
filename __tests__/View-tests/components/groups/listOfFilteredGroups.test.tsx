@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import ListOfFilteredGroups from "@/src/views/components/groups/list_of_filtered_groups";
-import FirestoreCtrl, { DBGroup } from "@/src/models/firebase/FirestoreCtrl";
+import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock(
@@ -36,7 +36,6 @@ describe("ListOfFilteredGroups Component", () => {
     },
   ];
 
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockHandleJoin = jest.fn();
   const mockNavigation = { navigate: jest.fn() };
 
@@ -58,7 +57,6 @@ describe("ListOfFilteredGroups Component", () => {
       <ListOfFilteredGroups
         filteredGroups={mockFilteredGroups}
         searchText="Group"
-        firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
         navigation={mockNavigation}
       />,
@@ -82,7 +80,6 @@ describe("ListOfFilteredGroups Component", () => {
       <ListOfFilteredGroups
         filteredGroups={mockFilteredGroups}
         searchText="Group"
-        firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
         navigation={mockNavigation}
       />,
@@ -106,7 +103,6 @@ describe("ListOfFilteredGroups Component", () => {
       <ListOfFilteredGroups
         filteredGroups={[]}
         searchText="Group"
-        firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
         navigation={mockNavigation}
       />,
@@ -126,7 +122,6 @@ describe("ListOfFilteredGroups Component", () => {
       <ListOfFilteredGroups
         filteredGroups={[]}
         searchText=""
-        firestoreCtrl={mockFirestoreCtrl}
         uid="tester-uid"
         navigation={mockNavigation}
       />,

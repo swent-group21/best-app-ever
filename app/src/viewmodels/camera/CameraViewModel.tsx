@@ -12,22 +12,22 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { createChallenge } from "@/types/ChallengeBuilder";
-import FirestoreCtrl, {
+import {
   DBGroup,
   DBChallengeDescription,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
+import {
+  getChallengeDescription,
+  getGroup,
+} from "@/src/models/firebase/GetFirestoreCtrl";
+import { uploadImage } from "@/src/models/firebase/SetFirestoreCtrl";
 
 /**
  * ViewModel for the camera screen.
- * @param firestoreCtrl : FirestoreCtrl object
  * @param navigation : navigation object
  * @returns : functions for the camera screen
  */
-export default function useCameraViewModel(
-  firestoreCtrl: FirestoreCtrl,
-  navigation: any,
-  route: any,
-) {
+export default function useCameraViewModel(navigation: any, route: any) {
   // Camera state
   const camera = useRef<CameraView>(null);
   const cameraPictureOptions: CameraPictureOptions = { base64: true };
@@ -55,7 +55,6 @@ export default function useCameraViewModel(
 
   let group_id = route.params?.group_id ?? "home";
   let isInHome = group_id == "home";
-  console.log("group_id: ", group_id);
 
   // Go back to the previous screen
   const goBack = () => {
@@ -110,8 +109,7 @@ export default function useCameraViewModel(
   useEffect(() => {
     async function fetchDescriptionTitle() {
       try {
-        const currentChallengeData =
-          await firestoreCtrl.getChallengeDescription();
+        const currentChallengeData = await getChallengeDescription();
 
         setDescriptionTitle(currentChallengeData);
       } catch (error) {
@@ -135,7 +133,7 @@ export default function useCameraViewModel(
         }
 
         // Check if the location is within the group's area
-        const group: DBGroup = await firestoreCtrl.getGroup(group_id);
+        const group: DBGroup = await getGroup(group_id);
         if (!isInGroupArea(location, group)) {
           alert("You need to be in the group's area to create a challenge");
           navigation.navigate("GroupScreen", { currentGroup: group });
@@ -143,9 +141,10 @@ export default function useCameraViewModel(
         }
       }
 
-      const imageId = await firestoreCtrl.uploadImage(picture?.uri);
+      console.log("Picture URI: ", picture?.uri);
+      const imageId = await uploadImage(picture?.uri);
+      console.log("image id making challenge: ", imageId);
       await createChallenge(
-        firestoreCtrl,
         caption,
         isLocationEnabled ? location : null,
         group_id,
@@ -156,7 +155,7 @@ export default function useCameraViewModel(
       if (group_id == "" || group_id == "home") {
         navigation.navigate("Home");
       } else {
-        const group: DBGroup = await firestoreCtrl.getGroup(group_id);
+        const group: DBGroup = await getGroup(group_id);
         navigation.navigate("GroupScreen", { currentGroup: group });
       }
     } catch (error) {
