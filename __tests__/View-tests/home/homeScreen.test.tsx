@@ -1,41 +1,44 @@
 import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import HomeScreen from "@/src/views/home/home_screen";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
+import { updateLikesOf } from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Mock du ViewModel
 jest.mock("@/src/viewmodels/home/HomeScreenViewModel", () => ({
   useHomeScreenViewModel: jest.fn(),
 }));
 
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => ({
-    getChallengeDescription: jest.fn().mockResolvedValue({
-      Title: "Mock Challenge",
-      Description: "Mock Description",
-      endDate: new Date(2024, 1, 1),
-    }),
-    getKChallenges: jest.fn().mockResolvedValue([
-      {
-        uid: "1",
-        challenge_name: "Challenge 1",
-        description: "Description 1",
-      },
-    ]),
-    getGroupsByUserId: jest
-      .fn()
-      .mockResolvedValue([{ id: "1", name: "Group 1" }]),
-    getLikesOf: jest.fn().mockResolvedValue([]),
-    getUser: jest.fn().mockResolvedValue({
-      uid: "12345",
-      email: "test@example.com",
-      name: "Test User",
-      createdAt: new Date(),
-    }),
-    updateLikesOf: jest.fn().mockResolvedValue({}),
-    getCommentsOf: jest.fn().mockResolvedValue([]),
-  }));
-});
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getChallengeDescription: jest.fn().mockResolvedValue({
+    Title: "Mock Challenge",
+    Description: "Mock Description",
+    endDate: new Date(2024, 1, 1),
+  }),
+  getKChallenges: jest.fn().mockResolvedValue([
+    {
+      uid: "1",
+      challenge_name: "Challenge 1",
+      description: "Description 1",
+    },
+  ]),
+  getGroupsByUserId: jest
+    .fn()
+    .mockResolvedValue([{ id: "1", name: "Group 1" }]),
+  getLikesOf: jest.fn().mockResolvedValue([]),
+  getUser: jest.fn().mockResolvedValue({
+    uid: "12345",
+    email: "test@example.com",
+    name: "Test User",
+    createdAt: new Date(),
+  }),
+  getCommentsOf: jest.fn().mockResolvedValue([]),
+  getImageUrl: jest.fn(),
+}));
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  updateLikesOf: jest.fn().mockResolvedValue({}),
+}));
+
 const mockUser = {
   uid: "user-1",
   name: "Test User",
@@ -46,7 +49,6 @@ const mockUser = {
 
 describe("HomeScreen UI Tests", () => {
   const mockNavigation = { navigate: jest.fn() };
-  const mockFirestoreCtrl = new FirestoreCtrl();
   const mockUseHomeScreenViewModel =
     require("@/src/viewmodels/home/HomeScreenViewModel").useHomeScreenViewModel;
 
@@ -92,7 +94,6 @@ describe("HomeScreen UI Tests", () => {
           image_id: null,
         }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -136,7 +137,6 @@ describe("HomeScreen UI Tests", () => {
           createdAt: new Date(),
         }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -160,7 +160,6 @@ describe("HomeScreen UI Tests", () => {
       <HomeScreen
         user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -177,7 +176,6 @@ describe("HomeScreen UI Tests", () => {
           createdAt: new Date(),
         }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -217,11 +215,7 @@ describe("HomeScreen UI Tests", () => {
     };
 
     const { getByTestId, queryAllByTestId } = render(
-      <HomeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     const filterButton = getByTestId("friends-button");
@@ -253,7 +247,6 @@ describe("HomeScreen UI Tests", () => {
           createdAt: new Date(),
         }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -282,7 +275,6 @@ describe("HomeScreen UI Tests", () => {
           createdAt: new Date(),
         }}
         navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -323,11 +315,7 @@ describe("HomeScreen UI Tests", () => {
       });
 
     const { getByTestId, getByText } = render(
-      <HomeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     // Désactiver le filtre "Filter by Friends" (par défaut)
@@ -366,11 +354,7 @@ describe("HomeScreen UI Tests", () => {
       });
 
     const { getByTestId } = render(
-      <HomeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
     const postImage = getByTestId("challenge-id-First Challenge");
@@ -378,7 +362,7 @@ describe("HomeScreen UI Tests", () => {
     fireEvent.press(postImage); // Simulate double-tap
 
     await waitFor(async () => {
-      await expect(mockFirestoreCtrl.updateLikesOf).toHaveBeenCalled();
+      await expect(updateLikesOf).toHaveBeenCalled();
     });
   });
 });
