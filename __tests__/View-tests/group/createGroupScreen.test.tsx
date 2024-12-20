@@ -1,9 +1,7 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
-
-// Mock de useGroupScreenViewModel
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockSetGroupName = jest.fn();
 const mockSetChallengeTitle = jest.fn();
@@ -19,13 +17,14 @@ jest.mock("@/src/viewmodels/group/CreateGroupViewModel", () =>
   })),
 );
 
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => ({
-    getUser: jest.fn(),
-    getLikesOf: jest.fn().mockResolvedValue([]),
-    updatesLikesOf: jest.fn(),
-  }));
-});
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn(),
+  getLikesOf: jest.fn().mockResolvedValue([]),
+}));
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  updatesLikesOf: jest.fn(),
+}));
 
 const mockDate = new Date();
 
@@ -37,8 +36,6 @@ const mockUser: DBUser = {
 };
 
 describe("Create Group Screen renders", () => {
-  const mockFirestoreCtrl = new FirestoreCtrl();
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -49,22 +46,14 @@ describe("Create Group Screen renders", () => {
 
   it("renders the create group screen", () => {
     const { getByTestId } = render(
-      <CreateGroupScreen
-        user={mockUser}
-        navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <CreateGroupScreen user={mockUser} navigation={{}} />,
     );
     expect(getByTestId("create-group-screen")).toBeTruthy();
   });
 
   it("renders the group name input", () => {
     const { getByTestId } = render(
-      <CreateGroupScreen
-        user={mockUser}
-        navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <CreateGroupScreen user={mockUser} navigation={{}} />,
     );
     expect(getByTestId("Group-Name-Input")).toBeTruthy();
 
@@ -74,11 +63,7 @@ describe("Create Group Screen renders", () => {
 
   it("renders the group description  input", () => {
     const { getByTestId } = render(
-      <CreateGroupScreen
-        user={mockUser}
-        navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <CreateGroupScreen user={mockUser} navigation={{}} />,
     );
     expect(getByTestId("Description-Input")).toBeTruthy();
 
@@ -88,11 +73,7 @@ describe("Create Group Screen renders", () => {
 
   it("creates group when arrow is clicked", () => {
     const { getByTestId } = render(
-      <CreateGroupScreen
-        user={mockUser}
-        navigation={{}}
-        firestoreCtrl={mockFirestoreCtrl}
-      />,
+      <CreateGroupScreen user={mockUser} navigation={{}} />,
     );
     expect(getByTestId("bottom-right-icon-arrow-forward")).toBeTruthy();
 

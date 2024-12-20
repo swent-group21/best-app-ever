@@ -1,7 +1,6 @@
 import React, { act } from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import MaximizeScreen from "@/src/views/home/maximize_screen";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
 jest.mock("@/src/viewmodels/home/MaximizeScreenViewModel", () => ({
   useMaximizeScreenViewModel: jest.fn(),
@@ -30,7 +29,6 @@ describe("MaximizeScreen UI Tests", () => {
       },
     },
   };
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
   const mockUser = {
     uid: "user-1",
@@ -40,7 +38,7 @@ describe("MaximizeScreen UI Tests", () => {
     createdAt: new Date(),
   };
   const mockToggleLike = jest.fn();
-  const mockAddComment = jest.fn();
+  const mockAppendComment = jest.fn();
   const mockNavigateToMap = jest.fn();
 
   beforeEach(() => {
@@ -89,7 +87,6 @@ describe("MaximizeScreen UI Tests", () => {
         }}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -128,7 +125,6 @@ describe("MaximizeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -145,7 +141,6 @@ describe("MaximizeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -174,10 +169,9 @@ describe("MaximizeScreen UI Tests", () => {
         showGuestPopup: jest.fn(),
         setShowGuestPopup: jest.fn(),
         handleUserInteraction: jest.fn(() => {
-          mockAddComment();
+          mockAppendComment();
         }),
       });
-
     const { getByTestId } = render(
       <MaximizeScreen
         user={{
@@ -189,20 +183,15 @@ describe("MaximizeScreen UI Tests", () => {
         }}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
-
-    const addComment =
-      require("@/src/viewmodels/home/MaximizeScreenViewModel").useMaximizeScreenViewModel()
-        .addComment;
 
     const input = getByTestId("comment-input");
     await act(async () => {
       fireEvent.changeText(input, "New Comment");
       fireEvent.press(getByTestId("send-comment-button"));
     });
-    expect(mockAddComment).toHaveBeenCalled();
+    expect(mockAppendComment).toHaveBeenCalled();
   });
 
   it("navigates to the MapScreen when the location button is pressed", async () => {
@@ -232,7 +221,6 @@ describe("MaximizeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={{ params: { challenge: mockChallenge } }}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -272,7 +260,6 @@ describe("MaximizeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 
@@ -288,7 +275,6 @@ describe("MaximizeScreen UI Tests", () => {
         user={mockUser}
         navigation={mockNavigation}
         route={mockRoute}
-        firestoreCtrl={mockFirestoreCtrl}
       />,
     );
 

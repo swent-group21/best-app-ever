@@ -1,9 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
-import FirestoreCtrl from "@/src/models/firebase/FirestoreCtrl";
 
-// Mock du ViewModel
 jest.mock(
   "@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel",
   () => ({
@@ -19,8 +17,6 @@ describe("ListOfFilteredUsers Component", () => {
     { uid: "1", name: "John Doe", image_id: "https://example.com/avatar1.png" },
     { uid: "2", name: "Jane Smith", image_id: null },
   ];
-
-  const mockFirestoreCtrl = new FirestoreCtrl();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -41,7 +37,6 @@ describe("ListOfFilteredUsers Component", () => {
       <ListOfFilteredUsers
         filteredUsers={mockFilteredUsers}
         searchText="John"
-        firestoreCtrl={mockFirestoreCtrl}
         uid="user-uid"
       />,
     );
@@ -65,7 +60,6 @@ describe("ListOfFilteredUsers Component", () => {
       <ListOfFilteredUsers
         filteredUsers={mockFilteredUsers}
         searchText="Jane"
-        firestoreCtrl={mockFirestoreCtrl}
         uid="user-uid"
       />,
     );
