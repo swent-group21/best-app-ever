@@ -7,7 +7,6 @@ import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
  * ViewModel for the SignUp screen
  * @param navigation : navigation object
  * @param setUser : set user object
- * @param firestoreCtrl : FirestoreCtrl object
  * @returns : functions for the SignUp screen
  */
 export default function useSignUpViewModel(

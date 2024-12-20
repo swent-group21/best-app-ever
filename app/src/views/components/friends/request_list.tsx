@@ -5,7 +5,6 @@ import { useRequestListViewModel } from "@/src/viewmodels/components/friends/Req
 /**
  * Request List with all users that have sent a friend request to the current user
  * @param requests : list of users that have sent a friend request
- * @param firestoreCtrl : firestore controller
  * @param uid : current user's id
  */
 export function RequestList({

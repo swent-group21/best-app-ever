@@ -84,7 +84,7 @@ export function useMaximizeScreenViewModel(
 
   // Gets the challenge's group area, if it exists
   useEffect(() => {
-    if (groupId) {
+    if (groupId !== "home") {
       getGroup(groupId).then((group) => {
         setGroupCenter(group.location);
         setGroupRadius(group.radius);

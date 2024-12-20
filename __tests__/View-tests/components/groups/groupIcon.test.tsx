@@ -1,6 +1,6 @@
 import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
-import GroupIcon from "@/src/views/components/navigation/group_icon";
+import GroupIcon from "@/src/views/components/groups/group_icon";
 import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 describe("GroupIcon Component", () => {

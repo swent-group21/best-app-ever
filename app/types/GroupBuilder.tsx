@@ -1,6 +1,6 @@
 import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 import {
-  addGroupToMemberGroups,
+  addGroupToUser,
   newGroup,
 } from "@/src/models/firebase/SetFirestoreCtrl";
 import { DBGroup, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
@@ -8,7 +8,6 @@ import { GeoPoint } from "firebase/firestore";
 
 /**
  * Used to create a Group and store it in Firestore DB
- * @param firestoreCtrl : FirestoreCtrl object
  * @param name : the name of the group
  * @param challengeTitle : the title of the challenge
  * @param members : the members of the group
@@ -38,7 +37,7 @@ export const createGroup = async (
 
     // Save the group to Firestore
     await newGroup(groupData);
-    await addGroupToMemberGroups(user.uid, groupData.name);
+    await addGroupToUser(user.uid, groupData.name);
   } catch (error) {
     console.error("Error creating group: ", error);
   }

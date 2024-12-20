@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
-import { SearchBar } from "@/src/views/components/friends/search_bar";
+import { SearchBar } from "@/src/views/components/navigation/search_bar";
 import ListOfFriends from "@/src/views/components/friends/list_of_friends";
 import { RequestList } from "@/src/views/components/friends/request_list";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
@@ -86,7 +86,7 @@ export default function FriendsScreen({
         leftIcon="arrow-back"
         leftAction={navigation.goBack}
       />
-      <SearchBar onSearch={setSearchText} />
+      <SearchBar onSearch={setSearchText} element={"user"} />
 
       <FlatList
         style={styles.container}

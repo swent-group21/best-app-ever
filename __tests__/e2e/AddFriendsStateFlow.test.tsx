@@ -168,6 +168,7 @@ const mockPostTesterFriend: DBChallenge = {
   caption: "Home Challenge Test Caption",
   uid: "456",
   challenge_description: "Current Test Challenge Title",
+  group_id: "home",
 };
 const mockPostComments: DBComment[] = [];
 let mockPostLikes: string[] = [];

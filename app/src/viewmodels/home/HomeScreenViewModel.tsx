@@ -68,8 +68,11 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
       try {
         await getPostsByChallengeTitle(challengeTitle).then(
           (challenges: DBChallenge[]) => {
+            const filteredChallenges = challenges.filter(
+              (challenge) => challenge.group_id === "home",
+            );
             // Sort challenges by date
-            const sortedChallenges = challenges.sort((a, b) =>
+            const sortedChallenges = filteredChallenges.sort((a, b) =>
               a.date && b.date
                 ? new Date(b.date).getTime() - new Date(a.date).getTime()
                 : 0,

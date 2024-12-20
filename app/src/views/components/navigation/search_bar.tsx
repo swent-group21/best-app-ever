@@ -9,14 +9,16 @@ import { ThemedTextInput } from "@/src/views/components/theme/themed_text_input"
  */
 export function SearchBar({
   onSearch,
+  element,
 }: {
   readonly onSearch: (text: string) => void;
+  readonly element: string;
 }) {
   return (
     <ThemedView style={styles.searchContainer} testID="search-bar">
       <ThemedTextInput
         style={styles.searchInput}
-        placeholder="Search for a user..."
+        placeholder={`Search for a ${element}...`}
         placeholderTextColor="#aaa"
         onChangeText={onSearch}
         testID="search-bar-input"
