@@ -7,13 +7,6 @@ import { DBChallengeDescription } from "@/src/models/firebase/TypeFirestoreCtrl"
 
 const { width, height } = Dimensions.get("window");
 
-// Define the ChallengeDescriptionProps type
-interface ChallengeDescriptionProps {
-  dBChallengeDescription: DBChallengeDescription;
-  onTimerFinished: () => void;
-  testID?: string;
-}
-
 /**
  * The ChallengeDescription component displays the current challenge description.
  * @param dBChallengeDescription : the current challenge description
