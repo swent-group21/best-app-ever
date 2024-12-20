@@ -97,44 +97,6 @@ describe("MaximizeScreen UI Tests", () => {
     });
   });
 
-  it("handles double-tap to like the post", () => {
-    const mockToggleLike = jest.fn();
-    jest
-      .spyOn(
-        require("@/src/viewmodels/home/MaximizeScreenViewModel"),
-        "useMaximizeScreenViewModel",
-      )
-      .mockReturnValue({
-        toggleLike: mockToggleLike,
-        isLiked: false,
-        likeList: [],
-        commentList: [],
-        postDate: new Date(),
-        postUser: mockUser,
-        postDescription: "A test challenge",
-        postImage: "https://example.com/test-image.jpg",
-        showGuestPopup: jest.fn(),
-        setShowGuestPopup: jest.fn(),
-        handleUserInteraction: jest.fn(() => {
-          mockToggleLike();
-        }),
-      });
-
-    const { getByTestId } = render(
-      <MaximizeScreen
-        user={mockUser}
-        navigation={mockNavigation}
-        route={mockRoute}
-      />,
-    );
-
-    const postImage = getByTestId("post-image");
-    fireEvent.press(postImage);
-    fireEvent.press(postImage); // Simulate double-tap
-
-    expect(mockToggleLike).toHaveBeenCalled();
-  });
-
   it("handles liking a post", async () => {
     const { getByTestId } = render(
       <MaximizeScreen

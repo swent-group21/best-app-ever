@@ -266,7 +266,7 @@ export default function HomeScreen({
       <BottomBar
         leftIcon="map-outline"
         centerIcon="camera-outline"
-        rightIcon="trophy-outline"
+        rightIcon="apps-outline"
         leftAction={() => handleRestrictedAccess("MapScreen")}
         centerAction={() => {
           if (userIsGuest) {

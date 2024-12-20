@@ -386,6 +386,6 @@ describe("Guest User sign up and post", () => {
     });
 
     // Verify the new challenge was posted
-    expect(getByTestId("challenge-id-Test Challenge Caption")).toBeTruthy();
+    expect(getByTestId("challenge-id-0")).toBeTruthy();
   });
 });

@@ -136,8 +136,7 @@ export function useMaximizeScreenViewModel(
   };
 
   const postDate: Date = challenge.date ? challenge.date : new Date();
-  const postCaption =
-    challenge.caption == "" ? "Secret Challenge" : challenge.caption;
+  const postCaption = challenge.caption ?? "";
 
   return {
     commentText,
