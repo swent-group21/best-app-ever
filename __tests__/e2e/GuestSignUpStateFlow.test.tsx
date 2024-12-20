@@ -9,12 +9,10 @@ import {
   DBGroup,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
-import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
-import GroupScreen from "@/src/views/group/GroupScreen";
 import { PermissionResponse } from "expo-camera";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { GeoPoint } from "firebase/firestore";
-import Camera from "@/src/views/camera/CameraContainer";
+import Camera from "@/src/views/camera/camera_container";
 import WelcomeScreens from "@/src/views/welcome/welcome_screen";
 import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
 import SignUp from "@/src/views/auth/sign_up_screen";
@@ -24,75 +22,47 @@ import SetUsernameScreen from "@/src/views/auth/set_up_screen";
 
 const Stack = createNativeStackNavigator();
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getUser: jest.fn(() => {
+    return mockTester;
+  }),
+
+  // Mock functions used in home screens
+  getGroupsByUserId: jest.fn((id) => {
+    return new Promise<DBGroup[]>((resolve) => {
+      resolve(mockFetchedGroups);
+    });
+  }),
+  getChallengeDescription: jest.fn((id) => {
+    return mockCurrentChallenge;
+  }),
+  getPostsByChallengeTitle: jest.fn((title) => {
+    return mockHomePosts;
+  }),
+
+  // Mock functions used in camera screen
+  getImageUrl: jest.fn(() => {
+    return "testUrl";
+  }),
+  getGroup: jest.fn((id) => {
+    if (id === "new-group-id") return mockNewGroup;
+  }),
 }));
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   createUser: jest.fn((uid, user) => {
     mockTester = user
-  })
+  }),
 
-
+  // Mock functions used in camera screen
+  uploadImage: jest.fn(() => {}),
+  newChallenge: jest.fn((challenge) => {
+    if (challenge.group_id === "new-group-id") {
+      mockGroupPosts.push(challenge);
+    } else mockHomePosts.push(challenge);
+  }),
 }));
 
-// Mock FirestoreCtrl
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getUser: jest.fn(() => {
-        return mockTester;
-      }),
 
-      // Mock functions used in group creation
-      newGroup: jest.fn((group) => {
-        (mockNewGroup = {
-          gid: "new-group-id",
-          ...group,
-        } as DBGroup),
-          mockFetchedGroups.push(mockNewGroup);
-      }),
-      addGroupToMemberGroups: jest.fn((id, group_name) => {
-        mockTester.groups.push(group_name);
-      }),
-
-      // Mock functions used in home and group screens
-      getGroupsByUserId: jest.fn((id) => {
-        return new Promise<DBGroup[]>((resolve) => {
-          resolve(mockFetchedGroups);
-        });
-      }),
-
-      getAllPostsOfGroup: jest.fn((id) => {
-        return new Promise<DBChallenge[]>((resolve) => {
-          resolve(mockGroupPosts);
-        });
-      }),
-      getChallengeDescription: jest.fn((id) => {
-        return mockCurrentChallenge;
-      }),
-      getPostsByChallengeTitle: jest.fn((title) => {
-        return mockHomePosts;
-      }),
-
-      // Mock functions used in camera screen
-      uploadImage: jest.fn(() => {}),
-      getImageUrl: jest.fn(() => {
-        return "testUrl";
-      }),
-      getGroup: jest.fn((id) => {
-        if (id === "new-group-id") return mockNewGroup;
-      }),
-      newChallenge: jest.fn((challenge) => {
-        if (challenge.group_id === "new-group-id") {
-          mockGroupPosts.push(challenge);
-        } else mockHomePosts.push(challenge);
-      }),
-
-
-
-      
-    };
-  });
-});
 
 // Mock GeoPoint constructor
 jest.mock("firebase/firestore", () => ({
@@ -155,7 +125,6 @@ jest.mock("@/src/models/firebase/Firebase", () => ({
               uid: "guest-tester-id"
           }
       })
-
     ),
     signUpWithEmail: jest.fn(() =>
       Promise.resolve({
@@ -165,7 +134,7 @@ jest.mock("@/src/models/firebase/Firebase", () => ({
       })
     ),
       
-    isValidEmail: jest.fn((email) => true),
+    //isValidEmail: jest.fn((email) => true),
   }));
 
 
