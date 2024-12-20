@@ -16,7 +16,6 @@ const { width, height } = Dimensions.get("window");
  * Screen for setting up the user's profile
  * @param user : user object
  * @param navigation : navigation object
- * @param firestoreCtrl : FirestoreCtrl object
  * @param setUser : function to set the user object
  * @returns : a screen for setting up the user's profile
  */

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import Camera from "@/src/views/camera/CameraContainer";
+import Camera from "@/src/views/camera/camera_container";
 import useCameraViewModel from "@/src/viewmodels/camera/CameraViewModel";
 
 jest.mock("@/src/viewmodels/camera/CameraViewModel");

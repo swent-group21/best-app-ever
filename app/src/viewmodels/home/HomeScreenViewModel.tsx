@@ -67,9 +67,12 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     const fetchChallenges = async (challengeTitle: string) => {
       try {
         await getPostsByChallengeTitle(challengeTitle).then(
-          (challenge: DBChallenge[]) => {
+          (challenges: DBChallenge[]) => {
+            const filteredChallenges = challenges.filter(
+              (challenge) => challenge.group_id === "home",
+            );
             // Sort challenges by date
-            const sortedChallenges = challenge.sort((a, b) =>
+            const sortedChallenges = filteredChallenges.sort((a, b) =>
               a.date && b.date
                 ? new Date(b.date).getTime() - new Date(a.date).getTime()
                 : 0,
@@ -83,7 +86,6 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
     };
 
     fetchCurrentChallenge().then((challengeTitle) => {
-      console.log("Current challenge fetched : ", challengeTitle);
       if (user.uid) fetchChallenges(challengeTitle);
     });
   }, [user.uid]);
