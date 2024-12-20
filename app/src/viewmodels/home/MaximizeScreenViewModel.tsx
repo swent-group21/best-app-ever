@@ -97,8 +97,8 @@ export function useMaximizeScreenViewModel(
   };
 
   useEffect(() => {
-    if (user.image_id !== undefined || user.image_id == null) {
-      fetchImgUrl(user.image_id).then(setIcon);
+    if (postUser.image_id !== undefined) {
+      fetchImgUrl(postUser.image_id).then(setIcon);
     }
   }, [user]);
 

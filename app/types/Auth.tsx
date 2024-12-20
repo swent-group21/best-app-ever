@@ -8,6 +8,7 @@ import {
   updateEmail,
 } from "@/src/models/firebase/Firebase";
 import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
+import { removeUserLocally, storeUserLocally } from "@/src/models/firebase/LocalStorageCtrl";
 import { createUser } from "@/src/models/firebase/SetFirestoreCtrl";
 
 /***
@@ -63,6 +64,7 @@ export const logInWithEmail = async (
         // User exists in both auth and database
         if (user) {
           setUser(user);
+          await storeUserLocally(user)
           navigation.reset({
             index: 0,
             routes: [{ name: "Home", params: { user: user } }],
@@ -169,6 +171,7 @@ export const signInAsGuest = async (
 export const logOut = async (navigation: any) => {
   signOut(auth)
     .then(() => {
+      removeUserLocally()
       navigation.reset({
         index: 0,
         routes: [{ name: "WelcomeFinal" }],
@@ -176,7 +179,6 @@ export const logOut = async (navigation: any) => {
     })
     .catch((error) => {
       alert("Failed to log out: " + error);
-
       console.error("Failed to log out: ", error);
     });
 };

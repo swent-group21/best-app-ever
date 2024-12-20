@@ -14,7 +14,6 @@ import { Challenge } from "@/src/views/components/posts/challenge";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { useMemoriesViewModel } from "@/src/viewmodels/home/MemoriesScreenViewModel";
-import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const { width, height } = Dimensions.get("window");
 
@@ -94,7 +93,7 @@ export default function MemoriesScreen({
           />
         )}
         ListHeaderComponent={
-          <ThemedView style={styles.userHeader}>
+          <ThemedView testID="user-header" style={styles.userHeader}>
             <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
               {user.name}
             </ThemedText>

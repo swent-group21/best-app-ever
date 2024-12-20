@@ -144,7 +144,7 @@ export async function setProfilePicture(
 export async function newChallenge(challengeData: DBChallenge): Promise<void> {
   try {
     const networkState = await NetInfo.fetch();
-    if (networkState.isConnected && networkState.isInternetReachable) {
+    if (networkState.isConnected) {
       if (challengeData.challenge_id) {
         const duplicate_query = query(
           collection(firestore, "challenges"),

@@ -47,12 +47,6 @@ export const createChallenge = async (
       date: date,
     };
 
-    //if (image_id) {
-    //  const image_url = await getImageUrl(image_id);
-    //  console.log("createChallenge image_url: ", image_url);
-    //  challengeData.image_id = image_url;
-    //}
-
     // Save the challenge to Firestore
     await newChallenge(challengeData);
 

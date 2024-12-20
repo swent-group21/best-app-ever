@@ -5,6 +5,7 @@ import {
   setName,
   setProfilePicture,
 } from "@/src/models/firebase/SetFirestoreCtrl";
+import { storeUserLocally } from "@/src/models/firebase/LocalStorageCtrl";
 
 /**
  * ViewModel for the SetUsername screen.
@@ -60,6 +61,7 @@ export default function SetUsernameViewModel(
         await setProfilePicture(user.uid, image, setUser);
       }
       await setName(user.uid, username, setUser);
+      await storeUserLocally(user)
     } catch (error) {
       console.error("Error setting up profile: ", error);
       setErrorMessage("Failed to update profile. Please try again.");
