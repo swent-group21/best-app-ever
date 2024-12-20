@@ -66,8 +66,8 @@ export default function MemoriesScreen({
     <ThemedView style={styles.bigContainer} testID="memories-screen">
       <TopBar
         title="Strive"
-        leftIcon="people-outline"
-        leftAction={() => handleRestrictedAccess("Friends")}
+        leftIcon="arrow-back"
+        leftAction={() => handleRestrictedAccess("Home")}
         rightIcon={
           userIsGuest || !user.image_id ? "person-circle-outline" : icon
         }

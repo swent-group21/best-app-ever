@@ -93,6 +93,8 @@ export default function MaximizeScreen({
                   year: "numeric",
                   month: "short",
                   day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
                 })}
               </ThemedText>
             </ThemedView>
@@ -126,7 +128,6 @@ export default function MaximizeScreen({
 
         {/* Post Image with Double Tap */}
         <TouchableWithoutFeedback
-          onPress={() => handleUserInteraction("like", toggleLike)}
         >
           <ThemedView style={styles.imageContainer}>
             <Image
@@ -187,7 +188,7 @@ export default function MaximizeScreen({
         {/* Comment List */}
         <ThemedView style={styles.commentList} colorType="transparent">
           {commentList.length === 0 ? (
-            <ThemedText>No comments yet</ThemedText>
+            <ThemedText style={{paddingLeft: 25}}>No comments yet</ThemedText>
           ) : (
             commentList.map((comment, index) => (
               <SingleComment
