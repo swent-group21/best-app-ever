@@ -20,7 +20,7 @@ export function useMemoriesViewModel(user: DBUser, navigation: any) {
     // Fetch challenges
     const fetchChallenges = async () => {
       try {
-        console.log("User: ", user)
+        console.log("User: ", user);
         await getChallengesByUserId(user.uid).then(
           (challenge: DBChallenge[]) => {
             // Sort challenges by date

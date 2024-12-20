@@ -150,7 +150,7 @@ export async function getChallengesByUserId(
     });
 
     if (userChallenges.length != 0) {
-      console.log("returning local challenges", userChallenges)
+      console.log("returning local challenges", userChallenges);
       return userChallenges;
     }
 
