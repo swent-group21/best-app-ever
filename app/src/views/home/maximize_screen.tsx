@@ -55,7 +55,7 @@ export default function MaximizeScreen({
   } = useMaximizeScreenViewModel(user, challenge, navigation);
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="maximize-screen">
       <TopBar
         title=""
         leftIcon="arrow-back-outline"

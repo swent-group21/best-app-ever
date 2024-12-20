@@ -50,7 +50,10 @@ export function SingleComment({ comment }: { comment: Readonly<DBComment> }) {
       )}
 
       {/* Comment Content */}
-      <View style={styles.container}>
+      <View
+        style={styles.container}
+        testID={`comment-container-${comment.comment_text}`}
+      >
         <View style={styles.header}>
           <Text style={styles.userName}>{user?.name || "Anonymous"}</Text>
           <Text style={styles.commentDate}>
