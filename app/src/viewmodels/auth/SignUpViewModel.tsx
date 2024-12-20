@@ -57,7 +57,6 @@ export default function useSignUpViewModel(
     }
 
     setIsLoading(true);
-    console.log("Signing up with email and password...");
     try {
       await signUpWithEmail(
         `${name} ${surname}`,
@@ -70,7 +69,6 @@ export default function useSignUpViewModel(
       console.error("Error during sign-up: ", error);
       alert("Failed to sign up. Please try again.");
     }
-    console.log("Sign up successful!");
     setIsLoading(false);
   };
 
