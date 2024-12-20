@@ -5,7 +5,7 @@ import {
   Image,
   Text,
   TouchableWithoutFeedback,
-  View,
+  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
@@ -51,10 +51,11 @@ export default function MaximizeScreen({
     showGuestPopup,
     setShowGuestPopup,
     handleUserInteraction,
+    isLoading,
   } = useMaximizeScreenViewModel(user, challenge, navigation);
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="maximize-screen">
       <TopBar
         title=""
         leftIcon="arrow-back-outline"
@@ -166,13 +167,21 @@ export default function MaximizeScreen({
             placeholder="Add a comment..."
             testID="comment-input"
           />
-          <ThemedIconButton
-            name="send"
-            size={25}
-            onPress={() => handleUserInteraction("comment", addComment)}
-            colorType="white"
-            testID="send-comment-button"
-          />
+          {isLoading ? (
+            <ActivityIndicator
+              size="small"
+              color="#fff"
+              testID="loading-indicator"
+            />
+          ) : (
+            <ThemedIconButton
+              name="send"
+              size={25}
+              onPress={() => handleUserInteraction("comment", addComment)}
+              colorType="white"
+              testID="send-comment-button"
+            />
+          )}
         </ThemedView>
 
         {/* Comment List */}
@@ -183,7 +192,7 @@ export default function MaximizeScreen({
             commentList.map((comment, index) => (
               <SingleComment
                 key={comment.created_at.getTime().toPrecision(21)}
-                comment={comment} // Add the 'comment' property
+                comment={comment}
               />
             ))
           )}

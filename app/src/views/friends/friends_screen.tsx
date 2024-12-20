@@ -2,20 +2,21 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
-import { getAuth } from "firebase/auth";
 import { SearchBar } from "@/src/views/components/navigation/search_bar";
 import ListOfFriends from "@/src/views/components/friends/list_of_friends";
 import { RequestList } from "@/src/views/components/friends/request_list";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 export default function FriendsScreen({
   navigation,
+  user,
 }: {
   readonly navigation: any;
+  readonly user: DBUser;
 }) {
-  const auth = getAuth();
-  const uid = auth.currentUser?.uid;
+  const uid = user?.uid;
 
   const {
     searchText,
@@ -78,7 +79,7 @@ export default function FriendsScreen({
   ];
 
   return (
-    <ThemedView style={styles.bigContainer}>
+    <ThemedView style={styles.bigContainer} testID="friends-screen">
       {/* Barre de recherche */}
       <TopBar
         title="Strive is better with friends"

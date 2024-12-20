@@ -1,11 +1,11 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import MapView, { MapCircle, MapMarker } from "react-native-maps";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { useMapScreenViewModel } from "@/src/viewmodels/map/MapScreenViewModel";
-import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
+import { LoadingSplash } from "../components/loading/loading_splash";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 /**
  * Screen for the map
@@ -23,16 +23,16 @@ export default function MapScreen({
   readonly navigation: any;
   readonly route: any;
 }) {
-  const firstLocation = route.params?.location;
-  const geoRestriction = route.params?.challengeArea;
+  // Gets the first location and the challenge area from the route parameters, if they exist
+  const { location: firstLocation, challengeArea: geoRestriction } =
+    route.params || {};
   const group_id = route.params?.group_id ?? "home";
   const {
     userLocation,
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
-    isMapReady,
-    setIsMapReady,
+    isLoading,
   } = useMapScreenViewModel(
     navigation,
     firstLocation,
@@ -40,15 +40,8 @@ export default function MapScreen({
     group_id,
   );
 
-  if (userLocation === undefined || challengesWithLocation.length === 0) {
-    return (
-      <ThemedView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#fff" />
-        <ThemedText style={styles.loadingText}>
-          Loading, this may take some time...
-        </ThemedText>
-      </ThemedView>
-    );
+  if (isLoading) {
+    return <LoadingSplash loading_text="Loading, this may take some time..." />;
   } else {
     return (
       <ThemedView style={styles.container}>
@@ -70,7 +63,6 @@ export default function MapScreen({
           showsUserLocation={true}
           showsCompass={true}
           loadingEnabled={true}
-          onMapReady={() => setIsMapReady(true)}
           testID="map"
         >
           {/* Draw the challenges on the map */}

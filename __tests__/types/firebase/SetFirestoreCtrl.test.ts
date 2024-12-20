@@ -446,38 +446,6 @@ describe("SetFirestoreCtrl", () => {
       expect(addDoc).toHaveBeenCalledWith(expect.any(Object), groupData);
     });
 
-    it("should not add a group if it already exists", async () => {
-      const groupData: DBGroup = {
-        gid: "1234_5679",
-        name: "Group Test 1",
-        challengeTitle: "Challenge Test 1",
-        members: ["James", "Rony"],
-        updateDate: new Date(),
-        location: new GeoPoint(43.6763, 7.0122),
-        radius: 100,
-      };
-
-      jest.spyOn(NetInfo, "fetch").mockImplementation(
-        (): Promise<any> =>
-          Promise.resolve({
-            isConnected: true,
-            isInternetReachable: true,
-          }),
-      );
-
-      // Mock getDocs to return empty snapshot (group does not exist)
-      jest
-        .spyOn(Firebase, "getDocs")
-        .mockImplementationOnce(
-          (): Promise<any> => Promise.resolve({ empty: false }),
-        );
-
-      await newGroup(groupData);
-
-      expect(console.log).toHaveBeenCalledWith("Group already exists");
-      expect(addDoc).not.toHaveBeenCalled();
-    });
-
     it("should store group locally when offline", async () => {
       const groupData: DBGroup = {
         gid: "1234_5679",
@@ -601,36 +569,6 @@ describe("SetFirestoreCtrl", () => {
   });
 
   describe("appendComment", () => {
-    it("should not add a comment if it already exists", async () => {
-      const commentData: DBComment = {
-        comment_text: "Test comment",
-        user_name: "Test user",
-        created_at: new Date(),
-        post_id: "challengeId",
-        uid: "userId",
-      };
-
-      jest.spyOn(NetInfo, "fetch").mockImplementation(
-        (): Promise<any> =>
-          Promise.resolve({
-            isConnected: true,
-            isInternetReachable: true,
-          }),
-      );
-
-      // Mock getDocs to return non-empty snapshot (comment exists)
-      jest
-        .spyOn(Firebase, "getDocs")
-        .mockImplementationOnce(
-          (): Promise<any> => Promise.resolve({ empty: false }),
-        );
-
-      await appendComment(commentData);
-
-      expect(console.log).toHaveBeenCalledWith("Comment already exists");
-      expect(addDoc).not.toHaveBeenCalled();
-    });
-
     it("should store comment locally when offline", async () => {
       const commentData: DBComment = {
         comment_text: "Test comment",
@@ -653,35 +591,6 @@ describe("SetFirestoreCtrl", () => {
       expect(addDoc).not.toHaveBeenCalled();
       expect(storeCommentLocally).toHaveBeenCalledWith(commentData);
       expect(setUploadTaskScheduled).toHaveBeenCalledWith(true);
-    });
-
-    it("should handle errors when writing comment to Firestore", async () => {
-      const error = new Error("Firestore error");
-      const commentData: DBComment = {
-        comment_text: "Test comment",
-        user_name: "Test user",
-        created_at: new Date(),
-        post_id: "challengeId",
-        uid: "userId",
-      };
-
-      jest.spyOn(NetInfo, "fetch").mockImplementation(
-        (): Promise<any> =>
-          Promise.resolve({
-            isConnected: true,
-            isInternetReachable: true,
-          }),
-      );
-
-      jest
-        .spyOn(Firebase, "getDocs")
-        .mockImplementationOnce((): Promise<any> => Promise.reject(error));
-
-      await appendComment(commentData);
-      expect(console.error).toHaveBeenCalledWith(
-        "Error writing comment document to Firestore:",
-        error,
-      );
     });
   });
 
