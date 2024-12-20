@@ -50,12 +50,16 @@ describe("HomeScreen - Guest User", () => {
     mockUseHomeScreenViewModel.mockReturnValue({
       userIsGuest: true,
       challenges: [
-        ...Array(10).fill({
+        {
           uid: "user1",
-          challenge_name: "Challenge",
-          description: "Challenge Description",
+          caption: "Challenge Description 1",
           challenge_id: "1",
-        }),
+        },
+        {
+          uid: "user1",
+          caption: "Challenge Description 2",
+          challenge_id: "2",
+        },
       ],
       groups: [],
       titleChallenge: {
@@ -66,7 +70,7 @@ describe("HomeScreen - Guest User", () => {
     });
   });
 
-  it("renders the guest footer after 10 challenges", async () => {
+  it("renders the guest footer after all challenges", async () => {
     const { getByText, queryByTestId } = render(
       <HomeScreen
         user={{ name: "Guest", uid: "", email: "", createdAt: new Date() }}
@@ -76,8 +80,8 @@ describe("HomeScreen - Guest User", () => {
 
     await waitFor(() => {
       // Vérifie que 10 challenges sont affichés
-      expect(queryByTestId("challenge-id-9")).toBeTruthy();
-      expect(queryByTestId("challenge-id-10")).toBeFalsy();
+      expect(queryByTestId("challenge-id-Challenge Description 1")).toBeTruthy;
+      expect(queryByTestId("challenge-id-Challenge Description 10")).toBeTruthy;
 
       // Vérifie la présence du bouton "Create an Account"
       expect(getByText("Sign Up")).toBeTruthy();
