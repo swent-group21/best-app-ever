@@ -87,7 +87,7 @@ export default function FriendsScreen({
   ];
 
   return (
-    <ThemedView style={styles.bigContainer} testID="friendsScreen">
+    <ThemedView style={styles.bigContainer} testID="friends-screen">
       {/* Barre de recherche */}
       <TopBar
         title="Strive is better with friends"

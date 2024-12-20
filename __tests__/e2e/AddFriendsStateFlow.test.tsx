@@ -3,7 +3,6 @@ import {
   render,
   fireEvent,
   waitFor,
-  cleanup,
   act,
 } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -309,7 +308,7 @@ describe("Send a friend request that is accepted and comment a friend's post", (
 
     // Wait for the navigation to FriendsScreen
     await waitFor(() => {
-      expect(testerNavigation.getByTestId("friendsScreen")).toBeTruthy();
+      expect(testerNavigation.getByTestId("friends-screen")).toBeTruthy();
     });
 
     // Simulate user searching for a friend in the search bar
