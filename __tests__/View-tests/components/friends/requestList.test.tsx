@@ -11,6 +11,10 @@ jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   rejectFriend: jest.fn(),
 }));
 
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getImageUrl: jest.fn().mockResolvedValue("image_url"),
+}));
+
 describe("RequestList Component", () => {
   const mockUseRequestListViewModel =
     require("@/src/viewmodels/components/friends/RequestListViewModel").useRequestListViewModel;

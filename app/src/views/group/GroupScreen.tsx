@@ -106,7 +106,7 @@ export default function GroupScreen({
               navigation={navigation}
               key={index}
               challengeDB={challenge}
-              testID={`challenge-id-${index}`}
+              testID={`group-challenge-id-${index}`}
               currentUser={user}
               index={index}
             />

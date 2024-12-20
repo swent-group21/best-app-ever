@@ -54,13 +54,13 @@ export function useHomeScreenViewModel(user: DBUser, navigation: any) {
 
   const navigateToMemories = () => {
     if (!userIsGuest) {
-      console.log("User isn't Guest, user is: ", user)
+      console.log("User isn't Guest, user is: ", user);
       navigation.navigate("Memories", {
         navigation,
-        user: user
-      })
+        user: user,
+      });
     }
-  }
+  };
 
   // Fetch the current challenge and the challenges
   useEffect(() => {

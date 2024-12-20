@@ -41,17 +41,15 @@ export function Challenge({
   return (
     <ThemedView style={styles.challengeContainer} testID={testID}>
       {/* User Info */}
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() =>
           navigation.navigate("Memories", {
             navigation,
             user: user,
-          }
-        )}
+          })
+        }
       >
-        <ThemedView 
-          style={styles.userInfo}
-        >
+        <ThemedView style={styles.userInfo}>
           {user?.image_id ? (
             <Image source={{ uri: icon }} style={styles.userAvatar} />
           ) : (
@@ -69,7 +67,8 @@ export function Challenge({
 
       {/* Challenge Image */}
       <TouchableWithoutFeedback
-        onPress={handleDoubleTap} testID={`challenge-id-${index}`}
+        onPress={handleDoubleTap}
+        testID={`challenge-id-${index}`}
       >
         <Image source={{ uri: image }} style={styles.challengeImage} />
       </TouchableWithoutFeedback>

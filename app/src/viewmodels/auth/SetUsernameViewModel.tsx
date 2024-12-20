@@ -61,7 +61,7 @@ export default function SetUsernameViewModel(
         await setProfilePicture(user.uid, image, setUser);
       }
       await setName(user.uid, username, setUser);
-      await storeUserLocally(user)
+      await storeUserLocally(user);
     } catch (error) {
       console.error("Error setting up profile: ", error);
       setErrorMessage("Failed to update profile. Please try again.");

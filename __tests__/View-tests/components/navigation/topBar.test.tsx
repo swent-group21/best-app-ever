@@ -29,7 +29,7 @@ describe("TopBar Component", () => {
       />,
     );
 
-    expect(getByTestId("topBar")).toBeTruthy();
+    expect(getByTestId("top-bar")).toBeTruthy();
   });
 
   it("renders correctly the icons and execute the actions", async () => {

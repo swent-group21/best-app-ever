@@ -12,6 +12,7 @@ import {
   getLikesOf,
   getUser,
 } from "@/src/models/firebase/GetFirestoreCtrl";
+
 import {
   appendComment,
   updateLikesOf,
@@ -36,8 +37,8 @@ export function useMaximizeScreenViewModel(
   const [isLiked, setIsLiked] = useState(false);
   const [groupCenter, setGroupCenter] = useState<GeoPoint | undefined>();
   const [groupRadius, setGroupRadius] = useState<number | undefined>();
-  const [icon, setIcon] = useState<string>("person-circle-outline");
   const [image, setImage] = useState<string>("https://via.placeholder.com/300");
+  const [icon, setIcon] = useState<string>("person-circle-outline");
 
   const currentUserId = user.uid;
   const currentUserName = user.name;
@@ -97,16 +98,14 @@ export function useMaximizeScreenViewModel(
   };
 
   useEffect(() => {
-    if (postUser.image_id !== undefined) {
-      fetchImgUrl(postUser.image_id).then(setIcon);
-    }
-  }, [user]);
-
-  useEffect(() => {
     if (challenge.image_id) {
       fetchImgUrl(challenge.image_id).then(setImage);
     }
   }, [challenge.image_id]);
+
+  useEffect(() => {
+    postUser?.image_id ? fetchImgUrl(postUser.image_id).then(setIcon) : "";
+  }, [postUser]);
 
   const toggleLike = () => {
     setIsLiked(!isLiked);

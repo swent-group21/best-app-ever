@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  DBChallenge,
-  DBUser,
-} from "@/src/models/firebase/TypeFirestoreCtrl";
+import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import {
   getChallengesByUserId,
   getImageUrl,
@@ -13,11 +10,8 @@ import {
  * @param user : the user object
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
-export function useMemoriesViewModel(
-  user: DBUser,
-  navigation: any,
-) {
-  console.log("Found user from route: ", user)
+export function useMemoriesViewModel(user: DBUser, navigation: any) {
+  console.log("Found user from route: ", user);
   const userIsGuest = user.name === "Guest";
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [icon, setIcon] = useState<string>("person-circle-outline");
@@ -43,7 +37,7 @@ export function useMemoriesViewModel(
       }
     };
 
-    fetchChallenges()
+    fetchChallenges();
   }, [user.uid]);
 
   useEffect(() => {

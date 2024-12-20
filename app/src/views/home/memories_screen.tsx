@@ -19,18 +19,17 @@ const { width, height } = Dimensions.get("window");
 
 export default function MemoriesScreen({
   navigation,
-  route
+  route,
 }: {
   readonly navigation: any;
   readonly route: any;
 }) {
   const user = route.params?.user;
-  console.log("User in MemoriesScreen: ", user)
-  const {
-    userIsGuest,
-    challenges,
-    icon,
-  } = useMemoriesViewModel(user, navigation);
+  console.log("User in MemoriesScreen: ", user);
+  const { userIsGuest, challenges, icon } = useMemoriesViewModel(
+    user,
+    navigation,
+  );
 
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
@@ -64,7 +63,7 @@ export default function MemoriesScreen({
   };
 
   return (
-    <ThemedView style={styles.bigContainer} testID="home-screen">
+    <ThemedView style={styles.bigContainer} testID="memories-screen">
       <TopBar
         title="Strive"
         leftIcon="people-outline"
@@ -79,7 +78,7 @@ export default function MemoriesScreen({
       {/* Challenges */}
       <Animated.FlatList
         testID="scroll-view"
-        data={ challenges }
+        data={challenges}
         onScrollEndDrag={handleScrollEnd}
         keyExtractor={(item, index) => `challenge-${index}`}
         renderItem={({ item, index }) => (

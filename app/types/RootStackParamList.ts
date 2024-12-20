@@ -1,4 +1,8 @@
-import { DBChallenge, DBGroup, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
+import {
+  DBChallenge,
+  DBGroup,
+  DBUser,
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 
 /*
  * RootStackParamList defines the types for the navigation stack
@@ -27,5 +31,5 @@ export type RootStackParamList = {
   CreateGroup: undefined;
   Memories: {
     user: DBUser;
-  }
+  };
 };

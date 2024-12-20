@@ -3,6 +3,7 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { Colors } from "@/constants/Colors";
 import { useFriendIconViewModel } from "@/src/viewmodels/components/friends/FriendIconViewModel";
+import { getImageUrl } from "@/src/models/firebase/GetFirestoreCtrl";
 
 /**
  * Friend List Item component
@@ -12,7 +13,7 @@ import { useFriendIconViewModel } from "@/src/viewmodels/components/friends/Frie
  * @returns FriendListItem Component
  */
 export function FriendListItem({ name, avatar, onPress }: any) {
-  const { firstLetter } = useFriendIconViewModel({ name });
+  const { firstLetter, icon } = useFriendIconViewModel({ name, avatar });
 
   return (
     <TouchableOpacity
@@ -22,7 +23,7 @@ export function FriendListItem({ name, avatar, onPress }: any) {
     >
       {avatar ? (
         <Image
-          source={{ uri: avatar }}
+          source={{ uri: icon }}
           style={styles.friendAvatar}
           testID="friend-avatar-image"
         />

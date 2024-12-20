@@ -201,7 +201,7 @@ export default function HomeScreen({
             navigation={navigation}
             challengeDB={item}
             key={index}
-            testID={`challenge-id-${index}`}
+            testID={`component-challenge-id-${index}`}
             currentUser={user}
             index={index}
           />
@@ -275,12 +275,12 @@ export default function HomeScreen({
         }}
         rightAction={() => {
           if (userIsGuest) {
-            setShowGuestPopup("Camera")
+            setShowGuestPopup("Camera");
           } else {
             navigation.navigate("Memories", {
               navigation,
               user: user,
-            })
+            });
           }
         }}
       />

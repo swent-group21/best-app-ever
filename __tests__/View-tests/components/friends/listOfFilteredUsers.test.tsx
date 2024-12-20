@@ -9,6 +9,10 @@ jest.mock(
   }),
 );
 
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getImageUrl: jest.fn().mockResolvedValue("image_url"),
+}));
+
 describe("ListOfFilteredUsers Component", () => {
   const mockUseListOfFilteredUsersViewModel =
     require("@/src/viewmodels/components/friends/ListOfFilteredUsersViewModel").useListOfFilteredUsersViewModel;

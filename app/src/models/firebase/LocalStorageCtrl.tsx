@@ -2,8 +2,17 @@ import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 
-import { DBGroup, DBComment, DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { newChallenge, newGroup, uploadImage } from "@/src/models/firebase/SetFirestoreCtrl";
+import {
+  DBGroup,
+  DBComment,
+  DBChallenge,
+  DBUser,
+} from "@/src/models/firebase/TypeFirestoreCtrl";
+import {
+  newChallenge,
+  newGroup,
+  uploadImage,
+} from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Unique keys for AsyncStorage
 const USER_STORAGE_KEY = "@user";
@@ -154,7 +163,7 @@ export async function getStoredUser(): Promise<DBUser | null> {
 export async function removeUserLocally(): Promise<void> {
   try {
     await AsyncStorage.removeItem(USER_STORAGE_KEY);
-    console.log("Removed User")
+    console.log("Removed User");
   } catch (e) {
     console.error("Failed to remove user from storage", e);
   }
@@ -181,7 +190,10 @@ export async function storeImageLocally(id_picture: string): Promise<void> {
     const uploadData = { id: id_picture, uri: localUri };
     const storedUploads = (await getStoredImageUploads()) || [];
     storedUploads.push(uploadData);
-    await AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(storedUploads));
+    await AsyncStorage.setItem(
+      IMAGE_STORAGE_KEY,
+      JSON.stringify(storedUploads),
+    );
     console.log("Image upload data stored locally:", uploadData);
   } catch (error) {
     console.error("Error storing image upload data:", error);
@@ -218,7 +230,9 @@ export async function storeChallengeLocally(
 export async function storeGroupLocally(groupData: DBGroup): Promise<void> {
   const storedGroups: DBGroup[] = await getStoredGroups();
 
-  const alreadyStored = storedGroups.some((sGroup) => sGroup.gid === groupData.gid);
+  const alreadyStored = storedGroups.some(
+    (sGroup) => sGroup.gid === groupData.gid,
+  );
 
   if (alreadyStored) {
     console.log("Group already stored");
@@ -278,7 +292,10 @@ export async function uploadStoredImages(): Promise<void> {
       const remainingUploads = storedUploads.filter(
         (item) => !successfulUploads.includes(item.id),
       );
-      await AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(remainingUploads));
+      await AsyncStorage.setItem(
+        IMAGE_STORAGE_KEY,
+        JSON.stringify(remainingUploads),
+      );
     }
 
     if (failedUploads.length === 0) {
@@ -357,7 +374,10 @@ export async function uploadStoredGroups(): Promise<void> {
       const remainingGroups = storedGroups.filter(
         (item) => !successfulGroups.includes(item.gid),
       );
-      await AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(remainingGroups));
+      await AsyncStorage.setItem(
+        GROUP_STORAGE_KEY,
+        JSON.stringify(remainingGroups),
+      );
     }
 
     if (failedGroups.length === 0) {
