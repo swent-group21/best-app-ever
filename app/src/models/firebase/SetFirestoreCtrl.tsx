@@ -181,15 +181,6 @@ export async function newGroup(groupData: DBGroup): Promise<void> {
   try {
     const networkState = await NetInfo.fetch();
     if (networkState.isConnected && networkState.isInternetReachable) {
-      const duplicate_query = query(
-        collection(firestore, "groups"),
-        where("gid", "==", groupData.gid),
-      );
-      const docSnap = await getDocs(duplicate_query);
-      if (!docSnap.empty) {
-        console.log("Group already exists");
-        return;
-      }
       await addDoc(collection(firestore, "groups"), groupData);
       return;
     }

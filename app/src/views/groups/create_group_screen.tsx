@@ -8,6 +8,7 @@ import { ThemedView } from "@/src/views/components/theme/themed_view";
 import CreateGroupViewModel from "@/src/viewmodels/groups/CreateGroupViewModel";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import Slider from "@react-native-community/slider";
+import { LoadingSplash } from "@/src/views/components/loading/loading_splash";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 
 const { width, height } = Dimensions.get("window");
@@ -30,21 +31,15 @@ export default function CreateGroupScreen({
     MIN_RADIUS,
     MAX_RADIUS,
     permission,
+    isLoading,
   } = CreateGroupViewModel({ user, navigation });
 
+  if (isLoading) {
+    return <LoadingSplash loading_text="Creating your group..." />;
+  }
+
   if (permission === "WAITING") {
-    return (
-      <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
-        <ThemedText
-          style={styles.title}
-          colorType="textPrimary"
-          type="title"
-          testID="permission-waiting-text"
-        >
-          Allow location to create a group
-        </ThemedText>
-      </ThemedView>
-    );
+    return <LoadingSplash loading_text="Getting location..." />;
   }
 
   if (permission === "REFUSED") {
@@ -62,8 +57,8 @@ export default function CreateGroupScreen({
           You need to allow location permissions to create a group.
         </ThemedText>
         <BottomBar
-          rightIcon="arrow-back"
-          rightAction={() => navigation.navigate("Home")}
+          leftIcon="arrow-back"
+          leftAction={() => navigation.navigate("Home")}
         />
       </ThemedView>
     );
@@ -173,6 +168,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     fontWeight: "600",
     paddingTop: 10,
+  },
+  permissionWaitingText: {
+    flex: 1,
+    textAlign: "center",
+    textAlignVertical: "center",
+    padding: 10,
   },
   permissionRefusedText: {
     flex: 1,
