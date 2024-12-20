@@ -42,6 +42,7 @@ const mockChallenge: DBChallenge = {
   date: new Date(),
   image_id: "test-image-id",
   challenge_description: "Challenge description",
+  group_id: "home",
 };
 
 const mockNavigation = {

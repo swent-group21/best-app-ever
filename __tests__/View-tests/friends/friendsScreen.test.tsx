@@ -1,8 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
-import { getAuth } from "firebase/auth";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 // Mock Firebase Auth
@@ -38,6 +37,13 @@ const mockFilteredUsers: DBUser[] = [
   },
 ];
 
+const mockUser: DBUser = {
+  uid: "test-user-id",
+  name: "Tester",
+  email: "tester@test.com",
+  createdAt: new Date(),
+};
+
 describe("FriendsScreen Tests - Various Scenarios", () => {
   const mockNavigation = {
     goBack: jest.fn(),
@@ -45,13 +51,6 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-
-    // Mock Firebase Auth
-    (getAuth as jest.Mock).mockReturnValue({
-      currentUser: {
-        uid: "test-user-id",
-      },
-    });
   });
 
   it("renders FriendsScreen with no requests and no friends", () => {
@@ -65,7 +64,9 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
+    const { getByText } = render(
+      <FriendsScreen navigation={mockNavigation} user={mockUser} />,
+    );
 
     expect(getByText("Your friends")).toBeTruthy();
     expect(getByText("Requests")).toBeTruthy();
@@ -85,7 +86,9 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
+    const { getByText } = render(
+      <FriendsScreen navigation={mockNavigation} user={mockUser} />,
+    );
 
     expect(getByText("Your friends")).toBeTruthy();
     expect(getByText("Friend 1")).toBeTruthy();
@@ -104,7 +107,9 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
+    const { getByText } = render(
+      <FriendsScreen navigation={mockNavigation} user={mockUser} />,
+    );
 
     expect(getByText("Strive is better with friends")).toBeTruthy();
     expect(getByText("Your friends")).toBeTruthy();
@@ -139,7 +144,9 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
+    const { getByText } = render(
+      <FriendsScreen navigation={mockNavigation} user={mockUser} />,
+    );
 
     // Vérifie que les suggestions sont affichées
     expect(getByText("Suggestions for you")).toBeTruthy();
@@ -159,7 +166,9 @@ describe("FriendsScreen Tests - Various Scenarios", () => {
       handleFriendPress: jest.fn(),
     });
 
-    const { getByText } = render(<FriendsScreen navigation={mockNavigation} />);
+    const { getByText } = render(
+      <FriendsScreen navigation={mockNavigation} user={mockUser} />,
+    );
 
     expect(getByText("Suggestions for you")).toBeTruthy();
   });

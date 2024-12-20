@@ -40,7 +40,7 @@ export const UserListItem = ({
   const { firstLetter, icon } = useFriendIconViewModel({ name, avatar });
 
   return (
-    <ThemedView style={styles.listItem}>
+    <ThemedView style={styles.listItem} testID={`user-list-item-${name}`}>
       {avatar ? (
         <Image source={{ uri: icon }} style={styles.avatar} />
       ) : (
@@ -60,7 +60,7 @@ export const UserListItem = ({
         <TouchableOpacity
           style={styles.addButton}
           onPress={handlePress}
-          testID={`add-button-${name}`}
+          testID={`handle-button-${name}`}
         >
           <ThemedText style={styles.addButtonText}>{status}</ThemedText>
         </TouchableOpacity>
