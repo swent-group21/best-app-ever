@@ -18,7 +18,11 @@ import {
   DBGroup,
   DBUser,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { getStoredImageById } from "@/src/models/firebase/LocalStorageCtrl";
+import {
+  getStoredChallenges,
+  getStoredImageById,
+  storeChallengeLocally,
+} from "@/src/models/firebase/LocalStorageCtrl";
 
 /**
  * Retrieves a user document from Firestore by UID.
@@ -137,6 +141,18 @@ export async function getChallengesByUserId(
   uid: string,
 ): Promise<DBChallenge[]> {
   try {
+    let userChallenges: DBChallenge[];
+    const localChallenges = await getStoredChallenges();
+    localChallenges.forEach((challenge) => {
+      if (challenge.uid == uid) {
+        userChallenges.push(challenge);
+      }
+    });
+
+    if (userChallenges.length != 0) {
+      return userChallenges;
+    }
+
     const challengesRef = collection(firestore, "challenges");
     const q = query(challengesRef, where("uid", "==", uid));
 
@@ -149,6 +165,11 @@ export async function getChallengesByUserId(
         date: data.date.toDate(),
       } as DBChallenge;
     });
+
+    challenges.forEach(
+      async (challenge) => await storeChallengeLocally(challenge),
+    );
+
     return challenges;
   } catch (error) {
     console.error("Error getting challenges by user ID: ", error);

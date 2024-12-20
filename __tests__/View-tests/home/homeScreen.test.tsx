@@ -357,7 +357,7 @@ describe("HomeScreen UI Tests", () => {
       <HomeScreen user={mockUser} navigation={mockNavigation} />,
     );
 
-    const postImage = getByTestId("challenge-id-First Challenge");
+    const postImage = getByTestId("challenge-id-0");
     fireEvent.press(postImage); // Simulate double-tap
     fireEvent.press(postImage); // Simulate double-tap
 
