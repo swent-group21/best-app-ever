@@ -24,7 +24,6 @@ export const createGroup = async (
   try {
     // Prepare the challenge data for Firestore
     const user: DBUser = await getUser();
-    console.log("createGroup uid", user.uid);
 
     const groupData: DBGroup = {
       name: name,

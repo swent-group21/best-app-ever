@@ -88,7 +88,7 @@ describe("Challenge Component", () => {
       />,
     );
 
-    expect(getByTestId("challenge-id-0")).toBeTruthy();
+    expect(getByTestId("challenge-id-challengeName")).toBeTruthy();
   });
 
   it("handles double click to like", async () => {
@@ -112,7 +112,7 @@ describe("Challenge Component", () => {
       />,
     );
 
-    const touchable = screen.getByTestId("challenge-id-0");
+    const touchable = screen.getByTestId("challenge-id-challengeName");
 
     fireEvent.press(touchable);
     fireEvent.press(touchable); // Simulate double-tap
