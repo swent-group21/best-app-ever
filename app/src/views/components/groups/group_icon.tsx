@@ -41,7 +41,7 @@ export default function GroupIcon({
           text={groupDB.name}
           textStyle={styles.titleText}
           textColorType="textOverLight"
-          testID="group-pressable-button"
+          testID={`group-pressable-button-${groupDB.name}`}
         ></ThemedTextButton>
       </ThemedView>
     );

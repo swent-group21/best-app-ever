@@ -17,10 +17,13 @@ import {
  * @param route : the route object
  * @returns : groupChallenges, otherGroups, groupName, groupChallengeTitle, and groupId
  */
-export default function useGroupScreenViewModel(
-  user: DBUser,
-  route: any,
-): {
+export default function useGroupScreenViewModel({
+  user,
+  route,
+}: {
+  user: DBUser;
+  route: any;
+}): {
   groupChallenges: DBChallenge[];
   otherGroups: DBGroup[];
   groupName: string;

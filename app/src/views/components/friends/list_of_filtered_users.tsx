@@ -9,7 +9,6 @@ import { useListOfFilteredUsersViewModel } from "@/src/viewmodels/components/fri
  * List of filtered users component
  * @param filteredUsers : list of users to display
  * @param searchText : text to search for
- * @param firestoreCtrl : firestore controller
  * @param uid : user id of the current user
  * @returns ListOfFilteredUsers Component
  */

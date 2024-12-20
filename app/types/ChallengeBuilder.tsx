@@ -1,5 +1,5 @@
 import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
-import { GeoPoint } from "@/src/models/firebase/Firebase";
+import { GeoPoint } from "firebase/firestore";
 import { LocationObject } from "expo-location";
 import { getImageUrl, getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 import {
@@ -9,7 +9,6 @@ import {
 
 /**
  * Used to create a Challenge and store it in Firestore DB
- * @param firestoreCtrl : FirestoreCtrl object
  * @param challenge_name : the name of the challenge
  * @param description : the description of the challenge
  * @param location : the location of the challenge

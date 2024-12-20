@@ -32,4 +32,5 @@ export type RootStackParamList = {
   Memories: {
     user: DBUser;
   };
+  JoinGroup: undefined;
 };

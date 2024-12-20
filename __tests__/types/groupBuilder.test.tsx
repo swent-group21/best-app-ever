@@ -1,6 +1,7 @@
 import * as GetFirestoreCtrl from "@/src/models/firebase/GetFirestoreCtrl";
 import * as SetFirestoreCtrl from "@/src/models/firebase/SetFirestoreCtrl";
 import { createGroup } from "@/types/GroupBuilder";
+import { getUser } from "@/src/models/firebase/GetFirestoreCtrl";
 
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
   getUser: jest.fn().mockResolvedValue({
@@ -11,14 +12,12 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   newGroup: jest.fn().mockResolvedValue({ name: "Test Group" }),
-  addGroupToMemberGroups: jest.fn().mockResolvedValue({ name: "Test Group" }),
+  addGroupToUser: jest.fn().mockResolvedValue({ name: "Test Group" }),
 }));
 
 describe("createGroup Function", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-
-    // Mock methods with appropriate return values
   });
 
   it("creates a group successfully and assigns it to the user", async () => {
@@ -46,8 +45,7 @@ describe("createGroup Function", () => {
       location: null,
       radius: 100,
     });
-
-    expect(SetFirestoreCtrl.addGroupToMemberGroups).toHaveBeenCalledWith(
+    expect(SetFirestoreCtrl.addGroupToUser).toHaveBeenCalledWith(
       "user-123",
       groupName,
     );
