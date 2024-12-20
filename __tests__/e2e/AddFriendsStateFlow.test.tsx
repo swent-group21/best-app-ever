@@ -342,7 +342,9 @@ describe("Send a friend request that is accepted and comment a friend's post", (
     fireEvent.press(testerNavigation2.getByTestId("friends-button"));
 
     // Verify the Friend's post is displayed
-    expect(testerNavigation2.getByTestId("challenge-id-0")).toBeTruthy();
+    expect(
+      testerNavigation2.getByTestId("challenge-id-Home Challenge Test Caption"),
+    ).toBeTruthy();
 
     // Simulate user wanting to comment the friend's post
     fireEvent.press(testerNavigation2.getByTestId("add-a-comment"));

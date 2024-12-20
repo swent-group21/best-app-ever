@@ -52,7 +52,11 @@ export default function SetUsernameScreen({
         automaticallyAdjustKeyboardInsets={true}
         colorType="transparent"
       >
-        <ThemedView style={styles.smallContainer} colorType="transparent">
+        <ThemedView
+          style={styles.smallContainer}
+          colorType="transparent"
+          testID="set-up-screen"
+        >
           <TouchableOpacity
             onPress={pickImage}
             style={styles.smallContainer}
