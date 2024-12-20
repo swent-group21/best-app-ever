@@ -106,8 +106,8 @@ describe("HomeScreen UI Tests", () => {
       expect(getByText("Group 2")).toBeTruthy();
 
       // Vérifie si les défis s'affichent
-      expect(getByTestId("challenge-id-Challenge 1")).toBeTruthy();
-      expect(getByTestId("challenge-id-Challenge 2")).toBeTruthy();
+      expect(getByTestId("challenge-id-0")).toBeTruthy();
+      expect(getByTestId("challenge-id-1")).toBeTruthy();
 
       // Vérifie le défi actuel
       expect(getByText("Current Challenge")).toBeTruthy();
