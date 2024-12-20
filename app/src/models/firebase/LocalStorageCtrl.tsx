@@ -6,6 +6,7 @@ import {
   DBGroup,
   DBComment,
   DBChallenge,
+  DBUser,
 } from "@/src/models/firebase/TypeFirestoreCtrl";
 import {
   newChallenge,
@@ -14,12 +15,13 @@ import {
 } from "@/src/models/firebase/SetFirestoreCtrl";
 
 // Unique keys for AsyncStorage
+const USER_STORAGE_KEY = "@user";
 const CHALLENGE_STORAGE_KEY = "@challenges";
 const GROUP_STORAGE_KEY = "@groups";
 const IMAGE_STORAGE_KEY = "@images";
 const COMMENT_STORAGE_KEY = "@comment";
 
-// Default: no need to upload anything
+// Flag to prevent multiple simultaneous uploads
 let uploadTaskScheduled: boolean = false;
 
 /**
@@ -36,50 +38,79 @@ export async function getUploadTaskScheduled() {
   return uploadTaskScheduled;
 }
 
-/*
- * Background checker
+// Variable to hold the network state listener unsubscribe function
+let networkListenerUnsubscribe: (() => void) | null = null;
+
+/**
+ * Starts listening for network connectivity changes.
  */
-export async function backgroundTask() {
-  while (true) {
-    try {
-      const networkState = await NetInfo.fetch();
-      console.log(
-        "NetworkStart: ",
-        networkState.isConnected,
-        networkState.isInternetReachable,
-      );
-      if (
-        networkState.isConnected &&
-        networkState.isInternetReachable &&
-        getUploadTaskScheduled()
-      ) {
-        console.log("Starting scheduled upload task...");
-        await scheduleUploadTask();
-        setUploadTaskScheduled(false); // Reset the flag after task completion
-        console.log(
-          "Scheduled upload task completed. uploadTaskScheduled set to false.",
-        );
+export function startNetworkListener() {
+  if (networkListenerUnsubscribe) {
+    // Listener already set up
+    return;
+  }
+
+  networkListenerUnsubscribe = NetInfo.addEventListener(async (state) => {
+    console.log("Network state change:", state);
+
+    if (state.isConnected && state.isInternetReachable) {
+      console.log("Network is connected and internet is reachable.");
+
+      if (uploadTaskScheduled) {
+        const hasTasks = await checkIfThereAreStoredTasks();
+        if (hasTasks) {
+          uploadStoredTasks();
+        }
       }
-      await new Promise((resolve) => setTimeout(resolve, 5000)); // Check every 5 seconds
-    } catch (error) {
-      console.error("Error in background task:", error);
-      await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait even on error to avoid busy loop
     }
+  });
+}
+
+/**
+ * Stops listening for network connectivity changes.
+ */
+export function stopNetworkListener() {
+  if (networkListenerUnsubscribe) {
+    networkListenerUnsubscribe();
+    networkListenerUnsubscribe = null;
   }
 }
 
-/*
- * Function to start the uploading task
+/**
+ * Checks if there are any tasks stored locally that need to be uploaded.
  */
-export async function scheduleUploadTask() {
+async function checkIfThereAreStoredTasks(): Promise<boolean> {
+  const storedImages = await getStoredImageUploads();
+  const storedChallenges = await getStoredChallenges();
+  const storedGroups = await getStoredGroups();
+  // Add checks for other stored tasks if needed.
+  return (
+    (storedImages && storedImages.length > 0) ||
+    (storedChallenges && storedChallenges.length > 0) ||
+    (storedGroups && storedGroups.length > 0)
+  );
+}
+
+/**
+ * Uploads all stored tasks (images, challenges, groups).
+ */
+async function uploadStoredTasks() {
+  if (uploadTaskScheduled) {
+    console.log("Upload already in progress.");
+    return;
+  }
+  uploadTaskScheduled = true;
+
   try {
+    console.log("Starting to upload stored tasks...");
     await uploadStoredImages();
     await uploadStoredChallenges();
     await uploadStoredGroups();
-
-    console.log("Background upload task finished successfully");
+    console.log("All stored tasks uploaded.");
   } catch (error) {
-    console.error("Error in background task:", error);
+    console.error("Error uploading stored tasks:", error);
+  } finally {
+    uploadTaskScheduled = false;
   }
 }
 
@@ -116,10 +147,42 @@ export async function getStoredImageById(img_id): Promise<any> {
   return img_uri;
 }
 
+export async function getStoredUser(): Promise<DBUser | null> {
+  try {
+    const userString = await AsyncStorage.getItem(USER_STORAGE_KEY);
+    return userString !== null ? (JSON.parse(userString) as DBUser) : null;
+  } catch (e) {
+    console.error("Failed to fetch user from storage", e);
+    return null;
+  }
+}
+
+/**
+ * Removes the user from AsyncStorage.
+ */
+export async function removeUserLocally(): Promise<void> {
+  try {
+    await AsyncStorage.removeItem(USER_STORAGE_KEY);
+    console.log("Removed User");
+  } catch (e) {
+    console.error("Failed to remove user from storage", e);
+  }
+}
+
+/**
+ * Stores user in AsyncStorage.
+ */
+export async function storeUserLocally(user: DBUser): Promise<void> {
+  try {
+    await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+  } catch (e) {
+    console.error("Failed to save user role to storage", e);
+  }
+}
+
 /**
  * Stores image upload data in AsyncStorage.
  * @param id_picture The id of the image to upload.
- * @returns The download URL of the image.
  */
 export async function storeImageLocally(id_picture: string): Promise<void> {
   const localUri = `${FileSystem.cacheDirectory}${id_picture}`;
@@ -127,7 +190,10 @@ export async function storeImageLocally(id_picture: string): Promise<void> {
     const uploadData = { id: id_picture, uri: localUri };
     const storedUploads = (await getStoredImageUploads()) || [];
     storedUploads.push(uploadData);
-    AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(storedUploads));
+    await AsyncStorage.setItem(
+      IMAGE_STORAGE_KEY,
+      JSON.stringify(storedUploads),
+    );
     console.log("Image upload data stored locally:", uploadData);
   } catch (error) {
     console.error("Error storing image upload data:", error);
@@ -135,20 +201,22 @@ export async function storeImageLocally(id_picture: string): Promise<void> {
 }
 
 /**
- *
- * Store Challenge into the local cache
- *
+ * Stores Challenge into the local cache.
  */
 export async function storeChallengeLocally(
   challengeData: DBChallenge,
 ): Promise<void> {
   const storedChallenges = await getStoredChallenges();
-  storedChallenges.forEach((sChallenge) => {
-    if (sChallenge.challenge_id == challengeData.challenge_id) {
-      console.log("Challenge already stored.");
-      return;
-    }
+
+  const alreadyStored = storedChallenges.some((sChallenge) => {
+    return sChallenge.challenge_id === challengeData.challenge_id;
   });
+
+  if (alreadyStored) {
+    console.log("Challenge already stored.");
+    return;
+  }
+
   storedChallenges.push(challengeData);
   await AsyncStorage.setItem(
     CHALLENGE_STORAGE_KEY,
@@ -157,38 +225,40 @@ export async function storeChallengeLocally(
 }
 
 /**
- *
- * Store Group into the local cache
- *
+ * Stores Group into the local cache.
  */
 export async function storeGroupLocally(groupData: DBGroup): Promise<void> {
   const storedGroups: DBGroup[] = await getStoredGroups();
-  storedGroups.forEach((sGroup) => {
-    if (sGroup.gid == groupData.gid) {
-      console.log("Group already stored");
-      return;
-    }
-  });
+
+  const alreadyStored = storedGroups.some(
+    (sGroup) => sGroup.gid === groupData.gid,
+  );
+
+  if (alreadyStored) {
+    console.log("Group already stored");
+    return;
+  }
 
   storedGroups.push(groupData);
   await AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(storedGroups));
 }
 
 /**
- *
- * Store Comment into the local cache
- *
+ * Stores Comment into the local cache.
  */
 export async function storeCommentLocally(
   commentData: DBComment,
 ): Promise<void> {
   const storedComments = await getStoredComments();
-  storedComments.forEach((sComment) => {
-    if (sComment.created_at == commentData.created_at) {
-      console.log("Comment already stored.");
-      return;
-    }
-  });
+
+  const alreadyStored = storedComments.some(
+    (sComment) => sComment.created_at === commentData.created_at,
+  );
+
+  if (alreadyStored) {
+    console.log("Comment already stored.");
+    return;
+  }
 
   storedComments.push(commentData);
   await AsyncStorage.setItem(
@@ -204,24 +274,35 @@ export async function uploadStoredImages(): Promise<void> {
   const storedUploads = await getStoredImageUploads();
 
   if (storedUploads && storedUploads.length > 0) {
+    const failedUploads = [];
+    const successfulUploads = [];
+
     for (const upload of storedUploads) {
       try {
-        //Attempt to upload to firestore
         await uploadImage(undefined, upload.id);
-
-        // Remove the successfully uploaded image from AsyncStorage
-        const updatedUploads = storedUploads.filter(
-          (item) => item.id !== upload.id,
-        );
-
-        AsyncStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(updatedUploads));
+        successfulUploads.push(upload.id);
       } catch (error) {
         console.error("Error uploading stored image:", error, upload);
-        //If fails to upload because of any reason stop the loop and wait for the next background trigger
-        return;
+        failedUploads.push(upload);
       }
     }
-    console.log("Local images uploaded and cleared");
+
+    if (successfulUploads.length > 0) {
+      // Remove the successfully uploaded images from AsyncStorage
+      const remainingUploads = storedUploads.filter(
+        (item) => !successfulUploads.includes(item.id),
+      );
+      await AsyncStorage.setItem(
+        IMAGE_STORAGE_KEY,
+        JSON.stringify(remainingUploads),
+      );
+    }
+
+    if (failedUploads.length === 0) {
+      console.log("Local images uploaded and cleared");
+    } else {
+      console.log("Some images failed to upload. Will retry later.");
+    }
   } else {
     console.log("No stored images to upload.");
   }
@@ -233,26 +314,36 @@ export async function uploadStoredImages(): Promise<void> {
 export async function uploadStoredChallenges(): Promise<void> {
   const storedChallenges: DBChallenge[] = await getStoredChallenges();
   if (storedChallenges && storedChallenges.length > 0) {
+    const failedChallenges = [];
+    const successfulChallenges = [];
+
     for (const challenge of storedChallenges) {
       try {
-        //Attempt to upload to firestore
         await newChallenge(challenge);
         console.log("Stored challenge uploaded:", challenge.challenge_id);
-        // Remove the successfully uploaded challenge from AsyncStorage
-        const updatedChallenges = storedChallenges.filter(
-          (item) => item.challenge_id !== challenge.challenge_id,
-        );
-        AsyncStorage.setItem(
-          CHALLENGE_STORAGE_KEY,
-          JSON.stringify(updatedChallenges),
-        );
+        successfulChallenges.push(challenge.challenge_id);
       } catch (error) {
         console.error("Error uploading stored challenge:", error, challenge);
-        //If fails to upload because of any reason stop the loop and wait for the next background trigger
-        return;
+        failedChallenges.push(challenge);
       }
     }
-    console.log("Local challenges uploaded and cleared");
+
+    if (successfulChallenges.length > 0) {
+      // Remove the successfully uploaded challenges from AsyncStorage
+      const remainingChallenges = storedChallenges.filter(
+        (item) => !successfulChallenges.includes(item.challenge_id),
+      );
+      await AsyncStorage.setItem(
+        CHALLENGE_STORAGE_KEY,
+        JSON.stringify(remainingChallenges),
+      );
+    }
+
+    if (failedChallenges.length === 0) {
+      console.log("Local challenges uploaded and cleared");
+    } else {
+      console.log("Some challenges failed to upload. Will retry later.");
+    }
   } else {
     console.log("No stored challenges to upload.");
   }
@@ -264,23 +355,36 @@ export async function uploadStoredChallenges(): Promise<void> {
 export async function uploadStoredGroups(): Promise<void> {
   const storedGroups = await getStoredGroups();
   if (storedGroups && storedGroups.length > 0) {
+    const failedGroups = [];
+    const successfulGroups = [];
+
     for (const group of storedGroups) {
       try {
-        //Attempt to upload to firestore
         await newGroup(group);
         console.log("Stored group uploaded:", group.gid);
-        // Remove the successfully uploaded group from AsyncStorage
-        const updatedGroups = storedGroups.filter(
-          (item) => item.gid !== group.gid,
-        );
-        AsyncStorage.setItem(GROUP_STORAGE_KEY, JSON.stringify(updatedGroups));
+        successfulGroups.push(group.gid);
       } catch (error) {
         console.error("Error uploading stored group:", error, group);
-        //If fails to upload because of any reason stop the loop and wait for the next background trigger
-        return;
+        failedGroups.push(group);
       }
     }
-    console.log("Local groups uploaded and cleared");
+
+    if (successfulGroups.length > 0) {
+      // Remove the successfully uploaded groups from AsyncStorage
+      const remainingGroups = storedGroups.filter(
+        (item) => !successfulGroups.includes(item.gid),
+      );
+      await AsyncStorage.setItem(
+        GROUP_STORAGE_KEY,
+        JSON.stringify(remainingGroups),
+      );
+    }
+
+    if (failedGroups.length === 0) {
+      console.log("Local groups uploaded and cleared");
+    } else {
+      console.log("Some groups failed to upload. Will retry later.");
+    }
   } else {
     console.log("No stored groups to upload.");
   }

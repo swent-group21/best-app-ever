@@ -64,9 +64,7 @@ describe("Challenge Component - Guest User Restrictions", () => {
       />,
     );
 
-    const challengeContainer = getByTestId(
-      "challenge-id-Test Challenge Caption",
-    );
+    const challengeContainer = getByTestId("challenge-id-0");
     fireEvent.press(challengeContainer);
     fireEvent.press(challengeContainer); // Simulate double-tap
 

@@ -37,12 +37,12 @@ export const UserListItem = ({
     onAdd,
     onCancelRequest,
   });
-  const { firstLetter } = useFriendIconViewModel({ name });
+  const { firstLetter, icon } = useFriendIconViewModel({ name, avatar });
 
   return (
     <ThemedView style={styles.listItem} testID={`user-list-item-${name}`}>
       {avatar ? (
-        <Image source={{ uri: avatar }} style={styles.avatar} />
+        <Image source={{ uri: icon }} style={styles.avatar} />
       ) : (
         <ThemedView style={[styles.avatar, styles.defaultAvatar]}>
           {/* Display the first letter of the user's name */}

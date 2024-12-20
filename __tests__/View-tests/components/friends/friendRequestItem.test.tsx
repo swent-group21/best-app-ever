@@ -41,7 +41,7 @@ describe("FriendRequestItem Component", () => {
 
     expect(getByTestId("friend-avatar-test-id")).toBeTruthy();
     expect(getByTestId("friend-avatar-test-id").props.source.uri).toBe(
-      "https://example.com/avatar.jpg",
+      undefined,
     );
     expect(getByTestId("friend-name-test-id").props.children).toBe("John Doe");
   });

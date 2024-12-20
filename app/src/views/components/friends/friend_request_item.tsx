@@ -20,13 +20,13 @@ export function FriendRequestItem({
   onDecline,
   testID,
 }: any) {
-  const { firstLetter } = useFriendIconViewModel({ name });
+  const { firstLetter, icon } = useFriendIconViewModel({ name, avatar });
 
   return (
     <ThemedView style={styles.requestItem} testID="friend-request-item">
       {Boolean(avatar) ? (
         <Image
-          source={{ uri: avatar }}
+          source={{ uri: icon }}
           style={styles.avatar}
           testID={`friend-avatar-${testID}`}
         />

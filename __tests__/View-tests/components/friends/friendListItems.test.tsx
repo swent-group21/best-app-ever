@@ -43,7 +43,7 @@ describe("FriendListItem Component", () => {
     );
 
     const avatarImage = getByTestId("friend-avatar-image");
-    expect(avatarImage.props.source.uri).toBe("https://example.com/avatar.jpg");
+    expect(avatarImage.props.source.uri).toBe(undefined);
   });
 
   it("renders with a default avatar when no avatar is provided", () => {

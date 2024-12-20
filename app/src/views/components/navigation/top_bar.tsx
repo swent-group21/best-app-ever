@@ -110,7 +110,7 @@ export function TopBar({
   );
 
   return (
-    <View style={styles.container} testID="topBar">
+    <View style={styles.container} testID="top-bar">
       {leftContent}
       {Boolean(title) && (
         <ThemedText

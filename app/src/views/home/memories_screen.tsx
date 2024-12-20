@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import {
   Animated,
+  ViewStyle,
   Dimensions,
   StyleSheet,
   NativeScrollEvent,
@@ -10,40 +11,26 @@ import {
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { Challenge } from "@/src/views/components/posts/challenge";
-import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
-import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { ThemedText } from "@/src/views/components/theme/themed_text";
-import { ThemedTextButton } from "@/src/views/components/theme/themed_text_button";
-import { useHomeScreenViewModel } from "@/src/viewmodels/home/HomeScreenViewModel";
-import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
-import GroupIcon from "@/src/views/components/groups/group_icon";
+import { useMemoriesViewModel } from "@/src/viewmodels/home/MemoriesScreenViewModel";
 
 const { width, height } = Dimensions.get("window");
 
-export default function HomeScreen({
-  user,
+export default function MemoriesScreen({
   navigation,
+  route,
 }: {
-  readonly user: DBUser;
   readonly navigation: any;
+  readonly route: any;
 }) {
-  const {
-    userIsGuest,
-    challenges,
-    groups,
-    titleChallenge,
-    navigateToProfile,
-    navigateToMap,
-    navigateToCamera,
-    navigateToFriends,
-    navigateToMemories,
-    challengesFromFriends,
-    icon,
-  } = useHomeScreenViewModel(user, navigation);
+  const user = route.params?.user;
+  console.log("User in MemoriesScreen: ", user);
+  const { userIsGuest, challenges, icon } = useMemoriesViewModel(
+    user,
+    navigation,
+  );
 
-  const [filterByFriends, setFilterByFriends] = useState(false);
   const [showGuestPopup, setShowGuestPopup] = useState<string | null>(null);
 
   // Animation for hiding groups
@@ -51,17 +38,6 @@ export default function HomeScreen({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleThreshold = 100; // Distance to toggle the groups visibility
-
-  const underlineAnim = useRef(new Animated.Value(0)).current;
-
-  const handleFilterChange = (isFriends: boolean) => {
-    Animated.timing(underlineAnim, {
-      toValue: isFriends ? width * 0.5 : 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-    setFilterByFriends(isFriends);
-  };
 
   const handleScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = e.nativeEvent.contentOffset.y;
@@ -77,16 +53,6 @@ export default function HomeScreen({
     }
   };
 
-  const groupOpacity = scrollY.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0],
-  });
-
-  const groupHeight = scrollY.interpolate({
-    inputRange: [0, 1],
-    outputRange: [height * 0.18, 0],
-  });
-
   // Handle restricted navigation for guest users
   const handleRestrictedAccess = (screenName: string) => {
     if (userIsGuest) {
@@ -96,13 +62,8 @@ export default function HomeScreen({
     }
   };
 
-  // Determine displayed challenges
-  const displayedChallenges = filterByFriends
-    ? challengesFromFriends
-    : challenges;
-
   return (
-    <ThemedView style={styles.bigContainer} testID="home-screen">
+    <ThemedView style={styles.bigContainer} testID="memories-screen">
       <TopBar
         title="Strive"
         leftIcon="people-outline"
@@ -114,87 +75,10 @@ export default function HomeScreen({
         testID="top-bar"
       />
 
-      {/* Groups with snapping animation */}
-      <Animated.View
-        style={[
-          styles.groupsContainer,
-          {
-            opacity: groupOpacity,
-            height: groupHeight,
-          },
-        ]}
-      >
-        <ThemedScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {groups.map((group, index) => (
-            <GroupIcon
-              groupDB={group}
-              index={index}
-              navigation={navigation}
-              key={index}
-              testID={`group-id-${group.name}`}
-            />
-          ))}
-          <ThemedView
-            style={styles.createGroupContainer}
-            testID="join-group-button"
-          >
-            <ThemedTextButton
-              style={styles.createGroupButton}
-              onPress={() =>
-                userIsGuest
-                  ? handleRestrictedAccess("JoinGroup")
-                  : navigation.navigate("JoinGroup")
-              }
-              text="+"
-              textStyle={styles.createGroupText}
-              textColorType="textOverLight"
-              colorType="backgroundSecondary"
-              testID="join-group-pressable-button"
-            />
-          </ThemedView>
-        </ThemedScrollView>
-      </Animated.View>
-
-      {/* Filter Buttons with Underline */}
-      <ThemedView style={styles.filterContainer}>
-        <TouchableOpacity
-          onPress={() => handleFilterChange(false)}
-          style={styles.filterButton}
-        >
-          <ThemedText
-            style={[
-              styles.filterText,
-              !filterByFriends && styles.activeFilterText,
-            ]}
-            testID="all-posts-button"
-          >
-            All Posts
-          </ThemedText>
-          {!filterByFriends && <Animated.View style={[styles.underline]} />}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleFilterChange(true)}
-          style={styles.filterButton}
-        >
-          <ThemedText
-            style={[
-              styles.filterText,
-              filterByFriends && styles.activeFilterText,
-            ]}
-            testID="friends-button"
-          >
-            My Friends
-          </ThemedText>
-          {filterByFriends && <Animated.View style={[styles.underline]} />}
-        </TouchableOpacity>
-      </ThemedView>
-
       {/* Challenges */}
       <Animated.FlatList
         testID="scroll-view"
-        data={
-          userIsGuest ? displayedChallenges.slice(0, 10) : displayedChallenges
-        }
+        data={challenges}
         onScrollEndDrag={handleScrollEnd}
         keyExtractor={(item, index) => `challenge-${index}`}
         renderItem={({ item, index }) => (
@@ -202,17 +86,20 @@ export default function HomeScreen({
             navigation={navigation}
             challengeDB={item}
             key={index}
-            testID={`component-challenge-id-${index}`}
+            testID={`challenge-id-${index}`}
             currentUser={user}
             index={index}
           />
         )}
         ListHeaderComponent={
-          <ChallengeDescription
-            dBChallengeDescription={titleChallenge}
-            onTimerFinished={() => ({})}
-            testID={`description-id`}
-          />
+          <ThemedView testID="user-header" style={styles.userHeader}>
+            <ThemedText style={{ fontSize: 20, fontWeight: "bold" }}>
+              {user.name}
+            </ThemedText>
+            <ThemedText style={{ fontSize: 15, fontWeight: "bold" }}>
+              {user.email}
+            </ThemedText>
+          </ThemedView>
         }
         ListFooterComponent={
           userIsGuest && (
@@ -222,7 +109,7 @@ export default function HomeScreen({
               </ThemedText>
               <TouchableOpacity
                 style={styles.signUpButton}
-                onPress={() => navigation.navigate("WelcomeFinal")}
+                onPress={() => navigation.navigate("SignUp")}
               >
                 <ThemedText style={styles.signUpButtonText}>Sign Up</ThemedText>
               </TouchableOpacity>
@@ -239,7 +126,7 @@ export default function HomeScreen({
 
       {/* Guest User Pop-Up */}
       {showGuestPopup && (
-        <Animated.View style={styles.guestPopup} testID="guest-pop-up-id">
+        <Animated.View style={styles.guestPopup}>
           <ThemedText style={styles.popupText}>
             {showGuestPopup === "Profile"
               ? "Sign up to create your profile!"
@@ -248,9 +135,8 @@ export default function HomeScreen({
                 : "Access exclusive features with an account!"}
           </ThemedText>
           <TouchableOpacity
-            onPress={() => navigation.navigate("WelcomeFinal")}
+            onPress={() => navigation.navigate("SignUp")}
             style={styles.popupButton}
-            testID="guest-sign-up-id"
           >
             <ThemedText style={styles.popupButtonText}>Sign Up</ThemedText>
           </TouchableOpacity>
@@ -262,30 +148,6 @@ export default function HomeScreen({
           </TouchableOpacity>
         </Animated.View>
       )}
-
-      <BottomBar
-        leftIcon="map-outline"
-        centerIcon="camera-outline"
-        rightIcon="trophy-outline"
-        leftAction={() => handleRestrictedAccess("MapScreen")}
-        centerAction={() => {
-          if (userIsGuest) {
-            setShowGuestPopup("Camera");
-          } else {
-            navigateToCamera();
-          }
-        }}
-        rightAction={() => {
-          if (userIsGuest) {
-            setShowGuestPopup("Camera");
-          } else {
-            navigation.navigate("Memories", {
-              navigation,
-              user: user,
-            });
-          }
-        }}
-      />
     </ThemedView>
   );
 }
@@ -410,5 +272,13 @@ const styles = StyleSheet.create({
     height: 2,
     width: 0.2 * width,
     backgroundColor: "#fff",
+  },
+  userHeader: {
+    width: width - 20,
+    height: 0.2 * height,
+    borderRadius: 15,
+    backgroundColor: "transparent",
+    justifyContent: "center" as ViewStyle["justifyContent"],
+    alignItems: "center" as ViewStyle["alignItems"],
   },
 });

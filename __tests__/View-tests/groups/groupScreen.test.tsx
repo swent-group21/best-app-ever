@@ -131,8 +131,8 @@ describe("Group Screen renders challenges", () => {
       <GroupScreen user={mockUser} navigation={{}} route={{}} />,
     );
     await waitFor(() => {
-      expect(getByTestId("challenge-id-Challenge Test 1")).toBeTruthy();
-      expect(getByTestId("challenge-id-Challenge Test 2")).toBeTruthy();
+      expect(getByTestId("challenge-id-0")).toBeTruthy();
+      expect(getByTestId("challenge-id-1")).toBeTruthy();
     });
   });
 });

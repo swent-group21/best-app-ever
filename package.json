@@ -32,6 +32,7 @@
     "@react-navigation/native-stack": "^7.1.1",
     "@react-navigation/stack": "^7.0.2",
     "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react": "^16.1.0",
     "@testing-library/react-native": "^12.8.1",
     "expo": "^52.0.9",
     "expo-auth-session": "~6.0.0",

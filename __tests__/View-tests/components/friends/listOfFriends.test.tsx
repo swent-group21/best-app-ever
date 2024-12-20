@@ -3,6 +3,10 @@ import { render, fireEvent } from "@testing-library/react-native";
 import ListOfFriends from "@/src/views/components/friends/list_of_friends";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  getImageUrl: jest.fn().mockResolvedValue("image_url"),
+}));
+
 describe("ListOfFriends", () => {
   const mockFriends: DBUser[] = [
     {

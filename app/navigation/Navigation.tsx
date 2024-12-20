@@ -18,6 +18,7 @@ import FriendsScreen from "@/src/views/friends/friends_screen";
 import { NavigationContainer } from "@react-navigation/native";
 import CreateGroupScreen from "@/src/views/groups/create_group_screen";
 import GroupScreen from "@/src/views/groups/group_screen";
+import MemoriesScreen from "@/src/views/home/memories_screen";
 import JoinGroupScreen from "@/src/views/groups/join_group_screen";
 
 const { Navigator, Screen, Group } =
@@ -111,7 +112,9 @@ export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, setUser }) => {
           <Screen name="CreateGroup">
             {(props: any) => <CreateGroupScreen {...props} user={user} />}
           </Screen>
-
+          <Screen name="Memories">
+            {(props: any) => <MemoriesScreen {...props} />}
+          </Screen>
           <Screen name="JoinGroup">
             {(props: any) => <JoinGroupScreen {...props} user={user} />}
           </Screen>

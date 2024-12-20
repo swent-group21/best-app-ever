@@ -12,6 +12,7 @@ import {
   getLikesOf,
   getUser,
 } from "@/src/models/firebase/GetFirestoreCtrl";
+
 import {
   appendComment,
   updateLikesOf,
@@ -98,16 +99,14 @@ export function useMaximizeScreenViewModel(
   };
 
   useEffect(() => {
-    if (user.image_id !== undefined || user.image_id == null) {
-      fetchImgUrl(user.image_id).then(setIcon);
-    }
-  }, [user]);
-
-  useEffect(() => {
     if (challenge.image_id) {
       fetchImgUrl(challenge.image_id).then(setImage);
     }
   }, [challenge.image_id]);
+
+  useEffect(() => {
+    postUser?.image_id ? fetchImgUrl(postUser.image_id).then(setIcon) : "";
+  }, [postUser]);
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
