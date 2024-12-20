@@ -127,8 +127,7 @@ export default function MaximizeScreen({
         </ThemedView>
 
         {/* Post Image with Double Tap */}
-        <TouchableWithoutFeedback
-        >
+        <TouchableWithoutFeedback>
           <ThemedView style={styles.imageContainer}>
             <Image
               testID="post-image"
@@ -188,7 +187,7 @@ export default function MaximizeScreen({
         {/* Comment List */}
         <ThemedView style={styles.commentList} colorType="transparent">
           {commentList.length === 0 ? (
-            <ThemedText style={{paddingLeft: 25}}>No comments yet</ThemedText>
+            <ThemedText style={{ paddingLeft: 25 }}>No comments yet</ThemedText>
           ) : (
             commentList.map((comment, index) => (
               <SingleComment
