@@ -26,13 +26,19 @@ export default function MapScreen({
   // Gets the first location and the challenge area from the route parameters, if they exist
   const { location: firstLocation, challengeArea: geoRestriction } =
     route.params || {};
+  const group_id = route.params?.group_id ?? "home";
   const {
     userLocation,
     challengesWithLocation,
     navigateGoBack,
     challengeArea,
     isLoading,
-  } = useMapScreenViewModel(navigation, firstLocation, geoRestriction);
+  } = useMapScreenViewModel(
+    navigation,
+    firstLocation,
+    geoRestriction,
+    group_id,
+  );
 
   if (isLoading) {
     return <LoadingSplash loading_text="Loading, this may take some time..." />;

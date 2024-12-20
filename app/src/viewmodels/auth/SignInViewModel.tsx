@@ -4,7 +4,6 @@ import { logInWithEmail } from "@/types/Auth";
 
 /**
  * ViewModel for the SignIn screen
- * @param firestoreCtrl : FirestoreCtrl object
  * @param navigation : navigation object
  * @param setUser : set user object
  * @returns : functions for the SignIn screen

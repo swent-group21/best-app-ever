@@ -5,10 +5,11 @@ import { ThemedText } from "@/src/views/components/theme/themed_text";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";
 import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
-import CreateGroupViewModel from "@/src/viewmodels/group/CreateGroupViewModel";
+import CreateGroupViewModel from "@/src/viewmodels/groups/CreateGroupViewModel";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import Slider from "@react-native-community/slider";
-import { LoadingSplash } from "../components/loading/loading_splash";
+import { LoadingSplash } from "@/src/views/components/loading/loading_splash";
+import { TopBar } from "@/src/views/components/navigation/top_bar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -65,6 +66,8 @@ export default function CreateGroupScreen({
 
   return (
     <ThemedView style={styles.createGroupScreen} testID="create-group-screen">
+      <TopBar leftIcon="arrow-back" leftAction={navigation.goBack} />
+
       {/* Title */}
       <ThemedText
         style={styles.title}

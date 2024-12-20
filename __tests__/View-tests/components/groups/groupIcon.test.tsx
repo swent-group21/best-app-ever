@@ -1,6 +1,6 @@
 import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react-native";
-import GroupIcon from "@/src/views/components/navigation/group_icon";
+import GroupIcon from "@/src/views/components/groups/group_icon";
 import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 describe("GroupIcon Component", () => {
@@ -57,7 +57,7 @@ describe("GroupIcon Component", () => {
 
     // Press the icons
     await waitFor(() => {
-      fireEvent.press(getByTestId("group-pressable-button"));
+      fireEvent.press(getByTestId("group-pressable-button-groupName"));
     });
 
     // Check if the onPress method has been called

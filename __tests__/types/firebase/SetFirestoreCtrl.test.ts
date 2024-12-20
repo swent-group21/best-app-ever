@@ -14,7 +14,7 @@ import {
   newChallenge,
   newGroup,
   updateGroup,
-  addGroupToMemberGroups,
+  addGroupToUser,
   appendComment,
   updateLikesOf,
   addFriend,
@@ -584,16 +584,19 @@ describe("SetFirestoreCtrl", () => {
     });
   });
 
-  describe("addGroupToMemberGroups", () => {
-    it("should handle errors when adding group to member groups", async () => {
+  describe("addGroupToUser", () => {
+    it("should handle errors when adding group to user's groups", async () => {
       const error = new Error("Update error");
       jest
         .spyOn(Firebase, "updateDoc")
         .mockImplementationOnce((): Promise<any> => Promise.reject(error));
 
-      await addGroupToMemberGroups("testUserId", "Test Group");
+      await addGroupToUser("testUserId", "Test Group");
 
-      expect(console.error).toHaveBeenCalledWith("Error setting name: ", error);
+      expect(console.error).toHaveBeenCalledWith(
+        "Error adding group to user's groups: ",
+        error,
+      );
     });
   });
 
@@ -722,6 +725,7 @@ describe("SetFirestoreCtrl", () => {
         name: "User",
         createdAt: new Date(),
         friends: [friendId],
+        email: "",
       };
 
       (getUser as jest.Mock).mockResolvedValue(userData);
