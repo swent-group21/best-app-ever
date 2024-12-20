@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { TopBar } from "@/src/views/components/navigation/top_bar";
 import { Challenge } from "@/src/views/components/posts/challenge";
-import { ChallengeDescription } from "@/src/views/components/challenge/challenge_description";
+import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
 import { ThemedView } from "@/src/views/components/theme/themed_view";
 import { BottomBar } from "@/src/views/components/navigation/bottom_bar";
 import { ThemedScrollView } from "@/src/views/components/theme/themed_scroll_view";

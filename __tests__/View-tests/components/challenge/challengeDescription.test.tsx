@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { ChallengeDescription } from "@/src/views/components/challenge/challenge_description";
+import { ChallengeDescription } from "@/src/views/components/challenge/Challenge_Description";
 
 // Test the ChallengeDescription component
 describe("ChallengeDescription Component", () => {
