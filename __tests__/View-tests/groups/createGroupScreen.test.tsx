@@ -1,13 +1,14 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
+import CreateGroupScreen from "@/src/views/groups/create_group_screen";
 import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockSetGroupName = jest.fn();
 const mockSetChallengeTitle = jest.fn();
 const mockMakeGroup = jest.fn();
+const setRadius = jest.fn();
 
-jest.mock("@/src/viewmodels/group/CreateGroupViewModel", () =>
+jest.mock("@/src/viewmodels/groups/CreateGroupViewModel", () =>
   jest.fn(() => ({
     groupName: "Test group",
     setGroupName: mockSetGroupName,

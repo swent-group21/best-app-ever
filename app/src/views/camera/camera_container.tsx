@@ -12,7 +12,6 @@ const { width, height } = Dimensions.get("window");
 /**
  * Camera screen
  * @param navigation : navigation object
- * @param firestoreCtrl : FirestoreCtrl object
  * @returns : a screen for the camera
  */
 export default function Camera({ navigation, route }: any) {

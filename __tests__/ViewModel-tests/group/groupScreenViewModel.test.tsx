@@ -1,5 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
+import useGroupScreenViewModel from "@/src/viewmodels/groups/GroupScreenViewModel";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 import {
   getAllPostsOfGroup,
   getGroupsByUserId,
@@ -29,7 +30,7 @@ jest.mock("firebase/firestore", () => {
 });
 
 describe("useGroupScreenViewModel", () => {
-  const mockUser = {
+  const mockUser: DBUser = {
     uid: "test-user-id",
     name: "Test User",
     email: "test@example.com",
@@ -49,7 +50,7 @@ describe("useGroupScreenViewModel", () => {
     jest.clearAllMocks();
   });
 
-  it("should fetch group challenges and set state", async () => {
+  it("fetch group challenges and set state", async () => {
     const mockChallenges = [
       { caption: "caption 1", uid: "1", challenge_description: "desc 1" },
       { caption: "caption 2", uid: "2", challenge_description: "desc 2" },
@@ -60,7 +61,7 @@ describe("useGroupScreenViewModel", () => {
       .mockResolvedValue(mockChallenges);
 
     const { result } = renderHook(() =>
-      useGroupScreenViewModel(mockUser, mockRoute),
+      useGroupScreenViewModel({ user: mockUser, route: mockRoute }),
     );
 
     // Wait for the state to update after the first useEffect runs
@@ -72,7 +73,7 @@ describe("useGroupScreenViewModel", () => {
     expect(result.current.groupChallenges).toEqual(mockChallenges);
   });
 
-  it("should fetch groups and set state", async () => {
+  it("fetch groups and set state", async () => {
     const mockGroups = [
       {
         gid: "group-1",
@@ -99,7 +100,7 @@ describe("useGroupScreenViewModel", () => {
       .mockResolvedValue(mockGroups);
 
     const { result } = renderHook(() =>
-      useGroupScreenViewModel(mockUser, mockRoute),
+      useGroupScreenViewModel({ user: mockUser, route: mockRoute }),
     );
 
     // Wait for the state to update after the second useEffect runs
@@ -113,7 +114,7 @@ describe("useGroupScreenViewModel", () => {
     );
   });
 
-  it("should handle errors when fetching group challenges", async () => {
+  it("handle errors when fetching group challenges", async () => {
     const errorMessage = "Error fetching challenges";
 
     jest
@@ -122,7 +123,9 @@ describe("useGroupScreenViewModel", () => {
 
     jest.spyOn(console, "error").mockImplementation();
 
-    renderHook(() => useGroupScreenViewModel(mockUser, mockRoute));
+    renderHook(() =>
+      useGroupScreenViewModel({ user: mockUser, route: mockRoute }),
+    );
 
     expect(getAllPostsOfGroup).toHaveBeenCalledWith("test-group-id");
 
@@ -134,7 +137,7 @@ describe("useGroupScreenViewModel", () => {
     });
   });
 
-  it("should handle errors when fetching groups", async () => {
+  it("handle errors when fetching groups", async () => {
     const errorMessage = "Error fetching groups";
 
     jest
@@ -143,7 +146,9 @@ describe("useGroupScreenViewModel", () => {
 
     jest.spyOn(console, "error").mockImplementation();
 
-    renderHook(() => useGroupScreenViewModel(mockUser, mockRoute));
+    renderHook(() =>
+      useGroupScreenViewModel({ user: mockUser, route: mockRoute }),
+    );
 
     expect(getGroupsByUserId).toHaveBeenCalledWith("test-user-id");
     await waitFor(() => {
@@ -154,9 +159,9 @@ describe("useGroupScreenViewModel", () => {
     });
   });
 
-  it("should return correct group details", async () => {
+  it("return correct group details", async () => {
     const { result } = renderHook(() =>
-      useGroupScreenViewModel(mockUser, mockRoute),
+      useGroupScreenViewModel({ user: mockUser, route: mockRoute }),
     );
 
     await waitFor(() => {
@@ -166,7 +171,7 @@ describe("useGroupScreenViewModel", () => {
     });
   });
 
-  it("should sort the challenges by latest first", async () => {
+  it("sort the challenges by latest first", async () => {
     const mockDate1 = new Date(2021, 1, 1, 0, 0, 0, 0);
     const mockDate2 = new Date(2023, 1, 2, 0, 0, 0, 0);
 
@@ -184,7 +189,7 @@ describe("useGroupScreenViewModel", () => {
     );
 
     const { result } = renderHook(() =>
-      useGroupScreenViewModel(mockUser, mockRoute),
+      useGroupScreenViewModel({ user: mockUser, route: mockRoute }),
     );
 
     await waitFor(() => {

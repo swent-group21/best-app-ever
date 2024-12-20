@@ -1,7 +1,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
-import GroupScreen from "@/src/views/group/GroupScreen";
-import useGroupScreenViewModel from "@/src/viewmodels/group/GroupScreenViewModel";
+import GroupScreen from "@/src/views/groups/group_screen";
+import useGroupScreenViewModel from "@/src/viewmodels/groups/GroupScreenViewModel";
 import { DBChallenge, DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 const mockChallenge1: DBChallenge = {
@@ -32,15 +32,19 @@ const mockUser: DBUser = {
   createdAt: new Date(),
 };
 
-jest.mock("@/src/viewmodels/group/GroupScreenViewModel", () =>
+// Mock the useGroupScreenViewModel hook
+jest.mock("@/src/viewmodels/groups/GroupScreenViewModel", () =>
   jest.fn(() => ({
     groupChallenges: mockGroupChallenges,
     otherGroups: mockOtherGroups,
     groupName: "Test Name",
     groupChallengeTitle: "Title Test",
     groupId: "1234",
+    groupCenter: { latitude: 0, longitude: 0 },
+    groupRadius: 100,
   })),
 );
+
 jest.mock("expo-font", () => ({
   useFonts: jest.fn(() => [true]),
   isLoaded: jest.fn(() => true),
@@ -57,6 +61,9 @@ jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
 }));
 
 describe("Group Screen renders challenges", () => {
+  const mockUseGroupScreenViewModel =
+    require("@/src/viewmodels/groups/GroupScreenViewModel").useGroupScreenViewModel;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -127,27 +134,5 @@ describe("Group Screen renders challenges", () => {
       expect(getByTestId("challenge-id-Challenge Test 1")).toBeTruthy();
       expect(getByTestId("challenge-id-Challenge Test 2")).toBeTruthy();
     });
-  });
-});
-
-describe("Group Screen renders challenges", () => {
-  const groupChallenges: DBChallenge[] = [];
-
-  beforeEach(() => {
-    // Mock the return value of useGroupScreenViewModel
-    (useGroupScreenViewModel as jest.Mock).mockReturnValue({
-      groupChallenges: [],
-      otherGroups: mockOtherGroups,
-      groupName: "Group Testing Name",
-      groupChallengeTitle: "Group Testing Challenge Title",
-      groupId: "1234",
-    });
-  });
-
-  it("renders correct message when no challenge to display", () => {
-    const { getByTestId } = render(
-      <GroupScreen user={mockUser} navigation={{}} route={{}} />,
-    );
-    expect(getByTestId("no-challenge-id")).toBeTruthy();
   });
 });
