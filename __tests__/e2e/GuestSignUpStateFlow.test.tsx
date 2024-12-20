@@ -17,8 +17,7 @@ import WelcomeScreens from "@/src/views/welcome/welcome_screen";
 import WelcomeFinalScreen from "@/src/views/welcome/final_screen";
 import SignUp from "@/src/views/auth/sign_up_screen";
 import SetUsernameScreen from "@/src/views/auth/set_up_screen";
-
-
+import { isValidEmail } from "@/types/Auth";
 
 const Stack = createNativeStackNavigator();
 jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
@@ -36,7 +35,9 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
     return mockCurrentChallenge;
   }),
   getPostsByChallengeTitle: jest.fn((title) => {
-    return mockHomePosts;
+    return new Promise<DBChallenge[]>((resolve) => {
+      resolve(mockHomePosts);
+    });
   }),
 
   // Mock functions used in camera screen
@@ -50,7 +51,10 @@ jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
 
 jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
   createUser: jest.fn((uid, user) => {
-    mockTester = user
+    mockTester = user;
+    return new Promise<DBGroup[]>((resolve) => {
+      resolve(mockFetchedGroups);
+    });
   }),
 
   // Mock functions used in camera screen
@@ -61,8 +65,6 @@ jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
     } else mockHomePosts.push(challenge);
   }),
 }));
-
-
 
 // Mock GeoPoint constructor
 jest.mock("firebase/firestore", () => ({
@@ -119,24 +121,33 @@ jest.mock("expo-location", () => ({
 }));
 
 jest.mock("@/src/models/firebase/Firebase", () => ({
-    signInAnonymously: jest.fn(() =>
-      Promise.resolve({
-          user: {
-              uid: "guest-tester-id"
-          }
-      })
-    ),
-    signUpWithEmail: jest.fn(() =>
-      Promise.resolve({
-          user: {
-              uid: "123"
-          }
-      })
-    ),
-      
-    //isValidEmail: jest.fn((email) => true),
-  }));
+  signInAnonymously: jest.fn(() =>
+    Promise.resolve({
+      user: {
+        uid: "guest-tester-id",
+      },
+    }),
+  ),
+  signUpWithEmail: jest.fn(() =>
+    Promise.resolve({
+      user: {
+        uid: "guest-tester-id",
+      },
+    }),
+  ),
+  createUserWithEmailAndPassword: jest.fn(() =>
+    Promise.resolve({
+      user: {
+        uid: "guest-tester-id",
+      },
+    }),
+  ),
+}));
 
+jest.mock("@/types/Auth", () => ({
+  ...jest.requireActual("@/types/Auth"),
+  isValidEmail: jest.fn(() => true), // Mock uniquement `add`
+}));
 
 // Mock posts for HomeScreen and GroupScreen
 const mockHomePosts: DBChallenge[] = [
@@ -175,20 +186,17 @@ const mockGroup1: DBGroup = {
 let mockFetchedGroups = [mockGroup1];
 let mockNewGroup: DBGroup = undefined;
 
-
 // Mock user Sign-in Sign-up
 let mockTester: DBUser = {
-    uid: "uid-test",
-    email: "teset@example.com",
-    name: "TesterUser",
-    createdAt: new Date(),
-  };
-  // Mock setUser Sign-in Sign-up
-  const mockSetTester = jest.fn((user) => {
-    mockTester = user;
-  });
-
-
+  uid: "uid-test",
+  email: "tester@example.com",
+  name: "TesterUser",
+  createdAt: new Date(),
+};
+// Mock setUser Sign-in Sign-up
+const mockSetTester = jest.fn((user) => {
+  mockTester = user;
+});
 
 // Create a test component to wrap HomeScreen with navigation
 const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
@@ -201,14 +209,10 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
       >
         <Stack.Screen name="Welcome">
           {(props: any) => (
-            <WelcomeScreens
-              {...props}
-              setUser={setUser}
-              user={mockTester}
-            />
-          )} 
+            <WelcomeScreens {...props} setUser={setUser} user={mockTester} />
+          )}
         </Stack.Screen>
-        
+
         <Stack.Screen name="WelcomeFinal">
           {(props: any) => (
             <WelcomeFinalScreen
@@ -219,38 +223,20 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
           )}
         </Stack.Screen>
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              user={mockTester}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockTester} />}
         </Stack.Screen>
         <Stack.Screen name="SignUp">
           {(props: any) => (
-            <SignUp
-              {...props}
-              setUser={setUser}
-              user={mockTester}
-            />
+            <SignUp {...props} setUser={setUser} user={mockTester} />
           )}
         </Stack.Screen>
         <Stack.Screen name="SetUser">
           {(props: any) => (
-            <SetUsernameScreen
-              {...props}
-              setUser={setUser}
-              user={mockTester}
-            />
+            <SetUsernameScreen {...props} setUser={setUser} user={mockTester} />
           )}
         </Stack.Screen>
         <Stack.Screen name="Camera">
-          {(props: any) => (
-            <Camera
-              {...props}
-              user={mockTester}
-            />
-          )}
+          {(props: any) => <Camera {...props} user={mockTester} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -262,16 +248,17 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
  */
 describe("Guest User sign up and post", () => {
   it("Guest User signs up and post", async () => {
-
     // Render the test app
-    const { getByTestId } = render(<SignUpNavigation setUser={mockSetTester} />);
+    const { getByTestId } = render(
+      <SignUpNavigation setUser={mockSetTester} />,
+    );
 
     // Verify the user is rightly passed
     expect(mockTester).toEqual({
-        uid: "uid-test",
-        email: "tester@example.com",
-        name: "TesterUser",
-        createdAt: expect.any(Date),
+      uid: "uid-test",
+      email: "tester@example.com",
+      name: "TesterUser",
+      createdAt: expect.any(Date),
     });
 
     // Verify the WelcomeScreens are diplayed
@@ -290,10 +277,10 @@ describe("Guest User sign up and post", () => {
 
     // Verify the user was passed to HomeScreen and set by continue as guest
     expect(mockTester).toEqual({
-        uid: "guest-tester-id",
-        email: "",
-        name: "Guest",
-        createdAt: expect.any(Date),
+      uid: "guest-tester-id",
+      email: "",
+      name: "Guest",
+      createdAt: expect.any(Date),
     });
 
     // Simulate a press on the profile icon
@@ -307,16 +294,13 @@ describe("Guest User sign up and post", () => {
     // Simulate a press on the SignUp from guest button
     fireEvent.press(getByTestId("guest-sign-up-id"));
 
-
-
-
     // Wait for the navigation to WelcomeFinalScreen
     await waitFor(() => {
       expect(getByTestId("welcome-final-screen")).toBeTruthy();
     });
 
     // Simulate a press on the SignUp button
-    fireEvent.press(getByTestId("sign-up-button"));
+    fireEvent.press(getByTestId("welcome-sign-up-button"));
 
     // Wait for the navigation to SignUpScreen
     await waitFor(() => {
@@ -327,9 +311,9 @@ describe("Guest User sign up and post", () => {
     fireEvent.changeText(getByTestId("name-input"), "Test");
     fireEvent.changeText(getByTestId("surname-input"), "User");
     fireEvent.changeText(getByTestId("email-input"), "tester@verified.com");
-    fireEvent.changeText(getByTestId("password-input"), "password123");
-    fireEvent.changeText(getByTestId("confirm-password-input"), "password123");
-    
+    fireEvent.changeText(getByTestId("password-input"), "Password123");
+    fireEvent.changeText(getByTestId("confirm-password-input"), "Password123");
+
     // Simulate user pressing the sign up button
     fireEvent.press(getByTestId("sign-up-button"));
 
@@ -337,7 +321,6 @@ describe("Guest User sign up and post", () => {
     await waitFor(() => {
       expect(getByTestId("set-up-screen")).toBeTruthy();
     });
-
 
     // Simulate user interactions
     fireEvent.changeText(getByTestId("usernameInput"), "TesterBoss");
@@ -350,19 +333,14 @@ describe("Guest User sign up and post", () => {
       expect(getByTestId("home-screen")).toBeTruthy();
     });
 
-
     // Verify the user was passed to HomeScreen and set by continue as guest
     expect(mockTester).toEqual({
       uid: "guest-tester-id",
       email: "tester@verified.com",
-      name: "TesterBoss",
+      name: "Test User",
       createdAt: expect.any(Date),
+      groups: [],
     });
-
-
-
-
-
 
     // Simulate user pressing the camera button
     fireEvent.press(getByTestId("bottom-center-icon-camera-outline"));

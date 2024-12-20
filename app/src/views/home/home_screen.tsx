@@ -221,7 +221,7 @@ export default function HomeScreen({
               </ThemedText>
               <TouchableOpacity
                 style={styles.signUpButton}
-                onPress={() => navigation.navigate("SignUp")}
+                onPress={() => navigation.navigate("WelcomeFinal")}
               >
                 <ThemedText style={styles.signUpButtonText}>Sign Up</ThemedText>
               </TouchableOpacity>
