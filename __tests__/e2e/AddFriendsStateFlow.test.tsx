@@ -1,134 +1,130 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  act,
-} from "@testing-library/react-native";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl, {
+import {
   DBUser,
   DBChallenge,
   DBChallengeDescription,
   DBGroup,
   DBComment,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import FriendsScreen from "@/src/views/friends/friends_screen";
 import MaximizeScreen from "@/src/views/home/maximize_screen";
+import { getImageUrl } from "@/src/models/firebase/GetFirestoreCtrl";
 
 const Stack = createNativeStackNavigator();
 
 // Mock FirestoreCtrl
-jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      // Mock functions used in home screen
-      getGroupsByUserId: jest.fn((id) => {
-        if (id === "123") {
-          return new Promise<DBGroup[]>((resolve) => {
-            resolve([mockTesterGroup]);
-          });
-        } else if (id === "456") {
-          return new Promise<DBGroup[]>((resolve) => {
-            resolve([mockTesterFriendGroup]);
-          });
-        }
-      }),
-      getChallengeDescription: jest.fn((id) => {
-        return mockCurrentChallenge;
-      }),
-      getPostsByChallengeTitle: jest.fn((title) => {
-        return new Promise<DBChallenge[]>((resolve) => {
-          resolve([mockPostTesterFriend]);
-        });
-      }),
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+  // Mock functions used in home screen
+  getGroupsByUserId: jest.fn((id) => {
+    if (id === "123") {
+      return new Promise<DBGroup[]>((resolve) => {
+        resolve([mockTesterGroup]);
+      });
+    } else if (id === "456") {
+      return new Promise<DBGroup[]>((resolve) => {
+        resolve([mockTesterFriendGroup]);
+      });
+    }
+  }),
+  getChallengeDescription: jest.fn((id) => {
+    return mockCurrentChallenge;
+  }),
+  getPostsByChallengeTitle: jest.fn((title) => {
+    return new Promise<DBChallenge[]>((resolve) => {
+      resolve([mockPostTesterFriend]);
+    });
+  }),
 
-      // Mock functions used in friends screen
-      getAllUsers: jest.fn(() => {
-        return [mockTester, mockTesterFriend];
-      }),
-      addFriend: jest.fn((uid, friendUid) => {
-        if (uid === "123" && friendUid === "456") {
-          mockTester.friends.push(friendUid);
-        } else if (uid === "456" && friendUid === "123") {
-          mockTesterFriend.friends.push(friendUid);
-        }
-      }),
-      acceptFriend: jest.fn((uid, friendUid) => {
-        if (uid === "456" && friendUid === "123") {
-          mockTesterFriend.friends.push(friendUid);
-        } else if (uid === "123" && friendUid === "456") {
-          mockTester.friends.push(friendUid);
-        }
-      }),
-      getFriendSuggestions: jest.fn((uid) => {
-        if (uid === "123") {
-          return [];
-        } else if (uid === "456") {
-          return [mockTester];
-        }
-      }),
-      getFriends: jest.fn((uid) => {}),
-      getFriendRequests: jest.fn((uid) => {
-        if (uid === "456") {
-          return [mockTester];
-        } else return [];
-      }),
-      isFriend: jest.fn((uid, friendUid) => {
-        if (!isRequestSent) {
-          return false;
-        } else {
-          if (mockTester.friends.includes(friendUid)) {
-            return true;
-          }
-        }
-      }),
-      isRequested: jest.fn((uid, friendUid) => {
-        if (!isRequestSent) {
-          return false;
-        } else {
-          if (uid === "456") {
-            return true;
-          }
-        }
-      }),
+  // Mock functions used in friends screen
+  getAllUsers: jest.fn(() => {
+    return [mockTester, mockTesterFriend];
+  }),
+  getFriendSuggestions: jest.fn((uid) => {
+    if (uid === "123") {
+      return [];
+    } else if (uid === "456") {
+      return [mockTester];
+    }
+  }),
+  getFriends: jest.fn((uid) => {}),
+  getFriendRequests: jest.fn((uid) => {
+    if (uid === "456") {
+      return [mockTester];
+    } else return [];
+  }),
+  isFriend: jest.fn((uid, friendUid) => {
+    if (!isRequestSent) {
+      return false;
+    } else {
+      if (mockTester.friends.includes(friendUid)) {
+        return true;
+      }
+    }
+  }),
+  isRequested: jest.fn((uid, friendUid) => {
+    if (!isRequestSent) {
+      return false;
+    } else {
+      if (uid === "456") {
+        return true;
+      }
+    }
+  }),
 
-      // Mock functions used in maximize screen
-      getCommentsOf: jest.fn((challenge_id) => {
-        return new Promise<DBComment[]>((resolve) => {
-          resolve(mockPostComments);
-        });
-      }),
-      addComment: jest.fn(() => {}),
-      updateLikesOf: jest.fn((challenge_id, likes) => {
-        mockPostLikes = likes;
-      }),
-      getLikesOf: jest.fn((challenge_id) => {
-        return new Promise<string[]>((resolve) => {
-          resolve(mockPostLikes);
-        });
-      }),
+  // Mock functions used in maximize screen
+  getCommentsOf: jest.fn((challenge_id) => {
+    return new Promise<DBComment[]>((resolve) => {
+      resolve(mockPostComments);
+    });
+  }),
+  getLikesOf: jest.fn((challenge_id) => {
+    return new Promise<string[]>((resolve) => {
+      resolve(mockPostLikes);
+    });
+  }),
 
-      getUser: jest.fn((uid) => {
-        if (uid === "123") {
-          return new Promise<DBUser[]>((resolve) => {
-            resolve([mockTester]);
-          });
-        } else if (uid === "456") {
-          return new Promise<DBUser[]>((resolve) => {
-            resolve([mockTesterFriend]);
-          });
-        }
-      }),
-    };
-  });
-});
-const mockFirestoreCtrl = new FirestoreCtrl();
+  getUser: jest.fn((uid) => {
+    if (uid === "123") {
+      return new Promise<DBUser[]>((resolve) => {
+        resolve([mockTester]);
+      });
+    } else if (uid === "456") {
+      return new Promise<DBUser[]>((resolve) => {
+        resolve([mockTesterFriend]);
+      });
+    }
+  }),
 
-// Mock groups fetched in HomeScreen
-let mockFetchedGroups = [];
+  getImageUrl: jest.fn((image_id) => {}),
+}));
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  // Mock functions used in friends screen
+  addFriend: jest.fn((uid, friendUid) => {
+    if (uid === "123" && friendUid === "456") {
+      mockTester.friends.push(friendUid);
+    } else if (uid === "456" && friendUid === "123") {
+      mockTesterFriend.friends.push(friendUid);
+    }
+  }),
+  acceptFriend: jest.fn((uid, friendUid) => {
+    if (uid === "456" && friendUid === "123") {
+      mockTesterFriend.friends.push(friendUid);
+    } else if (uid === "123" && friendUid === "456") {
+      mockTester.friends.push(friendUid);
+    }
+  }),
+
+  // Mock functions used in maximize screen
+  appendComment: jest.fn(() => {}),
+  updateLikesOf: jest.fn((challenge_id, likes) => {
+    mockPostLikes = likes;
+  }),
+}));
 
 // Mock users testing
 let mockTester: DBUser = {
@@ -194,22 +190,10 @@ const TesterNavigation = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockTester} />}
         </Stack.Screen>
         <Stack.Screen name="Friends">
-          {(props) => (
-            <FriendsScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <FriendsScreen {...props} user={mockTester} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -227,22 +211,10 @@ const FriendNavigation = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTesterFriend}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockTesterFriend} />}
         </Stack.Screen>
         <Stack.Screen name="Friends">
-          {(props) => (
-            <FriendsScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTesterFriend}
-            />
-          )}
+          {(props) => <FriendsScreen {...props} user={mockTesterFriend} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -260,22 +232,10 @@ const TesterNavigation2 = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Home">
-          {(props) => (
-            <HomeScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <HomeScreen {...props} user={mockTester} />}
         </Stack.Screen>
         <Stack.Screen name="Maximize">
-          {(props) => (
-            <MaximizeScreen
-              {...props}
-              firestoreCtrl={mockFirestoreCtrl}
-              user={mockTester}
-            />
-          )}
+          {(props) => <MaximizeScreen {...props} user={mockTester} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
@@ -350,7 +310,7 @@ describe("Send a friend request that is accepted and comment a friend's post", (
 
     // Wait for the navigation to FriendsScreen
     await waitFor(() => {
-      expect(friendNavigation.getByTestId("friendsScreen")).toBeTruthy();
+      expect(friendNavigation.getByTestId("friends-screen")).toBeTruthy();
     });
 
     // Simulate friend user accepting the request from tester user

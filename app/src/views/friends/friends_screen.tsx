@@ -7,15 +7,13 @@ import ListOfFriends from "@/src/views/components/friends/list_of_friends";
 import { RequestList } from "@/src/views/components/friends/request_list";
 import ListOfFilteredUsers from "@/src/views/components/friends/list_of_filtered_users";
 import { useFriendsScreenViewModel } from "@/src/viewmodels/friends/FriendsScreenViewModel";
-import FirestoreCtrl, { DBUser } from "@/src/models/firebase/FirestoreCtrl";
+import { DBUser } from "@/src/models/firebase/TypeFirestoreCtrl";
 
 export default function FriendsScreen({
   navigation,
-  firestoreCtrl,
   user,
 }: {
   readonly navigation: any;
-  readonly firestoreCtrl: FirestoreCtrl;
   readonly user: DBUser;
 }) {
   const uid = user?.uid;
@@ -28,7 +26,7 @@ export default function FriendsScreen({
     filteredUsers = [],
     suggestions,
     handleFriendPress,
-  } = useFriendsScreenViewModel(firestoreCtrl, uid);
+  } = useFriendsScreenViewModel(uid);
 
   // Sections configuration
   const sections = [
@@ -39,7 +37,6 @@ export default function FriendsScreen({
         <ListOfFilteredUsers
           searchText={searchText}
           uid={uid}
-          firestoreCtrl={firestoreCtrl}
           filteredUsers={filteredUsers}
         />
       ),
@@ -60,11 +57,7 @@ export default function FriendsScreen({
       title: "Requests",
       content:
         requests.length > 0 ? (
-          <RequestList
-            requests={requests}
-            firestoreCtrl={firestoreCtrl}
-            uid={uid}
-          />
+          <RequestList requests={requests} uid={uid} />
         ) : (
           <ThemedText style={styles.noRequests}>
             No friends request for now
@@ -80,7 +73,6 @@ export default function FriendsScreen({
           filteredUsers={suggestions}
           searchText=""
           uid={uid}
-          firestoreCtrl={firestoreCtrl}
         />
       ),
     },
