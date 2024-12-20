@@ -65,7 +65,7 @@ describe("useMapScreenViewModel", () => {
     });
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockNavigation, undefined, undefined),
+      useMapScreenViewModel(mockNavigation, undefined, undefined, "home"),
     );
 
     await waitFor(() => {
@@ -88,7 +88,12 @@ describe("useMapScreenViewModel", () => {
     const undefined_firstLocation = undefined;
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockNavigation, undefined_firstLocation, undefined),
+      useMapScreenViewModel(
+        mockNavigation,
+        undefined_firstLocation,
+        undefined,
+        "home",
+      ),
     );
 
     await waitFor(() => {
@@ -113,7 +118,12 @@ describe("useMapScreenViewModel", () => {
     const undefined_firstLocation = undefined;
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockNavigation, undefined_firstLocation, undefined),
+      useMapScreenViewModel(
+        mockNavigation,
+        undefined_firstLocation,
+        undefined,
+        "home",
+      ),
     );
 
     await waitFor(() => {
@@ -139,6 +149,7 @@ describe("useMapScreenViewModel", () => {
         date: mockDate,
         location: new GeoPoint(48.8566, 2.3522),
         challenge_description: "Description test",
+        group_id: "home",
       },
       {
         challenge_id: "2",
@@ -147,6 +158,7 @@ describe("useMapScreenViewModel", () => {
         date: mockDate,
         location: null, // Invalid location
         challenge_description: "Description test",
+        group_id: "group1",
       },
     ];
 
@@ -157,7 +169,12 @@ describe("useMapScreenViewModel", () => {
     const undefined_firstLocation = undefined;
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockNavigation, undefined_firstLocation, undefined),
+      useMapScreenViewModel(
+        mockNavigation,
+        undefined_firstLocation,
+        undefined,
+        "home",
+      ),
     );
 
     await waitFor(() => {
@@ -179,7 +196,12 @@ describe("useMapScreenViewModel", () => {
     const undefined_firstLocation = undefined;
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockNavigation, undefined_firstLocation, undefined),
+      useMapScreenViewModel(
+        mockNavigation,
+        undefined_firstLocation,
+        undefined,
+        "home",
+      ),
     );
 
     await waitFor(() => {
@@ -195,7 +217,12 @@ describe("useMapScreenViewModel", () => {
     const undefined_firstLocation = undefined;
 
     const { result } = renderHook(() =>
-      useMapScreenViewModel(mockNavigation, undefined_firstLocation, undefined),
+      useMapScreenViewModel(
+        mockNavigation,
+        undefined_firstLocation,
+        undefined,
+        "home",
+      ),
     );
 
     await waitFor(() => {
