@@ -64,6 +64,7 @@ export default function WelcomeFinalScreen({
           text="Sign Up"
           textStyle={styles.buttonText}
           textColorType="textOverLight"
+          testID="sign-up-button"
         />
         <ThemedTextButton
           onPress={continueAsGuest}

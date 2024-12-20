@@ -2,12 +2,12 @@ import React from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import FirestoreCtrl, {
+import {
   DBUser,
   DBChallenge,
   DBChallengeDescription,
   DBGroup,
-} from "@/src/models/firebase/FirestoreCtrl";
+} from "@/src/models/firebase/TypeFirestoreCtrl";
 import HomeScreen from "@/src/views/home/home_screen";
 import CreateGroupScreen from "@/src/views/group/CreateGroupScreen";
 import GroupScreen from "@/src/views/group/GroupScreen";
@@ -23,6 +23,16 @@ import SetUsernameScreen from "@/src/views/auth/set_up_screen";
 
 
 const Stack = createNativeStackNavigator();
+jest.mock("@/src/models/firebase/GetFirestoreCtrl", () => ({
+}));
+
+jest.mock("@/src/models/firebase/SetFirestoreCtrl", () => ({
+  createUser: jest.fn((uid, user) => {
+    mockTester = user
+  })
+
+
+}));
 
 // Mock FirestoreCtrl
 jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
@@ -79,13 +89,10 @@ jest.mock("@/src/models/firebase/FirestoreCtrl", () => {
 
 
 
-      createUser: jest.fn((uid, user) => {
-        mockTester = user
-      })
+      
     };
   });
 });
-const mockFirestoreCtrl = new FirestoreCtrl();
 
 // Mock GeoPoint constructor
 jest.mock("firebase/firestore", () => ({
@@ -143,24 +150,21 @@ jest.mock("expo-location", () => ({
 
 jest.mock("@/src/models/firebase/Firebase", () => ({
     signInAnonymously: jest.fn(() =>
-        Promise.resolve({
-            user: {
-                uid: "guest-tester-id"
-            }
-        })
+      Promise.resolve({
+          user: {
+              uid: "guest-tester-id"
+          }
+      })
 
     ),
-    signUpWithEmail: jest.fn(
-      (name, email, password, firestoreCtrl, navigation, setUser) => {
-        setUser({
-          uid: "123",
-          email: email,
-          name: name,
-          createdAt: new Date(),
-        });
-        navigation.navigate("Home");
-      },
+    signUpWithEmail: jest.fn(() =>
+      Promise.resolve({
+          user: {
+              uid: "123"
+          }
+      })
     ),
+      
     isValidEmail: jest.fn((email) => true),
   }));
 
@@ -231,7 +235,6 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
             <WelcomeScreens
               {...props}
               setUser={setUser}
-              firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
             />
           )} 
@@ -242,7 +245,6 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
             <WelcomeFinalScreen
               {...props}
               setUser={setUser}
-              firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
             />
           )}
@@ -251,7 +253,6 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
           {(props) => (
             <HomeScreen
               {...props}
-              firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
             />
           )}
@@ -261,7 +262,6 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
             <SignUp
               {...props}
               setUser={setUser}
-              firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
             />
           )}
@@ -271,7 +271,6 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
             <SetUsernameScreen
               {...props}
               setUser={setUser}
-              firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
             />
           )}
@@ -280,7 +279,6 @@ const SignUpNavigation = ({ setUser }: { setUser: jest.Mock }) => {
           {(props: any) => (
             <Camera
               {...props}
-              firestoreCtrl={mockFirestoreCtrl}
               user={mockTester}
             />
           )}
@@ -343,57 +341,59 @@ describe("Guest User sign up and post", () => {
 
 
 
+    // Wait for the navigation to WelcomeFinalScreen
+    await waitFor(() => {
+      expect(getByTestId("welcome-final-screen")).toBeTruthy();
+    });
 
+    // Simulate a press on the SignUp button
+    fireEvent.press(getByTestId("sign-up-button"));
 
+    // Wait for the navigation to SignUpScreen
+    await waitFor(() => {
+      expect(getByTestId("sign-up-screen")).toBeTruthy();
+    });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Simulate user filling the sign up form
+    fireEvent.changeText(getByTestId("name-input"), "Test");
+    fireEvent.changeText(getByTestId("surname-input"), "User");
+    fireEvent.changeText(getByTestId("email-input"), "tester@verified.com");
+    fireEvent.changeText(getByTestId("password-input"), "password123");
+    fireEvent.changeText(getByTestId("confirm-password-input"), "password123");
     
-    // Simulate user entering a group name
-    fireEvent.changeText(getByTestId("Group-Name-Input"), "New Group");
-    // Simulate user entering a challenge title
-    fireEvent.changeText(
-      getByTestId("Description-Input"),
-      "Challenge Description of Test Group",
-    );
+    // Simulate user pressing the sign up button
+    fireEvent.press(getByTestId("sign-up-button"));
 
-    // Simulate user pressing the create group button
-    const createPostButton = getByTestId("bottom-right-icon-arrow-forward");
-    fireEvent.press(createPostButton);
+    // Wait for the navigation to HomeScreen
+    await waitFor(() => {
+      expect(getByTestId("set-up-screen")).toBeTruthy();
+    });
+
+
+    // Simulate user interactions
+    fireEvent.changeText(getByTestId("usernameInput"), "TesterBoss");
+
+    // Simulate user pressing the arrow forward button
+    fireEvent.press(getByTestId("bottom-right-icon-arrow-forward"));
 
     // Wait for the navigation to HomeScreen
     await waitFor(() => {
       expect(getByTestId("home-screen")).toBeTruthy();
     });
 
-    // Wait for the new group to be displayed
-    await waitFor(() => {
-      expect(getByTestId("group-id-New Group")).toBeTruthy();
+
+    // Verify the user was passed to HomeScreen and set by continue as guest
+    expect(mockTester).toEqual({
+      uid: "guest-tester-id",
+      email: "tester@verified.com",
+      name: "TesterBoss",
+      createdAt: expect.any(Date),
     });
 
-    // Simulate user pressing the new group button
-    fireEvent.press(getByTestId("group-pressable-button-New Group"));
 
-    // Wait for the navigation to GroupScreen
-    await waitFor(() => {
-      expect(getByTestId("group-screen")).toBeTruthy();
-    });
 
-    // Verify it is the right group
-    expect(getByTestId("description-id-New Group")).toBeTruthy();
+
+
 
     // Simulate user pressing the camera button
     fireEvent.press(getByTestId("bottom-center-icon-camera-outline"));
@@ -410,10 +410,12 @@ describe("Guest User sign up and post", () => {
 
     // Simulate user pressing the camera button to take a picture
     fireEvent.press(getByTestId("Camera-Button"));
+
     // Wait for isCameraEnabled to be set to false
     await act(async () => {
       await Promise.resolve();
     });
+
     // Verify the camera is disabled and the preview is displayed
     expect(getByTestId("camera-preview")).toBeTruthy();
 
@@ -428,11 +430,8 @@ describe("Guest User sign up and post", () => {
 
     // Wait for the navigation to HomeScreen
     await waitFor(() => {
-      expect(getByTestId("group-screen")).toBeTruthy();
+      expect(getByTestId("home-screen")).toBeTruthy();
     });
-
-    // Verify it is the right group
-    expect(getByTestId("description-id-New Group")).toBeTruthy();
 
     // Wait for the new challenge to be fetched
     await act(async () => {
