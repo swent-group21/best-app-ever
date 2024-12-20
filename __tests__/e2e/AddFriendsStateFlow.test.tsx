@@ -343,7 +343,7 @@ describe("Send a friend request that is accepted and comment a friend's post", (
 
     // Verify the Friend's post is displayed
     expect(
-      testerNavigation2.getByTestId("challenge-id-Home Challenge Test Caption"),
+      testerNavigation2.getByTestId("challenge-id-0"),
     ).toBeTruthy();
 
     // Simulate user wanting to comment the friend's post
