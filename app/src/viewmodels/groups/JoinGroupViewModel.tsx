@@ -7,7 +7,6 @@ import {
 
 /**
  * View model for the Join Group screen.
- * @param firestoreCtrl : FirestoreCtrl object
  * @param uid : the user's ID
  * @returns : searchText, setSearchText, users, friends, requests, filteredUsers, handleFriendPress
  */

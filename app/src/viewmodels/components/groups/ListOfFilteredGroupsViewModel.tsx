@@ -9,7 +9,6 @@ import {
 /**
  * List of filtered groups ViewModel helps display the component
  * @param filteredGroups : list of groups to display
- * @param firestoreCtrl : firestore controller
  * @param uid : user id of the current user
  * @returns ListOfFilteredGroups Component
  */

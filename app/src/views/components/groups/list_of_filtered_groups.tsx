@@ -9,7 +9,6 @@ import { DBGroup } from "@/src/models/firebase/TypeFirestoreCtrl";
  * List of filtered groups component
  * @param filteredGroups : list of groups to display
  * @param searchText : text to search for
- * @param firestoreCtrl : firestore controller
  * @param uid : user id of the current user
  * @returns ListOfFilteredGroups Component
  */

@@ -541,19 +541,42 @@ export async function getFriendSuggestions(uid: string): Promise<DBUser[]> {
 }
 
 /**
+ * Retrieves all groups from Firestore.
+ * @returns A promise that resolves to an array of groups.
+ * */
+export async function getAllGroups(): Promise<DBGroup[]> {
+  try {
+    const groupsRef = collection(firestore, "groups");
+    const querySnapshot = await getDocs(groupsRef);
+    const groups = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        gid: doc.id,
+        ...data,
+      } as DBGroup;
+    });
+
+    return groups;
+  } catch (error) {
+    console.error("Error getting all groups: ", error);
+    throw error;
+  }
+}
+
+/**
  * Get groups suggestions for a user based on its friends.
  * @param uid The UID of the user.
  * @returns An array of groups suggestions.
  */
 export async function getGroupSuggestions(uid: string): Promise<DBGroup[]> {
-  const allGroups = await this.getAllGroups();
-  const userFriends = await this.getFriends(uid);
+  const allGroups = await getAllGroups();
+  const userFriends = await getFriends(uid);
 
   const groupsSuggestions = new Set<DBGroup>();
 
   // get groups of friends
   for (const friend of userFriends) {
-    const groupsOfFriend = await this.getGroupsByUserId(friend.uid);
+    const groupsOfFriend = await getGroupsByUserId(friend.uid);
     for (const gof of groupsOfFriend) {
       // if the user is not already in the group and the group is not already suggested
       if (!gof.members.includes(uid)) {
@@ -577,29 +600,6 @@ export async function getGroupSuggestions(uid: string): Promise<DBGroup[]> {
   }
 
   return Array.from(groupsSuggestions).slice(0, 10);
-}
-
-/**
- * Retrieves all groups from Firestore.
- * @returns A promise that resolves to an array of groups.
- * */
-export async function getAllGroups(): Promise<DBGroup[]> {
-  try {
-    const groupsRef = collection(firestore, "groups");
-    const querySnapshot = await getDocs(groupsRef);
-    const groups = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        gid: doc.id,
-        ...data,
-      } as DBGroup;
-    });
-
-    return groups;
-  } catch (error) {
-    console.error("Error getting all groups: ", error);
-    throw error;
-  }
 }
 
 /**

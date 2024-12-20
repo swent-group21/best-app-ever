@@ -113,13 +113,7 @@ export const Nav: React.FC<AppStackProps> = ({ isLoggedIn, user, setUser }) => {
           </Screen>
 
           <Screen name="JoinGroup">
-            {(props: any) => (
-              <JoinGroupScreen
-                {...props}
-                user={user}
-                firestoreCtrl={firestoreCtrl}
-              />
-            )}
+            {(props: any) => <JoinGroupScreen {...props} user={user} />}
           </Screen>
         </Group>
       </Navigator>

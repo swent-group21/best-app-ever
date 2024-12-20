@@ -9,7 +9,6 @@ import {
 
 /**
  * Used to create a Challenge and store it in Firestore DB
- * @param firestoreCtrl : FirestoreCtrl object
  * @param challenge_name : the name of the challenge
  * @param description : the description of the challenge
  * @param location : the location of the challenge
