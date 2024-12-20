@@ -141,7 +141,7 @@ export async function getChallengesByUserId(
   uid: string,
 ): Promise<DBChallenge[]> {
   try {
-    let userChallenges: DBChallenge[];
+    const userChallenges = [];
     const localChallenges = await getStoredChallenges();
     localChallenges.forEach((challenge) => {
       if (challenge.uid == uid) {
@@ -150,6 +150,7 @@ export async function getChallengesByUserId(
     });
 
     if (userChallenges.length != 0) {
+      console.log("returning local challenges", userChallenges)
       return userChallenges;
     }
 

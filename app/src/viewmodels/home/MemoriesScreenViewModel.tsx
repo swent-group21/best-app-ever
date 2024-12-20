@@ -11,7 +11,6 @@ import {
  * @returns : userIsGuest, challenges, groups, and titleChallenge
  */
 export function useMemoriesViewModel(user: DBUser, navigation: any) {
-  console.log("Found user from route: ", user);
   const userIsGuest = user.name === "Guest";
   const [challenges, setChallenges] = useState<DBChallenge[]>([]);
   const [icon, setIcon] = useState<string>("person-circle-outline");
@@ -21,6 +20,7 @@ export function useMemoriesViewModel(user: DBUser, navigation: any) {
     // Fetch challenges
     const fetchChallenges = async () => {
       try {
+        console.log("User: ", user)
         await getChallengesByUserId(user.uid).then(
           (challenge: DBChallenge[]) => {
             // Sort challenges by date

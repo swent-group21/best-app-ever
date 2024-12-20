@@ -160,8 +160,8 @@ export async function newChallenge(challengeData: DBChallenge): Promise<void> {
       return;
     }
     try {
-      // Schedule background retry
       await storeChallengeLocally(challengeData);
+      // Schedule background retry
       setUploadTaskScheduled(true);
       console.log("getUploadTaskScheduled: ", await getUploadTaskScheduled());
     } catch (storageError) {
